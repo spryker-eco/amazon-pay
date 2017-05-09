@@ -84,7 +84,6 @@ abstract class AbstractAuthorizeAdapter extends AbstractAdapter
                     ->getAuthorizationReferenceId(),
             static::TRANSACTION_TIMEOUT => $this->transactionTimeout,
             static::CAPTURE_NOW => $this->captureNow,
-            'seller_authorization_note' => '{"SandboxSimulation": {"State":"Declined", "ReasonCode":"TransactionTimedOut"}}',
         ];
     }
 
