@@ -8,15 +8,15 @@
 namespace SprykerEco\Yves\Amazonpay\Controller;
 
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
-use Spryker\Yves\Amazonpay\Plugin\Provider\AmazonpayControllerProvider;
+use SprykerEco\Yves\Amazonpay\Plugin\Provider\AmazonpayControllerProvider;
 use Spryker\Yves\Kernel\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @method \Spryker\Yves\Amazonpay\AmazonpayFactory getFactory()
- * @method \Spryker\Client\Amazonpay\AmazonpayClient getClient()
+ * @method \SprykerEco\Yves\Amazonpay\AmazonpayFactory getFactory()
+ * @method \SprykerEco\Client\Amazonpay\AmazonpayClient getClient()
  */
 class PaymentController extends AbstractController
 {

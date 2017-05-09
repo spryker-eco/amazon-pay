@@ -12,18 +12,18 @@ use Generated\Shared\Transfer\ExpenseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
 use Spryker\Shared\Shipment\ShipmentConstants;
-use Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface;
 
 class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface
      */
     protected $shipmentFacade;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface $shipmentFacade
+     * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface $shipmentFacade
      */
     public function __construct(AmazonpayToShipmentInterface $shipmentFacade)
     {

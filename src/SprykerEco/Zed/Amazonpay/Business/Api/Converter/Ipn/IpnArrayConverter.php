@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn;
 
-use Spryker\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter;
+use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter;
 
 /**
  * Class IpnArrayConverter
@@ -17,12 +17,12 @@ class IpnArrayConverter extends AbstractArrayConverter
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Api\Converter\Ipn\IpnConverterFactory
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn\IpnConverterFactory
      */
     protected $ipnConverterFactory;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Business\Api\Converter\Ipn\IpnConverterFactory $ipnConverterFactory
+     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn\IpnConverterFactory $ipnConverterFactory
      */
     public function __construct(IpnConverterFactory $ipnConverterFactory)
     {

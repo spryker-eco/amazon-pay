@@ -9,7 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class GetOrderReferenceDetailsTransaction extends AbstractQuoteTransaction
 {

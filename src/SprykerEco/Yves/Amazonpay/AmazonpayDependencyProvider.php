@@ -9,10 +9,10 @@ namespace SprykerEco\Yves\Amazonpay;
 
 use Spryker\Yves\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Yves\Kernel\Container;
-use Spryker\Zed\Amazonpay\Dependency\Client\AmazonpayToCalculationBridge;
-use Spryker\Zed\Amazonpay\Dependency\Client\AmazonpayToCheckoutBridge;
-use Spryker\Zed\Amazonpay\Dependency\Client\AmazonpayToQuoteBridge;
-use Spryker\Zed\Amazonpay\Dependency\Client\AmazonpayToShipmentBridge;
+use SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToCalculationBridge;
+use SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToCheckoutBridge;
+use SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToQuoteBridge;
+use SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToShipmentBridge;
 
 class AmazonpayDependencyProvider extends AbstractBundleDependencyProvider
 {

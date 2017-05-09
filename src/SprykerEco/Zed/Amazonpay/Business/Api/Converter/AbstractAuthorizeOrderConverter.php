@@ -15,12 +15,12 @@ abstract class AbstractAuthorizeOrderConverter extends AbstractResponseParserCon
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $authDetailsConverter
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $authDetailsConverter
      */
     protected $authDetailsConverter;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $authDetailsConverter
+     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $authDetailsConverter
      */
     public function __construct(ArrayConverterInterface $authDetailsConverter)
     {

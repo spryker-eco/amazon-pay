@@ -15,7 +15,7 @@ interface IpnRequestFactoryInterface
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $ipnRequest
      *
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     public function createConcreteIpnRequestHandler(AbstractTransfer $ipnRequest);
 

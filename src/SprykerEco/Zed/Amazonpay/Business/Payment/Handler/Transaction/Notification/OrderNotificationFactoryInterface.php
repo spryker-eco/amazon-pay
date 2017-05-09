@@ -11,7 +11,7 @@ interface OrderNotificationFactoryInterface
 {
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
      */
     public function createOrderAuthFailedTransaction();
 

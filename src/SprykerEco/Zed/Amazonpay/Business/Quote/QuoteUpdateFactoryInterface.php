@@ -11,22 +11,22 @@ interface QuoteUpdateFactoryInterface
 {
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface
      */
     public function createShippingAddressQuoteDataUpdater();
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface
      */
     public function createQuoteDataInitializer();
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface
      */
     public function createShipmentDataQuoteInitializer();
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface
      */
     public function createShipmentDataQuoteUpdater();
 

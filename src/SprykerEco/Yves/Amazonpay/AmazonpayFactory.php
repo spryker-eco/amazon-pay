@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Yves\Amazonpay;
 
-use Spryker\Shared\Amazonpay\AmazonpayConfig;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 use Spryker\Yves\Kernel\AbstractFactory;
 
 class AmazonpayFactory extends AbstractFactory implements AmazonpayFactoryInterface
@@ -30,7 +30,7 @@ class AmazonpayFactory extends AbstractFactory implements AmazonpayFactoryInterf
     }
 
     /**
-     * @return \Spryker\Shared\Amazonpay\AmazonpayConfig
+     * @return \SprykerEco\Shared\Amazonpay\AmazonpayConfig
      */
     public function getConfig()
     {

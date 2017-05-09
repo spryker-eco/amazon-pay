@@ -15,18 +15,18 @@ class HandleDeclinedOrderTransaction extends AbstractQuoteTransaction
     const ORDER_REFERENCE_STATUS_OPEN = 'Open';
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
      */
     protected $getOrderReferenceDetailsTransaction;
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
      */
     protected $cancelOrderTransaction;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\GetOrderReferenceDetailsTransaction $getOrderReferenceDetailsTransaction
-     * @param \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\CancelPreOrderTransaction $cancelOrderTransaction
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\GetOrderReferenceDetailsTransaction $getOrderReferenceDetailsTransaction
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\CancelPreOrderTransaction $cancelOrderTransaction
      */
     public function __construct(
         GetOrderReferenceDetailsTransaction $getOrderReferenceDetailsTransaction,

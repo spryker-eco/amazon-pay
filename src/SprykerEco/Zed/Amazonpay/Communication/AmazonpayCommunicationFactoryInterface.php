@@ -11,7 +11,7 @@ interface AmazonpayCommunicationFactoryInterface
 {
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToSalesInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToSalesInterface
      */
     public function getSalesFacade();
 

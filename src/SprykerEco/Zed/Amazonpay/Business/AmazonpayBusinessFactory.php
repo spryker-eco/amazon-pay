@@ -7,26 +7,26 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business;
 
-use Spryker\Shared\Amazonpay\AmazonpayConfig;
-use Spryker\Zed\Amazonpay\AmazonpayDependencyProvider;
-use Spryker\Zed\Amazonpay\Business\Api\Adapter\AdapterFactory;
-use Spryker\Zed\Amazonpay\Business\Api\Converter\ConverterFactory;
-use Spryker\Zed\Amazonpay\Business\Order\Saver;
-use Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnFactory;
-use Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLogger;
-use Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\TransactionFactory;
-use Spryker\Zed\Amazonpay\Business\Quote\QuoteUpdateFactory;
-use Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
+use SprykerEco\Zed\Amazonpay\AmazonpayDependencyProvider;
+use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactory;
+use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ConverterFactory;
+use SprykerEco\Zed\Amazonpay\Business\Order\Saver;
+use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnFactory;
+use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLogger;
+use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\TransactionFactory;
+use SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdateFactory;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
- * @method \Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainer getQueryContainer()
+ * @method \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainer getQueryContainer()
  */
 class AmazonpayBusinessFactory extends AbstractBusinessFactory
 {
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\TransactionFactoryInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\TransactionFactoryInterface
      */
     public function createTransactionFactory()
     {
@@ -39,7 +39,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Shared\Amazonpay\AmazonpayConfig
+     * @return \SprykerEco\Shared\Amazonpay\AmazonpayConfig
      */
     public function getConfig()
     {
@@ -47,7 +47,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Quote\QuoteUpdateFactoryInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdateFactoryInterface
      */
     public function createQuoteUpdateFactory()
     {
@@ -59,7 +59,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnFactoryInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnFactoryInterface
      */
     public function createIpnFactory()
     {
@@ -71,7 +71,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToRefundInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToRefundInterface
      */
     public function getRefundFacade()
     {
@@ -79,7 +79,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyInterface
      */
     protected function getMoneyFacade()
     {
@@ -87,7 +87,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface
      */
     protected function getOmsFacade()
     {
@@ -95,7 +95,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface
      */
     protected function getShipmentFacade()
     {
@@ -103,7 +103,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface
      */
     protected function getUtilEncodingService()
     {
@@ -111,7 +111,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
    /**
-    * @return \Spryker\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface
+    * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface
     */
     public function createAdapterFactory()
     {
@@ -123,7 +123,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Api\Converter\ConverterFactoryInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ConverterFactoryInterface
      */
     protected function createConverterFactory()
     {
@@ -131,7 +131,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Order\SaverInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Order\SaverInterface
      */
     public function createOrderSaver()
     {
@@ -139,7 +139,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface
      */
     public function createTransactionLogger()
     {

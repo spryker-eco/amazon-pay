@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition;
 
-use Spryker\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class IsRefundCompletedConditionPlugin extends AbstractOrderItemConditionPlugin
 {

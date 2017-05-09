@@ -8,25 +8,25 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Shared\Amazonpay\AmazonpayConfigInterface;
-use Spryker\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
+use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface;
 
 class CustomerDataQuoteUpdater implements QuoteUpdaterInterface
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Api\Adapter\ObtainProfileInformationAdapter
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\ObtainProfileInformationAdapter
      */
     protected $executionAdapter;
 
     /**
-     * @var \Spryker\Shared\Amazonpay\AmazonpayConfig
+     * @var \SprykerEco\Shared\Amazonpay\AmazonpayConfig
      */
     protected $config;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface $executionAdapter
-     * @param \Spryker\Shared\Amazonpay\AmazonpayConfigInterface $config
+     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface $executionAdapter
+     * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
      */
     public function __construct(
         QuoteAdapterInterface $executionAdapter,

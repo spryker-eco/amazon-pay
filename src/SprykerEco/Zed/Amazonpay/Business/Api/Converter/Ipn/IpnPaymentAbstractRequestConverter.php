@@ -8,7 +8,7 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn;
 
 use Generated\Shared\Transfer\AmazonpayIpnRequestMessageTransfer;
-use Spryker\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter;
+use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter;
 
 abstract class IpnPaymentAbstractRequestConverter extends AbstractArrayConverter
 {

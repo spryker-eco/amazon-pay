@@ -7,34 +7,34 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
-use Spryker\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
-use Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
-use Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
-use Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
+use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
+use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
 class IpnRequestFactory implements IpnRequestFactoryInterface
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
      */
     protected $omsFacade;
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
+     * @var \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
      */
     protected $amazonpayQueryContainer;
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
      */
     protected $ipnRequestLogger;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
-     * @param \Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
-     * @param \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
+     * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
+     * @param \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
      */
     public function __construct(
         AmazonpayToOmsInterface $omsFacade,
@@ -51,7 +51,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      *
      * @throws IpnHandlerNotFoundException
      *
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     public function createConcreteIpnRequestHandler(AbstractTransfer $ipnRequest)
     {
@@ -78,7 +78,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      *
      * @throws IpnHandlerNotFoundException
      *
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnPaymentAuthorizeHandler(AbstractTransfer $ipnRequest)
     {
@@ -117,7 +117,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      *
      * @throws IpnHandlerNotFoundException
      *
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnPaymentCaptureHandler(AbstractTransfer $ipnRequest)
     {
@@ -146,7 +146,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      *
      * @throws IpnHandlerNotFoundException
      *
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnPaymentRefundHandler(AbstractTransfer $ipnRequest)
     {
@@ -173,7 +173,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      *
      * @throws IpnHandlerNotFoundException
      *
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnOrderReferenceHandler(AbstractTransfer $ipnRequest)
     {

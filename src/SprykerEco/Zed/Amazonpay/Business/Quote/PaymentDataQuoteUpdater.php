@@ -9,7 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
 use Generated\Shared\Transfer\PaymentTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class PaymentDataQuoteUpdater implements QuoteUpdaterInterface
 {

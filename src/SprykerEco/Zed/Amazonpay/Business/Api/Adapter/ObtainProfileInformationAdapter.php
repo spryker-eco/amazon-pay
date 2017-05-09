@@ -9,19 +9,19 @@ namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use PayWithAmazon\Client;
-use Spryker\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface;
+use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface;
 
 class ObtainProfileInformationAdapter extends AbstractAdapter implements QuoteAdapterInterface
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter
      */
     protected $converter;
 
     /**
      * @param \PayWithAmazon\Client $client
-     * @param \Spryker\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $converter
+     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $converter
      */
     public function __construct(
         Client $client,

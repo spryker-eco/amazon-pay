@@ -11,12 +11,12 @@ interface IpnFactoryInterface
 {
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLogger
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLogger
      */
     public function createIpnRequestLogger();
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestFactoryInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestFactoryInterface
      */
     public function createIpnRequestFactory();
 

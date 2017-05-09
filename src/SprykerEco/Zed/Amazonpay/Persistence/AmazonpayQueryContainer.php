@@ -10,7 +10,7 @@ namespace SprykerEco\Zed\Amazonpay\Persistence;
 use Spryker\Zed\Kernel\Persistence\AbstractQueryContainer;
 
 /**
- * @method \Spryker\Zed\Amazonpay\Persistence\AmazonpayPersistenceFactory getFactory()
+ * @method \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayPersistenceFactory getFactory()
  */
 class AmazonpayQueryContainer extends AbstractQueryContainer implements AmazonpayQueryContainerInterface
 {

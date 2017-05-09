@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
-use Spryker\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class IpnPaymentRefundCompletedHandler extends IpnAbstractPaymentRefundHandler
 {

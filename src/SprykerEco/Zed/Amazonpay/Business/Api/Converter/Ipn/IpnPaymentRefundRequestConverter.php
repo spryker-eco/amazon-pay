@@ -8,18 +8,18 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn;
 
 use Generated\Shared\Transfer\AmazonpayIpnPaymentRefundRequestTransfer;
-use Spryker\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface;
+use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface;
 
 class IpnPaymentRefundRequestConverter extends IpnPaymentAbstractRequestConverter
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $refundDetailsConverter
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $refundDetailsConverter
      */
     protected $refundDetailsConverter;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $refundDetailsConverter
+     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $refundDetailsConverter
      */
     public function __construct(ArrayConverterInterface $refundDetailsConverter)
     {

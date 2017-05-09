@@ -10,8 +10,8 @@ namespace SprykerEco\Yves\Amazonpay\Controller;
 use Spryker\Yves\Kernel\Controller\AbstractController;
 
 /**
- * @method \Spryker\Yves\Amazonpay\AmazonpayFactory getFactory()
- * @method \Spryker\Client\Amazonpay\AmazonpayClient getClient()
+ * @method \SprykerEco\Yves\Amazonpay\AmazonpayFactory getFactory()
+ * @method \SprykerEco\Client\Amazonpay\AmazonpayClient getClient()
  */
 class WidgetController extends AbstractController
 {

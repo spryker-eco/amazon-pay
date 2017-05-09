@@ -9,31 +9,31 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
-use Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
-use Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
+use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
 abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInterface
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsBridge $omsFacade
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsBridge $omsFacade
      */
     protected $omsFacade;
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
+     * @var \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
      */
     protected $amazonpayQueryContainer;
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
      */
     protected $ipnRequestLogger;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
-     * @param \Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
-     * @param \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
+     * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
+     * @param \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
      */
     public function __construct(
         AmazonpayToOmsInterface $omsFacade,

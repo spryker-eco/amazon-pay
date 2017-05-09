@@ -15,12 +15,12 @@ abstract class AbstractRefundOrderConverter extends AbstractResponseParserConver
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $refundDetailsConverter
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $refundDetailsConverter
      */
     protected $refundDetailsConverter;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $refundDetailsConverter
+     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $refundDetailsConverter
      */
     public function __construct(ArrayConverterInterface $refundDetailsConverter)
     {

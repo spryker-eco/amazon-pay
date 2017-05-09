@@ -8,16 +8,16 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\OrderTransfer;
-use Spryker\Shared\Amazonpay\AmazonpayConfigInterface;
-use Spryker\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface;
-use Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface;
-use Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
+use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface;
+use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface;
+use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
 abstract class AbstractOrderTransaction extends AbstractTransaction implements OrderTransactionInterface
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface
+     * @var \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface
      */
     protected $queryContainer;
 
@@ -27,10 +27,10 @@ abstract class AbstractOrderTransaction extends AbstractTransaction implements O
     protected $paymentEntity;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface $executionAdapter
-     * @param \Spryker\Shared\Amazonpay\AmazonpayConfigInterface $config
-     * @param \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface $transactionLogger
-     * @param \Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
+     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface $executionAdapter
+     * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface $transactionLogger
+     * @param \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
      */
     public function __construct(
         OrderAdapterInterface $executionAdapter,

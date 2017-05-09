@@ -18,7 +18,7 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
 /**
  * @api
  *
- * @method \Spryker\Zed\Amazonpay\Business\AmazonpayBusinessFactory getFactory()
+ * @method \SprykerEco\Zed\Amazonpay\Business\AmazonpayBusinessFactory getFactory()
  */
 class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
 {

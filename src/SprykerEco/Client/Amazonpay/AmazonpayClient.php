@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Client\Kernel\AbstractClient;
 
 /**
- * @method \Spryker\Client\Amazonpay\AmazonpayFactory getFactory()
+ * @method \SprykerEco\Client\Amazonpay\AmazonpayFactory getFactory()
  */
 class AmazonpayClient extends AbstractClient implements AmazonpayClientInterface
 {

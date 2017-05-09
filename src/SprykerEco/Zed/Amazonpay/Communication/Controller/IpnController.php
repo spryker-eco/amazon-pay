@@ -11,7 +11,7 @@ use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @method \Spryker\Zed\Amazonpay\Business\AmazonpayFacade getFacade()
+ * @method \SprykerEco\Zed\Amazonpay\Business\AmazonpayFacade getFacade()
  */
 class IpnController extends AbstractController
 {

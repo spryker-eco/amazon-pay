@@ -11,7 +11,7 @@ interface OrderNotificationSenderInterface
 {
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage $message
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage $message
      *
      * @return void
      */

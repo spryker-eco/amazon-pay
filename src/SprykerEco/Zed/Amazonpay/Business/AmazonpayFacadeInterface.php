@@ -17,7 +17,7 @@ use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 /**
  * @api
  *
- * @method \Spryker\Zed\Amazonpay\Business\AmazonpayBusinessFactory getFactory()
+ * @method \SprykerEco\Zed\Amazonpay\Business\AmazonpayBusinessFactory getFactory()
  */
 interface AmazonpayFacadeInterface
 {

@@ -10,9 +10,9 @@ namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use PayWithAmazon\Client;
 use PayWithAmazon\ClientInterface;
-use Spryker\Shared\Amazonpay\AmazonpayConfigInterface;
-use Spryker\Zed\Amazonpay\Business\Api\Converter\ResponseParserConverterInterface;
-use Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyInterface;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
+use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ResponseParserConverterInterface;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyInterface;
 
 abstract class AbstractAuthorizeAdapter extends AbstractAdapter
 {
@@ -34,9 +34,9 @@ abstract class AbstractAuthorizeAdapter extends AbstractAdapter
 
     /**
      * @param \PayWithAmazon\ClientInterface $client
-     * @param \Spryker\Zed\Amazonpay\Business\Api\Converter\ResponseParserConverterInterface $converter
-     * @param \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyInterface $moneyFacade
-     * @param \Spryker\Shared\Amazonpay\AmazonpayConfigInterface $config
+     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ResponseParserConverterInterface $converter
+     * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyInterface $moneyFacade
+     * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
      * @param bool|null $captureNow
      */
     public function __construct(

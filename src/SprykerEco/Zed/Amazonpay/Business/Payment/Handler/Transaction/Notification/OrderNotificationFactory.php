@@ -11,7 +11,7 @@ class OrderNotificationFactory implements OrderNotificationFactoryInterface
 {
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
      */
     public function createOrderAuthFailedTransaction()
     {
@@ -22,7 +22,7 @@ class OrderNotificationFactory implements OrderNotificationFactoryInterface
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderNotificationSenderInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderNotificationSenderInterface
      */
     protected function createFailedAuthNotificationSender()
     {
@@ -30,7 +30,7 @@ class OrderNotificationFactory implements OrderNotificationFactoryInterface
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageFactoryInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageFactoryInterface
      */
     protected function createOrderMessageFactory()
     {

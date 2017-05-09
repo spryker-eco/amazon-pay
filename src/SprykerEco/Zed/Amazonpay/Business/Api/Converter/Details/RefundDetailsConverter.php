@@ -8,7 +8,7 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter\Details;
 
 use Generated\Shared\Transfer\AmazonpayRefundDetailsTransfer;
-use Spryker\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter;
+use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter;
 
 class RefundDetailsConverter extends AbstractArrayConverter
 {

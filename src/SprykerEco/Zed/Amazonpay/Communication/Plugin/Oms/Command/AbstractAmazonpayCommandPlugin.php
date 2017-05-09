@@ -14,13 +14,13 @@ use Generated\Shared\Transfer\AmazonpayRefundDetailsTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
-use Spryker\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 
 /**
- * @method \Spryker\Zed\Amazonpay\Business\AmazonpayFacade getFacade()
- * @method \Spryker\Zed\Amazonpay\Communication\AmazonpayCommunicationFactory getFactory()
+ * @method \SprykerEco\Zed\Amazonpay\Business\AmazonpayFacade getFacade()
+ * @method \SprykerEco\Zed\Amazonpay\Communication\AmazonpayCommunicationFactory getFactory()
  */
 abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements CommandByOrderInterface
 {

@@ -7,18 +7,18 @@
 
 namespace SprykerEco\Zed\Amazonpay\Communication;
 
-use Spryker\Zed\Amazonpay\AmazonpayDependencyProvider;
+use SprykerEco\Zed\Amazonpay\AmazonpayDependencyProvider;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 
 /**
- * @method \Spryker\Shared\Amazonpay\AmazonpayConfig getConfig()
- * @method \Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface getQueryContainer()
+ * @method \SprykerEco\Shared\Amazonpay\AmazonpayConfig getConfig()
+ * @method \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface getQueryContainer()
  */
 class AmazonpayCommunicationFactory extends AbstractCommunicationFactory implements AmazonpayCommunicationFactoryInterface
 {
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToSalesInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToSalesInterface
      */
     public function getSalesFacade()
     {
@@ -28,7 +28,7 @@ class AmazonpayCommunicationFactory extends AbstractCommunicationFactory impleme
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToRefundInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToRefundInterface
      */
     public function getRefundFacade()
     {

@@ -7,14 +7,14 @@
 
 namespace SprykerEco\Client\Amazonpay;
 
-use Spryker\Client\Amazonpay\Zed\AmazonpayStub;
+use SprykerEco\Client\Amazonpay\Zed\AmazonpayStub;
 use Spryker\Client\Kernel\AbstractFactory;
 
 class AmazonpayFactory extends AbstractFactory
 {
 
     /**
-     * @return \Spryker\Client\Amazonpay\Zed\AmazonpayStubInterface
+     * @return \SprykerEco\Client\Amazonpay\Zed\AmazonpayStubInterface
      */
     public function createZedStub()
     {

@@ -7,12 +7,12 @@
 
 namespace SprykerEco\Zed\Amazonpay;
 
-use Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyBridge;
-use Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsBridge;
-use Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToRefundBridge;
-use Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToSalesBridge;
-use Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentBridge;
-use Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingBridge;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyBridge;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsBridge;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToRefundBridge;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToSalesBridge;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentBridge;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingBridge;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 

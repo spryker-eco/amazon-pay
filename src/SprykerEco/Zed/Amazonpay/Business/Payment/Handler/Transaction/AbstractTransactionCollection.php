@@ -13,12 +13,12 @@ abstract class AbstractTransactionCollection
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractQuoteTransaction[]
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractQuoteTransaction[]
      */
     protected $transactionHandlers;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractQuoteTransaction[] $transactionHandlers
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractQuoteTransaction[] $transactionHandlers
      */
     public function __construct(
         array $transactionHandlers

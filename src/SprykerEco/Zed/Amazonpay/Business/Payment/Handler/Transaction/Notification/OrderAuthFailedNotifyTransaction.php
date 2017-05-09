@@ -8,24 +8,24 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification;
 
 use Generated\Shared\Transfer\OrderTransfer;
-use Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface;
+use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface;
 
 class OrderAuthFailedNotifyTransaction implements OrderTransactionInterface
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderNotificationSenderInterface
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderNotificationSenderInterface
      */
     protected $orderFailedAuthNotificationSender;
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageFactoryInterface
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageFactoryInterface
      */
     protected $orderMessageFactory;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderNotificationSenderInterface $orderFailedAuthNotificationSender
-     * @param \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageFactoryInterface $orderMessageFactory
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderNotificationSenderInterface $orderFailedAuthNotificationSender
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageFactoryInterface $orderMessageFactory
      */
     public function __construct(
         OrderNotificationSenderInterface $orderFailedAuthNotificationSender,

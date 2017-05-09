@@ -7,32 +7,32 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
-use Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLogger;
-use Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
-use Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
-use Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface;
+use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLogger;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
+use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface;
 
 class IpnFactory implements IpnFactoryInterface
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface
+     * @var \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface
      */
     protected $amazonpayQueryContainer;
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface
      */
     protected $omsFacade;
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface
      */
     protected $encodingService;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
-     * @param \Spryker\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
+     * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
+     * @param \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
      * @param \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface
      */
     public function __construct(
@@ -46,7 +46,7 @@ class IpnFactory implements IpnFactoryInterface
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface
      */
     public function createIpnRequestLogger()
     {
@@ -54,7 +54,7 @@ class IpnFactory implements IpnFactoryInterface
     }
 
     /**
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestFactoryInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestFactoryInterface
      */
     public function createIpnRequestFactory()
     {

@@ -13,8 +13,8 @@ use Spryker\Zed\Checkout\Dependency\Plugin\CheckoutSaveOrderInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
- * @method \Spryker\Zed\Amazonpay\Business\AmazonpayFacade getFacade()
- * @method \Spryker\Zed\Amazonpay\Communication\AmazonpayCommunicationFactory getFactory()
+ * @method \SprykerEco\Zed\Amazonpay\Business\AmazonpayFacade getFacade()
+ * @method \SprykerEco\Zed\Amazonpay\Communication\AmazonpayCommunicationFactory getFactory()
  */
 class AmazonpaySaveOrderPlugin extends AbstractPlugin implements CheckoutSaveOrderInterface
 {

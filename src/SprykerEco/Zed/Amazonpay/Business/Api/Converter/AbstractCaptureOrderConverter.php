@@ -15,12 +15,12 @@ abstract class AbstractCaptureOrderConverter extends AbstractResponseParserConve
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $captureDetailsConverter
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $captureDetailsConverter
      */
     protected $captureDetailsConverter;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $captureDetailsConverter
+     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $captureDetailsConverter
      */
     public function __construct(ArrayConverterInterface $captureDetailsConverter)
     {

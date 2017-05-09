@@ -13,7 +13,7 @@ interface IpnConverterFactoryInterface
     /**
      * @param array $request
      *
-     * @return \Spryker\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface
      */
     public function createIpnRequestConverter(array $request);
 

@@ -13,12 +13,12 @@ class PrepareQuoteCollection implements QuoteUpdaterInterface
 {
 
     /**
-     * @var \Spryker\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface[]
+     * @var \SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface[]
      */
     protected $quoteUpdaters;
 
     /**
-     * @param \Spryker\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface[] $quoteUpdaters
+     * @param \SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface[] $quoteUpdaters
      */
     public function __construct(array $quoteUpdaters)
     {

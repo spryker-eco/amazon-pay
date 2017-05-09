@@ -15,7 +15,7 @@ interface OrderMessageFactoryInterface
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Spryker\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage
      */
     public function createFailedAuthMessage(OrderTransfer $orderTransfer);
 

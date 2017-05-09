@@ -21,7 +21,7 @@ interface AmazonpayFactoryInterface
     public function getCheckoutClient();
 
     /**
-     * @return \Spryker\Shared\Amazonpay\AmazonpayConfig
+     * @return \SprykerEco\Shared\Amazonpay\AmazonpayConfig
      */
     public function getConfig();
 
