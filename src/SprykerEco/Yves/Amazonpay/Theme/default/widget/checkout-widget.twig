@@ -1,0 +1,80 @@
+<!-- Place this code in your HTML where you would like the address widget to appear. -->
+<div id="amazonpayAddressBookWidgetDiv"> </div>
+
+<!-- Place this code in your HTML where you would like the wallet widget to appear. -->
+<div id="amazonpayWalletWidgetDiv"> </div>
+
+<script>
+    var amazonpayConfig = {
+        clientId: "{{ amazonpayConfig.clientId }}",
+        sellerId: "{{ amazonpayConfig.sellerId }}",
+        setOrderReferenceUrl: "{{ path('amazonpay_set_order_reference') }}",
+        getShipmentMethodsUrl: "{{ path('amazonpay_get_shipment_methods') }}"
+    };
+</script>
+<script>
+    window.onAmazonLoginReady = function() {
+        amazon.Login.setClientId(amazonpayConfig.sellerId);
+    };
+
+    window.onAmazonPaymentsReady = function() {
+        new OffAmazonPayments.Widgets.AddressBook({
+            sellerId: amazonpayConfig.sellerId,
+            scope: 'profile postal_code payments:widget payments:shipping_address payments:billing_address',
+            language: 'en-GB',
+            onOrderReferenceCreate: function(orderReference) {
+                // Here is where you can grab the Order Reference ID.
+                var aoid = orderReference.getAmazonOrderReferenceId();
+
+                $(function() {
+                    $.post(
+                        amazonpayConfig.setOrderReferenceUrl,
+                        {'reference_id': aoid}
+                    );
+                });
+            },
+            onAddressSelect: function(orderReference) {
+                $(function() {
+                    $('#amazonpayPlaceOrderLink').attr('disabled', true);
+                    var shipmentMethodsBlock = $('#shipmentMethods');
+                    shipmentMethodsBlock.html('Please wait...');
+                    shipmentMethodsBlock.load(
+                        amazonpayConfig.getShipmentMethodsUrl,
+                        function( response, status, xhr ) {
+                            if ( status === "error" ) {
+                                var msg = "Sorry but there was an error: ";
+                                $( "#shipment_methods" ).html( msg + xhr.status + " " + xhr.statusText );
+                            }
+                        }
+                    );
+                });
+            },
+            design: {
+                designMode: 'responsive'
+            },
+            onReady: function(orderReference) {
+                // Enter code here you want to be executed
+                // when the address widget has been rendered.
+            },
+            onError: function(error) {
+            }
+        }).bind("amazonpayAddressBookWidgetDiv");
+
+        new OffAmazonPayments.Widgets.Wallet({
+            sellerId: amazonpayConfig.sellerId,
+            scope: 'profile postal_code payments:widget payments:shipping_address',
+            onPaymentSelect: function(orderReference) {
+                // Replace this code with the action that you want to perform
+                // after the payment method is selected.
+
+                // Ideally this would enable the next action for the buyer
+                // including either a "Continue" or "Place Order" button.
+            },
+            design: {
+                designMode: 'responsive'
+            },
+            onError: function(error) {
+            }
+        }).bind("amazonpayWalletWidgetDiv");
+    };
+</script>

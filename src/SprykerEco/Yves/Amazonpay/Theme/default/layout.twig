@@ -1,0 +1,30 @@
+{% extends "@application/layout/layout.twig" %}
+
+{% block stylesheets %}
+    <style>
+        #amazonpayAddressBookWidgetDiv {
+            min-width: 300px;
+            width: 100%;
+            max-width: 900px;
+            min-height: 228px;
+            height: 240px;
+            max-height: 400px;
+        }
+
+        #amazonpayWalletWidgetDiv {
+            min-width: 300px;
+            width: 100%;
+            max-width: 900px;
+            min-height: 228px;
+            height: 240px;
+            max-height: 400px;
+        }
+    </style>
+{% endblock %}
+
+{% block javascript %}
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script async="async"
+            src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'>
+    </script>
+{% endblock %}

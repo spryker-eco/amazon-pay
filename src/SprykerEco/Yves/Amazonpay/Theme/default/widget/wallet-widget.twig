@@ -1,0 +1,30 @@
+<!-- Place this code in your HTML where you would like the wallet widget to appear. -->
+<div id="amazonpayWalletWidgetDiv"> </div>
+
+<script>
+    var amazonpayConfig = {
+        clientId: "{{ amazonpayConfig.clientId }}",
+        sellerId: "{{ amazonpayConfig.sellerId }}"
+    };
+</script>
+
+<script>
+    window.onAmazonLoginReady = function() {
+        amazon.Login.setClientId(amazonpayConfig.clientId);
+    };
+
+    window.onAmazonPaymentsReady = function() {
+        new OffAmazonPayments.Widgets.Wallet({
+            sellerId: amazonpayConfig.sellerId,
+            scope: 'profile postal_code payments:widget payments:shipping_address',
+            onPaymentSelect: function(orderReference) {
+                $('#amazonpayPlaceOrderLink').attr('disabled', false);
+            },
+            design: {
+                designMode: 'responsive'
+            },
+            onError: function(error) {
+            }
+        }).bind("amazonpayWalletWidgetDiv");
+    };
+</script>
