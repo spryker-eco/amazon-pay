@@ -8,7 +8,7 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
-use Spryker\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
+use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
 use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
