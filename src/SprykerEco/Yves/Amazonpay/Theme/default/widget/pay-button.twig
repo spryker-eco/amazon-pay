@@ -26,7 +26,7 @@
             type:  'PwA',
             color: 'Gold',
             size:  'medium',
-            language: 'en-GB',
+            language: '{{ app.locale }}',
 
             authorization: function() {
                 loginOptions = {scope: 'profile postal_code payments:widget payments:shipping_address payments:billing_address', popup: true};

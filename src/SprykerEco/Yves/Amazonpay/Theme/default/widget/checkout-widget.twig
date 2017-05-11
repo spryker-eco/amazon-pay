@@ -12,6 +12,7 @@
         getShipmentMethodsUrl: "{{ path('amazonpay_get_shipment_methods') }}"
     };
 </script>
+
 <script>
     window.onAmazonLoginReady = function() {
         amazon.Login.setClientId(amazonpayConfig.sellerId);
@@ -21,7 +22,7 @@
         new OffAmazonPayments.Widgets.AddressBook({
             sellerId: amazonpayConfig.sellerId,
             scope: 'profile payments:widget payments:shipping_address payments:billing_address',
-            language: 'en-GB',
+            language: '{{ app.locale }}',
             onOrderReferenceCreate: function(orderReference) {
                 // Here is where you can grab the Order Reference ID.
                 var aoid = orderReference.getAmazonOrderReferenceId();
