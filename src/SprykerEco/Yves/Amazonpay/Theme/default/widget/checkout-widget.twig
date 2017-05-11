@@ -1,3 +1,7 @@
+{% for message in app.session.flashbag.get('flash.messages.error') %}
+    <div class="alert alert-danger">{{ message }}</div>
+{% endfor %}
+
 <!-- Place this code in your HTML where you would like the address widget to appear. -->
 <div id="amazonpayAddressBookWidgetDiv"> </div>
 

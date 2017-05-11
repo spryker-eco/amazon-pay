@@ -138,6 +138,7 @@ class PaymentController extends AbstractController
         }
 
         if ($quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getConstraints()) {
+            $this->addErrorMessage($this->getApplication()->trans('amazonpay.payment.wrong'));
             return $this->redirectResponseExternal($request->headers->get('referer'));
         }
 
