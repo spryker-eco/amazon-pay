@@ -1,23 +1,18 @@
 <?php
 
+/**
+ * Apache OSL-2
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
-use Codeception\TestCase\Test;
-use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class AmazonpayFacadeHandleCartWithAmazonpayTest extends Test
+class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstractTest
 {
-
-    /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\AmazonpayFacade
-     */
-    protected function createFacade()
-    {
-        return new AmazonpayFacadeMock();
-    }
 
     /**
      * @return \Generated\Shared\Transfer\QuoteTransfer

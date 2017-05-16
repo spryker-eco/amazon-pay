@@ -37,7 +37,7 @@ class AuthorizeResponse extends AbstractResponse
         $this->captureNow = $requestParameters[AbstractAuthorizeAdapter::CAPTURE_NOW];
         $this->transactionTimeout = $requestParameters[AbstractAuthorizeAdapter::TRANSACTION_TIMEOUT];
 
-        $this->xml = '<AuthorizeResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
+        $this->responseBodyXml = '<AuthorizeResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
   <AuthorizeResult>
     <AuthorizationDetails>
       <AuthorizationAmount>
@@ -50,7 +50,7 @@ class AuthorizeResponse extends AbstractResponse
       </CapturedAmount>
       <SoftDescriptor>AMZ*spryker</SoftDescriptor>
       <ExpirationTimestamp>2017-06-14T09:52:52.911Z</ExpirationTimestamp>'
-            . $this->getAuthporizationStatusXml() .
+            . $this->getAuthorizationStatusXml() .
       '<AuthorizationFee>
         <CurrencyCode>EUR</CurrencyCode>
         <Amount>0.00</Amount>
@@ -73,14 +73,13 @@ class AuthorizeResponse extends AbstractResponse
   <ResponseMetadata>
     <RequestId>4bcc7524-e749-446b-93c7-e33636f461b6</RequestId>
   </ResponseMetadata>
-</AuthorizeResponse>
-';
+</AuthorizeResponse>';
     }
 
     /**
      * @return string
      */
-    protected function getAuthporizationStatusXml()
+    protected function getAuthorizationStatusXml()
     {
         $idList = '<IdList>
         <member>S02-6182376-4189497-C003388</member>

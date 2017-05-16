@@ -30,12 +30,7 @@ class AbstractResponse
     /**
      * @var string
      */
-    protected $xml;
-
-    /**
-     * @var string
-     */
-    protected $responseBody;
+    protected $responseBodyXml;
 
     /**
      * @var string
@@ -50,7 +45,7 @@ class AbstractResponse
         $this->orderReferenceId = $requestParameters[AbstractAuthorizeAdapter::AMAZON_ORDER_REFERENCE_ID];
         $this->statusCode = ($this->orderReferenceId === 'S02-1234567-0000666') ? 404 : 200;
 
-        $this->wrongXml =
+        $this->wrongResponseBodyXml =
             '<ErrorResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
   <Error>
     <Type>Sender</Type>
@@ -69,7 +64,7 @@ class AbstractResponse
     {
         return new ResponseParser([
             'Status' => $this->statusCode,
-            'ResponseBody' => $this->responseBody,
+            'ResponseBody' => $this->responseBodyXml,
         ]);
     }
 

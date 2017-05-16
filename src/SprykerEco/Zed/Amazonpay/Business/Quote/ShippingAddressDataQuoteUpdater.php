@@ -54,6 +54,7 @@ class ShippingAddressDataQuoteUpdater implements QuoteUpdaterInterface
             $quoteTransfer->setShippingAddress($this->apiResponse->getShippingAddress());
         }
 
+
         return $quoteTransfer;
     }
 
