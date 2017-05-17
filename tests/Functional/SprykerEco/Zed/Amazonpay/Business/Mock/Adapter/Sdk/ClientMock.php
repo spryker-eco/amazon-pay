@@ -39,7 +39,7 @@ class ClientMock extends Client
     /**
      * @param array $requestParameters
      *
-     * @return \PayWithAmazon\ResponseParser
+     * @return \PayWithAmazon\ResponseInterface
      */
     public function capture($requestParameters = array())
     {
@@ -48,9 +48,16 @@ class ClientMock extends Client
         return $responseWrapper->convertToResponseParser();
     }
 
+    /**
+     * @param array $requestParameters
+     *
+     * @return \PayWithAmazon\ResponseInterface
+     */
     public function closeOrderReference($requestParameters = array())
     {
+        $responseWrapper = new CloseOrderResponse($requestParameters);
 
+        return $responseWrapper->convertToResponseParser();
     }
 
     /**
@@ -103,8 +110,16 @@ class ClientMock extends Client
         return $responseWrapper->convertToResponseParser();
     }
 
+    /**
+     * @param array $requestParameters
+     *
+     * @return \PayWithAmazon\ResponseInterface
+     */
     public function refund($requestParameters = array())
     {
+        $responseWrapper = new RefundOrderResponse($requestParameters);
+
+        return $responseWrapper->convertToResponseParser();
     }
 
     /**

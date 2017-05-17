@@ -9,28 +9,22 @@ namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
 use Generated\Shared\Transfer\OrderTransfer;
 
-class AmazonpayFacadeCaptureOrderTest extends AmazonpayFacadeAbstractTest
+class AmazonpayFacadeCloseOrderTest extends AmazonpayFacadeAbstractTest
 {
 
     /**
-     * @dataProvider captureOrderDataProvider
+     * @dataProvider closeOrderDataProvider
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @param string $status
      */
-    public function testCaptureOrder(OrderTransfer $orderTransfer, $status)
+    public function testCloseOrder(OrderTransfer $orderTransfer)
     {
-        $resultOrder = $this->createFacade()->captureOrder($orderTransfer);
-
-        $this->assertEquals(
-            $status,
-            $resultOrder->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus()->getState()
-        );
+        $this->createFacade()->closeOrder($orderTransfer);
     }
 
     /**
      * @return array
      */
-    public function captureOrderDataProvider()
+    public function closeOrderDataProvider()
     {
         return [
             'Completed' => [$this->getOrderTransfer('S02-5989383-0864061-0000001'), 'Completed'],

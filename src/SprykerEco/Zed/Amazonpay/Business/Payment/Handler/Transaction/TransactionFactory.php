@@ -114,7 +114,7 @@ class TransactionFactory implements TransactionFactoryInterface
         return new OrderTransactionCollection(
             [
                 $this->createRefundOrderTransaction(),
-                $this->createAuthorizeOrderTransaction(),
+                $this->createCancelOrderTransactionObject(),
             ]
         );
     }
