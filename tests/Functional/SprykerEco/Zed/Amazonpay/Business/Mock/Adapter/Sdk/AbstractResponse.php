@@ -42,19 +42,11 @@ class AbstractResponse
      */
     public function __construct(array $requestParameters)
     {
-        $this->orderReferenceId = $requestParameters[AbstractAuthorizeAdapter::AMAZON_ORDER_REFERENCE_ID];
-        $this->statusCode = ($this->orderReferenceId === 'S02-1234567-0000666') ? 404 : 200;
+        if (isset($requestParameters[AbstractAuthorizeAdapter::AMAZON_ORDER_REFERENCE_ID])) {
+            $this->orderReferenceId = $requestParameters[AbstractAuthorizeAdapter::AMAZON_ORDER_REFERENCE_ID];
+        }
 
-        $this->wrongResponseBodyXml =
-            '<ErrorResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
-  <Error>
-    <Type>Sender</Type>
-    <Code>InvalidOrderReferenceId</Code>
-    <Message>The OrderReferenceId wrong_one is invalid.</Message>
-  </Error>
-  <RequestId>51912fd0-87d0-42b5-96fd-2c384848b135</RequestId>
-</ErrorResponse>
-';
+        $this->statusCode = 200;
     }
 
     /**

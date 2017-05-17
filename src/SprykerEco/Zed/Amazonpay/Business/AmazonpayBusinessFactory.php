@@ -146,4 +146,13 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
         return new TransactionLogger($this->getConfig()->getErrorReportLevel());
     }
 
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToSalesInterface
+     */
+    public function getSalesFacade()
+    {
+        return $this->getProvidedDependency(
+            AmazonpayDependencyProvider::FACADE_SALES
+        );
+    }
 }

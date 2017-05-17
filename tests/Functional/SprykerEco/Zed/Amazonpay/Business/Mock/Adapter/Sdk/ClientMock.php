@@ -24,14 +24,28 @@ class ClientMock extends Client
         return $responseWrapper->convertToResponseParser();
     }
 
+    /**
+     * @param array $requestParameters
+     *
+     * @return \PayWithAmazon\ResponseInterface
+     */
     public function cancelOrderReference($requestParameters = array())
     {
+        $responseWrapper = new CancelOrderReferenceResponse($requestParameters);
 
+        return $responseWrapper->convertToResponseParser();
     }
 
+    /**
+     * @param array $requestParameters
+     *
+     * @return \PayWithAmazon\ResponseParser
+     */
     public function capture($requestParameters = array())
     {
+        $responseWrapper = new CaptureOrderResponse($requestParameters);
 
+        return $responseWrapper->convertToResponseParser();
     }
 
     public function closeOrderReference($requestParameters = array())
@@ -39,14 +53,22 @@ class ClientMock extends Client
 
     }
 
+    /**
+     * @param array $requestParameters
+     * @return \PayWithAmazon\ResponseInterface
+     */
     public function confirmOrderReference($requestParameters = array())
     {
+        $responseWrapper = new ConfirmOrderReferenceResponse($requestParameters);
 
+        return $responseWrapper->convertToResponseParser();
     }
 
     public function getAuthorizationDetails($requestParameters = array())
     {
+        $responseWrapper = new GetAuthorizationDetailsResponse($requestParameters);
 
+        return $responseWrapper->convertToResponseParser();
     }
 
     public function getCaptureDetails($requestParameters = array())
@@ -54,9 +76,15 @@ class ClientMock extends Client
 
     }
 
+    /**
+     * @param array $requestParameters
+     * @return \PayWithAmazon\ResponseInterface
+     */
     public function getOrderReferenceDetails($requestParameters = array())
     {
+        $responseWrapper = new GetOrderReferenceDetailsResponse($requestParameters);
 
+        return $responseWrapper->convertToResponseParser();
     }
 
     public function getRefundDetails($requestParameters = array())

@@ -12,6 +12,7 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\Sdk\AmazonpaySdkAdapterFactory
 
 class AmazonpaySdkAdapterFactoryMock extends AmazonpaySdkAdapterFactory
 {
+
     /**
      * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
      *

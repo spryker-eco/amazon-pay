@@ -26,12 +26,6 @@ class UpdateOrderCaptureStatusTransaction extends AbstractOrderTransaction
      */
     public function execute(OrderTransfer $orderTransfer)
     {
-//        if ($orderTransfer->getAmazonpayPayment()->getOrderReferenceStatus()
-//                !==  AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING
-//        ) {
-//            return $orderTransfer;
-//        }
-
         $orderTransfer = parent::execute($orderTransfer);
 
         if ($this->apiResponse->getHeader()->getIsSuccess()) {
