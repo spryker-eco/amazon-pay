@@ -26,7 +26,7 @@ class RefundOrderResponse extends AbstractResponse
             '<RefundResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
   <RefundResult>
     <RefundDetails>
-      <RefundReferenceId>S02-4495306-3410374591c69427e8af</RefundReferenceId>
+      <RefundReferenceId>' . $this->getRefundReferenceId($orderReferenceId) . '</RefundReferenceId>
       <RefundType>SellerInitiated</RefundType>
       <SellerRefundNote/>
       <CreationTimestamp>2017-05-17T15:16:29.157Z</CreationTimestamp>
@@ -43,7 +43,7 @@ class RefundOrderResponse extends AbstractResponse
         <CurrencyCode>EUR</CurrencyCode>
         <Amount>104.89</Amount>
       </RefundAmount>
-      <AmazonRefundId>S02-4495306-3410374-R069304</AmazonRefundId>
+      <AmazonRefundId>' . $this->getAmazonRefundId($orderReferenceId) . '</AmazonRefundId>
     </RefundDetails>
   </RefundResult>
   <ResponseMetadata>
@@ -67,6 +67,42 @@ class RefundOrderResponse extends AbstractResponse
                 return 'Pending';
             case 'S02-5989383-0864061-0000003':
                 return 'Declined';
+        }
+    }
+
+    /**
+     * @param string $orderReferenceId
+     *
+     * @return string
+     */
+    protected function getAmazonRefundId($orderReferenceId)
+    {
+        switch ($orderReferenceId)
+        {
+            case 'S02-5989383-0864061-0000001':
+                return 'S02-5989383-0864061-0000AR1';
+            case 'S02-5989383-0864061-0000002':
+                return 'S02-5989383-0864061-0000AR2';
+            case 'S02-5989383-0864061-0000003':
+                return 'S02-5989383-0864061-0000AR3';
+        }
+    }
+
+    /**
+     * @param string $orderReferenceId
+     *
+     * @return string
+     */
+    protected function getRefundReferenceId($orderReferenceId)
+    {
+        switch ($orderReferenceId)
+        {
+            case 'S02-5989383-0864061-0000001':
+                return 'S02-5989383-0864061-0000RR1';
+            case 'S02-5989383-0864061-0000002':
+                return 'S02-5989383-0864061-0000RR2';
+            case 'S02-5989383-0864061-0000003':
+                return 'S02-5989383-0864061-0000RR3';
         }
     }
 
