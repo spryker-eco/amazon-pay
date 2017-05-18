@@ -1,5 +1,5 @@
 {
-  "name": "spryker-eco/amazonpay",
+  "name": "spryker-eco/amazon-pay",
   "autoload": {
     "psr-0": {
       "Spryker": "src/",
