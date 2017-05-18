@@ -61,13 +61,13 @@ class SetOrderReferenceDetailsResponse extends AbstractResponse
           <PostalCode>%s</PostalCode>';
 
         switch ($this->orderReferenceId) {
-            case 'S02-1234567-0000001':
+            case 'S02-5989383-0864061-0000001':
                 return sprintf($destinationXml, 'Barcelona', 'ES', '0895');
 
-            case 'S02-1234567-0000002':
+            case 'S02-5989383-0864061-0000002':
                 return sprintf($destinationXml, 'London', 'GB', 'SE1 2BY');
 
-            case 'S02-1234567-0000003':
+            case 'S02-5989383-0864061-0000003':
                 return sprintf($destinationXml, 'Wien', 'AT', '1050');
                 break;
         }

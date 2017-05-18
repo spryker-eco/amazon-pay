@@ -37,6 +37,10 @@ class AbstractResponse
      */
     protected $orderReferenceId;
 
+    const ORDER_REFERENCE_ID_FIRST = 'S02-5989383-0864061-0000001';
+    const ORDER_REFERENCE_ID_SECOND = 'S02-5989383-0864061-0000002';
+    const ORDER_REFERENCE_ID_THIRD = 'S02-5989383-0864061-0000003';
+
     /**
      * @param array $requestParameters
      */

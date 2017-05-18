@@ -7,6 +7,7 @@
 
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
+use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock;
 use Generated\Shared\Transfer\AmazonpayAuthorizationDetailsTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
@@ -80,32 +81,32 @@ class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
     {
         return [
             'Correct order sync captureNow on' =>
-                [$this->createQuote('S02-1234567-0000001'), 0, true, 'Closed', 'MaxCapturesProcessed', 'S02-6182376-4189497-C003388'],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_FIRST), 0, true, 'Closed', 'MaxCapturesProcessed', 'S02-6182376-4189497-C003388'],
             'AmazonRejected order sync captureNow on' =>
-                [$this->createQuote('S02-1234567-0000002'), 0, true, 'Declined', 'AmazonRejected', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_SECOND), 0, true, 'Declined', 'AmazonRejected', ''],
             'InvalidPaymentMethod order sync captureNow on' =>
-                [$this->createQuote('S02-1234567-0000003'), 0, true, 'Declined', 'InvalidPaymentMethod', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_THIRD), 0, true, 'Declined', 'InvalidPaymentMethod', ''],
 
             'Correct order async captureNow on' =>
-                [$this->createQuote('S02-1234567-0000001'), 1000, true, 'Pending', '', 'S02-6182376-4189497-C003388'],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_FIRST), 1000, true, 'Pending', '', 'S02-6182376-4189497-C003388'],
             'AmazonRejected order async captureNow on ' =>
-                [$this->createQuote('S02-1234567-0000002'), 1000, true, 'Pending', '', 'S02-6182376-4189497-C003388'],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_SECOND), 1000, true, 'Pending', '', 'S02-6182376-4189497-C003388'],
             'InvalidPaymentMethod order async captureNow on' =>
-                [$this->createQuote('S02-1234567-0000003'), 1000, true, 'Pending', '', 'S02-6182376-4189497-C003388'],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_THIRD), 1000, true, 'Pending', '', 'S02-6182376-4189497-C003388'],
 
             'Correct order sync captureNow off' =>
-                [$this->createQuote('S02-1234567-0000001'), 0, false, 'Open', '', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_FIRST), 0, false, 'Open', '', ''],
             'AmazonRejected order sync captureNow off' =>
-                [$this->createQuote('S02-1234567-0000002'), 0, false, 'Declined', 'AmazonRejected', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_SECOND), 0, false, 'Declined', 'AmazonRejected', ''],
             'InvalidPaymentMethod order sync captureNow off' =>
-                [$this->createQuote('S02-1234567-0000003'), 0, false, 'Declined', 'InvalidPaymentMethod', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_THIRD), 0, false, 'Declined', 'InvalidPaymentMethod', ''],
 
             'Correct order async captureNow off' =>
-                [$this->createQuote('S02-1234567-0000001'), 1000, false, 'Pending', '', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_FIRST), 1000, false, 'Pending', '', ''],
             'AmazonRejected order async captureNow off' =>
-                [$this->createQuote('S02-1234567-0000002'), 1000, false, 'Pending', '', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_SECOND), 1000, false, 'Pending', '', ''],
             'InvalidPaymentMethod order async captureNow off' =>
-                [$this->createQuote('S02-1234567-0000003'), 1000, false, 'Pending', '', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_THIRD), 1000, false, 'Pending', '', ''],
         ];
     }
 }

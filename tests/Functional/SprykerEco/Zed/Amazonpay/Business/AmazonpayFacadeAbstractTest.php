@@ -8,6 +8,7 @@
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
 use Codeception\TestCase\Test;
+use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery;
@@ -32,9 +33,9 @@ class AmazonpayFacadeAbstractTest extends Test
     protected function getOrderStatusMap()
     {
         return [
-            'S02-5989383-0864061-0000001' => 'auth open',
-            'S02-5989383-0864061-0000002' => 'auth open',
-            'S02-5989383-0864061-0000003' => 'auth open',
+            AbstractResponse::ORDER_REFERENCE_ID_FIRST => 'auth open',
+            AbstractResponse::ORDER_REFERENCE_ID_SECOND => 'auth open',
+            AbstractResponse::ORDER_REFERENCE_ID_THIRD => 'auth open',
         ];
     }
 

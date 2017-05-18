@@ -151,7 +151,7 @@ class TransactionFactory implements TransactionFactoryInterface
     {
         return new OrderTransactionCollection(
             [
-                $this->createReauthorizeExpiredOrderTransaction(),
+                $this->createReauthorizeOrderTransactionObject(),
                 $this->createUpdateOrderAuthorizationStatusTransaction(),
             ]
         );
@@ -160,7 +160,7 @@ class TransactionFactory implements TransactionFactoryInterface
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
      */
-    protected function createReauthorizeOrderTransaction()
+    protected function createReauthorizeOrderTransactionObject()
     {
         return new ReauthorizeOrderTransaction(
             $this->adapterFactory->createAuthorizeCaptureNowOrderAdapter(),

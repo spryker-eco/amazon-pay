@@ -97,13 +97,13 @@ class AuthorizeResponse extends AbstractResponse
         // synchronous with captureNow
         if ($this->captureNow && $this->transactionTimeout === 0) {
              switch ($this->orderReferenceId) {
-                 case 'S02-1234567-0000001':
+                 case AbstractResponse::ORDER_REFERENCE_ID_FIRST:
                      return $idList . sprintf($authorizationStatus, 'Closed', 'MaxCapturesProcessed');
 
-                 case 'S02-1234567-0000002':
+                 case AbstractResponse::ORDER_REFERENCE_ID_SECOND:
                      return sprintf($authorizationStatus, 'Declined', 'AmazonRejected');
 
-                 case 'S02-1234567-0000003':
+                 case AbstractResponse::ORDER_REFERENCE_ID_THIRD:
                      return sprintf($authorizationStatus, 'Declined', 'InvalidPaymentMethod');
              }
         }
@@ -116,13 +116,13 @@ class AuthorizeResponse extends AbstractResponse
         // synchronous without capturenow
         if (!$this->captureNow && $this->transactionTimeout === 0) {
             switch ($this->orderReferenceId) {
-                case 'S02-1234567-0000001':
+                case AbstractResponse::ORDER_REFERENCE_ID_FIRST:
                     return sprintf($authorizationStatus, 'Open','');
 
-                case 'S02-1234567-0000002':
+                case AbstractResponse::ORDER_REFERENCE_ID_SECOND:
                     return sprintf($authorizationStatus, 'Declined','AmazonRejected');
 
-                case 'S02-1234567-0000003':
+                case AbstractResponse::ORDER_REFERENCE_ID_THIRD:
                     return sprintf($authorizationStatus, 'Declined','InvalidPaymentMethod');
             }
         }

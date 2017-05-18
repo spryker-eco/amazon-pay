@@ -7,6 +7,7 @@
 
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
+use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\OrderTransfer;
 
 class AmazonpayFacadeCancelOrderTest extends AmazonpayFacadeAbstractTest
@@ -40,9 +41,9 @@ class AmazonpayFacadeCancelOrderTest extends AmazonpayFacadeAbstractTest
     public function cancelOrderDataProvider()
     {
         return [
-            'Completed' => [$this->getOrderTransfer('S02-5989383-0864061-0000001'), 'Completed'],
-            'Pending' => [$this->getOrderTransfer('S02-5989383-0864061-0000002'), 'Pending'],
-            'Declined' => [$this->getOrderTransfer('S02-5989383-0864061-0000003'), 'Declined'],
+            'Completed' => [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_FIRST), 'Completed'],
+            'Pending' => [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_SECOND), 'Pending'],
+            'Declined' => [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_THIRD), 'Declined'],
         ];
     }
 

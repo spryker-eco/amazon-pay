@@ -84,13 +84,13 @@ class GetOrderReferenceDetailsResponse extends AbstractResponse
           <AddressLine2>%s</AddressLine2>';
 
         switch ($this->orderReferenceId) {
-            case 'S02-1234567-0000001':
+            case AbstractResponse::ORDER_REFERENCE_ID_FIRST:
                 return sprintf($destinationXml, 'Barcelona', '+880 9900-111111', 'ES', '08915', 'Maria Garcia', 'Carrer del Torrent Vallmajor, 100 Badalona');
 
-            case 'S02-1234567-0000002':
+            case AbstractResponse::ORDER_REFERENCE_ID_SECOND:
                 return sprintf($destinationXml, 'London', '+44774999888', 'GB', 'SE1 2BY', 'Elisabeth Harrison', '4973 Primrose Lane');
 
-            case 'S02-1234567-0000003':
+            case AbstractResponse::ORDER_REFERENCE_ID_THIRD:
                 return sprintf($destinationXml, 'Wien', '+4319999999', 'AT', '1050', 'Karl Küfer', 'Matzleinsdorferplatz 9999');
         }
     }

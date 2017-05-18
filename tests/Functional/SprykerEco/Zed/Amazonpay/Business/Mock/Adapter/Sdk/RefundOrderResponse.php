@@ -61,9 +61,9 @@ class RefundOrderResponse extends AbstractResponse
     {
         switch ($orderReferenceId)
         {
-            case 'S02-5989383-0864061-0000001':
+            case AbstractResponse::ORDER_REFERENCE_ID_FIRST:
                 return 'Completed';
-            case 'S02-5989383-0864061-0000002':
+            case AbstractResponse::ORDER_REFERENCE_ID_SECOND:
                 return 'Pending';
             case 'S02-5989383-0864061-0000003':
                 return 'Declined';
@@ -79,11 +79,11 @@ class RefundOrderResponse extends AbstractResponse
     {
         switch ($orderReferenceId)
         {
-            case 'S02-5989383-0864061-0000001':
+            case AbstractResponse::ORDER_REFERENCE_ID_FIRST:
                 return 'S02-5989383-0864061-0000AR1';
-            case 'S02-5989383-0864061-0000002':
+            case AbstractResponse::ORDER_REFERENCE_ID_SECOND:
                 return 'S02-5989383-0864061-0000AR2';
-            case 'S02-5989383-0864061-0000003':
+            case AbstractResponse::ORDER_REFERENCE_ID_THIRD:
                 return 'S02-5989383-0864061-0000AR3';
         }
     }
@@ -97,11 +97,11 @@ class RefundOrderResponse extends AbstractResponse
     {
         switch ($orderReferenceId)
         {
-            case 'S02-5989383-0864061-0000001':
+            case AbstractResponse::ORDER_REFERENCE_ID_FIRST:
                 return 'S02-5989383-0864061-0000RR1';
-            case 'S02-5989383-0864061-0000002':
+            case AbstractResponse::ORDER_REFERENCE_ID_SECOND:
                 return 'S02-5989383-0864061-0000RR2';
-            case 'S02-5989383-0864061-0000003':
+            case AbstractResponse::ORDER_REFERENCE_ID_THIRD:
                 return 'S02-5989383-0864061-0000RR3';
         }
     }

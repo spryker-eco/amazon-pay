@@ -7,6 +7,7 @@
 
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
+use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
@@ -54,10 +55,26 @@ class AmazonpayFacadeAddSelectedAddressToQuoteTest extends AmazonpayFacadeAbstra
      */
     public function addSelectedAddressDataProvider()
     {
+
         return [
-            'Barcelona' => [$this->createQuote('S02-1234567-0000001'), 'Barcelona', 'ES', '0895'],
-            'London' => [$this->createQuote('S02-1234567-0000002'), 'London', 'GB', 'SE1 2BY'],
-            'Wien' => [$this->createQuote('S02-1234567-0000003'), 'Wien', 'AT', '1050'],
+            'Barcelona' => [
+                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_FIRST),
+                'Barcelona',
+                'ES',
+                '0895',
+            ],
+            'London' => [
+                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_SECOND),
+                'London',
+                'GB',
+                'SE1 2BY',
+            ],
+            'Wien' => [
+                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_THIRD),
+                'Wien',
+                'AT',
+                '1050',
+            ],
         ];
     }
 }

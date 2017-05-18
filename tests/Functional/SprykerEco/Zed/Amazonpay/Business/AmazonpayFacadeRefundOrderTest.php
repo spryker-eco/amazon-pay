@@ -7,6 +7,7 @@
 
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
+use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
@@ -29,8 +30,10 @@ class AmazonpayFacadeRefundOrderTest extends AmazonpayFacadeAbstractTest
     /**
      * @dataProvider refundOrderDataProvider
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param string $refundAmazonpayId
+     * @param string $refundReferenceId
      */
-    public function testRefundOrder(OrderTransfer $orderTransfer, $status, $refundAmazonpayId, $refundReferenceId)
+    public function testRefundOrder(OrderTransfer $orderTransfer, $refundAmazonpayId, $refundReferenceId)
     {
         $this->createFacade()->refundOrder($orderTransfer);
 
@@ -59,20 +62,17 @@ class AmazonpayFacadeRefundOrderTest extends AmazonpayFacadeAbstractTest
     {
         return [
             'first' =>
-                [$this->getOrderTransfer('S02-5989383-0864061-0000001'),
-                    'refund pendind',
+                [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_FIRST),
                     'S02-5989383-0864061-0000AR1',
                     'S02-5989383-0864061-0000RR1',
                 ],
             'second' =>
-                [$this->getOrderTransfer('S02-5989383-0864061-0000002'),
-                    'shit happens',
+                [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_SECOND),
                     'S02-5989383-0864061-0000AR2',
                     'S02-5989383-0864061-0000RR2',
                 ],
             'third' =>
-                [$this->getOrderTransfer('S02-5989383-0864061-0000003'),
-                    'you suck',
+                [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_THIRD),
                     'S02-5989383-0864061-0000AR3',
                     'S02-5989383-0864061-0000RR3',
                 ],
