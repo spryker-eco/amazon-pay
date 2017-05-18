@@ -3,7 +3,7 @@
 ## Installation
 
 ```
-composer require spryker-eco/amazonpay
+composer require spryker-eco/amazon-pay
 ```
 
 ## Documentation
