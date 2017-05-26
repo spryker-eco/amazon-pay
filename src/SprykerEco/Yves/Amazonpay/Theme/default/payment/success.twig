@@ -6,6 +6,10 @@
             <div class="callout success">
                 <h3>{{ 'checkout.step.success.title' | trans }}</h3>
                 {{ 'checkout.step.success.text' | trans }}
+
+                {% if isAsyncronous %}
+                    {{ 'amazonpay.success.asyncronous.text' | trans }}
+                {% endif %}
             </div>
         </div>
     </div>

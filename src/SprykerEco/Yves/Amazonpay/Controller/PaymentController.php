@@ -178,7 +178,13 @@ class PaymentController extends AbstractController
     {
         $this->getFactory()->getQuoteClient()->clearQuote();
 
-        return [];
+        $isAsyncronous =
+            ($this->getFactory()->getConfig()->getAuthTransactionTimeout() > 0)
+            && (!$this->getFactory()->getConfig()->getCaptureNow());
+
+        return [
+            'isAsyncronous' => $isAsyncronous
+        ];
     }
 
 }
