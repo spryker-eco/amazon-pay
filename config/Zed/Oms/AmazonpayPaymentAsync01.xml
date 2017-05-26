@@ -16,6 +16,7 @@
             <state name="auth open" reserved="true"/>
             <state name="auth closed"/>
             <state name="auth suspended" reserved="true"/>
+            <state name="auth transaction timed out" reserved="true"/>
             <state name="auth expired" reserved="true"/>
             <state name="auth declined"/>
 
@@ -66,12 +67,19 @@
                 <event>update authorization status</event>
             </transition>
 
+            <transition condition="Amazonpay/IsAuthTransactionTimedOut">
+                <source>auth pending</source>
+                <target>auth transaction timed out</target>
+                <event>update authorization status</event>
+            </transition>
+
             <transition condition="Amazonpay/IsAuthClosed">
                 <source>auth pending</source>
                 <target>auth closed</target>
                 <event>update authorization status</event>
             </transition>
 
+            <!-- from auth_open -->
             <transition condition="Amazonpay/IsAuthClosed">
                 <source>auth open</source>
                 <target>auth closed</target>
@@ -90,10 +98,11 @@
                 <event>reauthorize expired order</event>
             </transition>
 
-            <transition condition="Amazonpay/IsCaptureCompleted" happy="true">
-                <source>auth open</source>
+            <!-- from transaction timed out -->
+            <transition condition="Amazonpay/IsAuthTransactionTimedOut">
+                <source>auth transaction timed out</source>
                 <target>capture completed</target>
-                <event>capture</event>
+                <event>reauthorize expired order</event>
             </transition>
 
             <!-- from auth_suspended -->
@@ -124,6 +133,12 @@
             </transition>
 
             <!-- capture -->
+            <transition condition="Amazonpay/IsCaptureCompleted" happy="true">
+                <source>auth open</source>
+                <target>capture completed</target>
+                <event>capture</event>
+            </transition>
+
             <transition condition="Amazonpay/IsCapturePending" happy="true">
                 <source>auth open</source>
                 <target>capture pending</target>

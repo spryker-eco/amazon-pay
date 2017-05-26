@@ -55,6 +55,8 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractOrderTransaction
             if ($status->getIsDeclined()) {
                 if ($status->getIsSuspended()) {
                     $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED);
+                } elseif ($status->getIsTransactionTimedOut()) {
+                    $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT);
                 } else {
                     $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_AUTH_DECLINED);
                 }

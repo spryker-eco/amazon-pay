@@ -66,6 +66,10 @@ abstract class AbstractConverter
             $status->setIsClosedByAmazon(
                 $statusData['ReasonCode'] === AmazonpayConstants::REASON_CODE_AMAZON_CLOSED
             );
+
+            $status->setIsTransactionTimedOut(
+                $statusData['ReasonCode'] === AmazonpayConstants::REASON_CODE_TRANSACTION_TIMED_OUT
+            );
         }
 
         if ($statusData['State'] === static::STATUS_DECLINED) {

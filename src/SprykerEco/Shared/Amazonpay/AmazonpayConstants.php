@@ -38,6 +38,7 @@ interface AmazonpayConstants
     const OMS_STATUS_AUTH_PENDING = 'auth pending';
     const OMS_STATUS_AUTH_DECLINED = 'auth declined';
     const OMS_STATUS_AUTH_SUSPENDED = 'auth suspended';
+    const OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT = 'auth transaction timed out';
     const OMS_STATUS_AUTH_OPEN = 'auth open';
     const OMS_STATUS_AUTH_EXPIRED = 'auth expired';
     const OMS_STATUS_AUTH_CLOSED = 'auth closed';
@@ -65,6 +66,7 @@ interface AmazonpayConstants
     const REASON_CODE_SELLER_CLOSED = 'SellerClosed';
     const REASON_CODE_PAYMENT_METHOD_INVALID = 'InvalidPaymentMethod';
     const REASON_CODE_AMAZON_CLOSED = 'AmazonClosed';
+    const REASON_CODE_TRANSACTION_TIMED_OUT = 'TransactionTimedOut';
 
     const IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE = 'PaymentAuthorize';
     const IPN_REQUEST_TYPE_PAYMENT_CAPTURE = 'PaymentCapture';

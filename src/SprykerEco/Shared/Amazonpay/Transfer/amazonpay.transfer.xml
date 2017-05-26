@@ -88,6 +88,7 @@
         <property name="isPaymentMethodInvalid" type="bool"/>
         <property name="isClosedByAmazon" type="bool"/>
         <property name="isReauthorizable" type="bool"/>
+        <property name="isTransactionTimedOut" type="bool"/>
     </transfer>
 
     <transfer name="AmazonpayOrderReferenceNotification">

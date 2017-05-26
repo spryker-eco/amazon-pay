@@ -23,6 +23,7 @@ use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsAuthExpiredCon
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsAuthOpenConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsAuthPendingConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsAuthSuspendedConditionPlugin;
+use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsAuthTransactionTimedOutConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCancelledConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCaptureCompletedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCaptureDeclinedConditionPlugin;
@@ -100,6 +101,7 @@ class OmsDependencyInjector extends AbstractDependencyInjector
                 ->add(new IsAuthSuspendedConditionPlugin(), 'Amazonpay/IsAuthSuspended')
                 ->add(new IsAuthExpiredConditionPlugin(), 'Amazonpay/IsAuthExpired')
                 ->add(new IsAuthClosedConditionPlugin(), 'Amazonpay/IsAuthClosed')
+                ->add(new IsAuthTransactionTimedOutConditionPlugin(), 'Amazonpay/IsAuthTransactionTimedOut')
 
                 ->add(new IsAuthSuspendedConditionPlugin(), 'Amazonpay/IsPaymentMethodChanged')
 

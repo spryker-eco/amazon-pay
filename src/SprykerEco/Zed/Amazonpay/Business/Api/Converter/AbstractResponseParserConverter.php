@@ -174,11 +174,13 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
         }
 
         foreach ($constraints as $constraint) {
-            $constraintTransfer = new AmazonpayResponseConstraintTransfer();
-            $constraintTransfer->setConstraintId($constraint['ConstraintID']);
-            $constraintTransfer->setConstraintId($constraint['Description']);
+            if ((!empty($constraint['ConstraintID'])) && !empty($constraint['Description'])) {
+                $constraintTransfer = new AmazonpayResponseConstraintTransfer();
+                $constraintTransfer->setConstraintId($constraint['ConstraintID']);
+                $constraintTransfer->setConstraintId($constraint['Description']);
 
-            $constraintTransfers[] = $constraintTransfer;
+                $constraintTransfers[] = $constraintTransfer;
+            }
         }
 
         return $constraintTransfers;
@@ -197,8 +199,11 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
             return $address;
         }
 
-        $aResponseAddress =
-            $this->extractResult($responseParser)['OrderReferenceDetails']['Destination']['PhysicalDestination'];
+        if (!empty($this->extractResult($responseParser)['OrderReferenceDetails']['Destination']['PhysicalDestination'])
+        ) {
+            $aResponseAddress =
+                $this->extractResult($responseParser)['OrderReferenceDetails']['Destination']['PhysicalDestination'];
+        }
 
         return $this->convertAddressToTransfer($aResponseAddress);
     }

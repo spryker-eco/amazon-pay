@@ -136,6 +136,10 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
             $statusName === AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED
         );
 
+        $amazonpayStatusTransfer->setIsTransactionTimedOut(
+            $statusName === AmazonpayConstants::OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT
+        );
+
         $amazonpayStatusTransfer->setIsOpen(
             $statusName === AmazonpayConstants::OMS_STATUS_AUTH_OPEN
         );
