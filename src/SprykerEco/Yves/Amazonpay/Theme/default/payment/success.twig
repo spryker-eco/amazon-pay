@@ -9,4 +9,13 @@
             </div>
         </div>
     </div>
+
+    <script>
+        window.onAmazonLoginReady = function() {
+            amazon.Login.logout();
+        };
+    </script>
+    <script async="async"
+            src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'>
+    </script>
 {% endblock %}
