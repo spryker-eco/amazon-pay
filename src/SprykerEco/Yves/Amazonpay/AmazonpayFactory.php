@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Yves\Amazonpay;
 
+use Spryker\Yves\ProductBundle\Grouper\ProductBundleGrouper;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 use Spryker\Yves\Kernel\AbstractFactory;
 
@@ -51,6 +52,14 @@ class AmazonpayFactory extends AbstractFactory implements AmazonpayFactoryInterf
     public function getCalculationClient()
     {
         return $this->getProvidedDependency(AmazonpayDependencyProvider::CLIENT_CALCULATION);
+    }
+
+    /**
+     * @return \Spryker\Yves\ProductBundle\Grouper\ProductBundleGrouper
+     */
+    public function createProductBundleGrouper()
+    {
+        return new ProductBundleGrouper();
     }
 
 }

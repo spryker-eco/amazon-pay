@@ -41,8 +41,14 @@ class PaymentController extends AbstractController
         $quoteTransfer = $this->getClient()->handleCartWithAmazonpay($quoteTransfer);
         $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
 
+        $cartItems = $this->getFactory()->createProductBundleGrouper()->getGroupedBundleItems(
+            $quoteTransfer->getItems(),
+            $quoteTransfer->getBundleItems()
+        );
+
         return [
             'quoteTransfer' => $quoteTransfer,
+            'cartItems' => $cartItems,
         ];
     }
 

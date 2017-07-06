@@ -16,6 +16,7 @@
     "spryker/sales": "^6.0.0",
     "spryker/shipment": "^5.0.0",
     "spryker/util-encoding": "^2.0.1",
+    "spryker/product-bundle": "^3.0.0",
     "amzn/amazon-pay-sdk-php": "^2.1",
     "ralouphie/getallheaders": "^2.0"
   },
