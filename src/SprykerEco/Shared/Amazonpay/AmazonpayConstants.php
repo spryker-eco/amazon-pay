@@ -23,6 +23,8 @@ interface AmazonpayConstants
     const CAPTURE_NOW = 'CAPTURE_NOW';
     const AUTH_TRANSACTION_TIMEOUT = 'AUTH_TRANSACTION_TIMEOUT';
 
+    const PAYMENT_REJECT_ROUTE = 'AMAZONPAY:PAYMENT_REJECT_ROUTE';
+
     const PAYMENT_METHOD = 'Amazon Pay';
     const PROVIDER_NAME = 'Amazon Pay';
 
