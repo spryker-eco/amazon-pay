@@ -7,14 +7,14 @@
     }
   },
   "require": {
-    "spryker/calculation": "^3.0.1",
+    "spryker/calculation": "^4.0.0",
     "spryker/checkout": "^3.0.0",
-    "spryker/quote": "^1.0.0",
-    "spryker/shipment": "^4.0.2",
     "spryker/money": "^2.0.1",
-    "spryker/oms": "^6.0.1",
+    "spryker/oms": "^7.0.0",
+    "spryker/quote": "^1.0.0",
     "spryker/refund": "^5.0.0",
     "spryker/sales": "^6.0.0",
+    "spryker/shipment": "^5.0.0",
     "spryker/util-encoding": "^2.0.1",
     "amzn/amazon-pay-sdk-php": "^2.1",
     "ralouphie/getallheaders": "^2.0"
