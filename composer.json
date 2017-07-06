@@ -14,7 +14,7 @@
     "spryker/money": "^2.0.1",
     "spryker/oms": "^6.0.1",
     "spryker/refund": "^4.0.0",
-    "spryker/sales": "^5.4.0",
+    "spryker/sales": "^6.0.0",
     "spryker/util-encoding": "^2.0.1",
     "amzn/amazon-pay-sdk-php": "^2.1",
     "ralouphie/getallheaders": "^2.0"
