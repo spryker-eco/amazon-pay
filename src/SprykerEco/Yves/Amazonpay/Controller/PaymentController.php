@@ -7,12 +7,16 @@
 
 namespace SprykerEco\Yves\Amazonpay\Controller;
 
+use InvalidArgumentException;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use SprykerEco\Yves\Amazonpay\Plugin\Provider\AmazonpayControllerProvider;
 use Spryker\Yves\Kernel\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Spryker\Shared\Config\Config;
 
 /**
  * @method \SprykerEco\Yves\Amazonpay\AmazonpayFactory getFactory()
@@ -28,15 +32,22 @@ class PaymentController extends AbstractController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return array
+     * @return array|\Symfony\Component\HttpFoundation\Response
      */
     public function checkoutAction(Request $request)
     {
-        $amazonPaymentTransfer = new AmazonpayPaymentTransfer();
-        $amazonPaymentTransfer->setOrderReferenceId($request->query->get(static::URL_PARAM_REFERENCE_ID));
-        $amazonPaymentTransfer->setAddressConsentToken($request->query->get(static::URL_PARAM_ACCESS_TOKEN));
-
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
+
+        if (!$this->isAllowedCheckout($quoteTransfer)) {
+            return $this->getFailedRedirectResponse();
+        }
+
+        $amazonPaymentTransfer = $this->buildAmazonPaymentTransfer($request);
+
+        if (!$amazonPaymentTransfer) {
+            return $this->getFailedRedirectResponse();
+        }
+
         $quoteTransfer->setAmazonpayPayment($amazonPaymentTransfer);
         $quoteTransfer = $this->getClient()->handleCartWithAmazonpay($quoteTransfer);
         $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
@@ -48,8 +59,36 @@ class PaymentController extends AbstractController
 
         return [
             'quoteTransfer' => $quoteTransfer,
-            'cartItems' => $cartItems,
+            'cartItems' => $cartItems
         ];
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return AmazonpayPaymentTransfer|null
+     */
+    protected function buildAmazonPaymentTransfer(Request $request)
+    {
+        try {
+            $amazonPaymentTransfer = new AmazonpayPaymentTransfer();
+            $amazonPaymentTransfer->setOrderReferenceId($request->query->get(static::URL_PARAM_REFERENCE_ID));
+            $amazonPaymentTransfer->setAddressConsentToken($request->query->get(static::URL_PARAM_ACCESS_TOKEN));
+
+            return $amazonPaymentTransfer;
+        } catch (InvalidArgumentException $e) {
+            return null;
+        }
+    }
+
+    /**
+     * @param QuoteTransfer $quoteTransfer
+     *
+     * @return bool
+     */
+    protected function isAllowedCheckout(QuoteTransfer $quoteTransfer)
+    {
+        return $quoteTransfer->getTotals() !== null;
     }
 
     /**
@@ -138,13 +177,14 @@ class PaymentController extends AbstractController
                     ->getIsPaymentMethodInvalid()
             ) {
                 return $this->redirectResponseInternal(AmazonpayControllerProvider::CHANGE_PAYMENT_METHOD);
-            } else {
-                return $this->getFailedRedirectResponse();
             }
+
+            return $this->getFailedRedirectResponse();
         }
 
         if ($quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getConstraints()) {
-            $this->addErrorMessage($this->getApplication()->trans('amazonpay.payment.wrong'));
+            $this->addErrorMessage('amazonpay.payment.wrong');
+
             return $this->redirectResponseExternal($request->headers->get('referer'));
         }
 
@@ -156,9 +196,17 @@ class PaymentController extends AbstractController
      */
     protected function getFailedRedirectResponse()
     {
-        $this->addErrorMessage($this->getApplication()->trans('amazonpay.payment.failed'));
+        $this->addErrorMessage('amazonpay.payment.failed');
 
-        return $this->redirectResponseInternal('cart');
+        return $this->redirectResponseInternal($this->getPaymentRejectRoute());
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPaymentRejectRoute()
+    {
+        return Config::get(AmazonpayConstants::PAYMENT_REJECT_ROUTE);
     }
 
     /**
