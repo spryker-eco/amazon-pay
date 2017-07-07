@@ -199,13 +199,14 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
             return $address;
         }
 
-        if (!empty($this->extractResult($responseParser)['OrderReferenceDetails']['Destination']['PhysicalDestination'])
-        ) {
-            $aResponseAddress =
-                $this->extractResult($responseParser)['OrderReferenceDetails']['Destination']['PhysicalDestination'];
+        $aResponseAddress =
+            $this->extractResult($responseParser)['OrderReferenceDetails']['Destination']['PhysicalDestination'] ?? null;
+
+        if ($aResponseAddress !== null) {
+            $address = $this->convertAddressToTransfer($aResponseAddress);
         }
 
-        return $this->convertAddressToTransfer($aResponseAddress);
+        return $address;
     }
 
     /**
@@ -217,39 +218,28 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     {
         $address = new AddressTransfer();
 
-        $address->setCity($addressData['City']);
-        $address->setIso2Code($addressData['CountryCode']);
-        $address->setZipCode($addressData['PostalCode']);
-
         if (!empty($addressData['Name'])) {
             $address = $this->updateNameData($address, $addressData['Name']);
         }
 
-        if (!empty($addressData['AddressLine1'])) {
-            $address->setAddress1($addressData['AddressLine1']);
-        }
+        array_walk($addressData, [$this, 'getStringValue']);
 
-        if (!empty($addressData['AddressLine2'])) {
-            $address->setAddress2($addressData['AddressLine2']);
-        }
-
-        if (!empty($addressData['AddressLine3'])) {
-            $address->setAddress3($addressData['AddressLine3']);
-        }
-
-        if (!empty($addressData['District'])) {
-            $address->setRegion($addressData['District']);
-        }
-
-        if (!empty($addressData['StateOrRegion'])) {
-            $address->setState($addressData['StateOrRegion']);
-        }
-
-        if (!empty($addressData['Phone'])) {
-            $address->setPhone($addressData['Phone']);
-        }
+        $address->setCity($addressData['City'] ?? null);
+        $address->setIso2Code($addressData['CountryCode'] ?? null);
+        $address->setZipCode($addressData['PostalCode'] ?? null);
+        $address->setAddress1($addressData['AddressLine1'] ?? null);
+        $address->setAddress2($addressData['AddressLine2'] ?? null);
+        $address->setAddress3($addressData['AddressLine3'] ?? null);
+        $address->setRegion($addressData['District'] ?? null);
+        $address->setState($addressData['StateOrRegion'] ?? null);
+        $address->setPhone($addressData['Phone'] ?? null);
 
         return $address;
+    }
+
+    protected function getStringValue($value)
+    {
+        return empty($value) ? null : $value;
     }
 
 }

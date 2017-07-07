@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
 use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface;
 
 class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
@@ -30,18 +31,26 @@ class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
     protected $shipmentFacade;
 
     /**
+     * @var AmazonpayToMessengerInterface
+     */
+    protected $messengerFacade;
+
+    /**
      * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface $adapterFactory
      * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
      * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface $shipmentFacade
+     * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface $messengerFacade
      */
     public function __construct(
         AdapterFactoryInterface $adapterFactory,
         AmazonpayConfigInterface $config,
-        AmazonpayToShipmentInterface $shipmentFacade
+        AmazonpayToShipmentInterface $shipmentFacade,
+        AmazonpayToMessengerInterface $messengerFacade
     ) {
         $this->adapterFactory = $adapterFactory;
         $this->config = $config;
         $this->shipmentFacade = $shipmentFacade;
+        $this->messengerFacade = $messengerFacade;
     }
 
     /**
@@ -61,6 +70,7 @@ class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
     public function createQuoteDataInitializer()
     {
         return new PrepareQuoteCollection(
+            $this->messengerFacade,
             [
                 $this->createAmazonpayDataQuoteInitializer(),
                 $this->createCustomerDataQuoteUpdater(),

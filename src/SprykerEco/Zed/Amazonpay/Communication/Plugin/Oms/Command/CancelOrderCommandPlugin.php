@@ -18,10 +18,11 @@ class CancelOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        // no partial closing should be possible
-        if (count($orderEntity->getItems()) === count($salesOrderItems)) {
-            $this->getFacade()->cancelOrder($this->getOrderTransfer($orderEntity));
+        if (!$this->ensureRunForFullOrder($salesOrderItems, $orderEntity, 'amazonpay.cancel.error.only-full-order')) {
+            return [];
         }
+
+        $this->getFacade()->cancelOrder($this->getOrderTransfer($orderEntity));
 
         return [];
     }

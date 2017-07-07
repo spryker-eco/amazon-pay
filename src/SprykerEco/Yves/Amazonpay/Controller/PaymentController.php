@@ -59,7 +59,8 @@ class PaymentController extends AbstractController
 
         return [
             'quoteTransfer' => $quoteTransfer,
-            'cartItems' => $cartItems
+            'cartItems' => $cartItems,
+            'amazonpayConfig' => $this->getAmazonPayConfig(),
         ];
     }
 
@@ -182,7 +183,7 @@ class PaymentController extends AbstractController
             return $this->getFailedRedirectResponse();
         }
 
-        if ($quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getConstraints()) {
+        if (!$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
             $this->addErrorMessage('amazonpay.payment.wrong');
 
             return $this->redirectResponseExternal($request->headers->get('referer'));
@@ -237,8 +238,17 @@ class PaymentController extends AbstractController
             && (!$this->getFactory()->getConfig()->getCaptureNow());
 
         return [
-            'isAsyncronous' => $isAsyncronous
+            'isAsyncronous' => $isAsyncronous,
+            'amazonpayConfig' => $this->getAmazonPayConfig(),
         ];
+    }
+
+    /**
+     * @return \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface
+     */
+    protected function getAmazonPayConfig()
+    {
+        return $this->getFactory()->getConfig();
     }
 
 }

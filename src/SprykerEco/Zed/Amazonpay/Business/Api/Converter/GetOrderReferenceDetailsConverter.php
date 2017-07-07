@@ -56,8 +56,10 @@ class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
             return $address;
         }
 
+        $response = $this->extractResult($responseParser);
+
         $aResponseAddress =
-            $this->extractResult($responseParser)['OrderReferenceDetails']['BillingAddress']['PhysicalAddress'];
+            $response['OrderReferenceDetails']['BillingAddress']['PhysicalAddress'];
 
         return $this->convertAddressToTransfer($aResponseAddress);
     }

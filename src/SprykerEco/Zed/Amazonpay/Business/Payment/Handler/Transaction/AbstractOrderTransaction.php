@@ -27,6 +27,11 @@ abstract class AbstractOrderTransaction extends AbstractTransaction implements O
     protected $paymentEntity;
 
     /**
+     * @var \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     */
+    protected $apiResponse;
+
+    /**
      * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface $executionAdapter
      * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
      * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface $transactionLogger
@@ -50,7 +55,7 @@ abstract class AbstractOrderTransaction extends AbstractTransaction implements O
      */
     protected function generateOperationReferenceId(OrderTransfer $orderTransfer)
     {
-        return uniqid($orderTransfer->getAmazonpayPayment()->getOrderReferenceId());
+        return uniqid($orderTransfer->getAmazonpayPayment()->getOrderReferenceId(), false);
     }
 
     /**
@@ -66,7 +71,8 @@ abstract class AbstractOrderTransaction extends AbstractTransaction implements O
             $orderTransfer->getAmazonpayPayment()->getOrderReferenceId(),
             $this->apiResponse->getHeader()
         );
-        $this->paymentEntity = $this->retrievePaymentEntity($orderTransfer);
+        // TODO: remove this hidden call
+        $this->retrievePaymentEntity($orderTransfer);
 
         return $orderTransfer;
     }
@@ -78,14 +84,14 @@ abstract class AbstractOrderTransaction extends AbstractTransaction implements O
      */
     protected function retrievePaymentEntity(OrderTransfer $orderTransfer)
     {
-        if ($this->paymentEntity) {
-            return $this->paymentEntity;
+        if ($this->paymentEntity === null) {
+            $this->paymentEntity = $this->queryContainer->queryPaymentByOrderReferenceId(
+                $orderTransfer->getAmazonpayPayment()->getOrderReferenceId()
+            )
+                ->findOne();
         }
 
-        return $this->queryContainer->queryPaymentByOrderReferenceId(
-            $orderTransfer->getAmazonpayPayment()->getOrderReferenceId()
-        )
-            ->findOne();
+        return $this->paymentEntity;
     }
 
 }

@@ -7,7 +7,11 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
+use Generated\Shared\Transfer\MessageTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Spryker\Zed\Messenger\Business\MessengerFacadeInterface;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface;
+use Throwable;
 
 class PrepareQuoteCollection implements QuoteUpdaterInterface
 {
@@ -18,9 +22,15 @@ class PrepareQuoteCollection implements QuoteUpdaterInterface
     protected $quoteUpdaters;
 
     /**
+     * @var AmazonpayToMessengerInterface
+     */
+    protected $messengerFacade;
+
+    /**
+     * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface $messengerFacade
      * @param \SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface[] $quoteUpdaters
      */
-    public function __construct(array $quoteUpdaters)
+    public function __construct(AmazonpayToMessengerInterface $messengerFacade, array $quoteUpdaters)
     {
         $this->quoteUpdaters = $quoteUpdaters;
     }
@@ -32,11 +42,26 @@ class PrepareQuoteCollection implements QuoteUpdaterInterface
      */
     public function update(QuoteTransfer $quoteTransfer)
     {
-        foreach ($this->quoteUpdaters as $quoteUpdater) {
-            $quoteTransfer = $quoteUpdater->update($quoteTransfer);
+        try {
+            foreach ($this->quoteUpdaters as $quoteUpdater) {
+                $quoteTransfer = $quoteUpdater->update($quoteTransfer);
+            }
+        } catch (Throwable $e) {
+            $this->messengerFacade->addErrorMessage($this->createMessage('amazonpay.timeout.error'));
         }
 
         return $quoteTransfer;
+    }
+
+    /**
+     * @param string $message
+     *
+     * @return MessageTransfer
+     */
+    protected function createMessage($message)
+    {
+        return (new MessageTransfer())
+            ->setValue($message);
     }
 
 }

@@ -25,11 +25,6 @@ abstract class AbstractTransaction
     protected $config;
 
     /**
-     * @var \Spryker\Shared\Kernel\Transfer\AbstractTransfer
-     */
-    protected $apiResponse;
-
-    /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface
      */
     protected $transactionsLogger;

@@ -16,6 +16,7 @@ use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnFactory;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLogger;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\TransactionFactory;
 use SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdateFactory;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
@@ -54,7 +55,8 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
         return new QuoteUpdateFactory(
             $this->createAdapterFactory(),
             $this->getConfig(),
-            $this->getShipmentFacade()
+            $this->getShipmentFacade(),
+            $this->getMessengerFacade()
         );
     }
 
@@ -153,6 +155,16 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     {
         return $this->getProvidedDependency(
             AmazonpayDependencyProvider::FACADE_SALES
+        );
+    }
+
+    /**
+     * @return AmazonpayToMessengerInterface
+     */
+    protected function getMessengerFacade()
+    {
+        return $this->getProvidedDependency(
+            AmazonpayDependencyProvider::FACADE_MESSENGER
         );
     }
 }

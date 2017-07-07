@@ -27,7 +27,7 @@ class WidgetController extends AbstractController
                    && $quote->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getIsDeclined();
 
         return [
-            'amazonpayConfig' => $this->getFactory()->getConfig(),
+            'amazonpayConfig' => $this->getAmazonPayConfig(),
             'logout' => (int)$logout,
         ];
     }
@@ -38,7 +38,7 @@ class WidgetController extends AbstractController
     public function checkoutWidgetAction()
     {
         return [
-            'amazonpayConfig' => $this->getFactory()->getConfig(),
+            'amazonpayConfig' => $this->getAmazonPayConfig(),
         ];
     }
 
@@ -48,8 +48,16 @@ class WidgetController extends AbstractController
     public function walletWidgetAction()
     {
         return [
-            'amazonpayConfig' => $this->getFactory()->getConfig(),
+            'amazonpayConfig' => $this->getAmazonPayConfig(),
         ];
+    }
+
+    /**
+     * @return \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface
+     */
+    protected function getAmazonPayConfig()
+    {
+        return $this->getFactory()->getConfig();
     }
 
 }

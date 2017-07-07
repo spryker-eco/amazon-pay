@@ -13,7 +13,10 @@ use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\AmazonpayRefundDetailsTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
+use Generated\Shared\Transfer\MessageTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
+use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
@@ -27,23 +30,11 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
 
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param array $salesOrderItems
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    protected function getOrderTransfer(SpySalesOrder $orderEntity, array $salesOrderItems = [])
+    protected function getOrderTransfer(SpySalesOrder $orderEntity)
     {
-        $responseHeader = new AmazonpayResponseHeaderTransfer();
-        $responseHeader->setIsSuccess(true);
-
-        $paymentTransfer = new AmazonpayPaymentTransfer();
-        $paymentTransfer->setResponseHeader($responseHeader);
-        $paymentTransfer->setOrderReferenceStatus(new AmazonpayStatusTransfer());
-        $paymentTransfer->fromArray($this->getPaymentEntity($orderEntity)->toArray(), true);
-        $paymentTransfer->setAuthorizationDetails($this->getAuthorizationDetailsTransfer($orderEntity));
-        $paymentTransfer->setCaptureDetails($this->getCaptureDetailsTransfer($orderEntity));
-        $paymentTransfer->setRefundDetails($this->getAmazonpayRefundDetailsTransfer($orderEntity));
-
         $orderTransfer = $this
             ->getFactory()
             ->getSalesFacade()
@@ -51,9 +42,31 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
                 $orderEntity->getIdSalesOrder()
             );
 
+        $paymentTransfer = $this->buildAmazonPaymentTransfer($orderEntity);
         $orderTransfer->setAmazonpayPayment($paymentTransfer);
 
         return $orderTransfer;
+    }
+
+    /**
+     * @param SpySalesOrder $orderEntity
+     *
+     * @return AmazonpayPaymentTransfer
+     */
+    protected function buildAmazonPaymentTransfer(SpySalesOrder $orderEntity)
+    {
+        $responseHeader = new AmazonpayResponseHeaderTransfer();
+        $responseHeader->setIsSuccess(true);
+
+        $paymentTransfer = new AmazonpayPaymentTransfer();
+        $paymentTransfer->fromArray($this->getPaymentEntity($orderEntity)->toArray(), true);
+        $paymentTransfer->setResponseHeader($responseHeader);
+        $paymentTransfer->setOrderReferenceStatus(new AmazonpayStatusTransfer());
+        $paymentTransfer->setAuthorizationDetails($this->getAuthorizationDetailsTransfer($orderEntity));
+        $paymentTransfer->setCaptureDetails($this->getCaptureDetailsTransfer($orderEntity));
+        $paymentTransfer->setRefundDetails($this->getAmazonpayRefundDetailsTransfer($orderEntity));
+
+        return $paymentTransfer;
     }
 
     /**
@@ -200,13 +213,36 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
     }
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param array $salesOrderItems
+     * @param SpySalesOrder $orderEntity
+     * @param string $message
      *
-     * @return \Orm\Zed\Customer\Persistence\SpyCustomer
+     * @return bool
      */
-    protected function getCustomerEntity(SpySalesOrder $orderEntity)
+    protected function ensureRunForFullOrder(array $salesOrderItems, SpySalesOrder $orderEntity, $message)
     {
-        return $orderEntity->getCustomer();
+        if (count($orderEntity->getItems()) !== count($salesOrderItems)) {
+            $this->getFactory()
+                ->getMessengerFacade()
+                ->addErrorMessage($this->createMessageTransfer($message));
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param string $message
+     *
+     * @return MessageTransfer
+     */
+    protected function createMessageTransfer($message)
+    {
+        $messageTransfer = new MessageTransfer();
+        $messageTransfer->setValue($message);
+
+        return $messageTransfer;
     }
 
 }
