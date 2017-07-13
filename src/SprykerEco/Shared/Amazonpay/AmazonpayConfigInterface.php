@@ -67,11 +67,11 @@ interface AmazonpayConfigInterface
     /**
      * @return string
      */
-    public function getWidgetScript();
+    public function getWidgetScriptPath();
 
     /**
      * @return string
      */
-    public function getWidgetScriptSandbox();
+    public function getWidgetScriptPathSandbox();
 
 }

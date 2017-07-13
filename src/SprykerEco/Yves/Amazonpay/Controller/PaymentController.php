@@ -28,6 +28,12 @@ class PaymentController extends AbstractController
     const URL_PARAM_REFERENCE_ID = 'reference_id';
     const URL_PARAM_ACCESS_TOKEN = 'access_token';
     const URL_PARAM_SHIPMENT_METHOD_ID = 'shipment_method_id';
+    const QUOTE_TRANSFER = 'quoteTransfer';
+    const SHIPMENT_METHODS = 'shipmentMethods';
+    const AMAZONPAY_CONFIG = 'amazonpayConfig';
+    const IS_ASYNCHRONOUS = 'isAsynchronous';
+    const CART_ITEMS = 'cartItems';
+    const SUCCESS = 'success';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -58,9 +64,9 @@ class PaymentController extends AbstractController
         );
 
         return [
-            'quoteTransfer' => $quoteTransfer,
-            'cartItems' => $cartItems,
-            'amazonpayConfig' => $this->getAmazonPayConfig(),
+            self::QUOTE_TRANSFER => $quoteTransfer,
+            self::CART_ITEMS => $cartItems,
+            self::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
         ];
     }
 
@@ -107,7 +113,7 @@ class PaymentController extends AbstractController
 
         $quoteTransfer->getAmazonpayPayment()->setOrderReferenceId($request->request->get(static::URL_PARAM_REFERENCE_ID));
 
-        return new JsonResponse(['success' => true]);
+        return new JsonResponse([self::SUCCESS => true]);
     }
 
     /**
@@ -126,7 +132,7 @@ class PaymentController extends AbstractController
         $shipmentMethods = $this->getFactory()->getShipmentClient()->getAvailableMethods($quoteTransfer);
 
         return [
-            'shipmentMethods' => $shipmentMethods->getMethods(),
+            self::SHIPMENT_METHODS => $shipmentMethods->getMethods(),
         ];
     }
 
@@ -151,7 +157,7 @@ class PaymentController extends AbstractController
         $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
 
         return [
-            'quoteTransfer' => $quoteTransfer,
+            self::QUOTE_TRANSFER => $quoteTransfer,
         ];
     }
 
@@ -192,7 +198,7 @@ class PaymentController extends AbstractController
             return $this->redirectResponseInternal(AmazonpayControllerProvider::SUCCESS);
         }
 
-        return new Response('Persisting Order Error');
+        return $this->getFailedRedirectResponse('amazonpay.payment.place-order.failed');
     }
 
     /**
@@ -206,6 +212,8 @@ class PaymentController extends AbstractController
     }
 
     /**
+     * @param string|null $message
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     protected function getFailedRedirectResponse($message = null)
@@ -233,8 +241,8 @@ class PaymentController extends AbstractController
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
         return [
-            'quoteTransfer' => $quoteTransfer,
-            'amazonpayConfig' => $this->getAmazonPayConfig(),
+            self::QUOTE_TRANSFER => $quoteTransfer,
+            self::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
         ];
     }
 
@@ -252,8 +260,8 @@ class PaymentController extends AbstractController
             && (!$this->getFactory()->getConfig()->getCaptureNow());
 
         return [
-            'isAsynchronous' => $isAsynchronous,
-            'amazonpayConfig' => $this->getAmazonPayConfig(),
+            self::IS_ASYNCHRONOUS => $isAsynchronous,
+            self::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
         ];
     }
 

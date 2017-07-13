@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\QuoteTransfer;
+use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 
 abstract class AbstractTransactionCollection
 {
@@ -27,24 +27,24 @@ abstract class AbstractTransactionCollection
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $abstractTransfer
      *
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
-    protected function executeHandlers(QuoteTransfer $quoteTransfer)
+    protected function executeHandlers(AbstractTransfer $abstractTransfer)
     {
-        $quoteTransfer->getAmazonpayPayment()->setResponseHeader(null);
+        $abstractTransfer->getAmazonpayPayment()->setResponseHeader(null);
 
         foreach ($this->transactionHandlers as $transactionHandler) {
-            $quoteTransfer = $transactionHandler->execute($quoteTransfer);
+            $abstractTransfer = $transactionHandler->execute($abstractTransfer);
 
-            if ($quoteTransfer->getAmazonpayPayment()->getResponseHeader() &&
-                !$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+            if ($abstractTransfer->getAmazonpayPayment()->getResponseHeader() &&
+                !$abstractTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
                 break;
             }
         }
 
-        return $quoteTransfer;
+        return $abstractTransfer;
     }
 
 }

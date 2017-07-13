@@ -19,5 +19,5 @@
             amazon.Login.logout();
         };
     </script>
-    <script async="async" src="{{ amazonpayConfig.isSandbox ? amazonpayConfig.widgetScriptSandbox : amazonpayConfig.widgetScript }}"></script>
+    <script async="async" src="{{ amazonpayConfig.isSandbox ? amazonpayConfig.widgetScriptPathSandbox : amazonpayConfig.widgetScriptPath }}"></script>
 {% endblock %}
