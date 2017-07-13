@@ -95,22 +95,32 @@ class PaymentController extends AbstractController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function setOrderReferenceAction(Request $request)
     {
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
+
+        if ($this->notAnAmazonPayment($quoteTransfer)) {
+            return $this->getFailedRedirectResponse();
+        }
+
         $quoteTransfer->getAmazonpayPayment()->setOrderReferenceId($request->request->get(static::URL_PARAM_REFERENCE_ID));
 
         return new JsonResponse(['success' => true]);
     }
 
     /**
-     * @return array
+     * @return array|\Symfony\Component\HttpFoundation\Response
      */
     public function getShipmentMethodsAction()
     {
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
+
+        if ($this->notAnAmazonPayment($quoteTransfer)) {
+            return $this->getFailedRedirectResponse();
+        }
+
         $quoteTransfer = $this->getClient()->addSelectedAddressToQuote($quoteTransfer);
         $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
         $shipmentMethods = $this->getFactory()->getShipmentClient()->getAvailableMethods($quoteTransfer);
@@ -123,11 +133,16 @@ class PaymentController extends AbstractController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return array
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function updateShipmentMethodAction(Request $request)
     {
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
+
+        if ($this->notAnAmazonPayment($quoteTransfer)) {
+            return $this->getFailedRedirectResponse();
+        }
+
         $quoteTransfer->getShipment()->setShipmentSelection(
             (int)$request->request->get(static::URL_PARAM_SHIPMENT_METHOD_ID)
         );
@@ -149,7 +164,7 @@ class PaymentController extends AbstractController
     {
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
-        if (!$quoteTransfer) {
+        if ($this->notAnAmazonPayment($quoteTransfer)) {
             return $this->getFailedRedirectResponse();
         }
 
@@ -157,39 +172,51 @@ class PaymentController extends AbstractController
         $quoteTransfer = $this->getFactory()->getCalculationClient()->recalculate($quoteTransfer);
         $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
 
-        if ($quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-            if (!$quoteTransfer->getAmazonpayPayment()
-                    ->getAuthorizationDetails()
-                    ->getAuthorizationStatus()
-                    ->getIsDeclined()
-            ) {
-                $checkoutResponseTransfer = $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
-
-                if ($checkoutResponseTransfer->getIsSuccess()) {
-                    return $this->redirectResponseInternal(AmazonpayControllerProvider::SUCCESS);
-                }
-
-                return new Response('Persisting Order Error');
-            }
-
-            if ($quoteTransfer->getAmazonpayPayment()
-                    ->getAuthorizationDetails()
-                    ->getAuthorizationStatus()
-                    ->getIsPaymentMethodInvalid()
-            ) {
-                return $this->redirectResponseInternal(AmazonpayControllerProvider::CHANGE_PAYMENT_METHOD);
-            }
-
-            return $this->getFailedRedirectResponse();
+        if ($quoteTransfer->getAmazonpayPayment()
+            ->getAuthorizationDetails()
+            ->getAuthorizationStatus()
+            ->getIsPaymentMethodInvalid()
+        ) {
+            return $this->redirectResponseInternal(AmazonpayControllerProvider::CHANGE_PAYMENT_METHOD);
         }
 
         if (!$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-            $this->addErrorMessage('amazonpay.payment.wrong');
-
-            return $this->redirectResponseExternal($request->headers->get('referer'));
+            return $this->getPaymentChoiceIncorrectResponse(
+                $request,
+                $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getErrorCode()
+            );
         }
 
-        return $this->getFailedRedirectResponse();
+        $checkoutResponseTransfer = $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
+
+        if ($checkoutResponseTransfer->getIsSuccess()) {
+            return $this->redirectResponseInternal(AmazonpayControllerProvider::SUCCESS);
+        }
+
+        return new Response('Persisting Order Error');
+    }
+
+    /**
+     * @param QuoteTransfer $quoteTransfer
+     *
+     * @return bool
+     */
+    protected function notAnAmazonPayment(QuoteTransfer $quoteTransfer)
+    {
+        return $quoteTransfer->getAmazonpayPayment() === null;
+    }
+
+    /**
+     * @param Request $request
+     * @param string $message
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function getPaymentChoiceIncorrectResponse($request, $message = null)
+    {
+        $this->addErrorMessage($message ?? 'amazonpay.payment.wrong');
+
+        return $this->redirectResponseExternal($request->headers->get('referer'));
     }
 
     /**
@@ -221,6 +248,7 @@ class PaymentController extends AbstractController
 
         return [
             'quoteTransfer' => $quoteTransfer,
+            'amazonpayConfig' => $this->getAmazonPayConfig(),
         ];
     }
 

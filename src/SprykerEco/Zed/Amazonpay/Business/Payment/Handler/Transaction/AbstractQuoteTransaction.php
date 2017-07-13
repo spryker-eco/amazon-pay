@@ -19,7 +19,7 @@ abstract class AbstractQuoteTransaction extends AbstractTransaction implements Q
      */
     protected function generateOperationReferenceId(QuoteTransfer $quoteTransfer)
     {
-        return uniqid($quoteTransfer->getAmazonpayPayment()->getOrderReferenceId());
+        return uniqid($quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(), false);
     }
 
     /**

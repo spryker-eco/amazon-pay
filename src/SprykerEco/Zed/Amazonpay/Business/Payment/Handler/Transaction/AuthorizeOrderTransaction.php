@@ -34,9 +34,32 @@ class AuthorizeOrderTransaction extends AbstractQuoteTransaction
             $quoteTransfer->getAmazonpayPayment()->setAuthorizationDetails(
                 $this->apiResponse->getAuthorizationDetails()
             );
+
+            if ($quoteTransfer->getAmazonpayPayment()
+                ->getAuthorizationDetails()
+                ->getAuthorizationStatus()
+                ->getIsDeclined()) {
+                $quoteTransfer->getAmazonpayPayment()->getResponseHeader()
+                    ->setIsSuccess(false)
+                    ->setErrorCode($this->buildErrorCode($quoteTransfer));
+            }
         }
 
         return $quoteTransfer;
+    }
+
+    /**
+     * @param QuoteTransfer $quoteTransfer
+     *
+     * @return string
+     */
+    protected function buildErrorCode(QuoteTransfer $quoteTransfer)
+    {
+        return 'amazonpay.payment.error.'.
+        $quoteTransfer->getAmazonpayPayment()
+            ->getAuthorizationDetails()
+            ->getAuthorizationStatus()
+            ->getReasonCode();
     }
 
 }
