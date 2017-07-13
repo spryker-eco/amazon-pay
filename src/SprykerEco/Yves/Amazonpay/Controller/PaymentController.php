@@ -181,8 +181,7 @@ class PaymentController extends AbstractController
         }
 
         if (!$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-            return $this->getPaymentChoiceIncorrectResponse(
-                $request,
+            return $this->getFailedRedirectResponse(
                 $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getErrorCode()
             );
         }
@@ -207,24 +206,11 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param string $message
-     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    protected function getPaymentChoiceIncorrectResponse($request, $message = null)
+    protected function getFailedRedirectResponse($message = null)
     {
-        $this->addErrorMessage($message ?? 'amazonpay.payment.wrong');
-
-        return $this->redirectResponseExternal($request->headers->get('referer'));
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    protected function getFailedRedirectResponse()
-    {
-        $this->addErrorMessage('amazonpay.payment.failed');
+        $this->addErrorMessage($message ?? 'amazonpay.payment.failed');
 
         return $this->redirectResponseInternal($this->getPaymentRejectRoute());
     }
@@ -261,12 +247,12 @@ class PaymentController extends AbstractController
     {
         $this->getFactory()->getQuoteClient()->clearQuote();
 
-        $isAsyncronous =
+        $isAsynchronous =
             ($this->getFactory()->getConfig()->getAuthTransactionTimeout() > 0)
             && (!$this->getFactory()->getConfig()->getCaptureNow());
 
         return [
-            'isAsyncronous' => $isAsyncronous,
+            'isAsynchronous' => $isAsynchronous,
             'amazonpayConfig' => $this->getAmazonPayConfig(),
         ];
     }
