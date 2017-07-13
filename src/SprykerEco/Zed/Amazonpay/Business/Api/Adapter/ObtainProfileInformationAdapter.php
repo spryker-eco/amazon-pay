@@ -11,8 +11,13 @@ use Generated\Shared\Transfer\QuoteTransfer;
 use PayWithAmazon\Client;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface;
 
-class ObtainProfileInformationAdapter extends AbstractAdapter implements QuoteAdapterInterface
+class ObtainProfileInformationAdapter implements QuoteAdapterInterface
 {
+
+    /**
+     * @var \PayWithAmazon\Client
+     */
+    protected $client;
 
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter

@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
+use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
@@ -53,17 +54,34 @@ class CaptureOrderTransaction extends AbstractOrderTransaction
             );
         }
 
-        if ($orderTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus()->getIsDeclined()) {
-            $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED);
-        } elseif ($orderTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus()->getIsPending()) {
-            $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING);
-        } elseif ($orderTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus()->getIsCompleted()) {
-            $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED);
-        }
-
-        $this->paymentEntity->save();
+        $this->updatePaymentStatus($orderTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus());
 
         return $orderTransfer;
+    }
+
+    /**
+     * @param AmazonpayStatusTransfer $captureStatus
+     */
+    protected function updatePaymentStatus(AmazonpayStatusTransfer $captureStatus)
+    {
+        $paymentStatus = false;
+
+        if ($captureStatus->getIsDeclined()) {
+            $paymentStatus = AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED;
+        }
+
+        if ($captureStatus->getIsPending()) {
+            $paymentStatus = AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING;
+        }
+
+        if ($captureStatus->getIsCompleted()) {
+            $paymentStatus = AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED;
+        }
+
+        if ($paymentStatus !== false) {
+            $this->paymentEntity->setStatus($paymentStatus);
+            $this->paymentEntity->save();
+        }
     }
 
 }

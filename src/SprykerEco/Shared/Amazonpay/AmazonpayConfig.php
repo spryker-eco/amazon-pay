@@ -102,4 +102,20 @@ class AmazonpayConfig extends AbstractBundleConfig implements AmazonpayConfigInt
         return $this->get(AmazonpayConstants::AUTH_TRANSACTION_TIMEOUT);
     }
 
+    /**
+     * @return string
+     */
+    public function getWidgetScriptPath()
+    {
+        return $this->get(AmazonpayConstants::WIDGET_SCRIPT_PATH);
+    }
+
+    /**
+     * @return string
+     */
+    public function getWidgetScriptPathSandbox()
+    {
+        return $this->get(AmazonpayConstants::WIDGET_SCRIPT_PATH_SANDBOX);
+    }
+
 }

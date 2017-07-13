@@ -19,10 +19,13 @@ class UpdateSuspendedOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        // no partial reauthorize should be possible
+        if (!$this->ensureRunForFullOrder($salesOrderItems, $orderEntity, 'amazonpay.update-suspended.error.only-full-order')) {
+            return [];
+        }
+
+        /** TODO: looks like we might introduce special state and get rid of this IF */
         if ($this->getPaymentEntity($orderEntity)->getStatus()
-            === AmazonpayConstants::OMS_STATUS_PAYMENT_METHOD_CHANGED
-            && count($orderEntity->getItems()) === count($salesOrderItems)) {
+            === AmazonpayConstants::OMS_STATUS_PAYMENT_METHOD_CHANGED) {
             $this->getFacade()->reauthorizeSuspendedOrder($this->getOrderTransfer($orderEntity));
         }
 

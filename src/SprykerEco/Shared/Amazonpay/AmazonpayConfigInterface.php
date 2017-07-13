@@ -64,5 +64,14 @@ interface AmazonpayConfigInterface
      * @return int
      */
     public function getAuthTransactionTimeout();
+    /**
+     * @return string
+     */
+    public function getWidgetScriptPath();
+
+    /**
+     * @return string
+     */
+    public function getWidgetScriptPathSandbox();
 
 }

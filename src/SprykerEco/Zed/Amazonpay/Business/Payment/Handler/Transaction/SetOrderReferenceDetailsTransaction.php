@@ -31,9 +31,11 @@ class SetOrderReferenceDetailsTransaction extends AbstractQuoteTransaction
             return $quoteTransfer;
         }
 
-        $quoteTransfer->getAmazonpayPayment()->setSellerOrderId(
-            $this->generateOperationReferenceId($quoteTransfer)
-        );
+        if ($quoteTransfer->getAmazonpayPayment()) {
+            $quoteTransfer->getAmazonpayPayment()->setSellerOrderId(
+                $this->generateOperationReferenceId($quoteTransfer)
+            );
+        }
 
         return parent::execute($quoteTransfer);
     }

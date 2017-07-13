@@ -29,15 +29,18 @@ abstract class AbstractTransactionCollection
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $abstractTransfer
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     protected function executeHandlers(AbstractTransfer $abstractTransfer)
     {
+        $abstractTransfer->getAmazonpayPayment()->setResponseHeader(null);
+
         foreach ($this->transactionHandlers as $transactionHandler) {
             $abstractTransfer = $transactionHandler->execute($abstractTransfer);
 
-            if (!$abstractTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-                return $abstractTransfer;
+            if ($abstractTransfer->getAmazonpayPayment()->getResponseHeader() &&
+                !$abstractTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+                break;
             }
         }
 

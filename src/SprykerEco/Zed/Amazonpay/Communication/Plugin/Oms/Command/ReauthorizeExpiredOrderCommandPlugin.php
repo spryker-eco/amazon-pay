@@ -18,10 +18,11 @@ class ReauthorizeExpiredOrderCommandPlugin extends AbstractAmazonpayCommandPlugi
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        // no partial closing should be possible
-        if (count($orderEntity->getItems()) === count($salesOrderItems)) {
-            $this->getFacade()->reauthorizeExpiredOrder($this->getOrderTransfer($orderEntity));
+        if (!$this->ensureRunForFullOrder($salesOrderItems, $orderEntity, 'amazonpay.reauthorize.error.only-full-order')) {
+            return [];
         }
+
+        $this->getFacade()->reauthorizeExpiredOrder($this->getOrderTransfer($orderEntity));
 
         return [];
     }
