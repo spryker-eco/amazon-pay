@@ -1,0 +1,52 @@
+amazonpay.payment.failed:
+  translations:
+    de_DE: ""
+amazonpay.payment.wrong:
+  translations:
+    de_DE: ""
+checkout.amazonpay:
+  translations:
+    de_DE: ""
+amazonpay.authorize.error.only-full-order:
+  translations:
+    de_DE: ""
+amazonpay.capture.error.only-full-order:
+  translations:
+    de_DE: ""
+amazonpay.cancel.error.only-full-order:
+  translations:
+    de_DE: ""
+amazonpay.close.error.only-full-order:
+  translations:
+    de_DE: ""
+amazonpay.reauthorize.error.only-full-order:
+  translations:
+    de_DE: ""
+amazonpay.update-authorize.error.only-full-order:
+  translations:
+    de_DE: ""
+amazonpay.update-capture.error.only-full-order:
+  translations:
+    de_DE: ""
+amazonpay.update-suspended.error.only-full-order:
+  translations:
+    de_DE: ""
+amazonpay.success.asyncronous.text:
+  translations:
+    de_DE: ""
+amazonpay.timeout.error:
+  translations:
+    de_DE: ""
+amazonpay.payment.error.PaymentMethodNotAllowed:
+  translations:
+    de_DE: ""
+amazonpay.payment.error.TransactionTimedOut:
+  translations:
+    de_DE: ""
+amazonpay.payment.error.AmazonRejected:
+  translations:
+    de_DE: ""
+amazonpay.payment.error.InvalidPaymentMethod:
+  translations:
+    de_DE: ""
+    en_US: ""
