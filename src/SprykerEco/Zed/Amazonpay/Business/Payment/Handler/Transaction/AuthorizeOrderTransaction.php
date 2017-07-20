@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
+use Generated\Shared\Transfer\AmazonpayAuthorizationDetailsTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 
 class AuthorizeOrderTransaction extends AbstractQuoteTransaction
@@ -35,6 +36,8 @@ class AuthorizeOrderTransaction extends AbstractQuoteTransaction
                 $this->apiResponse->getAuthorizationDetails()
             );
 
+            $this->setAuthorizationDetails($this->apiResponse->getAuthorizationDetails(), $quoteTransfer->getItems());
+
             if ($quoteTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()
                 ->getAuthorizationStatus()
@@ -49,17 +52,28 @@ class AuthorizeOrderTransaction extends AbstractQuoteTransaction
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayAuthorizationDetailsTransfer $authorizationDetailsTransfer
+     * @param \ArrayObject|\Generated\Shared\Transfer\ItemTransfer[] $items
+     */
+    protected function setAuthorizationDetails(AmazonpayAuthorizationDetailsTransfer $authorizationDetailsTransfer, \ArrayObject $items)
+    {
+        foreach ($items as $item) {
+            $item->setAuthorizationDetails($authorizationDetailsTransfer);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return string
      */
     protected function buildErrorCode(QuoteTransfer $quoteTransfer)
     {
         return 'amazonpay.payment.error.'.
-        $quoteTransfer->getAmazonpayPayment()
-            ->getAuthorizationDetails()
-            ->getAuthorizationStatus()
-            ->getReasonCode();
+            $quoteTransfer->getAmazonpayPayment()
+                ->getAuthorizationDetails()
+                ->getAuthorizationStatus()
+                ->getReasonCode();
     }
 
 }

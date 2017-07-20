@@ -18,11 +18,17 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        if (!$this->ensureRunForFullOrder($salesOrderItems, $orderEntity, 'amazonpay.capture.error.only-full-order')) {
-            return [];
-        }
+        $orderTransfer = $this->getOrderTransfer($orderEntity);
 
-        $this->getFacade()->captureOrder($this->getOrderTransfer($orderEntity));
+        $refundTransfer = $this->getFactory()
+            ->getRefundFacade()
+            ->calculateRefund($salesOrderItems, $orderEntity);
+
+        $orderTransfer->getTotals()->setGrandTotal(
+            $refundTransfer->getAmount()
+        );
+
+        $this->getFacade()->captureOrder($orderTransfer);
 
         return [];
     }

@@ -127,13 +127,17 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
                 $this->amazonpayQueryContainer,
                 $this->ipnRequestLogger
             );
-        } elseif ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsCompleted()) {
+        }
+
+        if ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsCompleted()) {
             return new IpnPaymentCaptureCompletedHandler(
                 $this->omsFacade,
                 $this->amazonpayQueryContainer,
                 $this->ipnRequestLogger
             );
-        } elseif ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsClosed()) {
+        }
+
+        if ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsClosed()) {
             return new IpnEmptyHandler();
         }
 

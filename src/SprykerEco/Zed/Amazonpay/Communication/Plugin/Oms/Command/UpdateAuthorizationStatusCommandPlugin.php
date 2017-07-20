@@ -18,12 +18,11 @@ class UpdateAuthorizationStatusCommandPlugin extends AbstractAmazonpayCommandPlu
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        if (!$this->ensureRunForFullOrder($salesOrderItems, $orderEntity, 'amazonpay.update-authorize.error.only-full-order')) {
-            return [];
-        }
+        $orderItemTransfers = $this->getOrderItemTransfers($orderEntity);
 
-        $orderTransfer = $this->getOrderTransfer($orderEntity);
-        $this->getFacade()->updateAuthorizationStatus($orderTransfer);
+        foreach ($orderItemTransfers as $itemTransfer) {
+            $this->getFacade()->updateAuthorizationStatus($itemTransfer);
+        }
 
         return [];
     }

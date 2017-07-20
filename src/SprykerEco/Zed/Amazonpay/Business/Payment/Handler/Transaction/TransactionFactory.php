@@ -147,6 +147,19 @@ class TransactionFactory implements TransactionFactoryInterface
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
      */
+    public function createAuthorizeOrderItemsTransaction()
+    {
+        return new AuthorizeOrderItemsTransaction(
+            $this->adapterFactory->createAuthorizeQuoteAdapter(),
+            $this->config,
+            $this->transactionLogger,
+            $this->amazonpayQueryContainer
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     */
     public function createReauthorizeExpiredOrderTransaction()
     {
         return new OrderTransactionCollection(

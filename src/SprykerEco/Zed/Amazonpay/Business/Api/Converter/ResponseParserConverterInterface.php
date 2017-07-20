@@ -15,7 +15,7 @@ interface ResponseParserConverterInterface
     /**
      * @param \PayWithAmazon\ResponseInterface $responseParser
      *
-     * @return \Generated\Shared\Transfer\AbstractTransfer
+     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
      */
     public function convert(ResponseInterface $responseParser);
 

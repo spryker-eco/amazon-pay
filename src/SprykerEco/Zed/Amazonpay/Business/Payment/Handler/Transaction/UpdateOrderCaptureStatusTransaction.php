@@ -33,6 +33,12 @@ class UpdateOrderCaptureStatusTransaction extends AbstractOrderTransaction
                 return $orderTransfer;
             }
 
+            if ($this->apiResponse->getCaptureDetails()->getIdList()) {
+                $this->paymentEntity->setAmazonCaptureId(
+                    $this->apiResponse->getCaptureDetails()->getIdList()
+                );
+            }
+
             if ($this->apiResponse->getCaptureDetails()->getCaptureStatus()->getIsDeclined()) {
                 $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED);
             }

@@ -43,6 +43,11 @@ interface TransactionFactoryInterface
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
      */
+    public function createAuthorizeOrderItemsTransaction();
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     */
     public function createReauthorizeExpiredOrderTransaction();
 
     /**

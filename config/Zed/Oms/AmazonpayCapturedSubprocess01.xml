@@ -18,7 +18,7 @@
         <events>
             <event name="update refund status" manual="true" command="Amazonpay/UpdateRefundStatus" />
             <event name="capture" manual="true" command="Amazonpay/Capture" />
-            <event name="close" onEnter="true" command="Amazonpay/CloseOrder" />
+            <event name="close" command="Amazonpay/CloseOrder" />
             <event name="refund" manual="true" command="Amazonpay/RefundOrder" />
             <event name="cancel" manual="true" command="Amazonpay/CancelOrder" />
         </events>

@@ -158,6 +158,15 @@ interface AmazonpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
+    public function authorizeOrderItems(OrderTransfer $orderTransfer);
+
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer
+     */
     public function reauthorizeSuspendedOrder(OrderTransfer $orderTransfer);
 
     /**

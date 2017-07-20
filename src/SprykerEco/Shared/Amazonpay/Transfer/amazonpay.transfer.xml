@@ -26,6 +26,10 @@
         <property name="amazonpayPayment" type="AmazonpayPayment" />
     </transfer>
 
+    <transfer name="Item">
+        <property name="authorizationDetails" type="AmazonpayAuthorizationDetails"/>
+    </transfer>
+
     <transfer name="AmazonpayResponseConstraint">
         <property name="constraintId" type="string"/>
         <property name="constraintDescription" type="string"/>
