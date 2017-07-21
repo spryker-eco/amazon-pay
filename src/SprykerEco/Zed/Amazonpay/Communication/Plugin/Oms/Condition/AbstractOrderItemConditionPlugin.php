@@ -8,7 +8,7 @@
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition;
 
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
-use Spryker\Zed\Oms\Communication\Plugin\Oms\Condition\ConditionInterface;
+use Spryker\Zed\Oms\Dependency\Plugin\Condition\ConditionInterface;
 
 abstract class AbstractOrderItemConditionPlugin implements ConditionInterface
 {
@@ -25,8 +25,29 @@ abstract class AbstractOrderItemConditionPlugin implements ConditionInterface
      */
     public function check(SpySalesOrderItem $orderItem)
     {
-        return $orderItem->getOrder()->getSpyPaymentAmazonpays()->getFirst()->getStatus()
-            === $this->getConditionalStatus();
+        $payment = $this->getSalesOrderItemPayment($orderItem);
+
+        if ($payment === null) {
+            return false;
+        }
+
+        return $payment->getStatus() === $this->getConditionalStatus();
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
+     *
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay|null
+     */
+    protected function getSalesOrderItemPayment(SpySalesOrderItem $orderItem)
+    {
+        $lastPayment = $orderItem->getSpyPaymentAmazonpaySalesOrderItems()->getLast();
+
+        if (!$lastPayment) {
+            return null;
+        }
+
+        return $lastPayment->getSpyPaymentAmazonpay();
     }
 
 }

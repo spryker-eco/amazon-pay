@@ -7,10 +7,10 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class UpdateOrderAuthorizationStatusTransaction extends AbstractOrderTransaction
+class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
@@ -19,13 +19,13 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractOrderTransaction
     protected $apiResponse;
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(OrderTransfer $orderTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $orderTransfer = parent::execute($orderTransfer);
+        $orderTransfer = parent::execute($amazonpayCallTransfer);
 
         $orderTransfer->getAmazonpayPayment()->setAuthorizationDetails(
             $this->apiResponse->getAuthorizationDetails()

@@ -7,21 +7,22 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
-class GetOrderAuthorizationDetailsAdapter extends AbstractAdapter implements OrderAdapterInterface
+class GetOrderAuthorizationDetailsAdapter extends AbstractAdapter
 {
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayGetOrderReferenceDetailsResponseTransfer
      */
-    public function call(OrderTransfer $orderTransfer)
+    public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         $result = $this->client->getAuthorizationDetails([
             static::AMAZON_AUTHORIZATION_ID =>
-                $orderTransfer->getAmazonpayPayment()
+                $amazonpayCallTransfer
+                    ->getAmazonpayPayment()
                     ->getAuthorizationDetails()
                     ->getAmazonAuthorizationId(),
         ]);

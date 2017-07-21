@@ -10,7 +10,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class ReauthorizeOrderTransaction extends AbstractOrderTransaction
+class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
 {
 
     /**

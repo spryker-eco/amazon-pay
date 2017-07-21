@@ -7,20 +7,20 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
-class CancelOrderAdapter extends AbstractAdapter implements OrderAdapterInterface
+class CancelOrderAdapter extends AbstractAdapter
 {
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCancelOrderResponseTransfer
      */
-    public function call(OrderTransfer $orderTransfer)
+    public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         $result = $this->client->cancelOrderReference([
-            AbstractAdapter::AMAZON_ORDER_REFERENCE_ID => $orderTransfer->getAmazonpayPayment()->getOrderReferenceId(),
+            AbstractAdapter::AMAZON_ORDER_REFERENCE_ID => $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId(),
         ]);
 
         return $this->converter->convert($result);

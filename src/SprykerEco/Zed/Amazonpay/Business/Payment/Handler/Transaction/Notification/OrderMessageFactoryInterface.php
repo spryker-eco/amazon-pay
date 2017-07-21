@@ -7,16 +7,16 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 interface OrderMessageFactoryInterface
 {
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage|null
      */
-    public function createFailedAuthMessage(OrderTransfer $orderTransfer);
+    public function createFailedAuthMessage(AmazonpayCallTransfer $amazonpayCallTransfer);
 
 }

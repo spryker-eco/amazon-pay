@@ -12,11 +12,4 @@ use Generated\Shared\Transfer\OrderTransfer;
 abstract class AbstractNotificationMessage
 {
 
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     */
-    public function __construct(OrderTransfer $orderTransfer)
-    {
-    }
-
 }

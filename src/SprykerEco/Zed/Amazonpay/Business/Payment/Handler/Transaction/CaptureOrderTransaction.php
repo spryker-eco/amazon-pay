@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class CaptureOrderTransaction extends AbstractOrderTransaction
+class CaptureOrderTransaction extends AbstractAmazonpayTransaction
 {
 
     /**

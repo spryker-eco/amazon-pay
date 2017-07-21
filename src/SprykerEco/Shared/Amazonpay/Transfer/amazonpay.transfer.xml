@@ -180,4 +180,19 @@
         <property name="orderReferenceStatus" type="AmazonpayStatus" />
     </transfer>
 
+    <transfer name="AmazonpayCall">
+        <property name="AmazonpayPayment" type="AmazonpayPayment" />
+        <property name="RequestedAmount" type="int" />
+        <property name="ShippingAddress" type="Address" />
+        <property name="BillingAddress" type="Address" />
+        <property name="BillingSameAsShipping" type="bool" />
+        <property name="OrderReference" type="string" />
+        <property name="Email" type="string" /><!-- WHY ??? -->
+    </transfer>
+
+    <transfer name="AmazonpaySalesOrderItemGroup">
+        <property name="AmazonpayPayment" type="AmazonpayPayment" />
+        <property name="SalesOrderItems" type="array" singular="SalesOrderItem"/>
+    </transfer>
+
 </transfers>

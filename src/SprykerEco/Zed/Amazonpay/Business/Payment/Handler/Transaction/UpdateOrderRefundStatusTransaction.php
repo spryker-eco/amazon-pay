@@ -11,7 +11,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class UpdateOrderRefundStatusTransaction extends AbstractOrderTransaction
+class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
 {
 
     /**

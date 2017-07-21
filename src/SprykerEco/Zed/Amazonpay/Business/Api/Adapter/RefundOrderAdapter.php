@@ -7,34 +7,35 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
-class RefundOrderAdapter extends AbstractAdapter implements OrderAdapterInterface
+class RefundOrderAdapter extends AbstractAdapter
 {
 
     const REFUND_REFERENCE_ID = 'refund_reference_id';
     const REFUND_AMOUNT = 'refund_amount';
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayRefundOrderResponseTransfer
      */
-    public function call(OrderTransfer $orderTransfer)
+    public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         $refundAmount = $this->moneyFacade->convertIntegerToDecimal(
-            $orderTransfer->getTotals()->getRefundTotal()
+            $amazonpayCallTransfer->getRequestedAmount()
+            //            $orderTransfer->getTotals()->getRefundTotal()
         );
 
         $result = $this->client->refund([
-            static::AMAZON_ORDER_REFERENCE_ID => $orderTransfer->getAmazonpayPayment()->getOrderReferenceId(),
+            static::AMAZON_ORDER_REFERENCE_ID => $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId(),
             static::AMAZON_CAPTURE_ID =>
-                $orderTransfer
+                $amazonpayCallTransfer
                     ->getAmazonpayPayment()
                     ->getCaptureDetails()
                     ->getAmazonCaptureId(),
             static::REFUND_REFERENCE_ID =>
-                $orderTransfer
+                $amazonpayCallTransfer
                     ->getAmazonpayPayment()
                     ->getRefundDetails()
                     ->getRefundReferenceId(),

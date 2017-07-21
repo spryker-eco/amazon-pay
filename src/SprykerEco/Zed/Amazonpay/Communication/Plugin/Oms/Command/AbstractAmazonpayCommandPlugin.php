@@ -32,12 +32,12 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
     /**
      * @var PaymentAmazonpayConverterInterface
      */
-    protected $paymentAmazonpayConverter;
+//    protected $paymentAmazonpayConverter;
 
-    public function __construct(PaymentAmazonpayConverterInterface $paymentAmazonpayConverter)
-    {
-        $this->paymentAmazonpayConverter = $paymentAmazonpayConverter;
-    }
+//    public function __construct() {//PaymentAmazonpayConverterInterface $paymentAmazonpayConverter)
+//    {
+//        $this->paymentAmazonpayConverter = $paymentAmazonpayConverter;
+//    }
 
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $salesOrderEntity
@@ -53,17 +53,19 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
 
         $salesOrderItems = $salesOrderTransfer->getItems();
 
-        foreach ($salesOrderItems as $salesOrderItem) {
-            $paymentEntity =
+        return $salesOrderItems;
 
-            $salesOrderItemTransfer =
-        }
+//        foreach ($salesOrderItems as $salesOrderItem) {
+//            $paymentEntity =
+//
+//            $salesOrderItemTransfer =
+//        }
+//
+//        return $items;
 
-        return $items;
-
-        $orderTransfer =
-                $salesOrderEntity->getIdSalesOrder()
-            );
+//        $orderTransfer =
+//                $salesOrderEntity->getIdSalesOrder()
+//            );
     }
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity

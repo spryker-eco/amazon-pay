@@ -7,12 +7,15 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 use PayWithAmazon\ClientInterface;
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ResponseParserConverterInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyInterface;
 
-abstract class AbstractAdapter
+abstract class AbstractAdapter implements CallAdapterInterface
 {
 
     const AMAZON_AUTHORIZATION_ID = 'amazon_authorization_id';
@@ -53,16 +56,14 @@ abstract class AbstractAdapter
     }
 
     /**
-     * @method
-     *
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $abstractTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
      * @return float
      */
-    protected function getAmount(AbstractTransfer $abstractTransfer)
+    protected function getAmount(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         return $this->moneyFacade->convertIntegerToDecimal(
-            $abstractTransfer->requireTotals()->getTotals()->getGrandTotal()
+            $amazonpayCallTransfer->getRequestedAmount()
         );
     }
 

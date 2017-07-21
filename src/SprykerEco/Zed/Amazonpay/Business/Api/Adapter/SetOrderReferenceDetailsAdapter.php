@@ -7,26 +7,26 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
-use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
-class SetOrderReferenceDetailsAdapter extends AbstractAdapter implements QuoteAdapterInterface
+class SetOrderReferenceDetailsAdapter extends AbstractAdapter
 {
 
     const SELLER_ORDER_ID = 'seller_order_id';
     const PLATFORM_ID = 'platform_id';
 
     /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\AmazonpaySetOrderReferenceDetailsResponseTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayAuthorizeOrderResponseTransfer
      */
-    public function call(QuoteTransfer $quoteTransfer)
+    public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         $result = $this->client->setOrderReferenceDetails([
-            static::AMAZON_ORDER_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
-            static::AMAZON_ADDRESS_CONSENT_TOKEN => $quoteTransfer->getAmazonpayPayment()->getAddressConsentToken(),
-            static::AMAZON_AMOUNT => $this->getAmount($quoteTransfer),
-            static::SELLER_ORDER_ID => $quoteTransfer->getAmazonpayPayment()->getSellerOrderId(),
+            static::AMAZON_ORDER_REFERENCE_ID => $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId(),
+            static::AMAZON_ADDRESS_CONSENT_TOKEN => $amazonpayCallTransfer->getAmazonpayPayment()->getAddressConsentToken(),
+            static::AMAZON_AMOUNT => $this->getAmount($amazonpayCallTransfer),
+            static::SELLER_ORDER_ID => $amazonpayCallTransfer->getAmazonpayPayment()->getSellerOrderId(),
         ]);
 
         return $this->converter->convert($result);

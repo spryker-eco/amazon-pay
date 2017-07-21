@@ -10,7 +10,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class CloseOrderTransaction extends AbstractOrderTransaction
+class CloseOrderTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
