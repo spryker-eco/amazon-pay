@@ -7,10 +7,11 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification;
 
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
-use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface;
+use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface;
 
-class OrderAuthFailedNotifyTransaction implements OrderTransactionInterface
+class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
 {
 
     /**
@@ -36,15 +37,15 @@ class OrderAuthFailedNotifyTransaction implements OrderTransactionInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(OrderTransfer $orderTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $message = $this->orderMessageFactory->createFailedAuthMessage($orderTransfer);
+        $message = $this->orderMessageFactory->createFailedAuthMessage($amazonpayCallTransfer);
 
-        if ($orderTransfer->getAmazonpayPayment()
+        if ($amazonpayCallTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()
                 ->getAuthorizationStatus()
                 ->getIsDeclined()
@@ -52,7 +53,7 @@ class OrderAuthFailedNotifyTransaction implements OrderTransactionInterface
             $this->orderFailedAuthNotificationSender->notify($message);
         }
 
-        return $orderTransfer;
+        return $amazonpayCallTransfer;
     }
 
 }

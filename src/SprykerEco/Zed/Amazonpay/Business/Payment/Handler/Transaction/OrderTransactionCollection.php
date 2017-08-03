@@ -7,19 +7,19 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
-class OrderTransactionCollection extends AbstractTransactionCollection implements OrderTransactionInterface
+class OrderTransactionCollection extends AbstractTransactionCollection implements AmazonpayTransactionInterface
 {
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(OrderTransfer $orderTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        return parent::executeHandlers($orderTransfer);
+        return $this->executeHandlers($amazonpayCallTransfer);
     }
 
 }

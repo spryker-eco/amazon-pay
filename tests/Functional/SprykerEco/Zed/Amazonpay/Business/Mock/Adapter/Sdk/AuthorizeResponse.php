@@ -7,7 +7,7 @@
 
 namespace Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk;
 
-use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AbstractAuthorizeAdapter;
+use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AuthorizeAdapter;
 
 class AuthorizeResponse extends AbstractResponse
 {
@@ -34,8 +34,8 @@ class AuthorizeResponse extends AbstractResponse
     {
         parent::__construct($requestParameters);
 
-        $this->captureNow = $requestParameters[AbstractAuthorizeAdapter::CAPTURE_NOW];
-        $this->transactionTimeout = $requestParameters[AbstractAuthorizeAdapter::TRANSACTION_TIMEOUT];
+        $this->captureNow = $requestParameters[AuthorizeAdapter::CAPTURE_NOW];
+        $this->transactionTimeout = $requestParameters[AuthorizeAdapter::TRANSACTION_TIMEOUT];
 
         $this->responseBodyXml =
             '<AuthorizeResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">

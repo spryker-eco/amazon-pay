@@ -7,10 +7,12 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business;
 
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RefundTransfer;
+use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
@@ -211,6 +213,17 @@ class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
 
     /**
      * {@inheritdoc}
+     */
+    public function authorizeOrderItems(OrderTransfer $orderTransfer)
+    {
+        return $this->getFactory()
+            ->createTransactionFactory()
+            ->createAuthorizeTransaction()
+            ->execute($orderTransfer);
+    }
+
+    /**
+     * {@inheritdoc}
      *
      * @api
      *
@@ -227,20 +240,18 @@ class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function updateAuthorizationStatus(OrderTransfer $orderTransfer)
+    public function updateAuthorizationStatus(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         return $this->getFactory()
             ->createTransactionFactory()
             ->createUpdateOrderAuthorizationStatusTransaction()
-            ->execute($orderTransfer);
+            ->execute($amazonpayCallTransfer);
     }
 
     /**
@@ -331,6 +342,18 @@ class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
             ->createIpnRequestFactory()
             ->createConcreteIpnRequestHandler($ipnRequestTransfer)
             ->handle($ipnRequestTransfer);
+    }
+
+    /**
+     * @param SpyPaymentAmazonpay $paymentAmazonpay
+     *
+     * @return \Generated\Shared\Transfer\AmazonpayPaymentTransfer
+     */
+    public function mapAmazonPaymentToTransfer(SpyPaymentAmazonpay $paymentAmazonpay)
+    {
+        return $this->getFactory()
+            ->createPaymentAmazonpayConverter()
+            ->mapPaymentEntity($paymentAmazonpay);
     }
 
 }

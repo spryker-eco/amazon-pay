@@ -7,34 +7,34 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class ReauthorizeOrderTransaction extends AbstractOrderTransaction
+class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpayAuthorizeOrderResponseTransfer
+     * @var \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     protected $apiResponse;
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(OrderTransfer $orderTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $orderTransfer->getAmazonpayPayment()
+        $amazonpayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->setAuthorizationReferenceId(
-                $this->generateOperationReferenceId($orderTransfer)
+                $this->generateOperationReferenceId($amazonpayCallTransfer)
             );
 
-        $orderTransfer = parent::execute($orderTransfer);
+        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
         if ($this->apiResponse->getHeader()->getIsSuccess()) {
-            $orderTransfer->getAmazonpayPayment()->setAuthorizationDetails(
+            $amazonpayCallTransfer->getAmazonpayPayment()->setAuthorizationDetails(
                 $this->apiResponse->getAuthorizationDetails()
             );
 
@@ -52,7 +52,7 @@ class ReauthorizeOrderTransaction extends AbstractOrderTransaction
         $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_AUTH_PENDING);
         $this->paymentEntity->save();
 
-        return $orderTransfer;
+        return $amazonpayCallTransfer;
     }
 
 }

@@ -26,22 +26,22 @@ interface TransactionFactoryInterface
     public function createGetOrderReferenceDetailsTransaction();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createCancelPreOrderTransaction();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createCancelOrderTransaction();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AuthorizeOrderTransaction
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
-    public function createAuthorizeOrderTransaction();
+    public function createAuthorizeTransaction();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createReauthorizeExpiredOrderTransaction();
 
@@ -51,17 +51,17 @@ interface TransactionFactoryInterface
     public function createReauthorizeSuspendedOrderTransaction();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createCaptureAuthorizedTransaction();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createCloseOrderTransaction();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createRefundOrderTransaction();
 
@@ -76,17 +76,17 @@ interface TransactionFactoryInterface
     public function createConfirmPurchaseTransaction();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createUpdateOrderRefundStatusTransaction();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createUpdateOrderAuthorizationStatusTransaction();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createUpdateOrderCaptureStatusTransaction();
 

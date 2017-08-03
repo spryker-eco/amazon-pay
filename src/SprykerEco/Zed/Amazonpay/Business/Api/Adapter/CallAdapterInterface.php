@@ -5,18 +5,18 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification;
+namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
-class OrderAuthFailedHardDeclineMessage extends AbstractNotificationMessage
+interface CallAdapterInterface
 {
 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    public function __construct(AmazonpayCallTransfer $amazonpayCallTransfer)
-    {
-    }
+    public function call(AmazonpayCallTransfer $amazonpayCallTransfer);
 
 }

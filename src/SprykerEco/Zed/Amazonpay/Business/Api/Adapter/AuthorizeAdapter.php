@@ -7,14 +7,14 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
-use PayWithAmazon\Client;
 use PayWithAmazon\ClientInterface;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ResponseParserConverterInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyInterface;
 
-abstract class AbstractAuthorizeAdapter extends AbstractAdapter
+class AuthorizeAdapter extends AbstractAdapter
 {
 
     const AUTHORIZATION_AMOUNT = 'authorization_amount';
@@ -53,6 +53,20 @@ abstract class AbstractAuthorizeAdapter extends AbstractAdapter
     }
 
     /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
+     */
+    public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
+    {
+        $result = $this->client->authorize(
+            $this->buildRequestArray($amazonpayCallTransfer->getAmazonpayPayment(), $this->getAmount($amazonpayCallTransfer))
+        );
+
+        return $this->converter->convert($result);
+    }
+
+    /**
      * @param AmazonpayConfigInterface $config
      * @param string|null $captureNow
      *
@@ -78,8 +92,7 @@ abstract class AbstractAuthorizeAdapter extends AbstractAdapter
         return [
             static::AMAZON_ORDER_REFERENCE_ID => $amazonpayPaymentTransfer->getOrderReferenceId(),
             static::AUTHORIZATION_AMOUNT => $amount,
-            static::AUTHORIZATION_REFERENCE_ID =>
-                $amazonpayPaymentTransfer
+            static::AUTHORIZATION_REFERENCE_ID => $amazonpayPaymentTransfer
                     ->getAuthorizationDetails()
                     ->getAuthorizationReferenceId(),
             static::TRANSACTION_TIMEOUT => $this->transactionTimeout,

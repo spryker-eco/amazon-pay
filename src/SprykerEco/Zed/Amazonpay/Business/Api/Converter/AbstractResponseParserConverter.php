@@ -9,8 +9,10 @@ namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 
 use ArrayObject;
 use Generated\Shared\Transfer\AddressTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseConstraintTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
+use Generated\Shared\Transfer\AmazonpayResponseTransfer;
 use PayWithAmazon\ResponseInterface;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 
@@ -30,28 +32,31 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     abstract protected function getResponseType();
 
     /**
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    abstract protected function createTransferObject();
+    protected function createTransferObject()
+    {
+        return new AmazonpayResponseTransfer();
+    }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $responseTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayResponseTransfer $responseTransfer
      * @param \PayWithAmazon\ResponseInterface $responseParser
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    protected function setBody(AbstractTransfer $responseTransfer, ResponseInterface $responseParser)
+    protected function setBody(AmazonpayResponseTransfer $responseTransfer, ResponseInterface $responseParser)
     {
         return $responseTransfer;
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $responseTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayResponseTransfer $responseTransfer
      * @param \PayWithAmazon\ResponseInterface $responseParser
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    protected function setResponseDataToTransfer(AbstractTransfer $responseTransfer, ResponseInterface $responseParser)
+    protected function setResponseDataToTransfer(AmazonpayResponseTransfer $responseTransfer, ResponseInterface $responseParser)
     {
         $responseTransfer->setHeader($this->extractHeader($responseParser));
 
@@ -65,7 +70,7 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     /**
      * @param \PayWithAmazon\ResponseInterface $responseParser
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     public function convert(ResponseInterface $responseParser)
     {
@@ -162,9 +167,7 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     {
         $responseType = $this->getResponseType();
 
-        return !empty($responseParser->toArray()[$responseType])
-            ? $responseParser->toArray()[$responseType]
-            : [];
+        return $responseParser->toArray()[$responseType] ?? [];
     }
 
     /**

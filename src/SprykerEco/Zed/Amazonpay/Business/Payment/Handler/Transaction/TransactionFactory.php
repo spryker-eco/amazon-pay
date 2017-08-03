@@ -31,11 +31,6 @@ class TransactionFactory implements TransactionFactoryInterface
     protected $amazonpayQueryContainer;
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Method\AmazonpayInterface
-     */
-    protected $amazonpayPaymentMethod;
-
-    /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface
      */
     protected $transactionLogger;
@@ -83,14 +78,15 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractAmazonpayTransaction
      */
     public function createGetOrderReferenceDetailsTransaction()
     {
         return new GetOrderReferenceDetailsTransaction(
             $this->adapterFactory->createGetOrderReferenceDetailsAmazonpayAdapter(),
             $this->config,
-            $this->transactionLogger
+            $this->transactionLogger,
+            $this->amazonpayQueryContainer
         );
     }
 
@@ -107,7 +103,7 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createCancelOrderTransaction()
     {
@@ -120,7 +116,7 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     protected function createCancelOrderTransactionObject()
     {
@@ -133,19 +129,20 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
-    public function createAuthorizeOrderTransaction()
+    public function createAuthorizeTransaction()
     {
-        return new AuthorizeOrderTransaction(
-            $this->adapterFactory->createAuthorizeQuoteAdapter(),
+        return new AuthorizeTransaction(
+            $this->adapterFactory->createAuthorizeAdapter(),
             $this->config,
-            $this->transactionLogger
+            $this->transactionLogger,
+            $this->amazonpayQueryContainer
         );
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createReauthorizeExpiredOrderTransaction()
     {
@@ -158,12 +155,12 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     protected function createReauthorizeOrderTransactionObject()
     {
         return new ReauthorizeOrderTransaction(
-            $this->adapterFactory->createAuthorizeCaptureNowOrderAdapter(),
+            $this->adapterFactory->createAuthorizeCaptureNowAdapter(),
             $this->config,
             $this->transactionLogger,
             $this->amazonpayQueryContainer
@@ -171,12 +168,12 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createReauthorizeSuspendedOrderTransaction()
     {
         return new ReauthorizeOrderTransaction(
-            $this->adapterFactory->createAuthorizeOrderAdapter(),
+            $this->adapterFactory->createAuthorizeAdapter(),
             $this->config,
             $this->transactionLogger,
             $this->amazonpayQueryContainer
@@ -184,7 +181,7 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     protected function createCaptureOrderTransaction()
     {
@@ -197,7 +194,7 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createCaptureAuthorizedTransaction()
     {
@@ -210,7 +207,7 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createCloseOrderTransaction()
     {
@@ -223,7 +220,7 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createRefundOrderTransaction()
     {
@@ -231,13 +228,12 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->adapterFactory->createRefundOrderAdapter(),
             $this->config,
             $this->transactionLogger,
-            $this->amazonpayQueryContainer,
-            $this->amazonpayPaymentMethod
+            $this->amazonpayQueryContainer
         );
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createUpdateOrderRefundStatusTransaction()
     {
@@ -250,7 +246,7 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createUpdateOrderAuthorizationStatusTransaction()
     {
@@ -263,7 +259,7 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createUpdateOrderCaptureStatusTransaction()
     {
@@ -296,7 +292,7 @@ class TransactionFactory implements TransactionFactoryInterface
                 $this->createSetOrderReferenceTransaction(),
                 $this->createConfirmOrderReferenceTransaction(),
                 $this->createGetOrderReferenceDetailsTransaction(),
-                $this->createAuthorizeOrderTransaction(),
+                $this->createAuthorizeTransaction(),
                 $this->createHandleDeclinedOrderTransaction(),
             ]
         );

@@ -7,20 +7,20 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
-class GetOrderRefundDetailsAdapter extends AbstractAdapter implements OrderAdapterInterface
+class GetOrderRefundDetailsAdapter extends AbstractAdapter
 {
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\AmazonpayGetOrderReferenceDetailsResponseTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    public function call(OrderTransfer $orderTransfer)
+    public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         $result = $this->client->getRefundDetails([
-            static::AMAZON_REFUND_ID => $orderTransfer
+            static::AMAZON_REFUND_ID => $amazonpayCallTransfer
                 ->getAmazonpayPayment()
                 ->getRefundDetails()
                 ->getAmazonRefundId(),

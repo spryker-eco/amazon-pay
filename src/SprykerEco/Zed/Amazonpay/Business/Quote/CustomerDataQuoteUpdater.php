@@ -9,9 +9,10 @@ namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
+use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface;
 
-class CustomerDataQuoteUpdater implements QuoteUpdaterInterface
+class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
 {
 
     /**
@@ -25,11 +26,11 @@ class CustomerDataQuoteUpdater implements QuoteUpdaterInterface
     protected $config;
 
     /**
-     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface $executionAdapter
+     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface $executionAdapter
      * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
      */
     public function __construct(
-        QuoteAdapterInterface $executionAdapter,
+        CallAdapterInterface $executionAdapter,
         AmazonpayConfigInterface $config
     ) {
         $this->executionAdapter = $executionAdapter;
@@ -43,9 +44,10 @@ class CustomerDataQuoteUpdater implements QuoteUpdaterInterface
      */
     public function update(QuoteTransfer $quoteTransfer)
     {
-        $quoteTransfer->setCustomer(
-            $this->executionAdapter->call($quoteTransfer)
-        );
+        $amazonCallTransfer = $this->convertQuoteTransferToAmazonPayTransfer($quoteTransfer);
+        $customer = $this->executionAdapter->call($amazonCallTransfer);
+
+        $quoteTransfer->setCustomer($customer);
 
         $quoteTransfer->getCustomer()->setIsGuest(true);
 

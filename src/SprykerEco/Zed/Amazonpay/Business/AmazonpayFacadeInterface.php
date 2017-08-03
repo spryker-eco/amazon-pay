@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business;
 
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -158,6 +159,15 @@ interface AmazonpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
+    public function authorizeOrderItems(OrderTransfer $orderTransfer);
+
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer
+     */
     public function reauthorizeSuspendedOrder(OrderTransfer $orderTransfer);
 
     /**
@@ -208,11 +218,11 @@ interface AmazonpayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function updateAuthorizationStatus(OrderTransfer $orderTransfer);
+    public function updateAuthorizationStatus(AmazonpayCallTransfer $amazonpayCallTransfer);
 
     /**
      *  Specification:

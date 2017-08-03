@@ -21,6 +21,9 @@ abstract class AbstractConverter
     const STATUS_CLOSED = 'Closed';
     const STATUS_COMPLETED = 'Completed';
     const STATUS_SUSPENDED = 'Suspended';
+    const LAST_UPDATE_TIMESTAMP = 'LastUpdateTimestamp';
+    const REASON_CODE = 'ReasonCode';
+    const STATE = 'State';
 
     /**
      * @param array $priceData
@@ -46,56 +49,56 @@ abstract class AbstractConverter
     {
         $status = new AmazonpayStatusTransfer();
 
-        if (!empty($statusData['LastUpdateTimestamp'])) {
-            $status->setLastUpdateTimestamp($statusData['LastUpdateTimestamp']);
+        if (!empty($statusData[self::LAST_UPDATE_TIMESTAMP])) {
+            $status->setLastUpdateTimestamp($statusData[self::LAST_UPDATE_TIMESTAMP]);
         }
 
-        $status->setState($statusData['State']);
+        $status->setState($statusData[self::STATE]);
 
-        if (!empty($statusData['ReasonCode'])) {
-            $status->setReasonCode($statusData['ReasonCode']);
+        if (!empty($statusData[self::REASON_CODE])) {
+            $status->setReasonCode($statusData[self::REASON_CODE]);
             $status->setIsReauthorizable(
-                $statusData['ReasonCode'] === AmazonpayConstants::REASON_CODE_SELLER_CLOSED
-                || $statusData['ReasonCode'] === AmazonpayConstants::REASON_CODE_EXPIRED_UNUSED
+                $statusData[self::REASON_CODE] === AmazonpayConstants::REASON_CODE_SELLER_CLOSED
+                || $statusData[self::REASON_CODE] === AmazonpayConstants::REASON_CODE_EXPIRED_UNUSED
             );
 
             $status->setIsPaymentMethodInvalid(
-                $statusData['ReasonCode'] === AmazonpayConstants::REASON_CODE_PAYMENT_METHOD_INVALID
+                $statusData[self::REASON_CODE] === AmazonpayConstants::REASON_CODE_PAYMENT_METHOD_INVALID
             );
 
             $status->setIsClosedByAmazon(
-                $statusData['ReasonCode'] === AmazonpayConstants::REASON_CODE_AMAZON_CLOSED
+                $statusData[self::REASON_CODE] === AmazonpayConstants::REASON_CODE_AMAZON_CLOSED
             );
 
             $status->setIsTransactionTimedOut(
-                $statusData['ReasonCode'] === AmazonpayConstants::REASON_CODE_TRANSACTION_TIMED_OUT
+                $statusData[self::REASON_CODE] === AmazonpayConstants::REASON_CODE_TRANSACTION_TIMED_OUT
             );
         }
 
-        if ($statusData['State'] === static::STATUS_DECLINED) {
+        if ($statusData[self::STATE] === static::STATUS_DECLINED) {
             $status->setIsSuspended($status->getIsPaymentMethodInvalid());
             $status->setIsDeclined(true);
         }
 
-        if ($statusData['State'] === static::STATUS_SUSPENDED) {
+        if ($statusData[self::STATE] === static::STATUS_SUSPENDED) {
             $status->setIsSuspended(true);
             $status->setIsDeclined(true);
         }
 
         $status->setIsPending(
-            $statusData['State'] === static::STATUS_PENDING
+            $statusData[self::STATE] === static::STATUS_PENDING
         );
 
         $status->setIsOpen(
-            $statusData['State'] === static::STATUS_OPEN
+            $statusData[self::STATE] === static::STATUS_OPEN
         );
 
         $status->setIsClosed(
-            $statusData['State'] === static::STATUS_CLOSED
+            $statusData[self::STATE] === static::STATUS_CLOSED
         );
 
         $status->setIsCompleted(
-            $statusData['State'] === static::STATUS_COMPLETED
+            $statusData[self::STATE] === static::STATUS_COMPLETED
         );
 
         return $status;
@@ -111,7 +114,7 @@ abstract class AbstractConverter
     {
         $names = explode(' ', $name, 2);
 
-        if (count($names) >= 2) {
+        if (count($names) === 2) {
             $transfer->setFirstName($names[0]);
             $transfer->setLastName($names[1]);
         } else {

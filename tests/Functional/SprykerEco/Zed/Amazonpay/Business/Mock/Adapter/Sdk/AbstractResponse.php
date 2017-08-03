@@ -8,7 +8,7 @@
 namespace Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk;
 
 use PayWithAmazon\ResponseParser;
-use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AbstractAuthorizeAdapter;
+use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AuthorizeAdapter;
 
 class AbstractResponse
 {
@@ -46,8 +46,8 @@ class AbstractResponse
      */
     public function __construct(array $requestParameters)
     {
-        if (isset($requestParameters[AbstractAuthorizeAdapter::AMAZON_ORDER_REFERENCE_ID])) {
-            $this->orderReferenceId = $requestParameters[AbstractAuthorizeAdapter::AMAZON_ORDER_REFERENCE_ID];
+        if (isset($requestParameters[AuthorizeAdapter::AMAZON_ORDER_REFERENCE_ID])) {
+            $this->orderReferenceId = $requestParameters[AuthorizeAdapter::AMAZON_ORDER_REFERENCE_ID];
         }
 
         $this->statusCode = 200;

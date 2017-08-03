@@ -15,6 +15,8 @@ use SprykerEco\Zed\Amazonpay\Business\Order\Saver;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnFactory;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLogger;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\TransactionFactory;
+use SprykerEco\Zed\Amazonpay\Business\Payment\PaymentAmazonpayConverter;
+use SprykerEco\Zed\Amazonpay\Business\Payment\PaymentAmazonpayConverterInterface;
 use SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdateFactory;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface;
@@ -167,4 +169,13 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
             AmazonpayDependencyProvider::FACADE_MESSENGER
         );
     }
+
+    /**
+     * @return PaymentAmazonpayConverterInterface
+     */
+    public function createPaymentAmazonpayConverter()
+    {
+        return new PaymentAmazonpayConverter();
+    }
+
 }

@@ -7,42 +7,37 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
-use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class GetOrderReferenceDetailsTransaction extends AbstractQuoteTransaction
+class GetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction 
 {
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpayGetOrderReferenceDetailsResponseTransfer
-     */
-    protected $apiResponse;
-
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(QuoteTransfer $quoteTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $quoteTransfer = parent::execute($quoteTransfer);
+        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
-        if ($quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-            $quoteTransfer->setShippingAddress($this->apiResponse->getShippingAddress());
+        if ($amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+            $amazonpayCallTransfer->setShippingAddress($this->apiResponse->getShippingAddress());
 
             if ($this->apiResponse->getBillingAddress()) {
-                $quoteTransfer->setBillingAddress($this->apiResponse->getBillingAddress());
+                $amazonpayCallTransfer->setBillingAddress($this->apiResponse->getBillingAddress());
             } else {
-                $quoteTransfer->setBillingAddress($this->apiResponse->getShippingAddress());
-                $quoteTransfer->setBillingSameAsShipping(true);
+                $amazonpayCallTransfer->setBillingAddress($this->apiResponse->getShippingAddress());
+                $amazonpayCallTransfer->setBillingSameAsShipping(true);
             }
 
-            $quoteTransfer->getAmazonpayPayment()->setIsSandbox(
+            $amazonpayCallTransfer->getAmazonpayPayment()->setIsSandbox(
                 $this->apiResponse->getIsSandbox()
             );
-            $quoteTransfer->setOrderReference(
-                $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId()
+            $amazonpayCallTransfer->setOrderReference(
+                $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId()
             );
 
             $orderReferenceStatus = new AmazonpayStatusTransfer();
@@ -51,10 +46,10 @@ class GetOrderReferenceDetailsTransaction extends AbstractQuoteTransaction
                 $this->apiResponse->getOrderReferenceStatus() === AmazonpayConstants::ORDER_REFERENCE_STATUS_OPEN
             );
 
-            $quoteTransfer->getAmazonpayPayment()->setOrderReferenceStatus($orderReferenceStatus);
+            $amazonpayCallTransfer->getAmazonpayPayment()->setOrderReferenceStatus($orderReferenceStatus);
         }
 
-        return $quoteTransfer;
+        return $amazonpayCallTransfer;
     }
 
 }

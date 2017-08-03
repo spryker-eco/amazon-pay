@@ -3,9 +3,29 @@
           xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
           namespace="Orm\Zed\Amazonpay\Persistence" package="src.Orm.Zed.Amazonpay.Persistence">
 
+    <table name="spy_payment_amazonpay_sales_order_item" phpName="SpyPaymentAmazonpaySalesOrderItem">
+        <column name="id_payment_amazonpay_sales_order_item" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_sales_order_item" required="true" type="INTEGER" />
+        <column name="fk_payment_amazonpay" required="true" type="INTEGER" />
+
+        <unique name="spy_payment_amazonpay_sales_order_item-unique-so_item-p-amazonpay">
+            <unique-column name="fk_sales_order_item" />
+            <unique-column name="fk_payment_amazonpay" />
+        </unique>
+
+        <foreign-key name="spy_payment_amazonpay_sales_order_item-fk_sales_order_item" foreignTable="spy_sales_order_item" phpName="SpySalesOrderItem">
+            <reference foreign="id_sales_order_item" local="fk_sales_order_item"/>
+        </foreign-key>
+
+        <foreign-key name="spy_payment_amazonpay_sales_order_item-fk_payment_amazonpay" foreignTable="spy_payment_amazonpay" phpName="SpyPaymentAmazonpay">
+            <reference foreign="id_payment_amazonpay" local="fk_payment_amazonpay"/>
+        </foreign-key>
+
+        <id-method-parameter value="spy_payment_amazonpay_sales_order_item_pk_seq"/>
+    </table>
+
     <table name="spy_payment_amazonpay" phpName="SpyPaymentAmazonpay">
         <column name="id_payment_amazonpay" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
-        <column name="fk_sales_order" required="true" type="INTEGER"/>
         <column name="seller_order_id" required="true" type="VARCHAR"/>
         <column name="order_reference_id" required="true" type="VARCHAR"/>
         <column name="status" required="true" type="VARCHAR"/>
@@ -17,10 +37,6 @@
         <column name="amazon_refund_id" type="VARCHAR"/>
         <column name="request_id" type="VARCHAR"/>
         <column name="is_sandbox" required="true" type="INTEGER"/>
-
-        <foreign-key name="spy_payment_amazonpay-fk_sales_order" foreignTable="spy_sales_order" phpName="SpySalesOrder">
-            <reference foreign="id_sales_order" local="fk_sales_order"/>
-        </foreign-key>
 
         <unique name="spy_payment_amazonpay-unique-request_id">
             <unique-column name="seller_order_id" />

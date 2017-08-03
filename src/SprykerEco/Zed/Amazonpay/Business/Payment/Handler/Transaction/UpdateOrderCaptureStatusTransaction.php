@@ -8,29 +8,35 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class UpdateOrderCaptureStatusTransaction extends AbstractOrderTransaction
+class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpayCaptureOrderResponseTransfer
+     * @var \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     protected $apiResponse;
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(OrderTransfer $orderTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $orderTransfer = parent::execute($orderTransfer);
+        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
         if ($this->apiResponse->getHeader()->getIsSuccess()) {
             if ($this->apiResponse->getCaptureDetails()->getCaptureStatus()->getIsPending()) {
-                return $orderTransfer;
+                return $amazonpayCallTransfer;
+            }
+
+            if ($this->apiResponse->getCaptureDetails()->getIdList()) {
+                $this->paymentEntity->setAmazonCaptureId(
+                    $this->apiResponse->getCaptureDetails()->getIdList()
+                );
             }
 
             if ($this->apiResponse->getCaptureDetails()->getCaptureStatus()->getIsDeclined()) {
@@ -48,7 +54,7 @@ class UpdateOrderCaptureStatusTransaction extends AbstractOrderTransaction
             $this->paymentEntity->save();
         }
 
-        return $orderTransfer;
+        return $amazonpayCallTransfer;
     }
 
 }

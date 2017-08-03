@@ -9,7 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 
-class QuoteTransactionCollection extends AbstractTransactionCollection implements QuoteTransactionInterface
+class QuoteTransactionCollection extends AbstractTransactionCollection
 {
 
     /**
@@ -19,7 +19,9 @@ class QuoteTransactionCollection extends AbstractTransactionCollection implement
      */
     public function execute(QuoteTransfer $quoteTransfer)
     {
-        return parent::executeHandlers($quoteTransfer);
+        $quoteTransfer
+
+        return $this->executeHandlers($quoteTransfer);
     }
 
 }

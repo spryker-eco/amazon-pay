@@ -11,67 +11,62 @@ interface AdapterFactoryInterface
 {
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createObtainProfileInformationAdapter();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createSetOrderReferenceDetailsAmazonpayAdapter();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createConfirmOrderReferenceAmazonpayAdapter();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createGetOrderReferenceDetailsAmazonpayAdapter();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
-    public function createAuthorizeQuoteAdapter();
+    public function createAuthorizeAdapter();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
-    public function createAuthorizeOrderAdapter();
+    public function createAuthorizeCaptureNowAdapter();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
-     */
-    public function createAuthorizeCaptureNowOrderAdapter();
-
-    /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createCloseOrderAdapter();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createCancelOrderAdapter();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createRefundOrderAdapter();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createGetOrderAuthorizationDetailsAdapter();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createGetOrderCaptureDetailsAdapter();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createGetOrderRefundDetailsAdapter();
 

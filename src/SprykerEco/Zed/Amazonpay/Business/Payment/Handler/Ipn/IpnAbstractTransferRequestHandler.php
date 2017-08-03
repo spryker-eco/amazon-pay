@@ -7,6 +7,8 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
+use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
+use Propel\Runtime\Collection\ObjectCollection;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
@@ -58,11 +60,27 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
 
         $this->omsFacade->triggerEvent(
             $this->getOmsEventId(),
-            $paymentEntity->getSpySalesOrder()->getItems(),
+            $this->getAffectedSalesOrderItems($paymentEntity),
             []
         );
 
         $this->ipnRequestLogger->log($amazonpayIpnRequestTransfer, $paymentEntity);
+    }
+
+    /**
+     * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $paymentEntity
+     *
+     * @return \Propel\Runtime\Collection\ObjectCollection|\Orm\Zed\Sales\Persistence\SpySalesOrderItem[]
+     */
+    protected function getAffectedSalesOrderItems(SpyPaymentAmazonpay $paymentEntity)
+    {
+        $items = new ObjectCollection();
+
+        foreach ($paymentEntity->getSpyPaymentAmazonpaySalesOrderItems() as $amazonpaySalesOrderItem) {
+            $items[] = $amazonpaySalesOrderItem->getSpySalesOrderItem();
+        }
+
+        return $items;
     }
 
     /**

@@ -47,7 +47,7 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createObtainProfileInformationAdapter()
     {
@@ -58,7 +58,7 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createSetOrderReferenceDetailsAmazonpayAdapter()
     {
@@ -70,7 +70,7 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createConfirmOrderReferenceAmazonpayAdapter()
     {
@@ -82,7 +82,7 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createGetOrderReferenceDetailsAmazonpayAdapter()
     {
@@ -94,11 +94,11 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
-    public function createAuthorizeQuoteAdapter()
+    public function createAuthorizeAdapter()
     {
-        return new AuthorizeQuoteAdapter(
+        return new AuthorizeAdapter(
             $this->createSdkAdapterFactory()->createAmazonpayClient($this->config),
             $this->converterFactory->createAuthorizeOrderConverter(),
             $this->moneyFacade,
@@ -107,24 +107,11 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
-    public function createAuthorizeOrderAdapter()
+    public function createAuthorizeCaptureNowAdapter()
     {
-        return new AuthorizeOrderAdapter(
-            $this->createSdkAdapterFactory()->createAmazonpayClient($this->config),
-            $this->converterFactory->createAuthorizeOrderConverter(),
-            $this->moneyFacade,
-            $this->config
-        );
-    }
-
-    /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
-     */
-    public function createAuthorizeCaptureNowOrderAdapter()
-    {
-        return new AuthorizeOrderAdapter(
+        return new AuthorizeAdapter(
             $this->createSdkAdapterFactory()->createAmazonpayClient($this->config),
             $this->converterFactory->createAuthorizeOrderConverter(),
             $this->moneyFacade,
@@ -134,7 +121,7 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createCaptureOrderAdapter()
     {
@@ -147,7 +134,7 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createCloseOrderAdapter()
     {
@@ -159,7 +146,7 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createCancelOrderAdapter()
     {
@@ -171,7 +158,7 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createCancelPreOrderAdapter()
     {
@@ -183,7 +170,7 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createRefundOrderAdapter()
     {
@@ -195,7 +182,7 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createGetOrderAuthorizationDetailsAdapter()
     {
@@ -207,7 +194,7 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createGetOrderCaptureDetailsAdapter()
     {
@@ -219,7 +206,7 @@ class AdapterFactory implements AdapterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\OrderAdapterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createGetOrderRefundDetailsAdapter()
     {

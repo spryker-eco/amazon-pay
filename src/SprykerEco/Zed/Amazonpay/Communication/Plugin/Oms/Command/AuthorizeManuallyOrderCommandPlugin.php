@@ -11,7 +11,7 @@ use ArrayObject;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 
-class CloseOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
+class AuthorizeManuallyOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
 
     /**
@@ -20,17 +20,8 @@ class CloseOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
         $orderTransfer = $this->getOrderTransfer($orderEntity);
-
-        $refundTransfer = $this->getFactory()
-            ->getRefundFacade()
-            ->calculateRefund($salesOrderItems, $orderEntity);
-
-        $orderTransfer->getTotals()->setGrandTotal(
-            $refundTransfer->getAmount()
-        );
         $orderTransfer->setItems(new ArrayObject($salesOrderItems));
-
-        $this->getFacade()->closeOrder($orderTransfer);
+        $this->getFacade()->authorizeOrderItems($orderTransfer);
 
         return [];
     }

@@ -7,11 +7,11 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
-use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use PayWithAmazon\Client;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface;
 
-class ObtainProfileInformationAdapter implements QuoteAdapterInterface
+class ObtainProfileInformationAdapter implements CallAdapterInterface
 {
 
     /**
@@ -37,13 +37,13 @@ class ObtainProfileInformationAdapter implements QuoteAdapterInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\CustomerTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    public function call(QuoteTransfer $quoteTransfer)
+    public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $result = $this->client->getUserInfo($quoteTransfer->getAmazonpayPayment()->getAddressConsentToken());
+        $result = $this->client->getUserInfo($amazonpayCallTransfer->getAmazonpayPayment()->getAddressConsentToken());
 
         return $this->converter->convert($result);
     }

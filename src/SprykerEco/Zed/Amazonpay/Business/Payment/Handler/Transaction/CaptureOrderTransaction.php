@@ -7,41 +7,33 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class CaptureOrderTransaction extends AbstractOrderTransaction
+class CaptureOrderTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpayCaptureOrderResponseTransfer
+     * @var \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     protected $apiResponse;
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(OrderTransfer $orderTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        if (!$orderTransfer->getAmazonpayPayment()
-                ->getAuthorizationDetails()
-                ->getAuthorizationStatus()
-                ->getIsOpen()
-        ) {
-            return $orderTransfer;
-        }
-
-        $orderTransfer->getAmazonpayPayment()->getCaptureDetails()->setCaptureReferenceId(
-            $this->generateOperationReferenceId($orderTransfer)
+        $amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->setCaptureReferenceId(
+            $this->generateOperationReferenceId($amazonpayCallTransfer)
         );
 
-        $orderTransfer = parent::execute($orderTransfer);
+        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
-        if ($orderTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-            $orderTransfer->getAmazonpayPayment()->setCaptureDetails(
+        if ($amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+            $amazonpayCallTransfer->getAmazonpayPayment()->setCaptureDetails(
                 $this->apiResponse->getCaptureDetails()
             );
 
@@ -54,9 +46,9 @@ class CaptureOrderTransaction extends AbstractOrderTransaction
             );
         }
 
-        $this->updatePaymentStatus($orderTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus());
+        $this->updatePaymentStatus($amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus());
 
-        return $orderTransfer;
+        return $amazonpayCallTransfer;
     }
 
     /**
