@@ -9,15 +9,11 @@ namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
-use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface;
+use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface;
+use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\SetOrderReferenceDetailsAdapter;
 
-class ShippingAddressDataQuoteUpdater implements QuoteUpdaterInterface
+class ShippingAddressDataQuoteUpdater extends QuoteUpdaterAbstract
 {
-
-    /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface
-     */
-    protected $executionAdapter;
 
     /**
      * @var \SprykerEco\Shared\Amazonpay\AmazonpayConfig
@@ -25,16 +21,11 @@ class ShippingAddressDataQuoteUpdater implements QuoteUpdaterInterface
     protected $config;
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpaySetOrderReferenceDetailsResponseTransfer
-     */
-    protected $apiResponse;
-
-    /**
-     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface $executionAdapter
+     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface $executionAdapter
      * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfig $config
      */
     public function __construct(
-        QuoteAdapterInterface $executionAdapter,
+        SetOrderReferenceDetailsAdapter $executionAdapter,
         AmazonpayConfig $config
     ) {
         $this->executionAdapter = $executionAdapter;
@@ -48,10 +39,12 @@ class ShippingAddressDataQuoteUpdater implements QuoteUpdaterInterface
      */
     public function update(QuoteTransfer $quoteTransfer)
     {
-        $this->apiResponse = $this->executionAdapter->call($quoteTransfer);
+        $apiResponse = $this->executionAdapter->call(
+            $this->convertQuoteTransferToAmazonPayTransfer($quoteTransfer)
+        );
 
-        if ($this->apiResponse->getHeader()->getIsSuccess()) {
-            $quoteTransfer->setShippingAddress($this->apiResponse->getShippingAddress());
+        if ($apiResponse->getHeader()->getIsSuccess()) {
+            $quoteTransfer->setShippingAddress($apiResponse->getShippingAddress());
         }
 
 

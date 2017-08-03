@@ -14,7 +14,7 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
 {
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpayAuthorizeOrderResponseTransfer
+     * @var \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     protected $apiResponse;
 

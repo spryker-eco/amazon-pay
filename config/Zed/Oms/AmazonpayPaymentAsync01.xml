@@ -14,7 +14,6 @@
 
             <state name="auth pending" reserved="true"/>
             <state name="auth open" reserved="true"/>
-            <state name="manual auth required" reserved="true"/>
             <state name="auth closed"/>
             <state name="auth suspended" reserved="true"/>
             <state name="auth transaction timed out" reserved="true"/>
@@ -25,7 +24,6 @@
             <state name="capture declined"/>
 
             <state name="cancelled"/>
-            <state name="completed non refundable"/>
         </states>
 
         <events>
@@ -34,13 +32,11 @@
             <event name="update capture status" manual="true" command="Amazonpay/UpdateCaptureStatus" />
             <event name="update suspended order" command="Amazonpay/UpdateSuspendedOrder" />
             <event name="reauthorize expired order" onEnter="true" command="Amazonpay/ReauthorizeExpiredOrder" />
-            <event name="manual auth" onEnter="true" command="Amazonpay/AuthorizeOrderManually" />
-            <event name="refund allowed time exceeded" timeout="30days" />
         </events>
 
         <transitions>
             <!-- from new -->
-            <transition condition="Amazonpay/IsAuthPending">
+            <transition condition="Amazonpay/IsAuthPending" happy="true">
                 <source>new</source>
                 <target>auth pending</target>
                 <event>update order status</event>
@@ -53,7 +49,7 @@
             </transition>
 
             <!-- from auth_pending -->
-            <transition condition="Amazonpay/IsAuthOpen">
+            <transition condition="Amazonpay/IsAuthOpen" happy="true">
                 <source>auth pending</source>
                 <target>auth open</target>
                 <event>update authorization status</event>
@@ -90,24 +86,13 @@
                 <event>capture</event>
             </transition>
 
-            <transition condition="Amazonpay/IsPartiallyCaptured">
-                <source>auth open</source>
-                <target>manual auth required</target>
-            </transition>
-
-            <transition>
-                <source>manual auth required</source>
-                <target>auth open</target>
-                <event>manual auth</event>
-            </transition>
-
             <transition condition="Amazonpay/IsAuthExpired">
                 <source>auth open</source>
                 <target>auth expired</target>
                 <event>capture</event>
             </transition>
 
-            <transition condition="Amazonpay/IsCaptureCompleted">
+            <transition condition="Amazonpay/IsCaptureCompleted" happy="true">
                 <source>auth expired</source>
                 <target>capture completed</target>
                 <event>reauthorize expired order</event>
@@ -135,7 +120,7 @@
             </transition>
 
             <!-- from capture_pending -->
-            <transition condition="Amazonpay/IsCaptureCompleted">
+            <transition condition="Amazonpay/IsCaptureCompleted" happy="true">
                 <source>capture pending</source>
                 <target>capture completed</target>
                 <event>update capture status</event>
@@ -154,7 +139,7 @@
                 <event>capture</event>
             </transition>
 
-            <transition condition="Amazonpay/IsCapturePending">
+            <transition condition="Amazonpay/IsCapturePending" happy="true">
                 <source>auth open</source>
                 <target>capture pending</target>
                 <event>capture</event>
@@ -164,12 +149,6 @@
                 <source>auth open</source>
                 <target>capture declined</target>
                 <event>capture</event>
-            </transition>
-
-            <transition happy="true">
-                <source>closed</source>
-                <target>completed non refundable</target>
-                <event>refund allowed time exceeded</event>
             </transition>
         </transitions>
     </process>

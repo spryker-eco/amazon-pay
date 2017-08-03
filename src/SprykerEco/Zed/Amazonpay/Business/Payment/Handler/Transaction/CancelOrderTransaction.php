@@ -14,25 +14,25 @@ class CancelOrderTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpayCancelOrderResponseTransfer
+     * @var \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     protected $apiResponse;
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\OrderTransfer $amazonpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function execute(OrderTransfer $orderTransfer)
+    public function execute(OrderTransfer $amazonpayCallTransfer)
     {
-        $orderTransfer = parent::execute($orderTransfer);
+        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
         if ($this->apiResponse->getHeader()->getIsSuccess()) {
             $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CANCELLED);
             $this->paymentEntity->save();
         }
 
-        return $orderTransfer;
+        return $amazonpayCallTransfer;
     }
 
 }

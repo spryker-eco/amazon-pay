@@ -15,7 +15,7 @@ class CloseOrderAdapter extends AbstractAdapter
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\AmazonpayCloseOrderResponseTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {

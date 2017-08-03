@@ -32,6 +32,7 @@ class PrepareQuoteCollection implements QuoteUpdaterInterface
      */
     public function __construct(AmazonpayToMessengerInterface $messengerFacade, array $quoteUpdaters)
     {
+        $this->messengerFacade = $messengerFacade;
         $this->quoteUpdaters = $quoteUpdaters;
     }
 

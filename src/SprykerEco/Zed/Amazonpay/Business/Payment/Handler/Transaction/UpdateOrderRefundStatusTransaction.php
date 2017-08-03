@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Apache OSL-2
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -8,33 +7,33 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpayRefundOrderResponseTransfer
+     * @var \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     protected $apiResponse;
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(OrderTransfer $orderTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        if (!$orderTransfer->getAmazonpayPayment()->getRefundDetails()->getRefundStatus()->getIsPending()) {
-            return $orderTransfer;
+        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getRefundDetails()->getRefundStatus()->getIsPending()) {
+            return $amazonpayCallTransfer;
         }
 
-        $orderTransfer = parent::execute($orderTransfer);
+        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
         if ($this->apiResponse->getHeader()->getIsSuccess()) {
             if ($this->apiResponse->getRefundDetails()->getRefundStatus()->getIsPending()) {
-                return $orderTransfer;
+                return $amazonpayCallTransfer;
             }
 
             if ($this->apiResponse->getRefundDetails()->getRefundStatus()->getIsDeclined()) {
@@ -48,7 +47,7 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
             $this->paymentEntity->save();
         }
 
-        return $orderTransfer;
+        return $amazonpayCallTransfer;
     }
 
 }

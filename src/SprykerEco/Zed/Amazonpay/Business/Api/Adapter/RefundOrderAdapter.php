@@ -18,7 +18,7 @@ class RefundOrderAdapter extends AbstractAdapter
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\AmazonpayRefundOrderResponseTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {

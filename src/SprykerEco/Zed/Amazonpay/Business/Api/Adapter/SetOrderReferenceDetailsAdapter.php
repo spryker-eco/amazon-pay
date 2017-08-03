@@ -13,12 +13,11 @@ class SetOrderReferenceDetailsAdapter extends AbstractAdapter
 {
 
     const SELLER_ORDER_ID = 'seller_order_id';
-    const PLATFORM_ID = 'platform_id';
 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\AmazonpayAuthorizeOrderResponseTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {

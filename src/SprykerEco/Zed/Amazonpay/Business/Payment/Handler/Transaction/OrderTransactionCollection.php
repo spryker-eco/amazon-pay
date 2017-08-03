@@ -19,7 +19,7 @@ class OrderTransactionCollection extends AbstractTransactionCollection implement
      */
     public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        return parent::executeHandlers($amazonpayCallTransfer);
+        return $this->executeHandlers($amazonpayCallTransfer);
     }
 
 }

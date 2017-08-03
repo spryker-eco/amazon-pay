@@ -7,8 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 
-use Generated\Shared\Transfer\AmazonpayCloseOrderResponseTransfer;
-
 class CloseOrderConverter extends AbstractResponseParserConverter
 {
 
@@ -18,14 +16,6 @@ class CloseOrderConverter extends AbstractResponseParserConverter
     protected function getResponseType()
     {
         return 'CloseOrderReferenceResult';
-    }
-
-    /**
-     * @return \Generated\Shared\Transfer\AmazonpayCloseOrderResponseTransfer
-     */
-    protected function createTransferObject()
-    {
-        return new AmazonpayCloseOrderResponseTransfer();
     }
 
 }
