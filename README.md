@@ -1,4 +1,4 @@
-# Amazon Pay Bundle
+# AmazonPay Module
 
 ## Installation
 
