@@ -7,6 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-class CancelPreOrderTransaction extends AbstractQuoteTransaction
+class CancelPreOrderTransaction extends AbstractAmazonpayTransaction
 {
 }

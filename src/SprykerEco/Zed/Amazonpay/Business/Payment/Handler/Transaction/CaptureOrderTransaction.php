@@ -15,11 +15,6 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpayResponseTransfer
-     */
-    protected $apiResponse;
-
-    /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
@@ -47,6 +42,10 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
         }
 
         $this->updatePaymentStatus($amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus());
+
+
+
+        $this->assignAmazonpayPaymentToItems($amazonpayCallTransfer);
 
         return $amazonpayCallTransfer;
     }

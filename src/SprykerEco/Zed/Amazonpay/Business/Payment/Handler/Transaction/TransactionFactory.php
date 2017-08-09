@@ -9,6 +9,8 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface;
+use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverterInterface;
+use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverterInterface;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface;
 use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
@@ -36,44 +38,63 @@ class TransactionFactory implements TransactionFactoryInterface
     protected $transactionLogger;
 
     /**
+     * @var \SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverterInterface
+     */
+    protected $converter;
+
+    /**
+     * @var AmazonpayTransferToEntityConverterInterface
+     */
+    protected $toEntityConverter;
+
+    /**
      * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface $adapterFactory
      * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
      * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface $transactionLogger
      * @param \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
+     * @param \SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverterInterface $converter
      */
     public function __construct(
         AdapterFactoryInterface $adapterFactory,
         AmazonpayConfigInterface $config,
         TransactionLoggerInterface $transactionLogger,
-        AmazonpayQueryContainerInterface $amazonpayQueryContainer
+        AmazonpayQueryContainerInterface $amazonpayQueryContainer,
+        AmazonpayConverterInterface $converter,
+        AmazonpayTransferToEntityConverterInterface $toEntityConverter
     ) {
         $this->adapterFactory = $adapterFactory;
         $this->config = $config;
         $this->transactionLogger = $transactionLogger;
         $this->amazonpayQueryContainer = $amazonpayQueryContainer;
+        $this->converter = $converter;
+        $this->toEntityConverter = $toEntityConverter;
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractAmazonpayTransaction
      */
     public function createConfirmOrderReferenceTransaction()
     {
         return new ConfirmOrderReferenceTransaction(
             $this->adapterFactory->createConfirmOrderReferenceAmazonpayAdapter(),
             $this->config,
-            $this->transactionLogger
+            $this->transactionLogger,
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractAmazonpayTransaction
      */
     public function createSetOrderReferenceTransaction()
     {
         return new SetOrderReferenceDetailsTransaction(
             $this->adapterFactory->createSetOrderReferenceDetailsAmazonpayAdapter(),
             $this->config,
-            $this->transactionLogger
+            $this->transactionLogger,
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
@@ -86,19 +107,22 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->adapterFactory->createGetOrderReferenceDetailsAmazonpayAdapter(),
             $this->config,
             $this->transactionLogger,
-            $this->amazonpayQueryContainer
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractAmazonpayTransaction
      */
     public function createCancelPreOrderTransaction()
     {
         return new CancelPreOrderTransaction(
             $this->adapterFactory->createCancelPreOrderAdapter(),
             $this->config,
-            $this->transactionLogger
+            $this->transactionLogger,
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
@@ -124,7 +148,8 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->adapterFactory->createCancelOrderAdapter(),
             $this->config,
             $this->transactionLogger,
-            $this->amazonpayQueryContainer
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
@@ -137,7 +162,8 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->adapterFactory->createAuthorizeAdapter(),
             $this->config,
             $this->transactionLogger,
-            $this->amazonpayQueryContainer
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
@@ -163,7 +189,8 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->adapterFactory->createAuthorizeCaptureNowAdapter(),
             $this->config,
             $this->transactionLogger,
-            $this->amazonpayQueryContainer
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
@@ -176,7 +203,8 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->adapterFactory->createAuthorizeAdapter(),
             $this->config,
             $this->transactionLogger,
-            $this->amazonpayQueryContainer
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
@@ -189,7 +217,8 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->adapterFactory->createCaptureOrderAdapter(),
             $this->config,
             $this->transactionLogger,
-            $this->amazonpayQueryContainer
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
@@ -215,7 +244,8 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->adapterFactory->createCloseOrderAdapter(),
             $this->config,
             $this->transactionLogger,
-            $this->amazonpayQueryContainer
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
@@ -228,7 +258,8 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->adapterFactory->createRefundOrderAdapter(),
             $this->config,
             $this->transactionLogger,
-            $this->amazonpayQueryContainer
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
@@ -241,7 +272,8 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->adapterFactory->createGetOrderRefundDetailsAdapter(),
             $this->config,
             $this->transactionLogger,
-            $this->amazonpayQueryContainer
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
@@ -254,7 +286,8 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->adapterFactory->createGetOrderAuthorizationDetailsAdapter(),
             $this->config,
             $this->transactionLogger,
-            $this->amazonpayQueryContainer
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
@@ -267,12 +300,13 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->adapterFactory->createGetOrderCaptureDetailsAdapter(),
             $this->config,
             $this->transactionLogger,
-            $this->amazonpayQueryContainer
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
         );
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\HandleDeclinedOrderTransaction
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createHandleDeclinedOrderTransaction()
     {
@@ -283,18 +317,19 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\QuoteTransactionCollection
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\TransactionCollection
      */
     public function createConfirmPurchaseTransaction()
     {
-        return new QuoteTransactionCollection(
+        return new TransactionCollection(
             [
                 $this->createSetOrderReferenceTransaction(),
                 $this->createConfirmOrderReferenceTransaction(),
                 $this->createGetOrderReferenceDetailsTransaction(),
                 $this->createAuthorizeTransaction(),
                 $this->createHandleDeclinedOrderTransaction(),
-            ]
+            ],
+            $this->converter
         );
     }
 

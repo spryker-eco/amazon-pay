@@ -7,20 +7,18 @@
 
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
+use ArrayObject;
 use Generated\Shared\Transfer\AmazonpayAuthorizationDetailsTransfer;
-use Generated\Shared\Transfer\AmazonpayCaptureDetailsTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
-use Generated\Shared\Transfer\AmazonpayRefundDetailsTransfer;
-use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
-use Generated\Shared\Transfer\AmazonpayStatusTransfer;
+use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\MessageTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
+use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
+use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItem;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
-use SprykerEco\Zed\Amazonpay\Business\Payment\PaymentAmazonpayConverterInterface;
 
 /**
  * @method \SprykerEco\Zed\Amazonpay\Business\AmazonpayFacade getFacade()
@@ -28,16 +26,6 @@ use SprykerEco\Zed\Amazonpay\Business\Payment\PaymentAmazonpayConverterInterface
  */
 abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements CommandByOrderInterface
 {
-
-    /**
-     * @var PaymentAmazonpayConverterInterface
-     */
-//    protected $paymentAmazonpayConverter;
-
-//    public function __construct() {//PaymentAmazonpayConverterInterface $paymentAmazonpayConverter)
-//    {
-//        $this->paymentAmazonpayConverter = $paymentAmazonpayConverter;
-//    }
 
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $salesOrderEntity
@@ -51,21 +39,7 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
             ->getSalesFacade()
             ->getOrderByIdSalesOrder($salesOrderEntity->getIdSalesOrder());
 
-        $salesOrderItems = $salesOrderTransfer->getItems();
-
-        return $salesOrderItems;
-
-//        foreach ($salesOrderItems as $salesOrderItem) {
-//            $paymentEntity =
-//
-//            $salesOrderItemTransfer =
-//        }
-//
-//        return $items;
-
-//        $orderTransfer =
-//                $salesOrderEntity->getIdSalesOrder()
-//            );
+        return $salesOrderTransfer->getItems();
     }
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
@@ -74,8 +48,7 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
      */
     protected function getOrderTransfer(SpySalesOrder $orderEntity)
     {
-        $orderTransfer = $this
-            ->getFactory()
+        return $this->getFactory()
             ->getSalesFacade()
             ->getOrderByIdSalesOrder(
                 $orderEntity->getIdSalesOrder()
@@ -113,6 +86,119 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
         $messageTransfer->setValue($message);
 
         return $messageTransfer;
+    }
+
+    /**
+     * @param SpySalesOrder $orderEntity
+     * @param \ArrayObject|ItemTransfer[] $itemTransfers
+     *
+     * @return int
+     */
+    protected function getRequestedAmountByOrderAndItems(SpySalesOrder $orderEntity, ArrayObject $itemTransfers)
+    {
+        $subtotal = 0;
+
+        foreach ($itemTransfers as $itemTransfer) {
+            $subtotal+= $itemTransfer->getUnitPriceToPayAggregation();
+        }
+
+        return $subtotal;
+    }
+
+    /**
+     * @param SpySalesOrderItem[] $salesOrderItems
+     *
+     * @return AmazonpayCallTransfer[]
+     */
+    protected function groupSalesOrderItemsByPayment(array $salesOrderItems)
+    {
+        $groups = [];
+
+        foreach ($salesOrderItems as $salesOrderItem) {
+            $payment = $this->getPaymentDetails($salesOrderItem);
+
+            if (!$payment) {
+                continue;
+            }
+
+            $groupData = $groups[$payment->getAuthorizationReferenceId()] ?? null;
+
+            if (!$groupData) {
+                $groupData = new AmazonpayCallTransfer();
+
+                $paymentTransfer = $this->getFacade()->mapAmazonPaymentToTransfer($payment);
+
+                $groupData->setAmazonpayPayment($paymentTransfer);
+            }
+
+            $groupData->addItem(
+                $this->mapSalesOrderItemToItemTransfer($salesOrderItem)
+            );
+
+            $groups[$payment->getAuthorizationReferenceId()] = $groupData;
+        }
+
+        return $groups;
+    }
+
+    protected function createAmazonpayCallTransfer(array $salesOrderItems)
+    {
+        $amazonpayCallTransfer = new AmazonpayCallTransfer();
+        $amazonpayCallTransfer->setItems(
+            new ArrayObject(
+                array_map(array($this, 'mapSalesOrderItemToItemTransfer'), $salesOrderItems)
+            )
+        );
+        $amazonPayment = new AmazonpayPaymentTransfer();
+        $amazonPayment->setAuthorizationDetails(new AmazonpayAuthorizationDetailsTransfer());
+        $amazonpayCallTransfer->setAmazonpayPayment($amazonPayment);
+
+        return $amazonpayCallTransfer;
+    }
+
+    /**
+     * @param SpySalesOrderItem $salesOrderItem
+     *
+     * @return null|SpyPaymentAmazonpay
+     */
+    protected function getPaymentDetails(SpySalesOrderItem $salesOrderItem)
+    {
+        /** @var SpyPaymentAmazonpaySalesOrderItem $payment */
+        $payment = $salesOrderItem->getSpyPaymentAmazonpaySalesOrderItems()->getLast();
+
+        if (!$payment) {
+            return null;
+        }
+
+        return $payment->getSpyPaymentAmazonpay();
+
+    }
+
+    /**
+     * @param SpySalesOrderItem $salesOrderItemEntity
+     *
+     * @return ItemTransfer
+     */
+    protected function mapSalesOrderItemToItemTransfer(SpySalesOrderItem $salesOrderItemEntity)
+    {
+        $itemTransfer = (new ItemTransfer())
+            ->fromArray($salesOrderItemEntity->toArray(), true);
+
+        $itemTransfer->setUnitGrossPrice($salesOrderItemEntity->getGrossPrice());
+        $itemTransfer->setUnitNetPrice($salesOrderItemEntity->getNetPrice());
+
+        $itemTransfer->setUnitPrice($salesOrderItemEntity->getPrice());
+        $itemTransfer->setUnitPriceToPayAggregation($salesOrderItemEntity->getPriceToPayAggregation());
+        $itemTransfer->setUnitSubtotalAggregation($salesOrderItemEntity->getSubtotalAggregation());
+        $itemTransfer->setUnitProductOptionPriceAggregation($salesOrderItemEntity->getProductOptionPriceAggregation());
+        $itemTransfer->setUnitExpensePriceAggregation($salesOrderItemEntity->getExpensePriceAggregation());
+        $itemTransfer->setUnitTaxAmount($salesOrderItemEntity->getTaxAmount());
+        $itemTransfer->setUnitTaxAmountFullAggregation($salesOrderItemEntity->getTaxAmountFullAggregation());
+        $itemTransfer->setUnitDiscountAmountAggregation($salesOrderItemEntity->getDiscountAmountAggregation());
+        $itemTransfer->setUnitDiscountAmountFullAggregation($salesOrderItemEntity->getDiscountAmountFullAggregation());
+        $itemTransfer->setRefundableAmount($salesOrderItemEntity->getRefundableAmount());
+
+        return $itemTransfer;
     }
 
 }

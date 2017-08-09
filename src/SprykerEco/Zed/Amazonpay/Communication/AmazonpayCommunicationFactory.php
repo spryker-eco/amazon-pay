@@ -27,6 +27,14 @@ class AmazonpayCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsBridge
+     */
+    public function getOmsFacade()
+    {
+        return $this->getProvidedDependency(AmazonpayDependencyProvider::FACADE_OMS);
+    }
+
+    /**
      * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToRefundInterface
      */
     public function getRefundFacade()

@@ -98,16 +98,16 @@ class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function captureOrder(OrderTransfer $orderTransfer)
+    public function captureOrder(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         return $this->getFactory()
             ->createTransactionFactory()
             ->createCaptureAuthorizedTransaction()
-            ->execute($orderTransfer);
+            ->execute($amazonpayCallTransfer);
     }
 
     /**
@@ -199,27 +199,27 @@ class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function reauthorizeExpiredOrder(OrderTransfer $orderTransfer)
+    public function reauthorizeExpiredOrder(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         return $this->getFactory()
             ->createTransactionFactory()
             ->createReauthorizeExpiredOrderTransaction()
-            ->execute($orderTransfer);
+            ->execute($amazonpayCallTransfer);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function authorizeOrderItems(OrderTransfer $orderTransfer)
+    public function authorizeOrderItems(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         return $this->getFactory()
             ->createTransactionFactory()
             ->createAuthorizeTransaction()
-            ->execute($orderTransfer);
+            ->execute($amazonpayCallTransfer);
     }
 
     /**
@@ -227,16 +227,16 @@ class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function reauthorizeSuspendedOrder(OrderTransfer $orderTransfer)
+    public function reauthorizeSuspendedOrder(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         return $this->getFactory()
             ->createTransactionFactory()
             ->createReauthorizeSuspendedOrderTransaction()
-            ->execute($orderTransfer);
+            ->execute($amazonpayCallTransfer);
     }
 
     /**
@@ -244,7 +244,7 @@ class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
     public function updateAuthorizationStatus(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
@@ -353,7 +353,7 @@ class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
     {
         return $this->getFactory()
             ->createPaymentAmazonpayConverter()
-            ->mapPaymentEntity($paymentAmazonpay);
+            ->mapEntityToTransfer($paymentAmazonpay);
     }
 
 }

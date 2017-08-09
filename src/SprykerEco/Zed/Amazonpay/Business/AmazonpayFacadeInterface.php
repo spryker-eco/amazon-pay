@@ -77,11 +77,11 @@ interface AmazonpayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function captureOrder(OrderTransfer $orderTransfer);
+    public function captureOrder(AmazonpayCallTransfer $amazonpayCallTransfer);
     /**
      * Specification
      * - send an API call to Amazon that order is closed
@@ -146,29 +146,29 @@ interface AmazonpayFacadeInterface
     /**
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function reauthorizeExpiredOrder(OrderTransfer $orderTransfer);
+    public function reauthorizeExpiredOrder(AmazonpayCallTransfer $amazonpayCallTransfer);
 
     /**
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function authorizeOrderItems(OrderTransfer $orderTransfer);
+    public function authorizeOrderItems(AmazonpayCallTransfer $amazonpayCallTransfer);
 
     /**
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function reauthorizeSuspendedOrder(OrderTransfer $orderTransfer);
+    public function reauthorizeSuspendedOrder(AmazonpayCallTransfer $amazonpayCallTransfer);
 
     /**
      * Specification:
@@ -220,7 +220,7 @@ interface AmazonpayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
     public function updateAuthorizationStatus(AmazonpayCallTransfer $amazonpayCallTransfer);
 

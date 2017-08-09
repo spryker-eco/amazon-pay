@@ -7,37 +7,36 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
-class SetOrderReferenceDetailsTransaction extends AbstractQuoteTransaction
+class SetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(QuoteTransfer $quoteTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        // handling suspended case
-        if ($quoteTransfer->getAmazonpayPayment()
-            && $quoteTransfer->getAmazonpayPayment()
+        if ($amazonpayCallTransfer->getAmazonpayPayment()
+            && $amazonpayCallTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()
-            && $quoteTransfer->getAmazonpayPayment()
+            && $amazonpayCallTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()
                 ->getAuthorizationStatus()
                 ->getIsPaymentMethodInvalid()
         ) {
-            return $quoteTransfer;
+            return $amazonpayCallTransfer;
         }
 
-        if ($quoteTransfer->getAmazonpayPayment()) {
-            $quoteTransfer->getAmazonpayPayment()->setSellerOrderId(
-                $this->generateOperationReferenceId($quoteTransfer)
+        if ($amazonpayCallTransfer->getAmazonpayPayment()) {
+            $amazonpayCallTransfer->getAmazonpayPayment()->setSellerOrderId(
+                $this->generateOperationReferenceId($amazonpayCallTransfer)
             );
         }
 
-        return parent::execute($quoteTransfer);
+        return parent::execute($amazonpayCallTransfer);
     }
 
 }

@@ -11,12 +11,15 @@ use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 use SprykerEco\Zed\Amazonpay\AmazonpayDependencyProvider;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactory;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ConverterFactory;
+use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverter;
+use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverterInterface;
 use SprykerEco\Zed\Amazonpay\Business\Order\Saver;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnFactory;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLogger;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\TransactionFactory;
-use SprykerEco\Zed\Amazonpay\Business\Payment\PaymentAmazonpayConverter;
-use SprykerEco\Zed\Amazonpay\Business\Payment\PaymentAmazonpayConverterInterface;
+use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayEntityToTransferConverter;
+use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayEntityToTransferConverterInterface;
+use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverter;
 use SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdateFactory;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface;
@@ -37,7 +40,9 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
             $this->createAdapterFactory(),
             $this->getConfig(),
             $this->createTransactionLogger(),
-            $this->getQueryContainer()
+            $this->getQueryContainer(),
+            $this->createAmazonpayConverter(),
+            $this->createAmazonpayTransferToEntityConverter()
         );
     }
 
@@ -171,11 +176,27 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return PaymentAmazonpayConverterInterface
+     * @return AmazonpayEntityToTransferConverterInterface
      */
     public function createPaymentAmazonpayConverter()
     {
-        return new PaymentAmazonpayConverter();
+        return new AmazonpayEntityToTransferConverter();
+    }
+
+    /**
+     * @return AmazonpayConverter
+     */
+    protected function createAmazonpayConverter()
+    {
+        return new AmazonpayConverter();
+    }
+
+    /**
+     * @return AmazonpayTransferToEntityConverterInterface
+     */
+    protected function createAmazonpayTransferToEntityConverter()
+    {
+        return new AmazonpayTransferToEntityConverter();
     }
 
 }

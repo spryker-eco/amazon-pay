@@ -160,11 +160,12 @@
         <property name="BillingSameAsShipping" type="bool" />
         <property name="OrderReference" type="string" />
         <property name="Email" type="string" /><!-- WHY ??? -->
+        <property name="Items" type="Item[]" singular="Item"/>
     </transfer>
 
     <transfer name="AmazonpaySalesOrderItemGroup">
         <property name="AmazonpayPayment" type="AmazonpayPayment" />
-        <property name="SalesOrderItems" type="array" singular="SalesOrderItem"/>
+        <property name="Items" type="Item[]" singular="Item"/>
     </transfer>
 
 </transfers>

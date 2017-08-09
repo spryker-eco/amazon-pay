@@ -47,7 +47,6 @@ class ShippingAddressDataQuoteUpdater extends QuoteUpdaterAbstract
             $quoteTransfer->setShippingAddress($apiResponse->getShippingAddress());
         }
 
-
         return $quoteTransfer;
     }
 

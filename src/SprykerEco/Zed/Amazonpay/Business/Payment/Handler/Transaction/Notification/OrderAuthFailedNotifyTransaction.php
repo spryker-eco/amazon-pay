@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface;
 
 class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface

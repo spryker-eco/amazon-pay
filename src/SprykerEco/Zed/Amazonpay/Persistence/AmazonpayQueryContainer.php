@@ -7,6 +7,8 @@
 
 namespace SprykerEco\Zed\Amazonpay\Persistence;
 
+use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\Kernel\Persistence\AbstractQueryContainer;
 
 /**
@@ -69,6 +71,26 @@ class AmazonpayQueryContainer extends AbstractQueryContainer implements Amazonpa
         return $this
             ->queryPayments()
             ->filterByRefundReferenceId($refundReferenceId);
+    }
+
+    /**
+     * @api
+     *
+     * @param string $authorizationReferenceId
+     * @param SpySalesOrderItem[] $excludeItems
+     *
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
+     */
+    public function querySalesOrderItemsByPaymentReferenceId($authorizationReferenceId, $excludeItems = [])
+    {
+        return $this->getFactory()
+            ->createSpySalesOrderItemQuery()
+            ->filterByIdSalesOrderItem($excludeItems, Criteria::NOT_IN)
+            ->useSpyPaymentAmazonpaySalesOrderItemQuery()
+                ->useSpyPaymentAmazonpayQuery()
+                    ->filterByAuthorizationReferenceId($authorizationReferenceId)
+                ->endUse()
+            ->endUse();
     }
 
     /**

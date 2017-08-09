@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Persistence;
 
+use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use Spryker\Zed\Kernel\Persistence\QueryContainer\QueryContainerInterface;
 
 interface AmazonpayQueryContainerInterface extends QueryContainerInterface
@@ -47,5 +48,15 @@ interface AmazonpayQueryContainerInterface extends QueryContainerInterface
      * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
      */
     public function queryPaymentByRefundReferenceId($refundReferenceId);
+
+    /**
+     * @api
+     *
+     * @param string $authorizationReferenceId
+     * @param SpySalesOrderItem[] $excludeItems
+     *
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
+     */
+    public function querySalesOrderItemsByPaymentReferenceId($authorizationReferenceId, $excludeItems = []);
 
 }

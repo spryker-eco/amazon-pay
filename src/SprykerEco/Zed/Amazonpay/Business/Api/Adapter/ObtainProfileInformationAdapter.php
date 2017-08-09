@@ -45,7 +45,11 @@ class ObtainProfileInformationAdapter implements CallAdapterInterface
     {
         $result = $this->client->getUserInfo($amazonpayCallTransfer->getAmazonpayPayment()->getAddressConsentToken());
 
-        return $this->converter->convert($result);
+        $customer = $this->converter->convert($result);
+
+        $customer->setIsGuest(true);
+
+        return $customer;
     }
 
 }

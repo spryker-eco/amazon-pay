@@ -7,8 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification;
 
-use Generated\Shared\Transfer\OrderTransfer;
-
 abstract class AbstractNotificationMessage
 {
 

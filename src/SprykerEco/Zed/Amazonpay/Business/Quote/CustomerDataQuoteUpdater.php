@@ -49,8 +49,6 @@ class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
 
         $quoteTransfer->setCustomer($customer);
 
-        $quoteTransfer->getCustomer()->setIsGuest(true);
-
         return $quoteTransfer;
     }
 

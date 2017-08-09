@@ -55,6 +55,7 @@ class AmazonpayDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addRefundFacade($container);
         $container = $this->addMessengerFacade($container);
         $container = $this->addSalesFacade($container);
+        $container = $this->addOmsFacade($container);
 
         return $container;
     }

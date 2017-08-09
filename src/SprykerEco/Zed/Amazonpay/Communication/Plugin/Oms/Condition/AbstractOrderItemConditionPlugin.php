@@ -25,10 +25,10 @@ abstract class AbstractOrderItemConditionPlugin implements ConditionInterface
      */
     public function check(SpySalesOrderItem $orderItem)
     {
-        $payment = $this->getSalesOrderItemPayment($orderItem);
+        $payment = $this->getPaymentAmazonpayBySalesOrderItem($orderItem);
 
         if ($payment === null) {
-            return false;
+            return true;
         }
 
         return $payment->getStatus() === $this->getConditionalStatus();
@@ -39,7 +39,7 @@ abstract class AbstractOrderItemConditionPlugin implements ConditionInterface
      *
      * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay|null
      */
-    protected function getSalesOrderItemPayment(SpySalesOrderItem $orderItem)
+    protected function getPaymentAmazonpayBySalesOrderItem(SpySalesOrderItem $orderItem)
     {
         $lastPayment = $orderItem->getSpyPaymentAmazonpaySalesOrderItems()->getLast();
 

@@ -71,7 +71,7 @@ interface TransactionFactoryInterface
     public function createHandleDeclinedOrderTransaction();
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\QuoteTransactionCollection
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\TransactionCollection
      */
     public function createConfirmPurchaseTransaction();
 

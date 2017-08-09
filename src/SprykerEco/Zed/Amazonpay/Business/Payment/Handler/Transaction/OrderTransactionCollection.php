@@ -19,7 +19,8 @@ class OrderTransactionCollection extends AbstractTransactionCollection implement
      */
     public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        return $this->executeHandlers($amazonpayCallTransfer);
+        $result = $this->executeHandlers($amazonpayCallTransfer);
+        return $result;
     }
 
 }

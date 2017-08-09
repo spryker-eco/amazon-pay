@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 
@@ -18,19 +19,23 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        $orderTransfer = $this->getOrderTransfer($orderEntity);
+        $amazonpayCallTransfers = $this->groupSalesOrderItemsByPayment($salesOrderItems);
 
-        $refundTransfer = $this->getFactory()
-            ->getRefundFacade()
-            ->calculateRefund($salesOrderItems, $orderEntity);
+        foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
+            $amazonpayCallTransfer->setRequestedAmount(
+                $this->getRequestedAmountByOrderAndItems($orderEntity, $amazonpayCallTransfer->getItems())
+            );
+            $resultTransfer = $this->getFacade()->captureOrder($amazonpayCallTransfer);
 
-        $orderTransfer->getTotals()->setGrandTotal(
-            $refundTransfer->getAmount()
-        );
-
-        $this->getFacade()->captureOrder($orderTransfer);
+            $this->updateSalesOrderItemsWithNewPayment($resultTransfer);
+        }
 
         return [];
+    }
+
+    protected function updateSalesOrderItemsWithNewPayment(AmazonpayCallTransfer $amazonpayCallTransfer)
+    {
+
     }
 
 }

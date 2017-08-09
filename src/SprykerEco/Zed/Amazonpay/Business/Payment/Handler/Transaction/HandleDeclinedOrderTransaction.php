@@ -7,9 +7,10 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 
-class HandleDeclinedOrderTransaction extends AbstractQuoteTransaction
+class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
 {
 
     const ORDER_REFERENCE_STATUS_OPEN = 'Open';
@@ -37,40 +38,39 @@ class HandleDeclinedOrderTransaction extends AbstractQuoteTransaction
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(QuoteTransfer $quoteTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        if (!$quoteTransfer
+        if (!$amazonpayCallTransfer
                 ->getAmazonpayPayment()
                 ->getAuthorizationDetails()
                 ->getAuthorizationStatus()
                 ->getIsDeclined()
         ) {
-            return $quoteTransfer;
+            return $amazonpayCallTransfer;
         }
 
-        if ($quoteTransfer->getAmazonpayPayment()
+        if ($amazonpayCallTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()
                 ->getAuthorizationStatus()
                 ->getIsPaymentMethodInvalid()
         ) {
-            return $quoteTransfer;
+            return $amazonpayCallTransfer;
         }
 
-        $checkOrderStatus = $this->getOrderReferenceDetailsTransaction->execute($quoteTransfer);
+        $checkOrderStatus = $this->getOrderReferenceDetailsTransaction->execute($amazonpayCallTransfer);
 
         if ($checkOrderStatus->getAmazonpayPayment()
                 ->getOrderReferenceStatus()
-                ->getState()
                 ->getIsOpen()
         ) {
-            $this->cancelOrderTransaction->execute($quoteTransfer);
+            $this->cancelOrderTransaction->execute($amazonpayCallTransfer);
         }
 
-        return $quoteTransfer;
+        return $amazonpayCallTransfer;
     }
 
 }

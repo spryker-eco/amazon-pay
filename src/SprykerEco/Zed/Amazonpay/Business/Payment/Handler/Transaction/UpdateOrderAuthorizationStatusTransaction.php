@@ -25,31 +25,29 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
      */
     public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $orderTransfer = parent::execute($amazonpayCallTransfer);
+        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
-        $orderTransfer->getAmazonpayPayment()->setAuthorizationDetails(
-            $this->apiResponse->getAuthorizationDetails()
-        );
+        $amazonPayment = $amazonpayCallTransfer->getAmazonpayPayment();
 
-        if ($this->apiResponse->getHeader()->getIsSuccess()) {
-            if ($this->apiResponse->getAuthorizationDetails()->getIdList()) {
+        if ($amazonPayment->getResponseHeader()->getIsSuccess()) {
+            $status = $amazonPayment->getAuthorizationDetails()->getAuthorizationStatus();
+
+            if ($amazonPayment->getAuthorizationDetails()->getIdList()) {
                 $this->paymentEntity->setAmazonCaptureId(
-                    $this->apiResponse->getAuthorizationDetails()->getIdList()
-                );
+                    $amazonPayment->getAuthorizationDetails()->getIdList()
+                )
+                    ->setStatus(
+                        $status->getIsClosed()
+                            ? AmazonpayConstants::OMS_STATUS_CLOSED
+                            : AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED
+                    )
+                    ->save();
 
-                $this->paymentEntity->setStatus(
-                    AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED
-                );
-
-                $this->paymentEntity->save();
-
-                return $orderTransfer;
+                return $amazonpayCallTransfer;
             }
 
-            $status = $this->apiResponse->getAuthorizationDetails()->getAuthorizationStatus();
-
             if ($status->getIsPending()) {
-                return $orderTransfer;
+                return $amazonpayCallTransfer;
             }
 
             if ($status->getIsDeclined()) {
@@ -77,7 +75,7 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
             $this->paymentEntity->save();
         }
 
-        return $orderTransfer;
+        return $amazonpayCallTransfer;
     }
 
 }
