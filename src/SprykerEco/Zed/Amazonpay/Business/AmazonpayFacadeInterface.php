@@ -88,11 +88,11 @@ interface AmazonpayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function closeOrder(OrderTransfer $orderTransfer);
+    public function closeOrder(AmazonpayCallTransfer $amazonpayCallTransfer);
 
     /**
      * Specification
@@ -100,11 +100,11 @@ interface AmazonpayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function cancelOrder(OrderTransfer $orderTransfer);
+    public function cancelOrder(AmazonpayCallTransfer $amazonpayCallTransfer);
 
     /**
      * Specification
@@ -137,11 +137,11 @@ interface AmazonpayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function refundOrder(OrderTransfer $orderTransfer);
+    public function refundOrder(AmazonpayCallTransfer $amazonpayCallTransfer);
 
     /**
      * @api
@@ -230,11 +230,11 @@ interface AmazonpayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function updateCaptureStatus(OrderTransfer $orderTransfer);
+    public function updateCaptureStatus(AmazonpayCallTransfer $amazonpayCallTransfer);
 
     /**
      *  Specification:
@@ -242,10 +242,10 @@ interface AmazonpayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function updateRefundStatus(OrderTransfer $orderTransfer);
+    public function updateRefundStatus(AmazonpayCallTransfer $amazonpayCallTransfer);
 
 }

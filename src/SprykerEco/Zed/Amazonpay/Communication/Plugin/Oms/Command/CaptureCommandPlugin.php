@@ -25,17 +25,10 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
             $amazonpayCallTransfer->setRequestedAmount(
                 $this->getRequestedAmountByOrderAndItems($orderEntity, $amazonpayCallTransfer->getItems())
             );
-            $resultTransfer = $this->getFacade()->captureOrder($amazonpayCallTransfer);
-
-            $this->updateSalesOrderItemsWithNewPayment($resultTransfer);
+            $this->getFacade()->captureOrder($amazonpayCallTransfer);
         }
 
         return [];
-    }
-
-    protected function updateSalesOrderItemsWithNewPayment(AmazonpayCallTransfer $amazonpayCallTransfer)
-    {
-
     }
 
 }

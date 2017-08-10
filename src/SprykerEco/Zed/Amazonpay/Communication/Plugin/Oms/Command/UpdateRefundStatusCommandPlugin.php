@@ -18,8 +18,14 @@ class UpdateRefundStatusCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        $orderTransfer = $this->getOrderTransfer($orderEntity);
-        $this->getFacade()->updateRefundStatus($orderTransfer);
+        $amazonpayCallTransfers = $this->groupSalesOrderItemsByPayment($salesOrderItems);
+
+        foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
+            $amazonpayCallTransfer->setRequestedAmount(
+                $this->getRequestedAmountByOrderAndItems($orderEntity, $amazonpayCallTransfer->getItems())
+            );
+            $this->getFacade()->updateRefundStatus($amazonpayCallTransfer);
+        }
 
         return [];
     }

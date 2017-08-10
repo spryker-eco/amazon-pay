@@ -141,7 +141,13 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
         return $groups;
     }
 
-    protected function createAmazonpayCallTransfer(array $salesOrderItems)
+    /**
+     * @param SpySalesOrder $orderEntity
+     * @param SpySalesOrderItem[] $salesOrderItems
+     *
+     * @return AmazonpayCallTransfer
+     */
+    protected function createAmazonpayCallTransfer(SpySalesOrder $orderEntity, array $salesOrderItems)
     {
         $amazonpayCallTransfer = new AmazonpayCallTransfer();
         $amazonpayCallTransfer->setItems(
@@ -149,9 +155,12 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
                 array_map(array($this, 'mapSalesOrderItemToItemTransfer'), $salesOrderItems)
             )
         );
-        $amazonPayment = new AmazonpayPaymentTransfer();
-        $amazonPayment->setAuthorizationDetails(new AmazonpayAuthorizationDetailsTransfer());
+        $amazonPayment = $this->getFacade()->mapAmazonPaymentToTransfer($this->getPaymentDetails($salesOrderItems[0]));
         $amazonpayCallTransfer->setAmazonpayPayment($amazonPayment);
+
+        $amazonpayCallTransfer->setRequestedAmount(
+            $this->getRequestedAmountByOrderAndItems($orderEntity, $amazonpayCallTransfer->getItems())
+        );
 
         return $amazonpayCallTransfer;
     }

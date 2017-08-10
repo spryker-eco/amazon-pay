@@ -38,14 +38,6 @@
         <column name="request_id" type="VARCHAR"/>
         <column name="is_sandbox" required="true" type="INTEGER"/>
 
-        <unique name="spy_payment_amazonpay-unique-request_id">
-            <unique-column name="seller_order_id" />
-        </unique>
-
-        <unique name="spy_payment_amazonpay-unique-reference">
-            <unique-column name="order_reference_id" />
-        </unique>
-
         <behavior name="timestampable"/>
         <id-method-parameter value="spy_payment_amazonpay_pk_seq"/>
     </table>

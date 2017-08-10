@@ -17,15 +17,15 @@
 
         <events>
             <event name="update refund status" manual="true" command="Amazonpay/UpdateRefundStatus" />
-            <event name="capture" manual="true" command="Amazonpay/Capture" />
-            <event name="close" onEnter="true" />
+            <event name="capture" command="Amazonpay/Capture" manual="true" />
+            <event name="close" command="Amazonpay/CloseOrder" manual="true" />
             <event name="refund" manual="true" command="Amazonpay/RefundOrder" />
             <event name="cancel" manual="true" command="Amazonpay/CancelOrder" />
         </events>
 
         <transitions>
             <!-- close -->
-            <transition condition="Amazonpay/IsClosed" happy="true">
+            <transition happy="true">
                 <source>capture completed</source>
                 <target>closed</target>
                 <event>close</event>

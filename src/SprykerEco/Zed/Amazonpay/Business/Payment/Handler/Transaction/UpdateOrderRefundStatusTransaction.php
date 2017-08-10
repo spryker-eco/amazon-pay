@@ -30,6 +30,7 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
         }
 
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+        $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
 
         if ($this->apiResponse->getHeader()->getIsSuccess()) {
             if ($this->apiResponse->getRefundDetails()->getRefundStatus()->getIsPending()) {
@@ -45,6 +46,7 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
             }
 
             $this->paymentEntity->save();
+            $this->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonpayCallTransfer);
         }
 
         return $amazonpayCallTransfer;

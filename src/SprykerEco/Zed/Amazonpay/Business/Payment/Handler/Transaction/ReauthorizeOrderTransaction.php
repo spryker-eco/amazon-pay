@@ -32,6 +32,7 @@ class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
             );
 
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+        $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
 
         if ($this->apiResponse->getHeader()->getIsSuccess()) {
             $amazonpayCallTransfer->getAmazonpayPayment()->setAuthorizationDetails(
@@ -51,6 +52,7 @@ class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
 
         $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_AUTH_PENDING);
         $this->paymentEntity->save();
+        $this->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonpayCallTransfer);
 
         return $amazonpayCallTransfer;
     }

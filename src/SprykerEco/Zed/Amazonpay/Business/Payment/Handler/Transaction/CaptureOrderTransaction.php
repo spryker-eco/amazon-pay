@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
+use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class CaptureOrderTransaction extends AbstractAmazonpayTransaction
@@ -26,6 +27,7 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
         );
 
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+        $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
 
         if ($amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
             $amazonpayCallTransfer->getAmazonpayPayment()->setCaptureDetails(
@@ -41,19 +43,24 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
             );
         }
 
-        $this->updatePaymentStatus($amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus());
+        $newStatus = $this->getPaymentStatus($amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus());
 
+        if ($newStatus !== false) {
+            $this->paymentEntity->setStatus($newStatus);
+        }
 
-
-        $this->assignAmazonpayPaymentToItems($amazonpayCallTransfer);
+        $this->paymentEntity->save();
+        $this->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonpayCallTransfer);
 
         return $amazonpayCallTransfer;
     }
 
     /**
      * @param AmazonpayStatusTransfer $captureStatus
+     *
+     * @return bool
      */
-    protected function updatePaymentStatus(AmazonpayStatusTransfer $captureStatus)
+    protected function getPaymentStatus(AmazonpayStatusTransfer $captureStatus)
     {
         $paymentStatus = false;
 
@@ -69,10 +76,7 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
             $paymentStatus = AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED;
         }
 
-        if ($paymentStatus !== false) {
-            $this->paymentEntity->setStatus($paymentStatus);
-            $this->paymentEntity->save();
-        }
+        return $paymentStatus;
     }
 
 }

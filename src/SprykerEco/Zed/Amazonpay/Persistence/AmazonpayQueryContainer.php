@@ -96,6 +96,36 @@ class AmazonpayQueryContainer extends AbstractQueryContainer implements Amazonpa
     /**
      * @api
      *
+     * @param int $salesOrderItemId
+     *
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
+     */
+    public function queryPaymentBySalesOrderItemId($salesOrderItemId)
+    {
+        return $this->getFactory()
+            ->createPaymentAmazonpayQuery()
+            ->useSpyPaymentAmazonpaySalesOrderItemQuery()
+                ->filterByFkSalesOrderItem($salesOrderItemId)
+            ->endUse();
+    }
+
+    /**
+     * @api
+     *
+     * @param int $salesOrderItemId
+     *
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItemQuery
+     */
+    public function queryBySalesOrderItemId($salesOrderItemId)
+    {
+        return $this->getFactory()
+            ->createPaymentAmazonpaySalesOrderItemQuery()
+            ->filterByFkSalesOrderItem($salesOrderItemId);
+    }
+
+    /**
+     * @api
+     *
      * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
      */
     protected function queryPayments()

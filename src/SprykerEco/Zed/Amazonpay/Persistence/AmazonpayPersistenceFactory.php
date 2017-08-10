@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\Amazonpay\Persistence;
 
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery;
+use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItemQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 
@@ -24,6 +25,14 @@ class AmazonpayPersistenceFactory extends AbstractPersistenceFactory
     public function createPaymentAmazonpayQuery()
     {
         return SpyPaymentAmazonpayQuery::create();
+    }
+
+    /**
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItemQuery
+     */
+    public function createPaymentAmazonpaySalesOrderItemQuery()
+    {
+        return SpyPaymentAmazonpaySalesOrderItemQuery::create();
     }
 
     /**
