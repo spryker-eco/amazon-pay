@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Generated\Shared\Transfer\QuoteTransfer;
 
 class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
 {
@@ -16,22 +15,22 @@ class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
     const ORDER_REFERENCE_STATUS_OPEN = 'Open';
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     protected $getOrderReferenceDetailsTransaction;
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     protected $cancelOrderTransaction;
 
     /**
-     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\GetOrderReferenceDetailsTransaction $getOrderReferenceDetailsTransaction
-     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\CancelPreOrderTransaction $cancelOrderTransaction
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface $getOrderReferenceDetailsTransaction
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface $cancelOrderTransaction
      */
     public function __construct(
-        GetOrderReferenceDetailsTransaction $getOrderReferenceDetailsTransaction,
-        CancelPreOrderTransaction $cancelOrderTransaction
+        AmazonpayTransactionInterface $getOrderReferenceDetailsTransaction,
+        AmazonpayTransactionInterface $cancelOrderTransaction
     ) {
         $this->getOrderReferenceDetailsTransaction = $getOrderReferenceDetailsTransaction;
         $this->cancelOrderTransaction = $cancelOrderTransaction;

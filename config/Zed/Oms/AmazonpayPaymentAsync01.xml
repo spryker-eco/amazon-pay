@@ -36,6 +36,7 @@
             <event name="reauthorize expired order" onEnter="true" command="Amazonpay/ReauthorizeExpiredOrder" />
             <event name="manual auth" onEnter="true" command="Amazonpay/AuthorizeOrderManually" />
             <event name="refund allowed time exceeded" timeout="30days" />
+            <event name="cancel automatically" onEnter="true" />
         </events>
 
         <transitions>
@@ -90,6 +91,18 @@
                 <event>capture</event>
             </transition>
 
+            <transition>
+                <source>capture declined</source>
+                <target>cancelled</target>
+                <event>cancel automatically</event>
+            </transition>
+
+            <transition>
+                <source>auth closed</source>
+                <target>cancelled</target>
+                <event>cancel automatically</event>
+            </transition>
+
             <transition condition="Amazonpay/IsPartiallyCaptured">
                 <source>auth open</source>
                 <target>manual auth required</target>
@@ -119,7 +132,7 @@
             </transition>
 
             <!-- from transaction timed out -->
-            <transition condition="Amazonpay/IsAuthTransactionTimedOut">
+            <transition condition="Amazonpay/IsCaptureCompleted">
                 <source>auth transaction timed out</source>
                 <target>capture completed</target>
                 <event>reauthorize expired order</event>

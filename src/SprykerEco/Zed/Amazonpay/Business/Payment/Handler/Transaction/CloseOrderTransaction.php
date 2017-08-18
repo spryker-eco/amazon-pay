@@ -28,11 +28,8 @@ class CloseOrderTransaction extends AbstractAmazonpayTransaction
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
         if ($this->apiResponse->getHeader()->getIsSuccess()) {
-            $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
             $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CLOSED);
             $this->paymentEntity->save();
-
-            $this->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonpayCallTransfer);
         }
 
         return $amazonpayCallTransfer;

@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class CancelOrderTransaction extends AbstractAmazonpayTransaction
@@ -19,17 +19,26 @@ class CancelOrderTransaction extends AbstractAmazonpayTransaction
     protected $apiResponse;
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(OrderTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
 
         if ($this->apiResponse->getHeader()->getIsSuccess()) {
+            if ($isPartialProcessing) {
+                $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
+            }
+
             $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CANCELLED);
             $this->paymentEntity->save();
+
+            if ($isPartialProcessing) {
+                $this->assignAmazonpayPaymentToItemsIfNew($this->paymentEntity, $amazonpayCallTransfer);
+            }
         }
 
         return $amazonpayCallTransfer;

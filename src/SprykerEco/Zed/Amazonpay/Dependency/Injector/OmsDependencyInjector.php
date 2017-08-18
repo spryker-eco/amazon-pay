@@ -29,6 +29,7 @@ use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCancelledCondi
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCaptureCompletedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCaptureDeclinedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCapturePendingConditionPlugin;
+use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCloseAllowedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsClosedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsPartiallyCapturedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsRefundCompletedConditionPlugin;
@@ -96,6 +97,7 @@ class OmsDependencyInjector extends AbstractDependencyInjector
         $container->extend(OmsDependencyProvider::CONDITION_PLUGINS, function (ConditionCollectionInterface $conditionCollection) {
             $conditionCollection
                 ->add(new IsClosedConditionPlugin(), 'Amazonpay/IsClosed')
+                ->add(new IsCloseAllowedConditionPlugin(), 'Amazonpay/IsCloseAllowed')
                 ->add(new IsCancelledConditionPlugin(), 'Amazonpay/IsCancelled')
 
                 ->add(new IsAuthOpenConditionPlugin(), 'Amazonpay/IsAuthOpen')

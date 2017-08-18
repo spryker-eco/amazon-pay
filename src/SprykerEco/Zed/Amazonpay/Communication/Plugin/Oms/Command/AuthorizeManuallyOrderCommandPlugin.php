@@ -7,10 +7,11 @@
 
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 
-class ReauthorizeExpiredOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
+class AuthorizeManuallyOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
 
     /**
@@ -18,7 +19,9 @@ class ReauthorizeExpiredOrderCommandPlugin extends AbstractAmazonpayCommandPlugi
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        $this->getFacade()->reauthorizeExpiredOrder($this->getOrderTransfer($orderEntity));
+        $amazonpayCallTransfer = $this->createAmazonpayCallTransfer($orderEntity, $salesOrderItems);
+
+        $this->getFacade()->reauthorizeSuspendedOrder($amazonpayCallTransfer);
 
         return [];
     }

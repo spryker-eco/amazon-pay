@@ -12,21 +12,32 @@
             <state name="refund completed"/>
             <state name="refund declined"/>
 
+            <state name="close allowed" reserved="true"/>
             <state name="closed" reserved="true"/>
         </states>
 
         <events>
             <event name="update refund status" manual="true" command="Amazonpay/UpdateRefundStatus" />
             <event name="capture" command="Amazonpay/Capture" manual="true" />
-            <event name="close" command="Amazonpay/CloseOrder" manual="true" />
+            <event name="close" onEnter="true" command="Amazonpay/CloseOrder" />
             <event name="refund" manual="true" command="Amazonpay/RefundOrder" />
             <event name="cancel" manual="true" command="Amazonpay/CancelOrder" />
         </events>
 
         <transitions>
             <!-- close -->
-            <transition happy="true">
+            <transition condition="Amazonpay/IsClosed">
+                <source>close allowed</source>
+                <target>closed</target>
+            </transition>
+
+            <transition happy="true" condition="Amazonpay/IsCloseAllowed">
                 <source>capture completed</source>
+                <target>close allowed</target>
+            </transition>
+
+            <transition happy="true" condition="Amazonpay/IsClosed">
+                <source>close allowed</source>
                 <target>closed</target>
                 <event>close</event>
             </transition>

@@ -140,7 +140,7 @@ class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
     {
         return $this->getFactory()
             ->createTransactionFactory()
-            ->createCloseOrderTransaction()
+            ->createCloseCapturedOrderTransaction()
             ->execute($amazonpayCallTransfer);
     }
 
@@ -235,7 +235,7 @@ class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
     {
         return $this->getFactory()
             ->createTransactionFactory()
-            ->createReauthorizeSuspendedOrderTransaction()
+            ->createReauthorizeOrderTransactionObject()
             ->execute($amazonpayCallTransfer);
     }
 

@@ -30,23 +30,33 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
         }
 
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
-        $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
 
-        if ($this->apiResponse->getHeader()->getIsSuccess()) {
-            if ($this->apiResponse->getRefundDetails()->getRefundStatus()->getIsPending()) {
-                return $amazonpayCallTransfer;
-            }
+        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+            return $amazonpayCallTransfer;
+        }
 
-            if ($this->apiResponse->getRefundDetails()->getRefundStatus()->getIsDeclined()) {
-                $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_REFUND_DECLINED);
-            }
+        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
 
-            if ($this->apiResponse->getRefundDetails()->getRefundStatus()->getIsCompleted()) {
-                $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_REFUND_COMPLETED);
-            }
+        if ($isPartialProcessing) {
+            $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
+        }
 
-            $this->paymentEntity->save();
-            $this->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonpayCallTransfer);
+        if ($this->apiResponse->getRefundDetails()->getRefundStatus()->getIsPending()) {
+            return $amazonpayCallTransfer;
+        }
+
+        if ($this->apiResponse->getRefundDetails()->getRefundStatus()->getIsDeclined()) {
+            $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_REFUND_DECLINED);
+        }
+
+        if ($this->apiResponse->getRefundDetails()->getRefundStatus()->getIsCompleted()) {
+            $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_REFUND_COMPLETED);
+        }
+
+        $this->paymentEntity->save();
+
+        if ($isPartialProcessing) {
+            $this->assignAmazonpayPaymentToItemsIfNew($this->paymentEntity, $amazonpayCallTransfer);
         }
 
         return $amazonpayCallTransfer;
