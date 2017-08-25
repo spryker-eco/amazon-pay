@@ -55,6 +55,11 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
     public function handle(AbstractTransfer $amazonpayIpnRequestTransfer)
     {
         $paymentEntity = $this->retrievePaymentEntity($amazonpayIpnRequestTransfer);
+
+        if ($paymentEntity === null) {
+            return;
+        }
+
         $paymentEntity->setStatus($this->getOmsStatusName());
         $paymentEntity->save();
 

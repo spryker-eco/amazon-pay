@@ -42,6 +42,7 @@ interface AmazonpayConstants
     const OMS_STATUS_AUTH_PENDING = 'auth pending';
     const OMS_STATUS_AUTH_DECLINED = 'auth declined';
     const OMS_STATUS_AUTH_SUSPENDED = 'auth suspended';
+    const OMS_STATUS_MANUAL_AUTH_REQUIRED = 'manual auth requried';
     const OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT = 'auth transaction timed out';
     const OMS_STATUS_AUTH_OPEN = 'auth open';
     const OMS_STATUS_AUTH_EXPIRED = 'auth expired';
@@ -65,6 +66,9 @@ interface AmazonpayConstants
     const OMS_EVENT_UPDATE_SUSPENDED_ORDER = 'update suspended order';
     const OMS_EVENT_CLOSE = 'close';
     const OMS_EVENT_REFUND = 'refund';
+
+    const OMS_FLAG_NOT_AUTH = 'not auth';
+    const OMS_FLAG_NOT_CAPTURED = 'not captured';
 
     const REASON_CODE_EXPIRED_UNUSED = 'ExpiredUnused';
     const REASON_CODE_SELLER_CLOSED = 'SellerClosed';

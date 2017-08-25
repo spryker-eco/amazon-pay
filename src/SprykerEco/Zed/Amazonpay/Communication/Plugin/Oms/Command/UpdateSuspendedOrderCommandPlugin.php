@@ -38,4 +38,12 @@ class UpdateSuspendedOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
         return [];
     }
 
+    /**
+     * @return string
+     */
+    protected function getAffectedItemsStateFlag()
+    {
+        return AmazonpayConstants::OMS_FLAG_NOT_AUTH;
+    }
+
 }

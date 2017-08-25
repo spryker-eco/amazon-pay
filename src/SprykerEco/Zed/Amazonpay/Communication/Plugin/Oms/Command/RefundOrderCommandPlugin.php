@@ -27,8 +27,7 @@ class RefundOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
         foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
             $currentGroupSalesOrderItems = $this->getSalesOrderItemsForGroup($amazonpayCallTransfer, $salesOrderItems);
 
-            $refundTransfer = $this->getFactory()
-                ->getRefundFacade()
+            $refundTransfer = $this->getFacade()
                 ->calculateRefund($currentGroupSalesOrderItems, $orderEntity);
 
             $amazonpayCallTransfer->setRequestedAmount(
@@ -38,8 +37,7 @@ class RefundOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
             $orderTransfer = $this->getFacade()->refundOrder($amazonpayCallTransfer);
 
             if ($orderTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-                $this->getFactory()
-                    ->getRefundFacade()
+                $this->getFacade()
                     ->saveRefund($refundTransfer);
             }
         }

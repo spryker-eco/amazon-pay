@@ -7,9 +7,9 @@
 
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
-use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
@@ -29,6 +29,14 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
         }
 
         return [];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getAffectedItemsStateFlag()
+    {
+        return AmazonpayConstants::OMS_FLAG_NOT_CAPTURED;
     }
 
 }

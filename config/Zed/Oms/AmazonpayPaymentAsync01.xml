@@ -10,21 +10,35 @@
         </subprocesses>
 
         <states>
-            <state name="new" reserved="true"/>
+            <state name="new" reserved="true">
+                <flag>not auth</flag>
+            </state>
 
             <state name="auth pending" reserved="true"/>
-            <state name="auth open" reserved="true"/>
-            <state name="manual auth required" reserved="true"/>
+            <state name="auth open" reserved="true">
+                <flag>not captured</flag>
+            </state>
+            <state name="manual auth required" reserved="true">
+                <flag>not auth</flag>
+            </state>
             <state name="auth closed"/>
-            <state name="auth suspended" reserved="true"/>
+            <state name="auth suspended" reserved="true">
+                <flag>not auth</flag>
+            </state>
             <state name="auth transaction timed out" reserved="true"/>
             <state name="auth expired" reserved="true"/>
-            <state name="auth declined"/>
+            <state name="auth declined">
+                <flag>not auth</flag>
+            </state>
 
             <state name="capture pending" reserved="true"/>
-            <state name="capture declined"/>
+            <state name="capture declined">
+                <flag>not auth</flag>
+            </state>
 
-            <state name="cancelled"/>
+            <state name="cancelled">
+                <flag>not auth</flag>
+            </state>
             <state name="completed non refundable"/>
         </states>
 

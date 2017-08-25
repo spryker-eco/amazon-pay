@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
+use ArrayObject;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
@@ -20,7 +21,7 @@ class CloseOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        $amazonpayCallTransfer = $this->createAmazonpayCallTransfer($orderEntity, $salesOrderItems);
+        $amazonpayCallTransfer = $this->createAmazonpayCallTransfer($salesOrderItems);
 
         $this->getFacade()->closeOrder($amazonpayCallTransfer);
 

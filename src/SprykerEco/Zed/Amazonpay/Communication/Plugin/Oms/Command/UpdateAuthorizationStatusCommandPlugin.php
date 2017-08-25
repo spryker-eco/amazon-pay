@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 /**
  * @method \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface getQueryContainer()
@@ -28,9 +29,6 @@ class UpdateAuthorizationStatusCommandPlugin extends AbstractAmazonpayCommandPlu
         $amazonpayCallTransfers = $this->groupSalesOrderItemsByPayment($salesOrderItems);
 
         foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
-            $amazonpayCallTransfer->setRequestedAmount(
-                $this->getRequestedAmountByOrderAndItems($orderEntity, $amazonpayCallTransfer->getItems())
-            );
             $updatedStatus = $this->getFacade()->updateAuthorizationStatus($amazonpayCallTransfer);
 
             if ($updatedStatus->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getIsClosed()) {

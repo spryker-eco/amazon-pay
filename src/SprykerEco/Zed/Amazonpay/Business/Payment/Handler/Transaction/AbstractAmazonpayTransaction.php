@@ -98,10 +98,6 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
      */
     protected function assignAmazonpayPaymentToItemsIfNew(SpyPaymentAmazonpay $entity, AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        if (!$entity->isNew()) {
-            return;
-        }
-
         foreach ($amazonpayCallTransfer->getItems() as $itemTransfer) {
             $paymentForItemEntity = $this->amazonpayQueryContainer->queryBySalesOrderItemId($itemTransfer->getIdSalesOrderItem())
                 ->findOneOrCreate();
@@ -178,7 +174,7 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
      * @return bool
      */
     protected function isPartialProcessing(SpyPaymentAmazonpay $paymentAmazonpay, AmazonpayCallTransfer $amazonpayCallTransfer) {
-        return $amazonpayCallTransfer->getItems()->count() === $paymentAmazonpay->getSpyPaymentAmazonpaySalesOrderItems()->count();
+        return $amazonpayCallTransfer->getItems()->count() !== $paymentAmazonpay->getSpyPaymentAmazonpaySalesOrderItems()->count();
     }
 
 }

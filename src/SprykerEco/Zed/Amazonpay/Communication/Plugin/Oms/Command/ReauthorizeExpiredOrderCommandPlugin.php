@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class ReauthorizeExpiredOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
@@ -21,6 +22,14 @@ class ReauthorizeExpiredOrderCommandPlugin extends AbstractAmazonpayCommandPlugi
         $this->getFacade()->reauthorizeExpiredOrder($this->getOrderTransfer($orderEntity));
 
         return [];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getAffectedItemsStateFlag()
+    {
+        return AmazonpayConstants::OMS_FLAG_NOT_AUTH;
     }
 
 }

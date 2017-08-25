@@ -21,9 +21,6 @@ class UpdateRefundStatusCommandPlugin extends AbstractAmazonpayCommandPlugin
         $amazonpayCallTransfers = $this->groupSalesOrderItemsByPayment($salesOrderItems);
 
         foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
-            $amazonpayCallTransfer->setRequestedAmount(
-                $this->getRequestedAmountByOrderAndItems($orderEntity, $amazonpayCallTransfer->getItems())
-            );
             $this->getFacade()->updateRefundStatus($amazonpayCallTransfer);
         }
 

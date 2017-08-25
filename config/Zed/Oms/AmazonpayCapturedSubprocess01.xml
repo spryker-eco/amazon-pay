@@ -26,11 +26,6 @@
 
         <transitions>
             <!-- close -->
-            <transition condition="Amazonpay/IsClosed">
-                <source>close allowed</source>
-                <target>closed</target>
-            </transition>
-
             <transition happy="true" condition="Amazonpay/IsCloseAllowed">
                 <source>capture completed</source>
                 <target>close allowed</target>
