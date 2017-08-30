@@ -33,20 +33,19 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
             $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
         }
 
-        if ($amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-            $amazonpayCallTransfer->getAmazonpayPayment()->setCaptureDetails(
-                $this->apiResponse->getCaptureDetails()
-            );
-
-            $this->paymentEntity->setAmazonCaptureId(
-                $this->apiResponse->getCaptureDetails()->getAmazonCaptureId()
-            );
-
-            $this->paymentEntity->setCaptureReferenceId(
-                $this->apiResponse->getCaptureDetails()->getCaptureReferenceId()
-            );
+        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+            return $amazonpayCallTransfer;
         }
 
+        $amazonpayCallTransfer->getAmazonpayPayment()->setCaptureDetails(
+            $this->apiResponse->getCaptureDetails()
+        );
+        $this->paymentEntity->setAmazonCaptureId(
+            $this->apiResponse->getCaptureDetails()->getAmazonCaptureId()
+        );
+        $this->paymentEntity->setCaptureReferenceId(
+            $this->apiResponse->getCaptureDetails()->getCaptureReferenceId()
+        );
         $newStatus = $this->getPaymentStatus($amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus());
 
         if ($newStatus !== false) {

@@ -15,11 +15,6 @@ class CloseOrderTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpayResponseTransfer
-     */
-    protected $apiResponse;
-
-    /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
@@ -28,12 +23,13 @@ class CloseOrderTransaction extends AbstractAmazonpayTransaction
     {
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
-        if ($this->apiResponse->getHeader()->getIsSuccess()) {
-            $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CLOSED);
-            $this->paymentEntity->save();
-
-            $this->closeAllPaymentsForThisOrder($this->paymentEntity->getOrderReferenceId());
+        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+            return $amazonpayCallTransfer;
         }
+        $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CLOSED);
+        $this->paymentEntity->save();
+
+        $this->closeAllPaymentsForThisOrder($this->paymentEntity->getOrderReferenceId());
 
         return $amazonpayCallTransfer;
     }

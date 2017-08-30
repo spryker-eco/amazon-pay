@@ -7,10 +7,8 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use ArrayObject;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
-use Generated\Shared\Transfer\QuoteTransfer;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class AuthorizeTransaction extends AbstractAmazonpayTransaction
 {
@@ -28,20 +26,36 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
             ->setAuthorizationReferenceId($authReferenceId);
 
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
 
-        if ($amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-            $amazonpayCallTransfer->getAmazonpayPayment()->setAuthorizationDetails(
-                $this->apiResponse->getAuthorizationDetails()
-            );
+        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+            return $amazonpayCallTransfer;
+        }
 
-            if ($amazonpayCallTransfer->getAmazonpayPayment()
-                ->getAuthorizationDetails()
-                ->getAuthorizationStatus()
-                ->getIsDeclined()) {
-                $amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()
-                    ->setIsSuccess(false)
-                    ->setErrorCode($this->buildErrorCode($amazonpayCallTransfer));
-            }
+        if ($isPartialProcessing) {
+            $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
+        }
+
+        $amazonpayCallTransfer->getAmazonpayPayment()->setAuthorizationDetails(
+            $this->apiResponse->getAuthorizationDetails()
+        );
+
+        if ($amazonpayCallTransfer->getAmazonpayPayment()
+            ->getAuthorizationDetails()
+            ->getAuthorizationStatus()
+            ->getIsDeclined()) {
+            $amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()
+                ->setIsSuccess(false)
+                ->setErrorCode($this->buildErrorCode($amazonpayCallTransfer));
+
+            return $amazonpayCallTransfer;
+        }
+
+        $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_AUTH_PENDING);
+        $this->paymentEntity->save();
+
+        if ($isPartialProcessing) {
+            $this->assignAmazonpayPaymentToItemsIfNew($this->paymentEntity, $amazonpayCallTransfer);
         }
 
         return $amazonpayCallTransfer;

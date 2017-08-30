@@ -8,6 +8,7 @@
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 
 class AmazonpayFacadeCaptureOrderTest extends AmazonpayFacadeAbstractTest
@@ -15,16 +16,17 @@ class AmazonpayFacadeCaptureOrderTest extends AmazonpayFacadeAbstractTest
 
     /**
      * @dataProvider captureOrderDataProvider
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $transfer
      * @param string $status
      */
-    public function testCaptureOrder(OrderTransfer $orderTransfer, $status)
+    public function testCaptureOrder(AmazonpayCallTransfer $transfer, $status)
     {
-        $resultOrder = $this->createFacade()->captureOrder($orderTransfer);
+        $result = $this->createFacade()->captureOrder($transfer);
+        $this->assertTrue($result->getAmazonpayPayment()->getResponseHeader()->getIsSuccess());
 
         $this->assertEquals(
             $status,
-            $resultOrder->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus()->getState()
+            $result->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus()->getState()
         );
     }
 
@@ -34,9 +36,18 @@ class AmazonpayFacadeCaptureOrderTest extends AmazonpayFacadeAbstractTest
     public function captureOrderDataProvider()
     {
         return [
-            'Completed' => [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_FIRST), 'Completed'],
-            'Pending' => [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_SECOND), 'Pending'],
-            'Declined' => [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_THIRD), 'Declined'],
+            'Completed' => [
+                $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
+                'Completed'
+            ],
+            'Pending' => [
+                $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
+                'Pending'
+            ],
+            'Declined' => [
+                $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
+                'Declined'
+            ],
         ];
     }
 

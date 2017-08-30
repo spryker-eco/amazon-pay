@@ -107,31 +107,6 @@ interface AmazonpayFacadeInterface
     public function cancelOrder(AmazonpayCallTransfer $amazonpayCallTransfer);
 
     /**
-     * Specification
-     * - calculates the refund amount
-     *
-     * @api
-     *
-     * @param array $salesOrderItems
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $salesOrderEntity
-     *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
-     */
-    public function calculateRefund(array $salesOrderItems, SpySalesOrder $salesOrderEntity);
-
-    /**
-     * Specification:
-     * - saves refund information to the database
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\RefundTransfer $refundTransfer
-     *
-     * @return bool
-     */
-    public function saveRefund(RefundTransfer $refundTransfer);
-
-    /**
      * Specification:
      * - makes an API call and sends calculated amount to Amazon Pay
      *

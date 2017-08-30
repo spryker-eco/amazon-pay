@@ -40,6 +40,9 @@ class AmazonpayFacadeAddSelectedAddressToQuoteTest extends AmazonpayFacadeAbstra
     /**
      * @dataProvider addSelectedAddressDataProvider
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param string $city
+     * @param string $iso2Code
+     * @param string $zipCode
      */
     public function testAddSelectedAddressToQuote(QuoteTransfer $quoteTransfer, $city, $iso2Code, $zipCode)
     {
@@ -58,19 +61,19 @@ class AmazonpayFacadeAddSelectedAddressToQuoteTest extends AmazonpayFacadeAbstra
 
         return [
             'Barcelona' => [
-                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_FIRST),
+                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1),
                 'Barcelona',
                 'ES',
                 '0895',
             ],
             'London' => [
-                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_SECOND),
+                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_2),
                 'London',
                 'GB',
                 'SE1 2BY',
             ],
             'Wien' => [
-                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_THIRD),
+                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_3),
                 'Wien',
                 'AT',
                 '1050',

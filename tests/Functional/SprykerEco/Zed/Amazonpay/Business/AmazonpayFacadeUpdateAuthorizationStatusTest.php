@@ -11,34 +11,44 @@ use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractRespon
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class AmazonpayFacadeCancelOrderTest extends AmazonpayFacadeAbstractTest
+class AmazonpayFacadeUpdateAuthorizationStatusTest extends AmazonpayFacadeAbstractTest
 {
 
     /**
-     * @dataProvider cancelOrderDataProvider
+     * @dataProvider updateAuthStatusDataProvider
      *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param string $expectedStatus
      */
-    public function testCancelOrder(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function testUpdateAuthStatus(AmazonpayCallTransfer $amazonpayCallTransfer, $expectedStatus)
     {
-        $result = $this->createFacade()->cancelOrder($amazonpayCallTransfer);
-        $this->validateResult($result, AmazonpayConstants::OMS_STATUS_CANCELLED);
+        $result = $this->createFacade()->updateAuthorizationStatus($amazonpayCallTransfer);
+        $this->validateResult($result, $expectedStatus);
     }
 
     /**
      * @return array
      */
-    public function cancelOrderDataProvider()
+    public function updateAuthStatusDataProvider()
     {
+        $this->prepareFixtures();
+
         return [
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
+                AmazonpayConstants::OMS_STATUS_AUTH_OPEN
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
+                AmazonpayConstants::OMS_STATUS_AUTH_OPEN
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
+                AmazonpayConstants::OMS_STATUS_AUTH_OPEN
+            ],
+            [
+                $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_4),
+                AmazonpayConstants::OMS_STATUS_AUTH_CLOSED
             ],
         ];
     }

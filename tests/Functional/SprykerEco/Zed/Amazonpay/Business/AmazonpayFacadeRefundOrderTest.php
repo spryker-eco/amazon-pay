@@ -8,6 +8,7 @@
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
@@ -15,43 +16,31 @@ class AmazonpayFacadeRefundOrderTest extends AmazonpayFacadeAbstractTest
 {
 
     /**
-     * @param string $orderReferenceId
-     *
-     * @return \Generated\Shared\Transfer\OrderTransfer
-     */
-    protected function getOrderTransfer($orderReferenceId)
-    {
-        $orderTransfer = parent::getOrderTransfer($orderReferenceId);
-        $orderTransfer->getTotals()->setRefundTotal(200);
-
-        return $orderTransfer;
-    }
-
-    /**
      * @dataProvider refundOrderDataProvider
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $transfer
      * @param string $refundAmazonpayId
      * @param string $refundReferenceId
      */
-    public function testRefundOrder(OrderTransfer $orderTransfer, $refundAmazonpayId, $refundReferenceId)
+    public function testRefundOrder(AmazonpayCallTransfer $transfer, $refundAmazonpayId, $refundReferenceId)
     {
-        $this->createFacade()->refundOrder($orderTransfer);
+        $this->createFacade()->refundOrder($transfer);
 
-        $refreshedOrderTransfer = $this->getOrderTransfer($orderTransfer->getAmazonpayPayment()->getOrderReferenceId());
+        $updatedTransfer = $this->getAmazonpayCallTransferByOrderReferenceId($transfer->getAmazonpayPayment()->getOrderReferenceId());
         
         $this->assertEquals(
             AmazonpayConstants::OMS_STATUS_REFUND_PENDING,
-            $refreshedOrderTransfer->getAmazonpayPayment()->getStatus()
+            $updatedTransfer->getAmazonpayPayment()->getStatus()
         );
 
         $this->assertEquals(
             $refundAmazonpayId,
-            $refreshedOrderTransfer->getAmazonpayPayment()->getRefundDetails()->getAmazonRefundId()
+            $updatedTransfer->getAmazonpayPayment()->getRefundDetails()->getAmazonRefundId()
         );
 
         $this->assertEquals(
             $refundReferenceId,
-            $refreshedOrderTransfer->getAmazonpayPayment()->getRefundDetails()->getRefundReferenceId()
+            $updatedTransfer->getAmazonpayPayment()->getRefundDetails()->getRefundReferenceId()
         );
     }
 
@@ -62,17 +51,20 @@ class AmazonpayFacadeRefundOrderTest extends AmazonpayFacadeAbstractTest
     {
         return [
             'first' =>
-                [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_FIRST),
+                [
+                    $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
                     'S02-5989383-0864061-0000AR1',
                     'S02-5989383-0864061-0000RR1',
                 ],
             'second' =>
-                [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_SECOND),
+                [
+                    $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
                     'S02-5989383-0864061-0000AR2',
                     'S02-5989383-0864061-0000RR2',
                 ],
             'third' =>
-                [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_THIRD),
+                [
+                    $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
                     'S02-5989383-0864061-0000AR3',
                     'S02-5989383-0864061-0000RR3',
                 ],

@@ -7,25 +7,23 @@
 
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
+use ArrayObject;
 use Codeception\TestCase\Test;
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery;
-use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddressQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
-use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayEntityToTransferConverter;
 use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainer;
+use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
 class AmazonpayFacadeAbstractTest extends Test
 {
-
-    /**
-     * @var bool
-     */
-    protected $setUpCommpleted = false;
 
     /**
      * @return array
@@ -33,18 +31,15 @@ class AmazonpayFacadeAbstractTest extends Test
     protected function getOrderStatusMap()
     {
         return [
-            AbstractResponse::ORDER_REFERENCE_ID_FIRST => 'auth open',
-            AbstractResponse::ORDER_REFERENCE_ID_SECOND => 'auth open',
-            AbstractResponse::ORDER_REFERENCE_ID_THIRD => 'auth open',
+            AbstractResponse::ORDER_REFERENCE_ID_1 => AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
+            AbstractResponse::ORDER_REFERENCE_ID_2 => AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
+            AbstractResponse::ORDER_REFERENCE_ID_3 => AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
+            AbstractResponse::ORDER_REFERENCE_ID_4 => AmazonpayConstants::OMS_STATUS_AUTH_CLOSED,
         ];
     }
 
-    protected function _before()
+    protected function prepareFixtures()
     {
-        if ($this->setUpCommpleted) {
-            return ;
-        }
-
         $this->cleanup();
 
         $address = new SpySalesOrderAddress();
@@ -55,16 +50,13 @@ class AmazonpayFacadeAbstractTest extends Test
         $address->setZipCode('10009');
         $address->save();
 
-        for ($i = 1; $i <= 3; ++$i) {
-            $order = new SpySalesOrder();
-            $order->setOrderReference(sprintf('S02-5989383-0864061-000000%s', $i));
-            $order->setShippingAddress($address);
-            $order->setBillingAddress($address);
-            $order->save();
+        $i = 0;
+
+        foreach ($this->getOrderStatusMap() as $orderReference => $status) {
+            $i++;
 
             $payment = new SpyPaymentAmazonpay();
-            $payment->setSpySalesOrder($order);
-            $payment->setOrderReferenceId(sprintf('S02-5989383-0864061-000000%s', $i));
+            $payment->setOrderReferenceId($orderReference);
             $payment->setSellerOrderId(sprintf('S02-5989383-0864061-000000%sR00%s', $i, $i));
 
             $payment->setAmazonCaptureId(sprintf('S02-5989383-0864061-C00000%s', $i));
@@ -79,12 +71,6 @@ class AmazonpayFacadeAbstractTest extends Test
             $payment->setIsSandbox(true);
             $payment->save();
         }
-
-        $this->setUpCommpleted = true;
-    }
-
-    protected function _after()
-    {
     }
 
     protected function cleanup()
@@ -95,27 +81,73 @@ class AmazonpayFacadeAbstractTest extends Test
     }
 
     /**
-     * @param $orderReferenceId
-     * @return array|\Generated\Shared\Transfer\OrderTransfer
+     * @param string $orderReferenceId
+     *
+     * @return SpyPaymentAmazonpay
      */
-    protected function getOrderTransfer($orderReferenceId)
+    protected function getAmazonpayPayment($orderReferenceId)
     {
-        self::_before();
-
-        $qc = new AmazonpayQueryContainer();
-        $orderEntity = $qc->queryPaymentByOrderReferenceId($orderReferenceId)->findOne();
-
-        // that's awkward but no can do
-        $command = new GetOrderTransferCommandPlugin();
-        return $command->run([], $orderEntity->getSpySalesOrder(), new ReadOnlyArrayObject());
+        return $this->createAmazonpayQueryContainer()->queryPaymentByOrderReferenceId($orderReferenceId)->findOne();
     }
 
+    /**
+     * @return AmazonpayQueryContainerInterface
+     */
+    protected function createAmazonpayQueryContainer()
+    {
+        return new AmazonpayQueryContainer();
+    }
+
+    /**
+     * @param string $orderReferenceId
+     *
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
+     */
+    protected function getAmazonpayCallTransferByOrderReferenceId($orderReferenceId)
+    {
+        $paymentAmazonpayEntity = $this->getAmazonpayPayment($orderReferenceId);
+
+        return $this->buildOrderTransfer($paymentAmazonpayEntity);
+    }
+
+    /**
+     * @param SpyPaymentAmazonpay $paymentEntity
+     * @param array $salesOrderItems
+     *
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
+     */
+    protected function buildOrderTransfer(SpyPaymentAmazonpay $paymentEntity, array $salesOrderItems = [], $requestedAmount = 5000)
+    {
+        $converter = new AmazonpayEntityToTransferConverter();
+
+        $paymentTransfer = $converter->mapEntityToTransfer($paymentEntity);
+
+        $amazonpayCallTransfer = new AmazonpayCallTransfer();
+        $amazonpayCallTransfer->setRequestedAmount($requestedAmount)
+            ->setAmazonpayPayment($paymentTransfer)
+            ->setItems(new ArrayObject($salesOrderItems));
+
+        return $amazonpayCallTransfer;
+    }
     /**
      * @return \Functional\SprykerEco\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock
      */
     protected function createFacade()
     {
         return new AmazonpayFacadeMock();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $result
+     * @param string $expectedStatus
+     */
+    protected function validateResult(AmazonpayCallTransfer $result, $expectedStatus)
+    {
+        $this->assertTrue($result->getAmazonpayPayment()->getResponseHeader()->getIsSuccess());
+
+        $payment = $this->getAmazonpayPayment($result->getAmazonpayPayment()->getOrderReferenceId());
+
+        $this->assertEquals($expectedStatus, $payment->getStatus());
     }
 
 }

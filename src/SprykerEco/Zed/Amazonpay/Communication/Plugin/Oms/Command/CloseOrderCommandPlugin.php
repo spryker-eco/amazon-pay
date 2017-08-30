@@ -21,7 +21,8 @@ class CloseOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        $amazonpayCallTransfer = $this->createAmazonpayCallTransfer($salesOrderItems);
+        $payment = $this->getPaymentDetails($salesOrderItems[0]);
+        $amazonpayCallTransfer = $this->createAmazonpayCallTransfer($payment);
 
         $this->getFacade()->closeOrder($amazonpayCallTransfer);
 

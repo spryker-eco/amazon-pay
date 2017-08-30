@@ -8,18 +8,21 @@
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class AmazonpayFacadeCloseOrderTest extends AmazonpayFacadeAbstractTest
 {
 
     /**
      * @dataProvider closeOrderDataProvider
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $orderTransfer
      */
-    public function testCloseOrder(OrderTransfer $orderTransfer)
+    public function testCloseOrder(AmazonpayCallTransfer $orderTransfer)
     {
-        $this->createFacade()->closeOrder($orderTransfer);
+        $result = $this->createFacade()->closeOrder($orderTransfer);
+        $this->validateResult($result, AmazonpayConstants::OMS_STATUS_CLOSED);
     }
 
     /**
@@ -28,9 +31,9 @@ class AmazonpayFacadeCloseOrderTest extends AmazonpayFacadeAbstractTest
     public function closeOrderDataProvider()
     {
         return [
-            'Completed' => [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_FIRST), 'Completed'],
-            'Pending' => [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_SECOND), 'Pending'],
-            'Declined' => [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_THIRD), 'Declined'],
+            [$this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1)],
+            [$this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2)],
+            [$this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3)],
         ];
     }
 

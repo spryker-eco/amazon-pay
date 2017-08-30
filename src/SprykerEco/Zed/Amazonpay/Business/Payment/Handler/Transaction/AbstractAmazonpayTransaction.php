@@ -8,9 +8,7 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Generated\Shared\Transfer\AmazonpayResponseTransfer;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
-use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItem;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverterInterface;
@@ -26,6 +24,11 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
     protected $amazonpayQueryContainer;
 
     /**
+     * @var \SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverterInterface
+     */
+    protected $converter;
+
+    /**
      * @var \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay
      */
     protected $paymentEntity;
@@ -34,11 +37,6 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
      * @var \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     protected $apiResponse;
-
-    /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverterInterface
-     */
-    protected $converter;
 
     /**
      * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface $executionAdapter
@@ -87,14 +85,14 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
             $this->apiResponse->getHeader()
         );
         // TODO: remove this hidden call
-        $this->paymentEntity = $this->loadPaymentEntity($amazonpayCallTransfer);
+        $this->loadPaymentEntity($amazonpayCallTransfer);
 
         return $amazonpayCallTransfer;
     }
 
     /**
-     * @param SpyPaymentAmazonpay $entity
-     * @param AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $entity
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      */
     protected function assignAmazonpayPaymentToItemsIfNew(SpyPaymentAmazonpay $entity, AmazonpayCallTransfer $amazonpayCallTransfer)
     {
@@ -108,32 +106,28 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
-     *
-     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay
      */
     protected function loadPaymentEntity(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         if ($this->paymentEntity) {
-            return $this->paymentEntity;
+            throw new \Exception('paymentEntity was previously defined!');
         }
 
-        $paymentEntity = null;
+        $this->paymentEntity = null;
 
         if ($amazonpayCallTransfer->getItems()->count()) {
-            $paymentEntity = $this->amazonpayQueryContainer->queryPaymentBySalesOrderItemId(
+            $this->paymentEntity = $this->amazonpayQueryContainer->queryPaymentBySalesOrderItemId(
                     $amazonpayCallTransfer->getItems()[0]->getIdSalesOrderItem()
                 )
                 ->findOne();
         }
 
-        if ($paymentEntity === null) {
-            return $this->amazonpayQueryContainer->queryPaymentByOrderReferenceId(
+        if ($this->paymentEntity === null) {
+            $this->paymentEntity = $this->amazonpayQueryContainer->queryPaymentByOrderReferenceId(
                 $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId()
             )
                 ->findOne();
         }
-
-        return $paymentEntity;
     }
 
     /**
@@ -168,8 +162,8 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
     }
 
     /**
-     * @param SpyPaymentAmazonpay $paymentAmazonpay
-     * @param AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $paymentAmazonpay
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
      * @return bool
      */

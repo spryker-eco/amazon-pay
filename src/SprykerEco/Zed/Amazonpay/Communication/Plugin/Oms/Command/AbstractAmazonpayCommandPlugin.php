@@ -11,6 +11,7 @@ use ArrayObject;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\MessageTransfer;
+use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItem;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
@@ -137,15 +138,7 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
                 continue;
             }
 
-            $groupData = $groups[$payment->getAuthorizationReferenceId()] ?? null;
-
-            if (!$groupData) {
-                $groupData = new AmazonpayCallTransfer();
-
-                $paymentTransfer = $this->getFacade()->mapAmazonPaymentToTransfer($payment);
-
-                $groupData->setAmazonpayPayment($paymentTransfer);
-            }
+            $groupData = $groups[$payment->getAuthorizationReferenceId()] ?? $this->createAmazonpayCallTransfer($payment);
 
             $groupData->addItem(
                 $this->mapSalesOrderItemToItemTransfer($salesOrderItem)
@@ -158,14 +151,16 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
     }
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $salesOrderItems
+     * @param SpyPaymentAmazonpay $payment
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    protected function createAmazonpayCallTransfer(array $salesOrderItems)
+    protected function createAmazonpayCallTransfer(SpyPaymentAmazonpay $payment)
     {
         $amazonpayCallTransfer = new AmazonpayCallTransfer();
-        $amazonPayment = $this->getAmazonpayPaymentTransferBySalesOrder($salesOrderItems[0]);
+        $amazonPayment = $this->getFactory()
+            ->createPaymentAmazonpayConverter()
+            ->mapEntityToTransfer($payment);
         $amazonpayCallTransfer->setAmazonpayPayment($amazonPayment);
 
         return $amazonpayCallTransfer;
@@ -187,16 +182,6 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $salesOrderItem
      *
-     * @return \Generated\Shared\Transfer\AmazonpayPaymentTransfer
-     */
-    protected function getAmazonpayPaymentTransferBySalesOrder(SpySalesOrderItem $salesOrderItem)
-    {
-        return $this->getFacade()->mapAmazonPaymentToTransfer($this->getPaymentDetails($salesOrderItem));
-    }
-
-    /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $salesOrderItem
-     *
      * @return null|\Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay
      */
     protected function getPaymentDetails(SpySalesOrderItem $salesOrderItem)
@@ -209,7 +194,6 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
         }
 
         return $payment->getSpyPaymentAmazonpay();
-
     }
 
     /**

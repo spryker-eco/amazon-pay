@@ -13,6 +13,8 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter;
 class AuthorizationDetailsConverter extends AbstractArrayConverter
 {
 
+    const AUTH_STATUS_PENDING = 'Pending';
+
     const PAYMENT_METHOD_INVALID = 'InvalidPaymentMethod';
 
     /**

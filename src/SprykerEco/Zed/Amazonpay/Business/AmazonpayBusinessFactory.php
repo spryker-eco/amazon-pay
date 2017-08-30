@@ -178,14 +178,6 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return AmazonpayEntityToTransferConverterInterface
-     */
-    public function createPaymentAmazonpayConverter()
-    {
-        return new AmazonpayEntityToTransferConverter();
-    }
-
-    /**
      * @return AmazonpayConverter
      */
     protected function createAmazonpayConverter()

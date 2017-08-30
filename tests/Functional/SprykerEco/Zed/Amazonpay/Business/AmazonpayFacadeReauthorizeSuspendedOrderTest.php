@@ -29,17 +29,17 @@ class AmazonpayFacadeSuspendedExpiredOrderTest extends AmazonpayFacadeAbstractTe
     {
         return [
             'first' =>
-                [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_FIRST),
+                [$this->getAmazonpayCallTransfer(AbstractResponse::ORDER_REFERENCE_ID_1),
                     'S02-5989383-0864061-0000AR1',
                     'S02-5989383-0864061-0000RR1',
                 ],
             'second' =>
-                [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_SECOND),
+                [$this->getAmazonpayCallTransfer(AbstractResponse::ORDER_REFERENCE_ID_2),
                     'S02-5989383-0864061-0000AR2',
                     'S02-5989383-0864061-0000RR2',
                 ],
             'third' =>
-                [$this->getOrderTransfer(AbstractResponse::ORDER_REFERENCE_ID_THIRD),
+                [$this->getAmazonpayCallTransfer(AbstractResponse::ORDER_REFERENCE_ID_3),
                     'S02-5989383-0864061-0000AR3',
                     'S02-5989383-0864061-0000RR3',
                 ],

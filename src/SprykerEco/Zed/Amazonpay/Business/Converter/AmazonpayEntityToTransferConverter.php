@@ -118,6 +118,10 @@ class AmazonpayEntityToTransferConverter implements AmazonpayEntityToTransferCon
             $statusName === AmazonpayConstants::OMS_STATUS_AUTH_OPEN
         );
 
+        $amazonpayStatusTransfer->setIsClosed(
+            $statusName === AmazonpayConstants::OMS_STATUS_AUTH_CLOSED
+        );
+
         return $amazonpayStatusTransfer;
     }
 

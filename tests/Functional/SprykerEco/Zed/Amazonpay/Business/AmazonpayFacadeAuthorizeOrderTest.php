@@ -11,7 +11,7 @@ use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractRespon
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class AmazonpayFacadeCancelOrderTest extends AmazonpayFacadeAbstractTest
+class AmazonpayFacadeAuthorizeOrderTest extends AmazonpayFacadeAbstractTest
 {
 
     /**
@@ -19,10 +19,10 @@ class AmazonpayFacadeCancelOrderTest extends AmazonpayFacadeAbstractTest
      *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      */
-    public function testCancelOrder(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function testAuthorizeOrder(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $result = $this->createFacade()->cancelOrder($amazonpayCallTransfer);
-        $this->validateResult($result, AmazonpayConstants::OMS_STATUS_CANCELLED);
+        $result = $this->createFacade()->authorizeOrderItems($amazonpayCallTransfer);
+        $this->validateResult($result, AmazonpayConstants::OMS_STATUS_AUTH_PENDING);
     }
 
     /**
