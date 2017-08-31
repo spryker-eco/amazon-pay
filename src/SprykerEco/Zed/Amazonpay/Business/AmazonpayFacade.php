@@ -265,8 +265,7 @@ class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
         QuoteTransfer $quoteTransfer,
         CheckoutResponseTransfer $checkoutResponseTransfer
     ) {
-        $this
-            ->getFactory()
+        $this->getFactory()
             ->createOrderSaver()
             ->saveOrderPayment($quoteTransfer, $checkoutResponseTransfer);
     }

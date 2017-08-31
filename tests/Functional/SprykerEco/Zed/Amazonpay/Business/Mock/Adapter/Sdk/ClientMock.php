@@ -80,7 +80,9 @@ class ClientMock extends Client
 
     public function getCaptureDetails($requestParameters = array())
     {
+        $responseWrapper = new GetCaptureDetailsResponse($requestParameters);
 
+        return $responseWrapper->convertToResponseParser();
     }
 
     /**

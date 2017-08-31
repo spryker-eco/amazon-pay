@@ -9,7 +9,7 @@
 
     {% include '@checkout/checkout/partials/summary-discounts.twig' %}
 
-    {% if quoteTransfer.shipment.method %}
+    {% if quoteTransfer.shipment and quoteTransfer.shipment.method %}
         <li><strong>{{ 'checkout.step.summary.shipping' | trans }}</strong></li>
         <li>
             {% if quoteTransfer.shipment.method.name is not empty %}

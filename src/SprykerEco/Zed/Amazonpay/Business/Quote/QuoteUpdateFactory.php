@@ -74,6 +74,7 @@ class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
             [
                 $this->createAmazonpayDataQuoteInitializer(),
                 $this->createCustomerDataQuoteUpdater(),
+                $this->createShipmentDataQuoteInitializer(),
                 $this->createPaymentDataQuoteUpdater(),
             ]
         );
@@ -85,6 +86,14 @@ class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
     public function createAmazonpayDataQuoteInitializer()
     {
         return new AmazonpayDataQuoteInitializer();
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface
+     */
+    public function createShipmentDataQuoteInitializer()
+    {
+        return new ShipmentDataQuoteInitializer();
     }
 
     /**

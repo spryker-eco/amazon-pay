@@ -50,8 +50,6 @@ class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
             $this->apiResponse->getAuthorizationDetails()->getAuthorizationReferenceId()
         );
 
-        $this->paymentEntity->save();
-
         $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_AUTH_PENDING);
         $this->paymentEntity->save();
 
