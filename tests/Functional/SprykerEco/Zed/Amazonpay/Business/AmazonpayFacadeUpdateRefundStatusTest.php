@@ -11,44 +11,40 @@ use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractRespon
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class AmazonpayFacadeUpdateCaptureStatusTest extends AmazonpayFacadeAbstractTest
+class AmazonpayFacadeUpdateRefundStatusTest extends AmazonpayFacadeAbstractTest
 {
 
     /**
-     * @dataProvider updateCaptureStatusDataProvider
+     * @dataProvider updateRefundStatusDataProvider
      *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      * @param string $expectedStatus
      */
-    public function testUpdateCaptureStatus(AmazonpayCallTransfer $amazonpayCallTransfer, $expectedStatus)
+    public function testUpdateRefundStatus(AmazonpayCallTransfer $amazonpayCallTransfer, $expectedStatus)
     {
-        $result = $this->createFacade()->updateCaptureStatus($amazonpayCallTransfer);
+        $result = $this->createFacade()->updateRefundStatus($amazonpayCallTransfer);
         $this->validateResult($result, $expectedStatus);
     }
 
     /**
      * @return array
      */
-    public function updateCaptureStatusDataProvider()
+    public function updateRefundStatusDataProvider()
     {
         $this->prepareFixtures();
 
         return [
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED
+                AmazonpayConstants::OMS_STATUS_REFUND_COMPLETED
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED
+                AmazonpayConstants::OMS_STATUS_REFUND_DECLINED
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING
-            ],
-            [
-                $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_4),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_CLOSED
+                AmazonpayConstants::OMS_STATUS_REFUND_PENDING
             ],
         ];
     }

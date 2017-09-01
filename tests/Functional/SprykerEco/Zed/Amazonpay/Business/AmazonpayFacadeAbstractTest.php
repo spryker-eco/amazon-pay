@@ -14,6 +14,7 @@ use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery;
+use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddressQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
@@ -42,14 +43,6 @@ class AmazonpayFacadeAbstractTest extends Test
     {
         $this->cleanup();
 
-        $address = new SpySalesOrderAddress();
-        $address->setFkCountry(1);
-        $address->setCity('Berlin');
-        $address->setFirstName('John');
-        $address->setLastName('Doe');
-        $address->setZipCode('10009');
-        $address->save();
-
         $i = 0;
 
         foreach ($this->getOrderStatusMap() as $orderReference => $status) {
@@ -71,6 +64,30 @@ class AmazonpayFacadeAbstractTest extends Test
             $payment->setIsSandbox(true);
             $payment->save();
         }
+    }
+
+    /**
+     * @return SpySalesOrder
+     */
+    protected function createSalesOrder($orderReference)
+    {
+        $address = new SpySalesOrderAddress();
+        $address->setFkCountry(1);
+        $address->setCity('Berlin');
+        $address->setFirstName('John');
+        $address->setLastName('Doe');
+        $address->setZipCode('10009');
+        $address->save();
+
+        $order = (new SpySalesOrderQuery())
+            ->filterByOrderReference($orderReference)
+            ->findOneOrCreate();
+
+        $order->setShippingAddress($address)
+            ->setBillingAddress($address)
+            ->save();
+
+        return $order;
     }
 
     protected function cleanup()

@@ -87,6 +87,7 @@ class ClientMock extends Client
 
     /**
      * @param array $requestParameters
+     *
      * @return \PayWithAmazon\ResponseInterface
      */
     public function getOrderReferenceDetails($requestParameters = array())
@@ -96,9 +97,16 @@ class ClientMock extends Client
         return $responseWrapper->convertToResponseParser();
     }
 
+    /**
+     * @param array $requestParameters
+     *
+     * @return \PayWithAmazon\ResponseParser
+     */
     public function getRefundDetails($requestParameters = array())
     {
+        $responseWrapper = new GetRefundDetailsResponse($requestParameters);
 
+        return $responseWrapper->convertToResponseParser();
     }
 
     /**

@@ -21,8 +21,8 @@ class GetRefundDetailsResponse extends AbstractResponse
     {
         parent::__construct($requestParameters);
 
-        $amazonCaptureId = $requestParameters[AbstractAdapter::AMAZON_CAPTURE_ID];
-        $status = $this->getStatus($amazonCaptureId);
+        $reference = $requestParameters[AbstractAdapter::AMAZON_REFUND_ID];
+        $status = $this->getStatus($reference);
 
         $this->responseBodyXml =
             '<GetRefundDetailsResponse xmlns="http://mws.amazonservices.com/schema/OffAmazonPayments/2013-01-01">
@@ -45,14 +45,13 @@ class GetRefundDetailsResponse extends AbstractResponse
         <CurrencyCode>EUR</CurrencyCode>
         <Amount>224.09</Amount>
       </RefundAmount>
-      <AmazonRefundId>S02-9741363-4298985-R056377</AmazonRefundId>
+      <AmazonRefundId>'.$reference.'</AmazonRefundId>
     </RefundDetails>
   </GetRefundDetailsResult>
   <ResponseMetadata>
     <RequestId>21a79433-6a27-44ae-a614-6207e4846a4c</RequestId>
   </ResponseMetadata>
-</GetRefundDetailsResponse>
-';
+</GetRefundDetailsResponse>';
     }
 
     /**
@@ -63,14 +62,12 @@ class GetRefundDetailsResponse extends AbstractResponse
     protected function getStatus($reference)
     {
         switch ($reference) {
-            case 'S02-5989383-0864061-C000001':
+            case 'S02-5989383-0864061-R000001':
                 return AbstractConverter::STATUS_COMPLETED;
-            case 'S02-5989383-0864061-C000002':
+            case 'S02-5989383-0864061-R000002':
                 return AbstractConverter::STATUS_DECLINED;
-            case 'S02-5989383-0864061-C000003':
+            case 'S02-5989383-0864061-R000003':
                 return AbstractConverter::STATUS_PENDING;
-            case 'S02-5989383-0864061-C000004':
-                return AbstractConverter::STATUS_CLOSED;
         }
 
         throw new \Exception('Not mocked request.');
