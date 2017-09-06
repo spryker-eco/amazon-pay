@@ -187,9 +187,12 @@ class PaymentController extends AbstractController
         }
 
         if (!$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-            return $this->getFailedRedirectResponse(
+            $this->addErrorMessage(
                 $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getErrorCode()
+                ?? 'amazonpay.payment.failed'
             );
+
+            return $this->redirectResponseExternal($request->headers->get('Referer'));
         }
 
         $checkoutResponseTransfer = $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
