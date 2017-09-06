@@ -25,7 +25,7 @@ class UpdateAuthorizationStatusCommandPlugin extends AbstractAmazonpayCommandPlu
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        $amazonpayCallTransfers = $this->groupSalesOrderItemsByPayment($salesOrderItems);
+        $amazonpayCallTransfers = $this->groupSalesOrderItemsByAuthId($salesOrderItems);
 
         foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
             $updatedStatus = $this->getFacade()->updateAuthorizationStatus($amazonpayCallTransfer);

@@ -88,19 +88,25 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
                 $this->amazonpayQueryContainer,
                 $this->ipnRequestLogger
             );
-        } elseif ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsDeclined()) {
+        }
+
+        if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsDeclined()) {
             return new IpnPaymentAuthorizeDeclineHandler(
                 $this->omsFacade,
                 $this->amazonpayQueryContainer,
                 $this->ipnRequestLogger
             );
-        } elseif ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsOpen()) {
+        }
+
+        if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsOpen()) {
             return new IpnPaymentAuthorizeOpenHandler(
                 $this->omsFacade,
                 $this->amazonpayQueryContainer,
                 $this->ipnRequestLogger
             );
-        } elseif ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsClosed()) {
+        }
+
+        if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsClosed()) {
             return new IpnPaymentAuthorizeClosedHandler(
                 $this->omsFacade,
                 $this->amazonpayQueryContainer,
@@ -160,7 +166,9 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
                 $this->amazonpayQueryContainer,
                 $this->ipnRequestLogger
             );
-        } elseif ($ipnRequest->getRefundDetails()->getRefundStatus()->getIsCompleted()) {
+        }
+
+        if ($ipnRequest->getRefundDetails()->getRefundStatus()->getIsCompleted()) {
             return new IpnPaymentRefundCompletedHandler(
                 $this->omsFacade,
                 $this->amazonpayQueryContainer,
@@ -196,13 +204,13 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
                     $this->amazonpayQueryContainer,
                     $this->ipnRequestLogger
                 );
-            } else {
-                return new IpnEmptyHandler(
-                    $this->omsFacade,
-                    $this->amazonpayQueryContainer,
-                    $this->ipnRequestLogger
-                );
             }
+
+            return new IpnEmptyHandler(
+                $this->omsFacade,
+                $this->amazonpayQueryContainer,
+                $this->ipnRequestLogger
+            );
         }
 
         if ($ipnRequest->getOrderReferenceStatus()->getIsSuspended()) {

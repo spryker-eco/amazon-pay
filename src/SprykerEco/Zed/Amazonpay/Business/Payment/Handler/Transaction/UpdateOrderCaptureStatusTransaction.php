@@ -22,6 +22,11 @@ class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
      */
     public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
+        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()
+            || !$amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getAmazonCaptureId()) {
+            return $amazonpayCallTransfer;
+        }
+
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
         if (!$this->apiResponse->getHeader()->getIsSuccess()) {

@@ -8,10 +8,9 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
+class AuthorizeOrderIfRequiredTransaction extends ReauthorizeOrderTransaction
 {
 
     /**
@@ -21,13 +20,20 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
      */
     public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getRefundDetails()->getAmazonRefundId()) {
+        if ($amazonpayCallTransfer->getAmazonpayPayment()
+            ->getAuthorizationDetails()
+            ->getAmazonAuthorizationId()) {
+            return $amazonpayCallTransfer;
+        }
+
+        if ($amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()
+            && $amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getAmazonCaptureId()) {
             return $amazonpayCallTransfer;
         }
 
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
-        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
             return $amazonpayCallTransfer;
         }
 
@@ -37,8 +43,7 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
             $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
         }
 
-        $status = $this->getStatus($this->apiResponse->getRefundDetails()->getRefundStatus());
-        $this->paymentEntity->setStatus($status);
+        $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING);
         $this->paymentEntity->save();
 
         if ($isPartialProcessing) {
@@ -46,28 +51,6 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
         }
 
         return $amazonpayCallTransfer;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer/AmazonpayStatusTransfer $status
-     *
-     * @return string
-     */
-    protected function getStatus(AmazonpayStatusTransfer $status)
-    {
-        if ($status->getIsPending()) {
-            return AmazonpayConstants::OMS_STATUS_REFUND_PENDING;
-        }
-
-        if ($status->getIsDeclined()) {
-            return AmazonpayConstants::OMS_STATUS_REFUND_DECLINED;
-        }
-
-        if ($status->getIsCompleted()) {
-            return AmazonpayConstants::OMS_STATUS_REFUND_COMPLETED;
-        }
-
-        return AmazonpayConstants::OMS_STATUS_CANCELLED;
     }
 
 }

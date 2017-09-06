@@ -20,6 +20,12 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
      */
     public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
+        if (!$amazonpayCallTransfer->getAmazonpayPayment()
+            ->getAuthorizationDetails()
+            ->getAmazonAuthorizationId()) {
+            return $amazonpayCallTransfer;
+        }
+
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
         $amazonPayment = $amazonpayCallTransfer->getAmazonpayPayment();

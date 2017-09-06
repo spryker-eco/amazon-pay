@@ -11,7 +11,7 @@ use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractRespon
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class AmazonpayFacadeAuthorizeOrderTest extends AmazonpayFacadeAbstractTest
+class AmazonpayFacadeReauthorizeOrderTest extends AmazonpayFacadeAbstractTest
 {
 
     /**

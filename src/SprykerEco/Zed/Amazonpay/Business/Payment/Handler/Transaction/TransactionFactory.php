@@ -130,12 +130,12 @@ class TransactionFactory implements TransactionFactoryInterface
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
-    public function createCancelOrderTransaction()
+    public function createCancelOrderTransactionSequence()
     {
         return new TransactionSequence(
             [
                 $this->createRefundOrderTransaction(),
-                $this->createCancelOrderTransactionObject(),
+                $this->createCancelOrderTransaction(),
             ]
         );
     }
@@ -143,7 +143,7 @@ class TransactionFactory implements TransactionFactoryInterface
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
-    protected function createCancelOrderTransactionObject()
+    protected function createCancelOrderTransaction()
     {
         return new CancelOrderTransaction(
             $this->adapterFactory->createCancelOrderAdapter(),
@@ -175,7 +175,7 @@ class TransactionFactory implements TransactionFactoryInterface
     {
         return new TransactionSequence(
             [
-                $this->createReauthorizeOrderTransactionObject(),
+                $this->createReauthorizeOrderTransaction(),
                 $this->createUpdateOrderAuthorizationStatusTransaction(),
             ]
         );
@@ -184,7 +184,7 @@ class TransactionFactory implements TransactionFactoryInterface
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
-    public function createReauthorizeOrderTransactionObject()
+    public function createReauthorizeOrderTransaction()
     {
         return new ReauthorizeOrderTransaction(
             $this->adapterFactory->createAuthorizeAdapter(),
@@ -209,6 +209,21 @@ class TransactionFactory implements TransactionFactoryInterface
         );
     }
 
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
+     */
+    protected function createAuthorizeCaptureNowTransaction()
+    {
+        return new AuthorizeOrderIfRequiredTransaction(
+            $this->adapterFactory->createAuthorizeCaptureNowAdapter(),
+            $this->config,
+            $this->transactionLogger,
+            $this->amazonpayQueryContainer,
+            $this->toEntityConverter
+        );
+    }
+
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
@@ -216,7 +231,8 @@ class TransactionFactory implements TransactionFactoryInterface
     {
         return new TransactionSequence(
             [
-                $this->createUpdateOrderAuthorizationStatusTransaction(),
+                $this->createAuthorizeCaptureNowTransaction(),
+                $this->createUpdateOrderCaptureStatusTransaction(),
                 $this->createCaptureOrderTransaction(),
             ]
         );

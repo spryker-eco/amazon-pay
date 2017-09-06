@@ -18,9 +18,6 @@
             <state name="auth open" reserved="true">
                 <flag>not captured</flag>
             </state>
-            <state name="manual auth required" reserved="true">
-                <flag>not auth</flag>
-            </state>
             <state name="auth closed"/>
             <state name="auth suspended" reserved="true">
                 <flag>not auth</flag>
@@ -48,7 +45,6 @@
             <event name="update capture status" manual="true" command="Amazonpay/UpdateCaptureStatus" />
             <event name="update suspended order" command="Amazonpay/UpdateSuspendedOrder" />
             <event name="reauthorize expired order" onEnter="true" command="Amazonpay/ReauthorizeExpiredOrder" />
-            <event name="manual auth" onEnter="true" command="Amazonpay/AuthorizeOrderManually" />
             <event name="refund allowed time exceeded" timeout="30days" />
             <event name="cancel automatically" onEnter="true" />
         </events>
@@ -115,22 +111,6 @@
                 <source>auth closed</source>
                 <target>cancelled</target>
                 <event>cancel automatically</event>
-            </transition>
-
-            <transition condition="Amazonpay/IsPartiallyCaptured">
-                <source>auth open</source>
-                <target>manual auth required</target>
-            </transition>
-
-            <transition condition="Amazonpay/IsPartiallyCaptured">
-                <source>auth pending</source>
-                <target>manual auth required</target>
-            </transition>
-
-            <transition>
-                <source>manual auth required</source>
-                <target>auth open</target>
-                <event>manual auth</event>
             </transition>
 
             <transition condition="Amazonpay/IsAuthExpired">

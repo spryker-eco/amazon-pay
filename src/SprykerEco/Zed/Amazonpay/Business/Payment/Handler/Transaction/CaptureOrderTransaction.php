@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
-use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class CaptureOrderTransaction extends AbstractAmazonpayTransaction
@@ -22,19 +21,32 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
      */
     public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
+        if (!in_array($amazonpayCallTransfer->getAmazonpayPayment()->getStatus(), [
+            AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING,
+            AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
+        ], true)) {
+            return $amazonpayCallTransfer;
+        }
+
+        if ($amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()
+            && $amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getAmazonCaptureId()) {
+            return $amazonpayCallTransfer;
+        }
+
         $amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->setCaptureReferenceId(
             $this->generateOperationReferenceId($amazonpayCallTransfer)
         );
 
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+
+        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+            return $amazonpayCallTransfer;
+        }
+
         $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
 
         if ($isPartialProcessing) {
             $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
-        }
-
-        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-            return $amazonpayCallTransfer;
         }
 
         $amazonpayCallTransfer->getAmazonpayPayment()->setCaptureDetails(

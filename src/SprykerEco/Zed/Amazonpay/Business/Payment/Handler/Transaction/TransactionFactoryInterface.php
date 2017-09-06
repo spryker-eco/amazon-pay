@@ -33,7 +33,7 @@ interface TransactionFactoryInterface
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
-    public function createCancelOrderTransaction();
+    public function createCancelOrderTransactionSequence();
 
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
@@ -48,7 +48,7 @@ interface TransactionFactoryInterface
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\ReauthorizeOrderTransaction
      */
-    public function createReauthorizeOrderTransactionObject();
+    public function createReauthorizeOrderTransaction();
 
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface

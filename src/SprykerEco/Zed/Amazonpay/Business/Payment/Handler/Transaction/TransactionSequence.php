@@ -19,9 +19,7 @@ class TransactionSequence extends AbstractTransactionCollection implements Amazo
      */
     public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $result = $this->executeHandlers($amazonpayCallTransfer);
-
-        return $result;
+        return $this->executeHandlers($amazonpayCallTransfer);
     }
 
 }

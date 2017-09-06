@@ -30,8 +30,6 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
     public function testFacadeHandleAmazonpayIpnRequest(AbstractTransfer $transfer)
     {
         $this->createFacade()->handleAmazonpayIpnRequest($transfer);
-
-        $this->getP
     }
 
     /**

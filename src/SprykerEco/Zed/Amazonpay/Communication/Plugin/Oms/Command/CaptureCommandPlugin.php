@@ -19,7 +19,7 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        $amazonpayCallTransfers = $this->groupSalesOrderItemsByPayment($salesOrderItems);
+        $amazonpayCallTransfers = $this->groupSalesOrderItemsByAuthId($salesOrderItems);
 
         foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
             $amazonpayCallTransfer->setRequestedAmount(

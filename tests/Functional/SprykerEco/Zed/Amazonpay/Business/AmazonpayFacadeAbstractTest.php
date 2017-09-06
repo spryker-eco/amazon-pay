@@ -12,11 +12,14 @@ use Codeception\TestCase\Test;
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use Orm\Zed\Amazonpay\Persistence\Base\SpyPaymentAmazonpaySalesOrderItemQuery;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery;
+use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateHistoryQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddressQuery;
+use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayEntityToTransferConverter;
@@ -92,7 +95,10 @@ class AmazonpayFacadeAbstractTest extends Test
 
     protected function cleanup()
     {
+        SpyPaymentAmazonpaySalesOrderItemQuery::create()->deleteAll();
         SpyPaymentAmazonpayQuery::create()->deleteAll();
+        SpyOmsOrderItemStateHistoryQuery::create()->deleteAll();
+        SpySalesOrderItemQuery::create()->deleteAll();
         SpySalesOrderQuery::create()->deleteAll();
         SpySalesOrderAddressQuery::create()->deleteAll();
     }

@@ -127,7 +127,7 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer[]
      */
-    protected function groupSalesOrderItemsByPayment(array $salesOrderItems)
+    protected function groupSalesOrderItemsByAuthId(array $salesOrderItems)
     {
         $groups = [];
 
@@ -145,6 +145,34 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
             );
 
             $groups[$payment->getAuthorizationReferenceId()] = $groupData;
+        }
+
+        return $groups;
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $salesOrderItems
+     *
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer[]
+     */
+    protected function groupSalesOrderItemsByCaptureId(array $salesOrderItems)
+    {
+        $groups = [];
+
+        foreach ($salesOrderItems as $salesOrderItem) {
+            $payment = $this->getPaymentDetails($salesOrderItem);
+
+            if (!$payment) {
+                continue;
+            }
+
+            $groupData = $groups[$payment->getAmazonCaptureId()] ?? $this->createAmazonpayCallTransfer($payment);
+
+            $groupData->addItem(
+                $this->mapSalesOrderItemToItemTransfer($salesOrderItem)
+            );
+
+            $groups[$payment->getAmazonCaptureId()] = $groupData;
         }
 
         return $groups;

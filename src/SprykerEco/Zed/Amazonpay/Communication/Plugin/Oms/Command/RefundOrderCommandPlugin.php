@@ -22,7 +22,7 @@ class RefundOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        $amazonpayCallTransfers = $this->groupSalesOrderItemsByPayment($salesOrderItems);
+        $amazonpayCallTransfers = $this->groupSalesOrderItemsByCaptureId($salesOrderItems);
 
         foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
             $currentGroupSalesOrderItems = $this->getSalesOrderItemsForGroup($amazonpayCallTransfer, $salesOrderItems);
