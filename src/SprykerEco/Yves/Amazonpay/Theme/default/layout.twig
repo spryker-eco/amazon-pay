@@ -23,5 +23,6 @@
 {% endblock %}
 
 {% block javascript %}
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script async="async" src="{{ amazonpayConfig.isSandbox ? amazonpayConfig.widgetScriptPathSandbox : amazonpayConfig.widgetPathScript }}"></script>
 {% endblock %}

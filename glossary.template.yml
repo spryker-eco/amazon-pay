@@ -1,6 +1,6 @@
 amazonpay.payment.failed:
   translations:
-    en_EN: "general payment failure."
+    en_EN: "General payment failure."
     de_DE: ""
 amazonpay.payment.wrong:
   translations:
@@ -12,11 +12,15 @@ checkout.amazonpay:
     de_DE: ""
 amazonpay.success.asyncronous.text:
   translations:
-    en_EN: ""
+    en_EN: "Your transaction with Amazon Pay is currently being validated. Please be aware that we will inform you shortly as needed."
     de_DE: ""
 amazonpay.timeout.error:
   translations:
     en_EN: "Timeout during payment processing."
+    de_DE: ""
+amazonpay.payment.place-order.failed:
+  translations:
+    en_EN: "Unknown error during place order. Please repeat your attempt."
     de_DE: ""
 amazonpay.payment.error.PaymentMethodNotAllowed:
   translations:
