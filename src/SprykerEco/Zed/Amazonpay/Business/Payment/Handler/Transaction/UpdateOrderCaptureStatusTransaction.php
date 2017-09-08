@@ -39,7 +39,7 @@ class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
             );
         }
 
-        $newStatus = $this->getOmsStatus($this->apiResponse->getCaptureDetails()->getCaptureStatus());
+        $newStatus = $this->getPaymentStatus($this->apiResponse->getCaptureDetails()->getCaptureStatus());
 
         $this->paymentEntity->setStatus($newStatus);
         $this->paymentEntity->save();
@@ -52,7 +52,7 @@ class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
      *
      * @return string
      */
-    protected function getOmsStatus(AmazonpayStatusTransfer $status)
+    protected function getPaymentStatus(AmazonpayStatusTransfer $status)
     {
         if ($status->getIsDeclined()) {
             return AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED;

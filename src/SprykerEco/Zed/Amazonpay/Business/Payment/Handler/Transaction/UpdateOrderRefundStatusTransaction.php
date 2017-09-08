@@ -37,7 +37,7 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
             $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
         }
 
-        $status = $this->getStatus($this->apiResponse->getRefundDetails()->getRefundStatus());
+        $status = $this->getPaymentStatus($this->apiResponse->getRefundDetails()->getRefundStatus());
         $this->paymentEntity->setStatus($status);
         $this->paymentEntity->save();
 
@@ -49,11 +49,11 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
     }
 
     /**
-     * @param \Generated\Shared\Transfer/AmazonpayStatusTransfer $status
+     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $status
      *
      * @return string
      */
-    protected function getStatus(AmazonpayStatusTransfer $status)
+    protected function getPaymentStatus(AmazonpayStatusTransfer $status)
     {
         if ($status->getIsPending()) {
             return AmazonpayConstants::OMS_STATUS_REFUND_PENDING;

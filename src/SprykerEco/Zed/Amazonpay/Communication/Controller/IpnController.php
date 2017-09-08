@@ -21,16 +21,8 @@ class IpnController extends AbstractController
      */
     public function endpointAction()
     {
-        $headersRaw = unserialize(file_get_contents('./header.txt'), []);
-
-        $headers = [];
-        foreach ($headersRaw as $headerKey =>  $headerValue) {
-            if (strpos($headerKey, 'Amz')) {
-                $headers[strtolower($headerKey)] =  $headerValue;
-            }
-        }
-
-        $body = unserialize(file_get_contents('./body.txt'), []);
+        $headers = getallheaders();
+        $body = file_get_contents('php://input');
 
         $ipnRequestTransfer = $this->getFacade()->convertAmazonpayIpnRequest($headers, $body);
         $this->getFacade()->handleAmazonpayIpnRequest($ipnRequestTransfer);

@@ -10,7 +10,6 @@ namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface;
-use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface;
 
 class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
 {
