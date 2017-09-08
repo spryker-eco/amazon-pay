@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Dependency\Injector;
 
+use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command\AuthorizeManuallyOrderCommandPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command\CancelOrderCommandPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command\CaptureCommandPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command\CloseOrderCommandPlugin;
@@ -30,6 +31,7 @@ use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCaptureDecline
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCapturePendingConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCloseAllowedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsClosedConditionPlugin;
+use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsPartiallyCapturedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsRefundCompletedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsRefundDeclinedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsRefundPendingConditionPlugin;
@@ -70,6 +72,7 @@ class OmsDependencyInjector extends AbstractDependencyInjector
                     ->add(new CloseOrderCommandPlugin(), 'Amazonpay/CloseOrder')
                     ->add(new RefundOrderCommandPlugin(), 'Amazonpay/RefundOrder')
                     ->add(new ReauthorizeExpiredOrderCommandPlugin(), 'Amazonpay/ReauthorizeExpiredOrder')
+                    ->add(new AuthorizeManuallyOrderCommandPlugin(), 'Amazonpay/AuthorizeOrderManually')
                     ->add(new CaptureCommandPlugin(), 'Amazonpay/Capture')
                     ->add(new UpdateSuspendedOrderCommandPlugin(), 'Amazonpay/UpdateSuspendedOrder')
                     ->add(new UpdateNewOrderStatusCommandPlugin(), 'Amazonpay/UpdateNewOrderStatus')
@@ -110,6 +113,7 @@ class OmsDependencyInjector extends AbstractDependencyInjector
                 ->add(new IsCaptureCompletedConditionPlugin(), 'Amazonpay/IsCaptureCompleted')
                 ->add(new IsCaptureDeclinedConditionPlugin(), 'Amazonpay/IsCaptureDeclined')
                 ->add(new IsCapturePendingConditionPlugin(), 'Amazonpay/IsCapturePending')
+                ->add(new IsPartiallyCapturedConditionPlugin(), 'Amazonpay/IsPartiallyCaptured')
 
                 ->add(new IsRefundCompletedConditionPlugin(), 'Amazonpay/IsRefundCompleted')
                 ->add(new IsRefundDeclinedConditionPlugin(), 'Amazonpay/IsRefundDeclined')
