@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Dependency\Facade;
 
-
 interface AmazonpayToUtilEncodingInterface
 {
 

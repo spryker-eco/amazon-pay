@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
+use Exception;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
@@ -93,6 +94,8 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
     /**
      * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $entity
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @return void
      */
     protected function assignAmazonpayPaymentToItemsIfNew(SpyPaymentAmazonpay $entity, AmazonpayCallTransfer $amazonpayCallTransfer)
     {
@@ -106,11 +109,15 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @throws \Exception
+     *
+     * @return void
      */
     protected function loadPaymentEntity(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         if ($this->paymentEntity) {
-            throw new \Exception('paymentEntity was previously defined!');
+            throw new Exception('paymentEntity was previously defined!');
         }
 
         $this->paymentEntity = null;
@@ -167,7 +174,8 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
      *
      * @return bool
      */
-    protected function isPartialProcessing(SpyPaymentAmazonpay $paymentAmazonpay, AmazonpayCallTransfer $amazonpayCallTransfer) {
+    protected function isPartialProcessing(SpyPaymentAmazonpay $paymentAmazonpay, AmazonpayCallTransfer $amazonpayCallTransfer)
+    {
         return $amazonpayCallTransfer->getItems()->count() !== $paymentAmazonpay->getSpyPaymentAmazonpaySalesOrderItems()->count();
     }
 

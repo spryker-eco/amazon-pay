@@ -7,9 +7,9 @@
 
 namespace SprykerEco\Yves\Amazonpay;
 
+use Spryker\Yves\Kernel\AbstractFactory;
 use Spryker\Yves\ProductBundle\Grouper\ProductBundleGrouper;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
-use Spryker\Yves\Kernel\AbstractFactory;
 
 class AmazonpayFactory extends AbstractFactory implements AmazonpayFactoryInterface
 {

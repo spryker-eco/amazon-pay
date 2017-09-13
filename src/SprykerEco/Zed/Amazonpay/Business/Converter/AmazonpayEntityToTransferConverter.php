@@ -18,7 +18,7 @@ use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class AmazonpayEntityToTransferConverter implements AmazonpayEntityToTransferConverterInterface
 {
-    
+
     /**
      * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $entity
      *

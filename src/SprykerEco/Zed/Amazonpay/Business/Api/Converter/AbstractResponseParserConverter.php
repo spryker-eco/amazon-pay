@@ -136,7 +136,9 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     }
 
     /**
-     * @param AmazonpayResponseHeaderTransfer $header
+     * @param \Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer $header
+     *
+     * @return void
      */
     protected function extractErrorFromConstraints(AmazonpayResponseHeaderTransfer $header)
     {
@@ -258,7 +260,7 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     }
 
     /**
-     * @param $value
+     * @param string|array $value
      *
      * @return null
      */

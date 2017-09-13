@@ -18,7 +18,7 @@ class AmazonpayToSalesBridge implements AmazonpayToSalesInterface
     protected $salesFacade;
 
     /**
-     * @param \Spryker\Zed\Sales\Business\SalesFacadeInterface
+     * @param \Spryker\Zed\Sales\Business\SalesFacadeInterface $salesFacade
      */
     public function __construct(SalesFacadeInterface $salesFacade)
     {

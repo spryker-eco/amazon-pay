@@ -7,13 +7,10 @@
 
 namespace SprykerEco\Zed\Amazonpay\Communication;
 
-use SprykerEco\Zed\Amazonpay\AmazonpayDependencyProvider;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
+use SprykerEco\Zed\Amazonpay\AmazonpayDependencyProvider;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayEntityToTransferConverter;
-use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayEntityToTransferConverterInterface;
 use SprykerEco\Zed\Amazonpay\Business\Payment\RequestAmountCalculator;
-use SprykerEco\Zed\Amazonpay\Business\Payment\RequestAmountCalculatorInterface;
-use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface;
 
 /**
  * @method \SprykerEco\Shared\Amazonpay\AmazonpayConfig getConfig()
@@ -47,7 +44,7 @@ class AmazonpayCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @return AmazonpayToMessengerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface
      */
     public function getMessengerFacade()
     {
@@ -55,7 +52,7 @@ class AmazonpayCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @return RequestAmountCalculatorInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\RequestAmountCalculatorInterface
      */
     public function createRequestAmountCalculator()
     {
@@ -63,7 +60,7 @@ class AmazonpayCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @return AmazonpayEntityToTransferConverterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayEntityToTransferConverterInterface
      */
     public function createPaymentAmazonpayConverter()
     {

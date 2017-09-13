@@ -7,9 +7,8 @@
 
 namespace SprykerEco\Yves\Amazonpay\Plugin\Provider;
 
-use Silex\Application;
-use Spryker\Yves\Application\Plugin\Provider\YvesControllerProvider;
 use Pyz\Yves\Application\Plugin\Provider\AbstractYvesControllerProvider;
+use Silex\Application;
 
 class AmazonpayControllerProvider extends AbstractYvesControllerProvider
 {

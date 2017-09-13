@@ -2,7 +2,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Converter;
 
-use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AmazonpayConverterInterface

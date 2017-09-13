@@ -11,8 +11,9 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AmazonpayToShipmentBridgeInterface
 {
+
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return \Generated\Shared\Transfer\ShipmentMethodsTransfer
      */

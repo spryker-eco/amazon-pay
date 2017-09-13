@@ -21,7 +21,7 @@ class PrepareQuoteCollection implements QuoteUpdaterInterface
     protected $quoteUpdaters;
 
     /**
-     * @var AmazonpayToMessengerInterface
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface
      */
     protected $messengerFacade;
 
@@ -56,7 +56,7 @@ class PrepareQuoteCollection implements QuoteUpdaterInterface
     /**
      * @param string $message
      *
-     * @return MessageTransfer
+     * @return \Generated\Shared\Transfer\MessageTransfer
      */
     protected function createMessage($message)
     {

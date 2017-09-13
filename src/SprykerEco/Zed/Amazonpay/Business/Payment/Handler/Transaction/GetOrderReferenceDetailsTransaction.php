@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class GetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction 
+class GetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
 {
 
     /**

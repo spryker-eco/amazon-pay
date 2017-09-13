@@ -2,15 +2,13 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment;
 
-use ArrayObject;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 
 interface RequestAmountCalculatorInterface
 {
 
-
     /**
-     * @param SpySalesOrder $orderEntity
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
      * @param string $itemsFlag
      *
      * @return bool

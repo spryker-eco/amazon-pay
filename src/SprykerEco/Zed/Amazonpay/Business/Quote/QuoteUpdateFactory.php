@@ -31,7 +31,7 @@ class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
     protected $shipmentFacade;
 
     /**
-     * @var AmazonpayToMessengerInterface
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface
      */
     protected $messengerFacade;
 

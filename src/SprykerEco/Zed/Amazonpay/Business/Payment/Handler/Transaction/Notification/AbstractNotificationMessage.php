@@ -9,5 +9,4 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notifica
 
 abstract class AbstractNotificationMessage
 {
-
 }

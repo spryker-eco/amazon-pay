@@ -72,7 +72,8 @@ class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
      *
      * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    protected function setBody(AmazonpayResponseTransfer $responseTransfer, ResponseInterface $responseParser) {
+    protected function setBody(AmazonpayResponseTransfer $responseTransfer, ResponseInterface $responseParser)
+    {
         $responseTransfer->setOrderReferenceStatus(
             $this->convertStatusToTransfer(
                 $this->extractResult($responseParser)[self::ORDER_REFERENCE_DETAILS][self::ORDER_REFERENCE_STATUS]

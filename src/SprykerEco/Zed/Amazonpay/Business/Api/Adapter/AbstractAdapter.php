@@ -8,9 +8,6 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
-use Generated\Shared\Transfer\QuoteTransfer;
 use PayWithAmazon\ClientInterface;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ResponseParserConverterInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyInterface;

@@ -8,13 +8,15 @@
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Orm\Zed\Sales\Persistence\Base\SpySalesOrderItem;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 
 class RefundOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
 
+    /**
+     * @var array
+     */
     protected $salesOrderItemsMap = [];
 
     /**
@@ -48,10 +50,10 @@ class RefundOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
     }
 
     /**
-     * @param AmazonpayCallTransfer $amazonpayCallTransfer
-     * @param SpySalesOrderItem[] $salesOrderItems
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Orm\Zed\Sales\Persistence\Base\SpySalesOrderItem[] $salesOrderItems
      *
-     * @return SpySalesOrderItem[]
+     * @return \Orm\Zed\Sales\Persistence\Base\SpySalesOrderItem[]
      */
     protected function getSalesOrderItemsForGroup(AmazonpayCallTransfer $amazonpayCallTransfer, array $salesOrderItems)
     {
@@ -69,7 +71,9 @@ class RefundOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
     }
 
     /**
-     * @param SpySalesOrderItem[] $salesOrderItems
+     * @param \Orm\Zed\Sales\Persistence\Base\SpySalesOrderItem[] $salesOrderItems
+     *
+     * @return void
      */
     protected function buildSalesOrderItemsMap(array $salesOrderItems)
     {

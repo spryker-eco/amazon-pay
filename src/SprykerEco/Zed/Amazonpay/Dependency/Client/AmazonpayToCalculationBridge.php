@@ -18,6 +18,9 @@ class AmazonpayToCalculationBridge implements AmazonpayToCalculationInterface
      */
     protected $calculationClient;
 
+    /**
+     * @param \Spryker\Client\Calculation\CalculationClientInterface $calculationClient
+     */
     public function __construct(CalculationClientInterface $calculationClient)
     {
         $this->calculationClient = $calculationClient;
@@ -32,4 +35,5 @@ class AmazonpayToCalculationBridge implements AmazonpayToCalculationInterface
     {
         return $this->calculationClient->recalculate($quoteTransfer);
     }
+
 }

@@ -7,25 +7,18 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business;
 
+use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 use SprykerEco\Zed\Amazonpay\AmazonpayDependencyProvider;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactory;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ConverterFactory;
+use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverter;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverter;
-use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverterInterface;
 use SprykerEco\Zed\Amazonpay\Business\Order\Saver;
-use SprykerEco\Zed\Amazonpay\Business\Payment\RequestAmountCalculator;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnFactory;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLogger;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\TransactionFactory;
-use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayEntityToTransferConverter;
-use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayEntityToTransferConverterInterface;
-use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverter;
-use SprykerEco\Zed\Amazonpay\Business\Payment\RequestAmountCalculatorInterface;
 use SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdateFactory;
-use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface;
-use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface;
-use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
  * @method \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainer getQueryContainer()
@@ -168,7 +161,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return AmazonpayToMessengerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface
      */
     protected function getMessengerFacade()
     {
@@ -178,7 +171,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return AmazonpayConverter
+     * @return \SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverter
      */
     protected function createAmazonpayConverter()
     {
@@ -186,7 +179,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return AmazonpayTransferToEntityConverterInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverterInterface
      */
     protected function createAmazonpayTransferToEntityConverter()
     {

@@ -31,7 +31,7 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
      * @dataProvider providerQuotes
      *
      * @param QuoteTransfer $quote
-     * @param $expectedPaymentStatus
+     * @param string $expectedPaymentStatus
      */
     public function testSaveOrderPayment(QuoteTransfer $quote, $expectedPaymentStatus)
     {
@@ -100,6 +100,11 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
     }
 
     /**
+     * @param string $orderReference
+     * @param array $idsList
+     * @param AmazonpayStatusTransfer $status
+     * @param SpyOmsOrderItemState $omsState
+     *
      * @return QuoteTransfer
      */
     protected function createQuote($orderReference, $idsList = [], AmazonpayStatusTransfer $status, SpyOmsOrderItemState $omsState)

@@ -21,7 +21,6 @@ class IpnPaymentCaptureCompletedHandler extends IpnAbstractPaymentCaptureHandler
         return AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED;
     }
 
-
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\AmazonpayIpnPaymentCaptureRequestTransfer $amazonpayIpnRequestTransfer
      *
@@ -43,7 +42,6 @@ class IpnPaymentCaptureCompletedHandler extends IpnAbstractPaymentCaptureHandler
                     ->save();
             }
         }
-
 
         parent::handle($amazonpayIpnRequestTransfer);
     }

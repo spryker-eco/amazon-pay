@@ -7,6 +7,11 @@
 
 namespace SprykerEco\Zed\Amazonpay\Dependency\Injector;
 
+use Spryker\Zed\Kernel\Container;
+use Spryker\Zed\Kernel\Dependency\Injector\AbstractDependencyInjector;
+use Spryker\Zed\Oms\Communication\Plugin\Oms\Command\CommandCollectionInterface;
+use Spryker\Zed\Oms\Communication\Plugin\Oms\Condition\ConditionCollectionInterface;
+use Spryker\Zed\Oms\OmsDependencyProvider;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command\CancelOrderCommandPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command\CaptureCommandPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command\CloseOrderCommandPlugin;
@@ -33,11 +38,6 @@ use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsClosedConditio
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsRefundCompletedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsRefundDeclinedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsRefundPendingConditionPlugin;
-use Spryker\Zed\Kernel\Container;
-use Spryker\Zed\Kernel\Dependency\Injector\AbstractDependencyInjector;
-use Spryker\Zed\Oms\Communication\Plugin\Oms\Command\CommandCollectionInterface;
-use Spryker\Zed\Oms\Communication\Plugin\Oms\Condition\ConditionCollectionInterface;
-use Spryker\Zed\Oms\OmsDependencyProvider;
 
 class OmsDependencyInjector extends AbstractDependencyInjector
 {

@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Persistence;
 
-use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\Kernel\Persistence\AbstractQueryContainer;
 
@@ -77,7 +76,7 @@ class AmazonpayQueryContainer extends AbstractQueryContainer implements Amazonpa
      * @api
      *
      * @param string $authorizationReferenceId
-     * @param SpySalesOrderItem[] $excludeItems
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $excludeItems
      *
      * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
      */

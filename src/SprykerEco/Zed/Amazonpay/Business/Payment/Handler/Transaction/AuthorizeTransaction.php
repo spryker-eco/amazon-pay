@@ -51,7 +51,7 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
      */
     protected function buildErrorCode(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        return 'amazonpay.payment.error.'.
+        return 'amazonpay.payment.error.' .
         $amazonpayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->getAuthorizationStatus()

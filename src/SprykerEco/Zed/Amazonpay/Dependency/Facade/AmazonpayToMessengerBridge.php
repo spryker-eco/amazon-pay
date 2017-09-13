@@ -26,7 +26,7 @@ class AmazonpayToMessengerBridge implements AmazonpayToMessengerInterface
     }
 
     /**
-     * @param MessageTransfer $messenger
+     * @param \Generated\Shared\Transfer\MessageTransfer $messenger
      *
      * @return array
      */

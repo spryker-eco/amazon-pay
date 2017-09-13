@@ -10,6 +10,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 
 interface ConverterFactoryInterface
 {
+
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ResponseParserConverterInterface
      */
@@ -79,4 +80,5 @@ interface ConverterFactoryInterface
      * @return \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface
      */
     public function createIpnArrayConverter();
+
 }

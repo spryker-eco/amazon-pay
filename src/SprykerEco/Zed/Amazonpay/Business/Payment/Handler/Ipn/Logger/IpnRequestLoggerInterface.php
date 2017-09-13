@@ -7,8 +7,8 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger;
 
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
+use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 
 interface IpnRequestLoggerInterface
 {

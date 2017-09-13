@@ -9,8 +9,8 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLogger;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
-use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface;
+use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
 class IpnFactory implements IpnFactoryInterface
 {
@@ -33,7 +33,7 @@ class IpnFactory implements IpnFactoryInterface
     /**
      * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
      * @param \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
-     * @param \Spryker\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface
+     * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface $amazonpayToUtilEncoding
      */
     public function __construct(
         AmazonpayToOmsInterface $omsFacade,

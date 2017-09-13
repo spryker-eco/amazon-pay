@@ -75,7 +75,7 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
     }
 
     /**
-     * @param AmazonpayStatusTransfer $captureStatus
+     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $captureStatus
      *
      * @return bool
      */

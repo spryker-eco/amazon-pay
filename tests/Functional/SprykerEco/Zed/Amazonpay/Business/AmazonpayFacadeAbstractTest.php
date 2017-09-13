@@ -70,6 +70,8 @@ class AmazonpayFacadeAbstractTest extends Test
     }
 
     /**
+     * @param string $orderReference
+     *
      * @return SpySalesOrder
      */
     protected function createSalesOrder($orderReference)
@@ -134,8 +136,9 @@ class AmazonpayFacadeAbstractTest extends Test
     }
 
     /**
-     * @param SpyPaymentAmazonpay $paymentEntity
+     * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $paymentEntity
      * @param array $salesOrderItems
+     * @param int $requestedAmount
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */

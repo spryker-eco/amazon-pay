@@ -14,7 +14,6 @@ class AmazonpayConfig extends AbstractBundleConfig implements AmazonpayConfigInt
 {
 
     /**
-     *
      * @return string
      */
     public function getClientId()
@@ -123,7 +122,7 @@ class AmazonpayConfig extends AbstractBundleConfig implements AmazonpayConfigInt
      */
     public function getPopupLogin()
     {
-        return (bool) $this->get(AmazonpayConstants::WIDGET_POPUP_LOGIN);
+        return (bool)$this->get(AmazonpayConstants::WIDGET_POPUP_LOGIN);
     }
 
     /**

@@ -43,7 +43,7 @@ class TransactionFactory implements TransactionFactoryInterface
     protected $converter;
 
     /**
-     * @var AmazonpayTransferToEntityConverterInterface
+     * @var \SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverterInterface
      */
     protected $toEntityConverter;
 
@@ -209,7 +209,6 @@ class TransactionFactory implements TransactionFactoryInterface
         );
     }
 
-
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
@@ -243,7 +242,7 @@ class TransactionFactory implements TransactionFactoryInterface
      */
     public function createCloseCapturedOrderTransaction()
     {
-        return  new TransactionSequence(
+        return new TransactionSequence(
             [
                 $this->createGetOrderReferenceDetailsTransaction(),
                 $this->createCloseOrderTransaction(),

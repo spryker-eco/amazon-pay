@@ -7,9 +7,9 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Order;
 
+use ArrayObject;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
-use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItem;
@@ -36,9 +36,11 @@ class Saver implements SaverInterface
 
     /**
      * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $paymentEntity
-     * @param \ArrayObject|ItemTransfer[] $orderItems
+     * @param \ArrayObject|\Generated\Shared\Transfer\ItemTransfer[] $orderItems
+     *
+     * @return void
      */
-    protected function assignPaymentEntityToItems(SpyPaymentAmazonpay $paymentEntity, \ArrayObject $orderItems)
+    protected function assignPaymentEntityToItems(SpyPaymentAmazonpay $paymentEntity, ArrayObject $orderItems)
     {
         foreach ($orderItems as $itemTransfer) {
             $this->assignPaymentToOrderItem($paymentEntity->getIdPaymentAmazonpay(), $itemTransfer->getIdSalesOrderItem());
@@ -46,8 +48,8 @@ class Saver implements SaverInterface
     }
 
     /**
-     * @param $idPayment
-     * @param $orderItem
+     * @param int $idPayment
+     * @param int $orderItem
      *
      * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItem
      */
@@ -118,6 +120,8 @@ class Saver implements SaverInterface
         if ($paymentTransfer->getAuthorizationDetails()->getAuthorizationStatus()->getIsOpen()) {
             return AmazonpayConstants::OMS_STATUS_AUTH_OPEN;
         }
+
+        return AmazonpayConstants::OMS_STATUS_CANCELLED;
     }
 
 }

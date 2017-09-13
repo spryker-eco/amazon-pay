@@ -8,8 +8,8 @@
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class UpdateSuspendedOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
 {

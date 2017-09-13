@@ -22,7 +22,7 @@ class RequestAmountCalculator implements RequestAmountCalculatorInterface
     }
 
     /**
-     * @param SpySalesOrder $orderEntity
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
      * @param string $itemsFlag
      *
      * @return bool

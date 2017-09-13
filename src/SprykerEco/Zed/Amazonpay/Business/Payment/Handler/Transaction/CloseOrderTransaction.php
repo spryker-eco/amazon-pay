@@ -36,6 +36,8 @@ class CloseOrderTransaction extends AbstractAmazonpayTransaction
 
     /**
      * @param string $orderReferenceId
+     *
+     * @return void
      */
     protected function closeAllPaymentsForThisOrder($orderReferenceId)
     {
@@ -48,7 +50,5 @@ class CloseOrderTransaction extends AbstractAmazonpayTransaction
             $payment->save();
         }
     }
-
-
 
 }

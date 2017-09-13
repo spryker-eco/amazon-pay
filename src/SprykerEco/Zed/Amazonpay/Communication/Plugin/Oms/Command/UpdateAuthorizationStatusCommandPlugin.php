@@ -46,7 +46,7 @@ class UpdateAuthorizationStatusCommandPlugin extends AbstractAmazonpayCommandPlu
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderAddress $address
      *
-     * @return AddressTransfer
+     * @return \Generated\Shared\Transfer\AddressTransfer
      */
     protected function buildAddressTransfer(SpySalesOrderAddress $address)
     {
@@ -56,13 +56,15 @@ class UpdateAuthorizationStatusCommandPlugin extends AbstractAmazonpayCommandPlu
     }
 
     /**
-     * @param AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      * @param array $alreadyAffectedItems
+     *
+     * @return void
      */
     protected function triggerEventForRelatedItems(AmazonpayCallTransfer $amazonpayCallTransfer, array $alreadyAffectedItems)
     {
         $affectedItems = array_map(
-            function(ItemTransfer $item) {
+            function (ItemTransfer $item) {
                 return $item->getIdSalesOrderItem();
             },
             $amazonpayCallTransfer->getItems()->getArrayCopy()

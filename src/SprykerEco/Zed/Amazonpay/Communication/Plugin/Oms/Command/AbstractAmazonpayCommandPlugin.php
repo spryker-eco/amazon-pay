@@ -12,7 +12,6 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\MessageTransfer;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
-use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItem;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use Spryker\Shared\Shipment\ShipmentConstants;
@@ -26,6 +25,9 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements CommandByOrderInterface
 {
 
+    /**
+     * @var bool
+     */
     protected $wasShippingCharged;
 
     /**
@@ -166,7 +168,7 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
     }
 
     /**
-     * @param SpyPaymentAmazonpay $payment
+     * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $payment
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
@@ -184,12 +186,14 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      * @param array $salesOrderItems
+     *
+     * @return void
      */
     protected function populateItems(AmazonpayCallTransfer $amazonpayCallTransfer, array $salesOrderItems)
     {
         $amazonpayCallTransfer->setItems(
             new ArrayObject(
-                array_map(array($this, 'mapSalesOrderItemToItemTransfer'), $salesOrderItems)
+                array_map([$this, 'mapSalesOrderItemToItemTransfer'], $salesOrderItems)
             )
         );
     }
@@ -201,7 +205,7 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
      */
     protected function getPaymentDetails(SpySalesOrderItem $salesOrderItem)
     {
-        /** @var SpyPaymentAmazonpaySalesOrderItem $payment */
+        /** @var \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItem $payment */
         $payment = $salesOrderItem->getSpyPaymentAmazonpaySalesOrderItems()->getLast();
 
         if (!$payment) {

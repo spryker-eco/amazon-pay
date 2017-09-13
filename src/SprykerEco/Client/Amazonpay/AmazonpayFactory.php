@@ -7,8 +7,8 @@
 
 namespace SprykerEco\Client\Amazonpay;
 
-use SprykerEco\Client\Amazonpay\Zed\AmazonpayStub;
 use Spryker\Client\Kernel\AbstractFactory;
+use SprykerEco\Client\Amazonpay\Zed\AmazonpayStub;
 
 class AmazonpayFactory extends AbstractFactory
 {

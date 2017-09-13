@@ -35,4 +35,5 @@ class AmazonpayToCheckoutBridge implements AmazonpayToCheckoutInterface
     {
         return $this->checkoutClient->placeOrder($quoteTransfer);
     }
+
 }

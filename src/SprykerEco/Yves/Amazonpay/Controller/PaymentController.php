@@ -7,16 +7,15 @@
 
 namespace SprykerEco\Yves\Amazonpay\Controller;
 
-use InvalidArgumentException;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use InvalidArgumentException;
+use Spryker\Shared\Config\Config;
+use Spryker\Yves\Kernel\Controller\AbstractController;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use SprykerEco\Yves\Amazonpay\Plugin\Provider\AmazonpayControllerProvider;
-use Spryker\Yves\Kernel\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Spryker\Shared\Config\Config;
 
 /**
  * @method \SprykerEco\Yves\Amazonpay\AmazonpayFactory getFactory()
@@ -71,9 +70,9 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return AmazonpayPaymentTransfer|null
+     * @return \Generated\Shared\Transfer\AmazonpayPaymentTransfer|null
      */
     protected function buildAmazonPaymentTransfer(Request $request)
     {
@@ -89,7 +88,7 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return bool
      */
@@ -205,7 +204,7 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return bool
      */

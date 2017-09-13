@@ -67,7 +67,7 @@ class AuthorizeAdapter extends AbstractAdapter
     }
 
     /**
-     * @param AmazonpayConfigInterface $config
+     * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
      * @param string|null $captureNow
      *
      * @return void

@@ -38,9 +38,9 @@ class IpnController extends AbstractController
         $headersRaw = unserialize(file_get_contents('./header.txt'), []);
 
         $headers = [];
-        foreach ($headersRaw as $headerKey =>  $headerValue) {
+        foreach ($headersRaw as $headerKey => $headerValue) {
             if (strpos($headerKey, 'Amz')) {
-                $headers[strtolower($headerKey)] =  $headerValue;
+                $headers[strtolower($headerKey)] = $headerValue;
             }
         }
 
