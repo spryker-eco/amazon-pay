@@ -52,7 +52,7 @@ class AuthorizeResponse extends AbstractResponse
       <SoftDescriptor>AMZ*spryker</SoftDescriptor>
       <ExpirationTimestamp>2017-06-14T09:52:52.911Z</ExpirationTimestamp>'
             . $this->getAuthorizationStatusXml() .
-      '<AuthorizationFee>
+        '<AuthorizationFee>
         <CurrencyCode>EUR</CurrencyCode>
         <Amount>0.00</Amount>
       </AuthorizationFee>
@@ -96,42 +96,41 @@ class AuthorizeResponse extends AbstractResponse
 
         // synchronous with captureNow
         if ($this->captureNow && $this->transactionTimeout === 0) {
-             switch ($this->orderReferenceId) {
-                 case AbstractResponse::ORDER_REFERENCE_ID_1:
-                     return $idList . sprintf($authorizationStatus, 'Closed', 'MaxCapturesProcessed');
+            switch ($this->orderReferenceId) {
+                case AbstractResponse::ORDER_REFERENCE_ID_1:
+                    return $idList . sprintf($authorizationStatus, 'Closed', 'MaxCapturesProcessed');
 
-                 case AbstractResponse::ORDER_REFERENCE_ID_2:
-                     return sprintf($authorizationStatus, 'Declined', 'AmazonRejected');
+                case AbstractResponse::ORDER_REFERENCE_ID_2:
+                    return sprintf($authorizationStatus, 'Declined', 'AmazonRejected');
 
-                 case AbstractResponse::ORDER_REFERENCE_ID_3:
-                     return sprintf($authorizationStatus, 'Declined', 'InvalidPaymentMethod');
-             }
+                case AbstractResponse::ORDER_REFERENCE_ID_3:
+                    return sprintf($authorizationStatus, 'Declined', 'InvalidPaymentMethod');
+            }
         }
 
         // asyncronous with captureNow
         if ($this->captureNow && $this->transactionTimeout > 0) {
-            return $idList . sprintf($authorizationStatus, 'Pending','');
+            return $idList . sprintf($authorizationStatus, 'Pending', '');
         }
 
         // synchronous without capturenow
         if (!$this->captureNow && $this->transactionTimeout === 0) {
             switch ($this->orderReferenceId) {
                 case AbstractResponse::ORDER_REFERENCE_ID_1:
-                    return sprintf($authorizationStatus, 'Open','');
+                    return sprintf($authorizationStatus, 'Open', '');
 
                 case AbstractResponse::ORDER_REFERENCE_ID_2:
-                    return sprintf($authorizationStatus, 'Declined','AmazonRejected');
+                    return sprintf($authorizationStatus, 'Declined', 'AmazonRejected');
 
                 case AbstractResponse::ORDER_REFERENCE_ID_3:
-                    return sprintf($authorizationStatus, 'Declined','InvalidPaymentMethod');
+                    return sprintf($authorizationStatus, 'Declined', 'InvalidPaymentMethod');
             }
         }
 
         // asynchronous without capturenow
         if (!$this->captureNow && $this->transactionTimeout > 0) {
-            return sprintf($authorizationStatus, 'Pending','');
+            return sprintf($authorizationStatus, 'Pending', '');
         }
-
     }
 
 }

@@ -18,6 +18,8 @@ class AmazonpayFacadeReauthorizeOrderTest extends AmazonpayFacadeAbstractTest
      * @dataProvider cancelOrderDataProvider
      *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @return void
      */
     public function testAuthorizeOrder(AmazonpayCallTransfer $amazonpayCallTransfer)
     {

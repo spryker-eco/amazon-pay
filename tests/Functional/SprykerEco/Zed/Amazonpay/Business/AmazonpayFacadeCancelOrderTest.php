@@ -18,6 +18,8 @@ class AmazonpayFacadeCancelOrderTest extends AmazonpayFacadeAbstractTest
      * @dataProvider cancelOrderDataProvider
      *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @return void
      */
     public function testCancelOrder(AmazonpayCallTransfer $amazonpayCallTransfer)
     {

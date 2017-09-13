@@ -20,7 +20,7 @@ class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstract
      *
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
-    protected function createQuote($total=0)
+    protected function createQuote($total = 0)
     {
         $quote = new QuoteTransfer();
         $quote->setAmazonpayPayment(new AmazonpayPaymentTransfer());
@@ -34,7 +34,10 @@ class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstract
 
     /**
      * @dataProvider handleCartDataProvider
+     *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
      */
     public function testHandleCartWithAmazonpay(QuoteTransfer $quoteTransfer)
     {
@@ -71,7 +74,7 @@ class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstract
         return [
             [
                 $this->createQuote(),
-            ]
+            ],
         ];
     }
 

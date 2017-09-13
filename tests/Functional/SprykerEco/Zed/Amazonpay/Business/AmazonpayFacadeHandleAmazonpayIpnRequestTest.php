@@ -7,14 +7,11 @@
 
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
-use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayAuthorizationDetailsTransfer;
-use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayIpnPaymentAuthorizeRequestTransfer;
 use Generated\Shared\Transfer\AmazonpayIpnRequestMessageTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
-use Spryker\Shared\Kernel\Transfer\TransferInterface;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstractTest
@@ -25,7 +22,9 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
     /**
      * @dataProvider updateRefundStatusDataProvider
      *
-     * @param AbstractTransfer $transfer
+     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $transfer
+     *
+     * @return void
      */
     public function testFacadeHandleAmazonpayIpnRequest(AbstractTransfer $transfer)
     {
@@ -49,7 +48,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
     /**
      * @param string $reference
      *
-     * @return TransferInterface
+     * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
      */
     protected function creataAmazonpayIpnPaymentAuthorizeRequestTransfer($reference)
     {

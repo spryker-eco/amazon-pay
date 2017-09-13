@@ -9,12 +9,12 @@ namespace Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk;
 
 class GetUserInfoResponse
 {
+
     /**
      * @param string $accessToken
      */
     public function __construct($accessToken)
     {
-
     }
 
     /**

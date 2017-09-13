@@ -7,10 +7,7 @@
 
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
-use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
-use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Spryker\Shared\Kernel\Transfer\TransferInterface;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class AmazonpayFacadeConvertAmazonpayIpnRequestTest extends AmazonpayFacadeAbstractTest
 {
@@ -20,6 +17,8 @@ class AmazonpayFacadeConvertAmazonpayIpnRequestTest extends AmazonpayFacadeAbstr
      *
      * @param array $headers
      * @param string $body
+     *
+     * @return void
      */
     public function testConvertAmazonpayIpnRequest(array $headers, $body)
     {
@@ -63,7 +62,7 @@ class AmazonpayFacadeConvertAmazonpayIpnRequestTest extends AmazonpayFacadeAbstr
                   "SignatureVersion" => "1",
                   "Signature" => "i+cZDodzOym0zs6JieZN+AakFy+r+0qpCG1P1QwYMx2WG343h6HAEbzRqILwZxMTjKawdQzCGISyjaSzfJ78MNLuyng1ZBdIjgr7BzIjKc42AkcxyIH77BeS09ZrdAqViDSvQZbE2ydN5lMTT+OdypXtZfACDuwx520lhoiOH8buLYGJw/FwDvOg5yjuRt5ffj3TTC4pU8bs5VuHPH3dTAT7DMiJiwwO1mQIESPGCZWMtIyWcFbrteC7I/FKghYblHUrEjXgQDPNRCAEZ/SCHoGEVf/qrM4H4MbCwsPPY912VceDj5lk8k4ZR2jfiNS8/XzeHXLVC4+ehN4+zNj5Hg==",
                   "SigningCertURL" => "https://sns.eu-west-1.amazonaws.com/SimpleNotificationService-433026a4050d206028891664da859041.pem",
-                  "UnsubscribeURL" => "https://sns.eu-west-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-1:291180941288:A1G8446IYHA4MRA36VZZYZOVN3S6:e580adf7-36cf-4bae-a3bb-a49a51618128"
+                  "UnsubscribeURL" => "https://sns.eu-west-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-1:291180941288:A1G8446IYHA4MRA36VZZYZOVN3S6:e580adf7-36cf-4bae-a3bb-a49a51618128",
                 ]),
             ],
         ];

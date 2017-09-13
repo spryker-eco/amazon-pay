@@ -49,4 +49,5 @@ class AmazonpayConfigMock extends AmazonpayConfig
 
         return parent::getAuthTransactionTimeout();
     }
+
 }

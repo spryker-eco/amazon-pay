@@ -19,6 +19,8 @@ class AmazonpayFacadeUpdateRefundStatusTest extends AmazonpayFacadeAbstractTest
      *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      * @param string $expectedStatus
+     *
+     * @return void
      */
     public function testUpdateRefundStatus(AmazonpayCallTransfer $amazonpayCallTransfer, $expectedStatus)
     {
@@ -36,15 +38,15 @@ class AmazonpayFacadeUpdateRefundStatusTest extends AmazonpayFacadeAbstractTest
         return [
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                AmazonpayConstants::OMS_STATUS_REFUND_COMPLETED
+                AmazonpayConstants::OMS_STATUS_REFUND_COMPLETED,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                AmazonpayConstants::OMS_STATUS_REFUND_DECLINED
+                AmazonpayConstants::OMS_STATUS_REFUND_DECLINED,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                AmazonpayConstants::OMS_STATUS_REFUND_PENDING
+                AmazonpayConstants::OMS_STATUS_REFUND_PENDING,
             ],
         ];
     }

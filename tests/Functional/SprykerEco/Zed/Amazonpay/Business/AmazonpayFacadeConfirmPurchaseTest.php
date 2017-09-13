@@ -10,10 +10,10 @@ namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock;
 use Generated\Shared\Transfer\AmazonpayAuthorizationDetailsTransfer;
+use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
-use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
@@ -49,7 +49,15 @@ class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
 
     /**
      * @dataProvider confirmPurchaseProvider
+     *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param int $transactionTimeout
+     * @param bool $captureNow
+     * @param string $authStatus
+     * @param string $reasonCode
+     * @param string $captureId
+     *
+     * @return void
      */
     public function testConfirmPurchase(QuoteTransfer $quoteTransfer, $transactionTimeout, $captureNow, $authStatus, $reasonCode, $captureId)
     {
@@ -109,4 +117,5 @@ class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
                 [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_3), 1000, false, 'Pending', '', ''],
         ];
     }
+
 }

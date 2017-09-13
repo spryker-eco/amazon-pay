@@ -25,4 +25,5 @@ class ConfirmOrderReferenceResponse extends AbstractResponse
   </ResponseMetadata>
 </ConfirmOrderReferenceResponse>';
     }
+
 }

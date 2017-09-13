@@ -14,7 +14,9 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
 {
 
     /**
-     * @return \Generated\Shared\Transfer\QuoteTransfer
+     * @param int $shipmentSelection
+     *
+     * @return \Generated\Shared\Transfer\QuoteTransfer $shipmentSelection
      */
     protected function createQuote($shipmentSelection)
     {
@@ -29,9 +31,12 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
 
     /**
      * @dataProvider addSelectedShipmentMethodToQuoteProvider
+     *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param string $shipmentMethodName
      * @param int $shipmentPrice
+     *
+     * @return void
      */
     public function testAddSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer, $shipmentMethodName, $shipmentPrice)
     {
@@ -54,4 +59,5 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
             'Express delivery' => [$this->createQuote(2), 'Express', 590],
         ];
     }
+
 }

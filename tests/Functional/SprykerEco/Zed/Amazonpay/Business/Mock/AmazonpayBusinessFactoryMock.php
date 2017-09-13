@@ -23,7 +23,7 @@ class AmazonpayBusinessFactoryMock extends AmazonpayBusinessFactory
     }
 
     /**
-     * @return AmazonpayConfigMock
+     * @return \Functional\SprykerEco\Zed\Amazonpay\Business\Mock\AmazonpayConfigMock
      */
     public function getConfig()
     {

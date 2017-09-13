@@ -7,6 +7,7 @@
 
 namespace Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk;
 
+use Exception;
 
 class SetOrderReferenceDetailsResponse extends AbstractResponse
 {
@@ -52,6 +53,8 @@ class SetOrderReferenceDetailsResponse extends AbstractResponse
     }
 
     /**
+     * @throws \Exception
+     *
      * @return string
      */
     protected function getPhysicalDestinationXml()
@@ -69,7 +72,9 @@ class SetOrderReferenceDetailsResponse extends AbstractResponse
 
             case 'S02-5989383-0864061-0000003':
                 return sprintf($destinationXml, 'Wien', 'AT', '1050');
-                break;
         }
+
+        throw new Exception('Not mocked request.');
     }
+
 }

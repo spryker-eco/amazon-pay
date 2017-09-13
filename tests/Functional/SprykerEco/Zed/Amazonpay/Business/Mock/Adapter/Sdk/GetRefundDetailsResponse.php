@@ -7,7 +7,7 @@
 
 namespace Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk;
 
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use Exception;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AbstractAdapter;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractConverter;
 
@@ -31,7 +31,7 @@ class GetRefundDetailsResponse extends AbstractResponse
       <SellerRefundNote/>
       <RefundStatus>
         <LastUpdateTimestamp>2017-08-31T12:13:24.941Z</LastUpdateTimestamp>
-        <State>'.$status.'</State>
+        <State>' . $status . '</State>
       </RefundStatus>
       <SoftDescriptor>AMZ*spryker</SoftDescriptor>
       <RefundReferenceId>S02-9741363-429898559a7fd6462a8e</RefundReferenceId>
@@ -45,7 +45,7 @@ class GetRefundDetailsResponse extends AbstractResponse
         <CurrencyCode>EUR</CurrencyCode>
         <Amount>224.09</Amount>
       </RefundAmount>
-      <AmazonRefundId>'.$reference.'</AmazonRefundId>
+      <AmazonRefundId>' . $reference . '</AmazonRefundId>
     </RefundDetails>
   </GetRefundDetailsResult>
   <ResponseMetadata>
@@ -55,6 +55,8 @@ class GetRefundDetailsResponse extends AbstractResponse
     }
 
     /**
+     * @param string $reference
+     *
      * @throws \Exception
      *
      * @return string
@@ -70,7 +72,7 @@ class GetRefundDetailsResponse extends AbstractResponse
                 return AbstractConverter::STATUS_PENDING;
         }
 
-        throw new \Exception('Not mocked request.');
+        throw new Exception('Not mocked request.');
     }
 
 }

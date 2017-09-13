@@ -16,7 +16,6 @@ use Orm\Zed\Amazonpay\Persistence\Base\SpyPaymentAmazonpaySalesOrderItemQuery;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery;
 use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateHistoryQuery;
-use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddressQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
@@ -24,7 +23,6 @@ use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayEntityToTransferConverter;
 use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainer;
-use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
 class AmazonpayFacadeAbstractTest extends Test
 {
@@ -42,6 +40,9 @@ class AmazonpayFacadeAbstractTest extends Test
         ];
     }
 
+    /**
+     * @return void
+     */
     protected function prepareFixtures()
     {
         $this->cleanup();
@@ -72,7 +73,7 @@ class AmazonpayFacadeAbstractTest extends Test
     /**
      * @param string $orderReference
      *
-     * @return SpySalesOrder
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrder $orderReference
      */
     protected function createSalesOrder($orderReference)
     {
@@ -95,6 +96,9 @@ class AmazonpayFacadeAbstractTest extends Test
         return $order;
     }
 
+    /**
+     * @return void
+     */
     protected function cleanup()
     {
         SpyPaymentAmazonpaySalesOrderItemQuery::create()->deleteAll();
@@ -108,7 +112,7 @@ class AmazonpayFacadeAbstractTest extends Test
     /**
      * @param string $orderReferenceId
      *
-     * @return SpyPaymentAmazonpay
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay
      */
     protected function getAmazonpayPayment($orderReferenceId)
     {
@@ -116,7 +120,7 @@ class AmazonpayFacadeAbstractTest extends Test
     }
 
     /**
-     * @return AmazonpayQueryContainerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface
      */
     protected function createAmazonpayQueryContainer()
     {
@@ -155,6 +159,7 @@ class AmazonpayFacadeAbstractTest extends Test
 
         return $amazonpayCallTransfer;
     }
+
     /**
      * @return \Functional\SprykerEco\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock
      */
@@ -166,6 +171,8 @@ class AmazonpayFacadeAbstractTest extends Test
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $result
      * @param string $expectedStatus
+     *
+     * @return void
      */
     protected function validateResult(AmazonpayCallTransfer $result, $expectedStatus)
     {

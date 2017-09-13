@@ -5,9 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-
 namespace Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk;
-
 
 class GetOrderReferenceDetailsResponse extends AbstractResponse
 {
@@ -76,7 +74,7 @@ class GetOrderReferenceDetailsResponse extends AbstractResponse
      */
     protected function getPhysicalDestinationXml()
     {
-        $destinationXml =  '<City>%s</City>
+        $destinationXml = '<City>%s</City>
           <Phone>%s</Phone>
           <CountryCode>%s</CountryCode>
           <PostalCode>%s</PostalCode>

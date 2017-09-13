@@ -19,6 +19,8 @@ class AmazonpayFacadeUpdateAuthorizationStatusTest extends AmazonpayFacadeAbstra
      *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      * @param string $expectedStatus
+     *
+     * @return void
      */
     public function testUpdateAuthStatus(AmazonpayCallTransfer $amazonpayCallTransfer, $expectedStatus)
     {
@@ -36,19 +38,19 @@ class AmazonpayFacadeUpdateAuthorizationStatusTest extends AmazonpayFacadeAbstra
         return [
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                AmazonpayConstants::OMS_STATUS_AUTH_OPEN
+                AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                AmazonpayConstants::OMS_STATUS_AUTH_OPEN
+                AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                AmazonpayConstants::OMS_STATUS_AUTH_OPEN
+                AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_4),
-                AmazonpayConstants::OMS_STATUS_AUTH_CLOSED
+                AmazonpayConstants::OMS_STATUS_AUTH_CLOSED,
             ],
         ];
     }

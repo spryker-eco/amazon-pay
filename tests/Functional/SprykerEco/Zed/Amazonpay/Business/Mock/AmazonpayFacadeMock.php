@@ -13,7 +13,7 @@ class AmazonpayFacadeMock extends AmazonpayFacade
     protected $additionalConfig;
 
     /**
-     * @param array $additionalConfig
+     * @param array|null $additionalConfig
      */
     public function __construct($additionalConfig = null)
     {
@@ -22,6 +22,7 @@ class AmazonpayFacadeMock extends AmazonpayFacade
 
     /**
      * @method \SprykerEco\Zed\Amazonpay\Business\AmazonpayBusinessFactory getFactory()
+     *
      * @return \Spryker\Zed\Kernel\Business\BusinessFactoryInterface
      */
     protected function getFactory()

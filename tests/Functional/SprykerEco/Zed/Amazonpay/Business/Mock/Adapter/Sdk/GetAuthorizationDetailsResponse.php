@@ -7,7 +7,7 @@
 
 namespace Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk;
 
-
+use Exception;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AbstractAdapter;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractConverter;
 
@@ -68,6 +68,8 @@ class GetAuthorizationDetailsResponse extends AbstractResponse
     }
 
     /**
+     * @param string $amazonAuthId
+     *
      * @throws \Exception
      *
      * @return string
@@ -83,7 +85,7 @@ class GetAuthorizationDetailsResponse extends AbstractResponse
                 return AbstractConverter::STATUS_SUSPENDED;
         }
 
-        throw new \Exception('Not mocked request.');
+        throw new Exception('Not mocked request.');
     }
 
 }

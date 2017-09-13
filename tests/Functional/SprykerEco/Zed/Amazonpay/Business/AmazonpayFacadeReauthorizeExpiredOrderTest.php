@@ -9,7 +9,6 @@ namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 
 class AmazonpayFacadeReauthorizeExpiredOrderTest extends AmazonpayFacadeAbstractTest
 {
@@ -17,7 +16,9 @@ class AmazonpayFacadeReauthorizeExpiredOrderTest extends AmazonpayFacadeAbstract
     /**
      * @dataProvider reauthorizeExpiredOrderProvider
      *
-     * @param AmazonpayCallTransfer $transfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $transfer
+     *
+     * @return void
      */
     public function testReauthorizeExpiredOrderTest(AmazonpayCallTransfer $transfer)
     {
@@ -31,22 +32,24 @@ class AmazonpayFacadeReauthorizeExpiredOrderTest extends AmazonpayFacadeAbstract
     {
         return [
             'first' =>
-                [$this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
+                [
+        $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
                     'S02-5989383-0864061-0000AR1',
                     'S02-5989383-0864061-0000RR1',
                 ],
             'second' =>
-                [$this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
+                [
+            $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
                     'S02-5989383-0864061-0000AR2',
                     'S02-5989383-0864061-0000RR2',
                 ],
             'third' =>
-                [$this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
+                [
+            $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
                     'S02-5989383-0864061-0000AR3',
                     'S02-5989383-0864061-0000RR3',
                 ],
         ];
     }
-
 
 }

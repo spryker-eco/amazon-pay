@@ -9,7 +9,6 @@ namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class AmazonpayFacadeCloseOrderTest extends AmazonpayFacadeAbstractTest
@@ -17,7 +16,10 @@ class AmazonpayFacadeCloseOrderTest extends AmazonpayFacadeAbstractTest
 
     /**
      * @dataProvider closeOrderDataProvider
+     *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $orderTransfer
+     *
+     * @return void
      */
     public function testCloseOrder(AmazonpayCallTransfer $orderTransfer)
     {

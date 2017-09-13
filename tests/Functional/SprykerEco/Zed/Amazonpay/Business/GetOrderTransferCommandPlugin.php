@@ -5,7 +5,6 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
@@ -15,7 +14,6 @@ use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
-use Spryker\Zed\Sales\Business\SalesFacade;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command\AbstractAmazonpayCommandPlugin;
 
 class GetOrderTransferCommandPlugin extends AbstractAmazonpayCommandPlugin
@@ -28,7 +26,6 @@ class GetOrderTransferCommandPlugin extends AbstractAmazonpayCommandPlugin
     {
         return $this->getOrderTransfer($orderEntity);
     }
-
 
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
@@ -50,7 +47,7 @@ class GetOrderTransferCommandPlugin extends AbstractAmazonpayCommandPlugin
         $paymentTransfer->setRefundDetails($this->getAmazonpayRefundDetailsTransfer($orderEntity));
 
         $orderTransfer = new OrderTransfer();
-        
+
         $totals = new TotalsTransfer();
         $totals->setGrandTotal(5000);
         $orderTransfer->setTotals($totals);

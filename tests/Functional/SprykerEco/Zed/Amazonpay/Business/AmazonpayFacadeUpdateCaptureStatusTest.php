@@ -19,6 +19,8 @@ class AmazonpayFacadeUpdateCaptureStatusTest extends AmazonpayFacadeAbstractTest
      *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      * @param string $expectedStatus
+     *
+     * @return void
      */
     public function testUpdateCaptureStatus(AmazonpayCallTransfer $amazonpayCallTransfer, $expectedStatus)
     {
@@ -36,19 +38,19 @@ class AmazonpayFacadeUpdateCaptureStatusTest extends AmazonpayFacadeAbstractTest
         return [
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED
+                AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED
+                AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING
+                AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_4),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_CLOSED
+                AmazonpayConstants::OMS_STATUS_CAPTURE_CLOSED,
             ],
         ];
     }

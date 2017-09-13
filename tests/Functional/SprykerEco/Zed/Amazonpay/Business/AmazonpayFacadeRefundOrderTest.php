@@ -9,7 +9,6 @@ namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class AmazonpayFacadeRefundOrderTest extends AmazonpayFacadeAbstractTest
@@ -21,13 +20,15 @@ class AmazonpayFacadeRefundOrderTest extends AmazonpayFacadeAbstractTest
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $transfer
      * @param string $refundAmazonpayId
      * @param string $refundReferenceId
+     *
+     * @return void
      */
     public function testRefundOrder(AmazonpayCallTransfer $transfer, $refundAmazonpayId, $refundReferenceId)
     {
         $this->createFacade()->refundOrder($transfer);
 
         $updatedTransfer = $this->getAmazonpayCallTransferByOrderReferenceId($transfer->getAmazonpayPayment()->getOrderReferenceId());
-        
+
         $this->assertEquals(
             AmazonpayConstants::OMS_STATUS_REFUND_PENDING,
             $updatedTransfer->getAmazonpayPayment()->getStatus()

@@ -9,15 +9,17 @@ namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 
 class AmazonpayFacadeCaptureOrderTest extends AmazonpayFacadeAbstractTest
 {
 
     /**
      * @dataProvider captureOrderDataProvider
+     *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $transfer
      * @param string $status
+     *
+     * @return void
      */
     public function testCaptureOrder(AmazonpayCallTransfer $transfer, $status)
     {
@@ -38,15 +40,15 @@ class AmazonpayFacadeCaptureOrderTest extends AmazonpayFacadeAbstractTest
         return [
             'Completed' => [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                'Completed'
+                'Completed',
             ],
             'Pending' => [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                'Pending'
+                'Pending',
             ],
             'Declined' => [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                'Declined'
+                'Declined',
             ],
         ];
     }

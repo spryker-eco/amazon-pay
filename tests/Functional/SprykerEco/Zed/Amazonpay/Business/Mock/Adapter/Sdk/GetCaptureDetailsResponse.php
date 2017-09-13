@@ -7,7 +7,7 @@
 
 namespace Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk;
 
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use Exception;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AbstractAdapter;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractConverter;
 
@@ -39,11 +39,11 @@ class GetCaptureDetailsResponse extends AbstractResponse
         <CurrencyCode>EUR</CurrencyCode>
         <Amount>200.16</Amount>
       </CaptureAmount>
-      <AmazonCaptureId>'.$amazonCaptureId.'</AmazonCaptureId>
+      <AmazonCaptureId>' . $amazonCaptureId . '</AmazonCaptureId>
       <CreationTimestamp>2017-08-31T10:17:33.516Z</CreationTimestamp>
       <CaptureStatus>
         <LastUpdateTimestamp>2017-08-31T10:17:33.516Z</LastUpdateTimestamp>
-        <State>'.$status.'</State>
+        <State>' . $status . '</State>
       </CaptureStatus>
       <SellerCaptureNote/>
       <RefundedAmount>
@@ -59,6 +59,8 @@ class GetCaptureDetailsResponse extends AbstractResponse
     }
 
     /**
+     * @param string $reference
+     *
      * @throws \Exception
      *
      * @return string
@@ -76,7 +78,7 @@ class GetCaptureDetailsResponse extends AbstractResponse
                 return AbstractConverter::STATUS_CLOSED;
         }
 
-        throw new \Exception('Not mocked request.');
+        throw new Exception('Not mocked request.');
     }
 
 }

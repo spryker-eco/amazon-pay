@@ -7,7 +7,6 @@
 
 namespace Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk;
 
-use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AbstractAdapter;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CaptureOrderAdapter;
 
 class CaptureOrderResponse extends AbstractResponse
@@ -32,7 +31,7 @@ class CaptureOrderResponse extends AbstractResponse
         <CurrencyCode>EUR</CurrencyCode>
         <Amount>0.00</Amount>
       </CaptureFee>
-      <AmazonCaptureId>' .  $authorizationId . 'C' . '</AmazonCaptureId>
+      <AmazonCaptureId>' . $authorizationId . 'C' . '</AmazonCaptureId>
       <CreationTimestamp>2017-05-17T07:56:20.134Z</CreationTimestamp>
       <SoftDescriptor>AMZ*spryker</SoftDescriptor>
       <IdList/>
@@ -59,6 +58,7 @@ class CaptureOrderResponse extends AbstractResponse
 
     /**
      * @param string $authorizationId
+     *
      * @return string
      */
     protected function getStatus($authorizationId)

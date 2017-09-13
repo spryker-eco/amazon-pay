@@ -17,7 +17,7 @@ class ClientMock extends Client
      *
      * @return \PayWithAmazon\ResponseInterface
      */
-    public function authorize($requestParameters = array())
+    public function authorize($requestParameters = [])
     {
         $responseWrapper = new AuthorizeResponse($requestParameters);
 
@@ -29,7 +29,7 @@ class ClientMock extends Client
      *
      * @return \PayWithAmazon\ResponseInterface
      */
-    public function cancelOrderReference($requestParameters = array())
+    public function cancelOrderReference($requestParameters = [])
     {
         $responseWrapper = new CancelOrderReferenceResponse($requestParameters);
 
@@ -41,7 +41,7 @@ class ClientMock extends Client
      *
      * @return \PayWithAmazon\ResponseInterface
      */
-    public function capture($requestParameters = array())
+    public function capture($requestParameters = [])
     {
         $responseWrapper = new CaptureOrderResponse($requestParameters);
 
@@ -53,7 +53,7 @@ class ClientMock extends Client
      *
      * @return \PayWithAmazon\ResponseInterface
      */
-    public function closeOrderReference($requestParameters = array())
+    public function closeOrderReference($requestParameters = [])
     {
         $responseWrapper = new CloseOrderResponse($requestParameters);
 
@@ -62,23 +62,34 @@ class ClientMock extends Client
 
     /**
      * @param array $requestParameters
+     *
      * @return \PayWithAmazon\ResponseInterface
      */
-    public function confirmOrderReference($requestParameters = array())
+    public function confirmOrderReference($requestParameters = [])
     {
         $responseWrapper = new ConfirmOrderReferenceResponse($requestParameters);
 
         return $responseWrapper->convertToResponseParser();
     }
 
-    public function getAuthorizationDetails($requestParameters = array())
+    /**
+     * @param array $requestParameters
+     *
+     * @return \PayWithAmazon\ResponseParser
+     */
+    public function getAuthorizationDetails($requestParameters = [])
     {
         $responseWrapper = new GetAuthorizationDetailsResponse($requestParameters);
 
         return $responseWrapper->convertToResponseParser();
     }
 
-    public function getCaptureDetails($requestParameters = array())
+    /**
+     * @param array $requestParameters
+     *
+     * @return \PayWithAmazon\ResponseParser
+     */
+    public function getCaptureDetails($requestParameters = [])
     {
         $responseWrapper = new GetCaptureDetailsResponse($requestParameters);
 
@@ -90,7 +101,7 @@ class ClientMock extends Client
      *
      * @return \PayWithAmazon\ResponseInterface
      */
-    public function getOrderReferenceDetails($requestParameters = array())
+    public function getOrderReferenceDetails($requestParameters = [])
     {
         $responseWrapper = new GetOrderReferenceDetailsResponse($requestParameters);
 
@@ -102,7 +113,7 @@ class ClientMock extends Client
      *
      * @return \PayWithAmazon\ResponseParser
      */
-    public function getRefundDetails($requestParameters = array())
+    public function getRefundDetails($requestParameters = [])
     {
         $responseWrapper = new GetRefundDetailsResponse($requestParameters);
 
@@ -111,6 +122,7 @@ class ClientMock extends Client
 
     /**
      * @param string $accessToken
+     *
      * @return array
      */
     public function getUserInfo($accessToken)
@@ -125,7 +137,7 @@ class ClientMock extends Client
      *
      * @return \PayWithAmazon\ResponseInterface
      */
-    public function refund($requestParameters = array())
+    public function refund($requestParameters = [])
     {
         $responseWrapper = new RefundOrderResponse($requestParameters);
 
@@ -137,7 +149,7 @@ class ClientMock extends Client
      *
      * @return \PayWithAmazon\ResponseInterface
      */
-    public function setOrderReferenceDetails($requestParameters = array())
+    public function setOrderReferenceDetails($requestParameters = [])
     {
         $responseWrapper = new SetOrderReferenceDetailsResponse($requestParameters);
 
