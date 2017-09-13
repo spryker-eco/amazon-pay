@@ -26,7 +26,6 @@ class UpdateSuspendedOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
                 $this->getRequestedAmountByOrderAndItems($orderEntity, $amazonpayCallTransfer->getItems())
             );
 
-            /** TODO: looks like we might introduce special state and get rid of this IF */
             if ($amazonpayCallTransfer->getAmazonpayPayment()->getStatus()
                 === AmazonpayConstants::OMS_STATUS_PAYMENT_METHOD_CHANGED) {
                 $this->getFacade()->reauthorizeSuspendedOrder($amazonpayCallTransfer);

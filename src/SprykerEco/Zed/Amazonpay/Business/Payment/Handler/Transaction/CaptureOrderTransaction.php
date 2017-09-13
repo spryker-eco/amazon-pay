@@ -24,6 +24,7 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
         if (!in_array($amazonpayCallTransfer->getAmazonpayPayment()->getStatus(), [
             AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING,
             AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
+            AmazonpayConstants::OMS_STATUS_PAYMENT_METHOD_CHANGED,
         ], true)) {
             return $amazonpayCallTransfer;
         }

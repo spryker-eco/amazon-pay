@@ -42,19 +42,6 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
 
         return $salesOrderTransfer->getItems();
     }
-    /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     *
-     * @return \Generated\Shared\Transfer\OrderTransfer
-     */
-    protected function getOrderTransfer(SpySalesOrder $orderEntity)
-    {
-        return $this->getFactory()
-            ->getSalesFacade()
-            ->getOrderByIdSalesOrder(
-                $orderEntity->getIdSalesOrder()
-            );
-    }
 
     /**
      * @param string $message

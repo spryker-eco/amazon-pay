@@ -118,4 +118,36 @@ class AmazonpayConfig extends AbstractBundleConfig implements AmazonpayConfigInt
         return $this->get(AmazonpayConstants::WIDGET_SCRIPT_PATH_SANDBOX);
     }
 
+    /**
+     * @return bool
+     */
+    public function getPopupLogin()
+    {
+        return (bool) $this->get(AmazonpayConstants::WIDGET_POPUP_LOGIN);
+    }
+
+    /**
+     * @return string
+     */
+    public function getButtonSize()
+    {
+        return $this->get(AmazonpayConstants::WIDGET_BUTTON_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getButtonColor()
+    {
+        return $this->get(AmazonpayConstants::WIDGET_BUTTON_COLOR);
+    }
+
+    /**
+     * @return string
+     */
+    public function getButtonType()
+    {
+        return $this->get(AmazonpayConstants::WIDGET_BUTTON_TYPE);
+    }
+
 }

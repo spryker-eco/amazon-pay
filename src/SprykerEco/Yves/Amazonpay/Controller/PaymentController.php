@@ -188,7 +188,7 @@ class PaymentController extends AbstractController
 
         if (!$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
             $this->addErrorMessage(
-                $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getErrorCode()
+                $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getErrorMessage()
                 ?? 'amazonpay.payment.failed'
             );
 

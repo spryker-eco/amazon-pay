@@ -7,9 +7,11 @@
 
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
+use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
+use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
@@ -27,6 +29,8 @@ class UpdateAuthorizationStatusCommandPlugin extends AbstractAmazonpayCommandPlu
         $amazonpayCallTransfers = $this->groupSalesOrderItemsByAuthId($salesOrderItems);
 
         foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
+            $amazonpayCallTransfer->setShippingAddress($this->buildAddressTransfer($orderEntity->getShippingAddress()))
+                ->setBillingAddress($this->buildAddressTransfer($orderEntity->getBillingAddress()));
             $updatedStatus = $this->getFacade()->updateAuthorizationStatus($amazonpayCallTransfer);
 
             if ($updatedStatus->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getIsClosed()) {
@@ -37,6 +41,18 @@ class UpdateAuthorizationStatusCommandPlugin extends AbstractAmazonpayCommandPlu
         }
 
         return [];
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderAddress $address
+     *
+     * @return AddressTransfer
+     */
+    protected function buildAddressTransfer(SpySalesOrderAddress $address)
+    {
+        return (new AddressTransfer())
+            ->fromArray($address->toArray(), true)
+            ->fromArray($address->getCountry()->toArray(), true);
     }
 
     /**

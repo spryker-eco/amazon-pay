@@ -23,16 +23,25 @@
         var addressConsentToken;
 
         OffAmazonPayments.Button('AmazonPayButton', amazonpayConfig.sellerId, {
-            type:  'PwA',
-            color: 'Gold',
-            size:  'medium',
+            type:  '{{ amazonpayConfig.buttonType}}',
+            color: '{{ amazonpayConfig.buttonColor}}',
+            size:  '{{ amazonpayConfig.buttonSize}}',
             language: '{{ app.locale }}',
 
             authorization: function() {
-                loginOptions = {scope: 'profile postal_code payments:widget payments:shipping_address payments:billing_address', popup: true};
-                authRequest = amazon.Login.authorize (loginOptions, function(response) {
-                    addressConsentToken = response.access_token;
-                });
+                loginOptions = {
+                    scope: 'profile postal_code payments:widget payments:shipping_address payments:billing_address',
+                    popup: {{ amazonpayConfig.popupLogin ? 'true' : 'false' }}
+                };
+                authRequest = amazon.Login.authorize (loginOptions, {% spaceless %}
+                {% if amazonpayConfig.popupLogin %}
+                        function(response) {
+                            addressConsentToken = response.access_token;
+                        }
+                {% else %}
+                '{{ url('amazonpay_checkout') }}'
+                {% endif %}
+                {% endspaceless %});
             },
 
             onSignIn: function (orderReference) {
