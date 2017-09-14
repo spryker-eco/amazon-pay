@@ -37,15 +37,15 @@ class AmazonpayFacadeReauthorizeExpiredOrderTest extends AmazonpayFacadeAbstract
                     'S02-5989383-0864061-0000AR1',
                     'S02-5989383-0864061-0000RR1',
                 ],
-            'second' =>
+                'second' =>
                 [
-            $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
+                $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
                     'S02-5989383-0864061-0000AR2',
                     'S02-5989383-0864061-0000RR2',
                 ],
-            'third' =>
+                'third' =>
                 [
-            $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
+                $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
                     'S02-5989383-0864061-0000AR3',
                     'S02-5989383-0864061-0000RR3',
                 ],

@@ -58,8 +58,8 @@ class AmazonpayTransferToEntityConverter implements AmazonpayTransferToEntityCon
     {
         $entity->fromArray($amazonpayPaymentTransfer->getRefundDetails()->toArray());
         $entity->setStatus($this->getRefundStatusFromTransfer(
-            $amazonpayPaymentTransfer->getRefundDetails()->getRefundStatus())
-        );
+            $amazonpayPaymentTransfer->getRefundDetails()->getRefundStatus()
+        ));
     }
 
     /**
@@ -72,8 +72,8 @@ class AmazonpayTransferToEntityConverter implements AmazonpayTransferToEntityCon
     {
         $entity->fromArray($amazonpayPaymentTransfer->getCaptureDetails()->toArray());
         $entity->setStatus($this->getCaptureStatusFromTransfer(
-            $amazonpayPaymentTransfer->getCaptureDetails()->getCaptureStatus())
-        );
+            $amazonpayPaymentTransfer->getCaptureDetails()->getCaptureStatus()
+        ));
     }
 
     /**

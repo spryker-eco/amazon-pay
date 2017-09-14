@@ -124,8 +124,8 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
 
         if ($amazonpayCallTransfer->getItems()->count()) {
             $this->paymentEntity = $this->amazonpayQueryContainer->queryPaymentBySalesOrderItemId(
-                    $amazonpayCallTransfer->getItems()[0]->getIdSalesOrderItem()
-                )
+                $amazonpayCallTransfer->getItems()[0]->getIdSalesOrderItem()
+            )
                 ->findOne();
         }
 

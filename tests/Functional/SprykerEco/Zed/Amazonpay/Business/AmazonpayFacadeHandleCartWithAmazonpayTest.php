@@ -56,13 +56,16 @@ class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstract
         $this->assertEquals('John', $resultTransfer->getCustomer()->getFirstName());
         $this->assertEquals('Doe', $resultTransfer->getCustomer()->getLastName());
         $this->assertEquals(
-            $resultTransfer->getPayment()->getPaymentMethod(), AmazonpayConstants::PAYMENT_METHOD
+            $resultTransfer->getPayment()->getPaymentMethod(),
+            AmazonpayConstants::PAYMENT_METHOD
         );
         $this->assertEquals(
-            $resultTransfer->getPayment()->getPaymentProvider(), AmazonpayConstants::PAYMENT_METHOD
+            $resultTransfer->getPayment()->getPaymentProvider(),
+            AmazonpayConstants::PAYMENT_METHOD
         );
         $this->assertEquals(
-            $resultTransfer->getPayment()->getPaymentSelection(), AmazonpayConstants::PAYMENT_METHOD
+            $resultTransfer->getPayment()->getPaymentSelection(),
+            AmazonpayConstants::PAYMENT_METHOD
         );
     }
 
