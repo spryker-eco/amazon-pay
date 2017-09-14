@@ -31,35 +31,36 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
 
         $amazonPayment = $amazonpayCallTransfer->getAmazonpayPayment();
 
-        if ($amazonPayment->getResponseHeader()->getIsSuccess()) {
-            $status = $amazonPayment->getAuthorizationDetails()->getAuthorizationStatus();
-
-            if ($amazonPayment->getAuthorizationDetails()->getIdList()) {
-                $this->paymentEntity->setAmazonCaptureId(
-                    $amazonPayment->getAuthorizationDetails()->getIdList()
-                )
-                    ->setStatus(
-                        $status->getIsClosed()
-                            ? AmazonpayConstants::OMS_STATUS_CLOSED
-                            : AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED
-                    )
-                    ->save();
-
-                return $amazonpayCallTransfer;
-            }
-
-            if ($status->getIsPending()) {
-                return $amazonpayCallTransfer;
-            }
-
-            $paymentStatus = $this->getPaymentStatus($status);
-
-            if ($paymentStatus !== false) {
-                $this->paymentEntity->setStatus($paymentStatus);
-            }
-
-            $this->paymentEntity->save();
+        if (!$amazonPayment->getResponseHeader()->getIsSuccess()) {
+            return $amazonpayCallTransfer;
         }
+        $status = $amazonPayment->getAuthorizationDetails()->getAuthorizationStatus();
+
+        if ($amazonPayment->getAuthorizationDetails()->getIdList()) {
+            $this->paymentEntity->setAmazonCaptureId(
+                $amazonPayment->getAuthorizationDetails()->getIdList()
+            )
+                ->setStatus(
+                    $status->getIsClosed()
+                        ? AmazonpayConstants::OMS_STATUS_CLOSED
+                        : AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED
+                )
+                ->save();
+
+            return $amazonpayCallTransfer;
+        }
+
+        if ($status->getIsPending()) {
+            return $amazonpayCallTransfer;
+        }
+
+        $paymentStatus = $this->getPaymentStatus($status);
+
+        if ($paymentStatus !== false) {
+            $this->paymentEntity->setStatus($paymentStatus);
+        }
+
+        $this->paymentEntity->save();
 
         return $amazonpayCallTransfer;
     }

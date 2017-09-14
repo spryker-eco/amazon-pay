@@ -10,7 +10,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverterInterface;
 
-class TransactionCollection extends AbstractTransactionCollection
+class TransactionCollection extends AbstractTransactionCollection implements TransactionCollectionInterface
 {
 
     /**

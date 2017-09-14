@@ -154,7 +154,6 @@
         <property name="BillingAddress" type="Address" />
         <property name="BillingSameAsShipping" type="bool" />
         <property name="OrderReference" type="string" />
-        <property name="Email" type="string" /><!-- WHY ??? -->
         <property name="Items" type="Item[]" singular="Item"/>
     </transfer>
 

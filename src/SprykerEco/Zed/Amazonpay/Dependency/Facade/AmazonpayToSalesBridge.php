@@ -7,8 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Dependency\Facade;
 
-use Spryker\Zed\Sales\Business\SalesFacadeInterface;
-
 class AmazonpayToSalesBridge implements AmazonpayToSalesInterface
 {
 
@@ -20,7 +18,7 @@ class AmazonpayToSalesBridge implements AmazonpayToSalesInterface
     /**
      * @param \Spryker\Zed\Sales\Business\SalesFacadeInterface $salesFacade
      */
-    public function __construct(SalesFacadeInterface $salesFacade)
+    public function __construct($salesFacade)
     {
         $this->salesFacade = $salesFacade;
     }
@@ -32,11 +30,7 @@ class AmazonpayToSalesBridge implements AmazonpayToSalesInterface
      */
     public function getOrderByIdSalesOrder($idSalesOrder)
     {
-        return $this
-            ->salesFacade
-            ->getOrderByIdSalesOrder(
-                $idSalesOrder
-            );
+        return $this->salesFacade->getOrderByIdSalesOrder($idSalesOrder);
     }
 
 }

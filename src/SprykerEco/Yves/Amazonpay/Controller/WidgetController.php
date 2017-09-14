@@ -16,6 +16,9 @@ use Spryker\Yves\Kernel\Controller\AbstractController;
 class WidgetController extends AbstractController
 {
 
+    const AMAZONPAY_CONFIG = 'amazonpayConfig';
+    const LOGOUT = 'logout';
+
     /**
      * @return array
      */
@@ -27,8 +30,8 @@ class WidgetController extends AbstractController
                    && !$quote->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();
 
         return [
-            'amazonpayConfig' => $this->getAmazonPayConfig(),
-            'logout' => (int)$logout,
+            self::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
+            self::LOGOUT => (int)$logout,
         ];
     }
 
@@ -38,7 +41,7 @@ class WidgetController extends AbstractController
     public function checkoutWidgetAction()
     {
         return [
-            'amazonpayConfig' => $this->getAmazonPayConfig(),
+            self::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
         ];
     }
 
@@ -48,7 +51,7 @@ class WidgetController extends AbstractController
     public function walletWidgetAction()
     {
         return [
-            'amazonpayConfig' => $this->getAmazonPayConfig(),
+            self::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
         ];
     }
 

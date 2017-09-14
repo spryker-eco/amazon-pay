@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\Amazonpay\Dependency\Client;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Client\Calculation\CalculationClientInterface;
 
 class AmazonpayToCalculationBridge implements AmazonpayToCalculationInterface
 {
@@ -21,7 +20,7 @@ class AmazonpayToCalculationBridge implements AmazonpayToCalculationInterface
     /**
      * @param \Spryker\Client\Calculation\CalculationClientInterface $calculationClient
      */
-    public function __construct(CalculationClientInterface $calculationClient)
+    public function __construct($calculationClient)
     {
         $this->calculationClient = $calculationClient;
     }

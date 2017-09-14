@@ -12,8 +12,6 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
 {
 
-    const ORDER_REFERENCE_STATUS_OPEN = 'Open';
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */

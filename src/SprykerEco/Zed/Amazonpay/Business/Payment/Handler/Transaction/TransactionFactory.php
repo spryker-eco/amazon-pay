@@ -72,7 +72,7 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractAmazonpayTransaction
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createConfirmOrderReferenceTransaction()
     {
@@ -86,7 +86,7 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractAmazonpayTransaction
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createSetOrderReferenceTransaction()
     {
@@ -100,7 +100,7 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractAmazonpayTransaction
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createGetOrderReferenceDetailsTransaction()
     {
@@ -114,7 +114,7 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractAmazonpayTransaction
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createCancelPreOrderTransaction()
     {
@@ -332,7 +332,7 @@ class TransactionFactory implements TransactionFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\TransactionCollection
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\TransactionCollectionInterface
      */
     public function createConfirmPurchaseTransaction()
     {

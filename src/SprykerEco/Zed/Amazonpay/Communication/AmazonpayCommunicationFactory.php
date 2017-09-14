@@ -28,7 +28,7 @@ class AmazonpayCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsBridge
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface
      */
     public function getOmsFacade()
     {

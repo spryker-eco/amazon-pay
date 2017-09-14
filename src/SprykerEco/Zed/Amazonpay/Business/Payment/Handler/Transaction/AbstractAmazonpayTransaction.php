@@ -85,8 +85,7 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
             $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId(),
             $this->apiResponse->getHeader()
         );
-        // TODO: remove this hidden call
-        $this->loadPaymentEntity($amazonpayCallTransfer);
+        $this->paymentEntity = $this->loadPaymentEntity($amazonpayCallTransfer);
 
         return $amazonpayCallTransfer;
     }
@@ -112,29 +111,27 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
      *
      * @throws \Exception
      *
-     * @return void
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay|null
      */
     protected function loadPaymentEntity(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        if ($this->paymentEntity) {
-            throw new Exception('paymentEntity was previously defined!');
-        }
-
-        $this->paymentEntity = null;
+        $paymentEntity = null;
 
         if ($amazonpayCallTransfer->getItems()->count()) {
-            $this->paymentEntity = $this->amazonpayQueryContainer->queryPaymentBySalesOrderItemId(
+            $paymentEntity = $this->amazonpayQueryContainer->queryPaymentBySalesOrderItemId(
                 $amazonpayCallTransfer->getItems()[0]->getIdSalesOrderItem()
             )
                 ->findOne();
         }
 
-        if ($this->paymentEntity === null) {
+        if ($paymentEntity === null) {
             $this->paymentEntity = $this->amazonpayQueryContainer->queryPaymentByOrderReferenceId(
                 $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId()
             )
                 ->findOne();
         }
+
+        return $paymentEntity;
     }
 
     /**
@@ -144,9 +141,7 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
      */
     protected function createPaymentEntity(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $paymentEntity = $this->converter->mapTransferToEntity($amazonpayCallTransfer->getAmazonpayPayment());
-
-        return $paymentEntity;
+        return $this->converter->mapTransferToEntity($amazonpayCallTransfer->getAmazonpayPayment());
     }
 
     /**

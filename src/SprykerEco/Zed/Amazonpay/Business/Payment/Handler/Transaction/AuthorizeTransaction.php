@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class AuthorizeTransaction extends AbstractAmazonpayTransaction
 {
@@ -26,19 +27,21 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
 
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
-        if ($amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-            $amazonpayCallTransfer->getAmazonpayPayment()->setAuthorizationDetails(
-                $this->apiResponse->getAuthorizationDetails()
-            );
+        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+            return $amazonpayCallTransfer;
+        }
 
-            if ($amazonpayCallTransfer->getAmazonpayPayment()
-                ->getAuthorizationDetails()
-                ->getAuthorizationStatus()
-                ->getIsDeclined()) {
-                $amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()
-                    ->setIsSuccess(false)
-                    ->setErrorCode($this->buildErrorCode($amazonpayCallTransfer));
-            }
+        $amazonpayCallTransfer->getAmazonpayPayment()->setAuthorizationDetails(
+            $this->apiResponse->getAuthorizationDetails()
+        );
+
+        if ($amazonpayCallTransfer->getAmazonpayPayment()
+            ->getAuthorizationDetails()
+            ->getAuthorizationStatus()
+            ->getIsDeclined()) {
+            $amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()
+                ->setIsSuccess(false)
+                ->setErrorCode($this->buildErrorCode($amazonpayCallTransfer));
         }
 
         return $amazonpayCallTransfer;
@@ -51,7 +54,7 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
      */
     protected function buildErrorCode(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        return 'amazonpay.payment.error.' .
+        return AmazonpayConstants::PREFIX_AMAZONPAY_PAYMENT_ERROR .
         $amazonpayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->getAuthorizationStatus()

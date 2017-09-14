@@ -7,8 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Dependency\Facade;
 
-use Spryker\Zed\Money\Business\MoneyFacadeInterface;
-
 class AmazonpayToMoneyBridge implements AmazonpayToMoneyInterface
 {
 
@@ -20,7 +18,7 @@ class AmazonpayToMoneyBridge implements AmazonpayToMoneyInterface
     /**
      * @param \Spryker\Zed\Money\Business\MoneyFacadeInterface $moneyFacade
      */
-    public function __construct(MoneyFacadeInterface $moneyFacade)
+    public function __construct($moneyFacade)
     {
         $this->moneyFacade = $moneyFacade;
     }

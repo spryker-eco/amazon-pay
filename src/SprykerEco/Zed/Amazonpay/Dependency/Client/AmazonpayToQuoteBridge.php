@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\Amazonpay\Dependency\Client;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Client\Quote\QuoteClientInterface;
 
 class AmazonpayToQuoteBridge implements AmazonpayToQuoteInterface
 {
@@ -21,7 +20,7 @@ class AmazonpayToQuoteBridge implements AmazonpayToQuoteInterface
     /**
      * @param \Spryker\Client\Quote\QuoteClientInterface $quoteClient
      */
-    public function __construct(QuoteClientInterface $quoteClient)
+    public function __construct($quoteClient)
     {
         $this->quoteClient = $quoteClient;
     }
