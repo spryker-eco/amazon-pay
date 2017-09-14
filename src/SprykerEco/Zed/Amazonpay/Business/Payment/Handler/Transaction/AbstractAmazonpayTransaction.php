@@ -122,7 +122,7 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
         }
 
         if ($paymentEntity === null) {
-            $this->paymentEntity = $this->amazonpayQueryContainer->queryPaymentByOrderReferenceId(
+            $paymentEntity = $this->amazonpayQueryContainer->queryPaymentByOrderReferenceId(
                 $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId()
             )
                 ->findOne();
