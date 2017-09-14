@@ -99,4 +99,5 @@ interface AmazonpayConstants
     const IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION = 'OrderReferenceNotification';
 
     const PREFIX_AMAZONPAY_PAYMENT_ERROR = 'amazonpay.payment.error.';
+
 }

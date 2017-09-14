@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Exception;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
@@ -108,8 +107,6 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
-     *
-     * @throws \Exception
      *
      * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay|null
      */
