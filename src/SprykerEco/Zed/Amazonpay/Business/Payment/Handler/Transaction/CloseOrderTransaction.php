@@ -51,4 +51,12 @@ class CloseOrderTransaction extends AbstractAmazonpayTransaction
         }
     }
 
+    /**
+     * @return bool
+     */
+    protected function allowPartialProcessing()
+    {
+        return false;
+    }
+
 }

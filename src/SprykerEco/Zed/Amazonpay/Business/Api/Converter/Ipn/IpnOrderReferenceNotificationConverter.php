@@ -12,6 +12,10 @@ use Generated\Shared\Transfer\AmazonpayIpnOrderReferenceNotificationTransfer;
 class IpnOrderReferenceNotificationConverter extends IpnPaymentAbstractRequestConverter
 {
 
+    const ORDER_REFERENCE = 'OrderReference';
+    const AMAZON_ORDER_REFERENCE_ID = 'AmazonOrderReferenceId';
+    const ORDER_REFERENCE_STATUS = 'OrderReferenceStatus';
+
     /**
      * @param array $request
      *
@@ -22,8 +26,8 @@ class IpnOrderReferenceNotificationConverter extends IpnPaymentAbstractRequestCo
         $ipnOrderReferenceNotificationTransfer = new AmazonpayIpnOrderReferenceNotificationTransfer();
         $ipnOrderReferenceNotificationTransfer->setMessage($this->extractMessage($request));
 
-        $ipnOrderReferenceNotificationTransfer->setOrderReferenceStatus($this->convertStatusToTransfer($request['OrderReference']['OrderReferenceStatus']));
-        $ipnOrderReferenceNotificationTransfer->setAmazonOrderReferenceId($request['OrderReference']['AmazonOrderReferenceId']);
+        $ipnOrderReferenceNotificationTransfer->setOrderReferenceStatus($this->convertStatusToTransfer($request[self::ORDER_REFERENCE][self::ORDER_REFERENCE_STATUS]));
+        $ipnOrderReferenceNotificationTransfer->setAmazonOrderReferenceId($request[self::ORDER_REFERENCE][self::AMAZON_ORDER_REFERENCE_ID]);
 
         return $ipnOrderReferenceNotificationTransfer;
     }

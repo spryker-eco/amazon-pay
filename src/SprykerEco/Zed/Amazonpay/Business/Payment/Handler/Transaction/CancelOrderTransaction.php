@@ -41,4 +41,12 @@ class CancelOrderTransaction extends AbstractAmazonpayTransaction
         return $amazonpayCallTransfer;
     }
 
+    /**
+     * @return bool
+     */
+    protected function allowPartialProcessing()
+    {
+        return false;
+    }
+
 }

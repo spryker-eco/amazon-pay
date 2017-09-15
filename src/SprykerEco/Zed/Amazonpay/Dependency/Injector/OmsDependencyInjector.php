@@ -30,6 +30,8 @@ use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsAuthPendingCon
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsAuthSuspendedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsAuthTransactionTimedOutConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCancelledConditionPlugin;
+use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCancelledOrderConditionPlugin;
+use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCancelNotAllowedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCaptureCompletedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCaptureDeclinedConditionPlugin;
 use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition\IsCapturePendingConditionPlugin;
@@ -95,7 +97,10 @@ class OmsDependencyInjector extends AbstractDependencyInjector
             $conditionCollection
                 ->add(new IsClosedConditionPlugin(), 'Amazonpay/IsClosed')
                 ->add(new IsCloseAllowedConditionPlugin(), 'Amazonpay/IsCloseAllowed')
+
                 ->add(new IsCancelledConditionPlugin(), 'Amazonpay/IsCancelled')
+                ->add(new IsCancelNotAllowedConditionPlugin(), 'Amazonpay/IsCancelNotAllowed')
+                ->add(new IsCancelledOrderConditionPlugin(), 'Amazonpay/IsOrderCancelled')
 
                 ->add(new IsAuthOpenConditionPlugin(), 'Amazonpay/IsAuthOpen')
                 ->add(new IsAuthDeclinedConditionPlugin(), 'Amazonpay/IsAuthDeclined')
@@ -104,7 +109,6 @@ class OmsDependencyInjector extends AbstractDependencyInjector
                 ->add(new IsAuthExpiredConditionPlugin(), 'Amazonpay/IsAuthExpired')
                 ->add(new IsAuthClosedConditionPlugin(), 'Amazonpay/IsAuthClosed')
                 ->add(new IsAuthTransactionTimedOutConditionPlugin(), 'Amazonpay/IsAuthTransactionTimedOut')
-
                 ->add(new IsAuthSuspendedConditionPlugin(), 'Amazonpay/IsPaymentMethodChanged')
 
                 ->add(new IsCaptureCompletedConditionPlugin(), 'Amazonpay/IsCaptureCompleted')

@@ -9,7 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AmazonpayPriceTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
+use Spryker\Shared\Kernel\Transfer\TransferInterface;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 abstract class AbstractConverter
@@ -21,6 +21,7 @@ abstract class AbstractConverter
     const STATUS_CLOSED = 'Closed';
     const STATUS_COMPLETED = 'Completed';
     const STATUS_SUSPENDED = 'Suspended';
+    const STATUS_CANCELLED = 'Canceled';
     const LAST_UPDATE_TIMESTAMP = 'LastUpdateTimestamp';
     const REASON_CODE = 'ReasonCode';
     const STATE = 'State';
@@ -101,16 +102,20 @@ abstract class AbstractConverter
             $statusData[self::STATE] === static::STATUS_COMPLETED
         );
 
+        $status->setIsCancelled(
+            $statusData[self::STATE] === static::STATUS_CANCELLED
+        );
+
         return $status;
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $transfer
+     * @param \Spryker\Shared\Kernel\Transfer\TransferInterface|\Generated\Shared\Transfer\CustomerTransfer|\Generated\Shared\Transfer\AddressTransfer $transfer
      * @param string $name
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\CustomerTransfer|\Generated\Shared\Transfer\AddressTransfer
      */
-    protected function updateNameData(AbstractTransfer $transfer, $name)
+    protected function updateNameData(TransferInterface $transfer, $name)
     {
         $names = explode(' ', $name, 2);
 

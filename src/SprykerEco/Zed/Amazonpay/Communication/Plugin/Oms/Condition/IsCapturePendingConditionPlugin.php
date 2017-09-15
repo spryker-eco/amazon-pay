@@ -9,7 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition;
 
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class IsCapturePendingConditionPlugin extends AbstractOrderItemConditionPlugin
+class IsCapturePendingConditionPlugin extends AbstractByOrderItemConditionPlugin
 {
 
     /**

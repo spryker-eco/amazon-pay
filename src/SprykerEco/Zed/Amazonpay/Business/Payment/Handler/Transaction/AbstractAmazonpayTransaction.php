@@ -168,7 +168,17 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
      */
     protected function isPartialProcessing(SpyPaymentAmazonpay $paymentAmazonpay, AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        return $amazonpayCallTransfer->getItems()->count() !== $paymentAmazonpay->getSpyPaymentAmazonpaySalesOrderItems()->count();
+        return $this->allowPartialProcessing()
+            && $amazonpayCallTransfer->getItems()->count()
+                !== $paymentAmazonpay->getSpyPaymentAmazonpaySalesOrderItems()->count();
+    }
+
+    /**
+     * @return bool
+     */
+    protected function allowPartialProcessing()
+    {
+        return true;
     }
 
 }

@@ -9,7 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition;
 
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class IsCloseAllowedConditionPlugin extends AbstractByOrderConditionPlugin
+class IsCancelNotAllowedConditionPlugin extends AbstractByOrderConditionPlugin
 {
 
     /**
@@ -18,8 +18,9 @@ class IsCloseAllowedConditionPlugin extends AbstractByOrderConditionPlugin
     protected function getStatuses()
     {
         return [
-            AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED,
             AmazonpayConstants::OMS_STATUS_CANCELLED,
+            AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED,
+            AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING,
         ];
     }
 
@@ -28,7 +29,7 @@ class IsCloseAllowedConditionPlugin extends AbstractByOrderConditionPlugin
      */
     protected function statusFoundCondition()
     {
-        return false;
+        return true;
     }
 
 }

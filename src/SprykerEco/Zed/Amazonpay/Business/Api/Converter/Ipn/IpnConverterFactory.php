@@ -7,11 +7,11 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn;
 
-use Exception;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\Details\AuthorizationDetailsConverter;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\Details\CaptureDetailsConverter;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\Details\RefundDetailsConverter;
+use SprykerEco\Zed\Amazonpay\Business\Exception\InvalidIpnCallException;
 
 class IpnConverterFactory implements IpnConverterFactoryInterface
 {
@@ -19,7 +19,7 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
     /**
      * @param array $request
      *
-     * @throws \Exception
+     * @throws \SprykerEco\Zed\Amazonpay\Business\Exception\InvalidIpnCallException
      *
      * @return \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface
      */
@@ -40,7 +40,7 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
                 return $this->createIpnOrderReferenceNotificationConverter();
         }
 
-        throw new Exception('Unknown notification type: ' . $request['NotificationType']);
+        throw new InvalidIpnCallException('Unknown notification type: ' . $request['NotificationType']);
     }
 
     /**

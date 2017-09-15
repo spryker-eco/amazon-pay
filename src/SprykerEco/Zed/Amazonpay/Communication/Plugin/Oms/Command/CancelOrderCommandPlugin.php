@@ -18,14 +18,10 @@ class CancelOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        $amazonpayCallTransfers = $this->groupSalesOrderItemsByAuthId($salesOrderItems);
+        $payment = $this->getPaymentDetails($salesOrderItems[0]);
+        $amazonpayCallTransfer = $this->createAmazonpayCallTransfer($payment);
 
-        foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
-            $amazonpayCallTransfer->setRequestedAmount(
-                $this->getRequestedAmountByOrderAndItems($orderEntity, $amazonpayCallTransfer->getItems())
-            );
-            $this->getFacade()->cancelOrder($amazonpayCallTransfer);
-        }
+        $this->getFacade()->cancelOrder($amazonpayCallTransfer);
 
         return [];
     }
