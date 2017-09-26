@@ -19,11 +19,6 @@ abstract class AbstractByOrderConditionPlugin implements ConditionInterface
     abstract protected function getStatuses();
 
     /**
-     * @return bool
-     */
-    abstract protected function statusFoundCondition();
-
-    /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
      *
      * @return bool
@@ -32,11 +27,11 @@ abstract class AbstractByOrderConditionPlugin implements ConditionInterface
     {
         foreach ($orderItem->getOrder()->getItems() as $salesOrderItem) {
             if (in_array($salesOrderItem->getState()->getName(), $this->getStatuses(), true)) {
-                return $this->statusFoundCondition();
+                return true;
             }
         }
 
-        return !$this->statusFoundCondition();
+        return false;
     }
 
 }

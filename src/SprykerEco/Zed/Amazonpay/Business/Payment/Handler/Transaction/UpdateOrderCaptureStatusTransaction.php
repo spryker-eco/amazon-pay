@@ -33,9 +33,9 @@ class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
             return $amazonpayCallTransfer;
         }
 
-        if ($this->apiResponse->getCaptureDetails()->getIdList()) {
+        if ($this->apiResponse->getCaptureDetails()->getAmazonCaptureId()) {
             $this->paymentEntity->setAmazonCaptureId(
-                $this->apiResponse->getCaptureDetails()->getIdList()
+                $this->apiResponse->getCaptureDetails()->getAmazonCaptureId()
             );
         }
 

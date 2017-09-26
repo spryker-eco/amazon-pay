@@ -22,12 +22,4 @@ class IsCancelledOrderConditionPlugin extends AbstractByOrderConditionPlugin
         ];
     }
 
-    /**
-     * @return bool
-     */
-    protected function statusFoundCondition()
-    {
-        return true;
-    }
-
 }

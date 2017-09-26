@@ -18,18 +18,9 @@ class IsCancelNotAllowedConditionPlugin extends AbstractByOrderConditionPlugin
     protected function getStatuses()
     {
         return [
-            AmazonpayConstants::OMS_STATUS_CANCELLED,
             AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED,
             AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING,
         ];
-    }
-
-    /**
-     * @return bool
-     */
-    protected function statusFoundCondition()
-    {
-        return true;
     }
 
 }

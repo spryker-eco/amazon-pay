@@ -309,6 +309,19 @@ class TransactionFactory implements TransactionFactoryInterface
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
+    public function createUpdateOrderCaptureStatusHandler()
+    {
+        return new TransactionSequence(
+            [
+                $this->createUpdateOrderAuthorizationStatusTransaction(),
+                $this->createUpdateOrderCaptureStatusTransaction(),
+            ]
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
+     */
     public function createUpdateOrderCaptureStatusTransaction()
     {
         return new UpdateOrderCaptureStatusTransaction(

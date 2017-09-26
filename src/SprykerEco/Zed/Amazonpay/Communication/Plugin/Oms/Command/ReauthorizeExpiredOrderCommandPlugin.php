@@ -35,7 +35,7 @@ class ReauthorizeExpiredOrderCommandPlugin extends AbstractAmazonpayCommandPlugi
     /**
      * @return string
      */
-    protected function getAffectedItemsStateFlag()
+    protected function getAffectingRequestedAmountItemsStateFlag()
     {
         return AmazonpayConstants::OMS_FLAG_NOT_AUTH;
     }

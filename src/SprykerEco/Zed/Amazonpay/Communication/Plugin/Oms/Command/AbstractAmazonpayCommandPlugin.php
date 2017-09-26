@@ -11,7 +11,10 @@ use ArrayObject;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\MessageTransfer;
+use IteratorAggregate;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
+use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
+use Orm\Zed\Sales\Persistence\SpySalesExpense;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use Spryker\Shared\Shipment\ShipmentConstants;
@@ -31,37 +34,9 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
     protected $wasShippingCharged;
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $salesOrderEntity
-     *
-     * @return \Generated\Shared\Transfer\ItemTransfer[]
-     */
-    protected function getOrderItemTransfers(SpySalesOrder $salesOrderEntity)
-    {
-        $salesOrderTransfer = $this
-            ->getFactory()
-            ->getSalesFacade()
-            ->getOrderByIdSalesOrder($salesOrderEntity->getIdSalesOrder());
-
-        return $salesOrderTransfer->getItems();
-    }
-
-    /**
-     * @param string $message
-     *
-     * @return \Generated\Shared\Transfer\MessageTransfer
-     */
-    protected function createMessageTransfer($message)
-    {
-        $messageTransfer = new MessageTransfer();
-        $messageTransfer->setValue($message);
-
-        return $messageTransfer;
-    }
-
-    /**
      * @return string
      */
-    protected function getAffectedItemsStateFlag()
+    protected function getAffectingRequestedAmountItemsStateFlag()
     {
         return '';
     }
@@ -74,18 +49,30 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
      */
     protected function getRequestedAmountByOrderAndItems(SpySalesOrder $orderEntity, ArrayObject $itemTransfers)
     {
-        $subtotal = 0;
-
-        foreach ($itemTransfers as $itemTransfer) {
-            $subtotal += $itemTransfer->getUnitPriceToPayAggregation();
-        }
+        $subtotal = $this->getPriceToPay($itemTransfers);
 
         if (!$this->wasShippingCharged
             && $this->getFactory()
                 ->createRequestAmountCalculator()
-                ->shouldChargeShipping($orderEntity, $this->getAffectedItemsStateFlag())) {
+                ->shouldChargeShipping($orderEntity, $this->getAffectingRequestedAmountItemsStateFlag())) {
             $subtotal += $this->getShipmentPrice($orderEntity);
             $this->wasShippingCharged = true;
+        }
+
+        return $subtotal;
+    }
+
+    /**
+     * @param ArrayObject $itemTransfers
+     *
+     * @return int
+     */
+    protected function getPriceToPay(ArrayObject $itemTransfers)
+    {
+        $subtotal = 0;
+
+        foreach ($itemTransfers as $itemTransfer) {
+            $subtotal += $itemTransfer->getUnitPriceToPayAggregation();
         }
 
         return $subtotal;
@@ -98,17 +85,25 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
      */
     protected function getShipmentPrice(SpySalesOrder $orderEntity)
     {
-        $shipmentPrice = 0;
+        return $this->getExpenseByType($orderEntity, ShipmentConstants::SHIPMENT_EXPENSE_TYPE)
+            ->getPriceToPayAggregation();
+    }
 
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param string $type
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesExpense
+     */
+    protected function getExpenseByType(SpySalesOrder $orderEntity, $type)
+    {
         foreach ($orderEntity->getExpenses() as $expense) {
-            if ($expense->getType() === ShipmentConstants::SHIPMENT_EXPENSE_TYPE) {
-                $shipmentPrice = $expense->getPriceToPayAggregation();
-
-                break;
+            if ($expense->getType() === $type) {
+                return $expense;
             }
         }
 
-        return $shipmentPrice;
+        return null;
     }
 
     /**
@@ -174,10 +169,11 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
      */
     protected function createAmazonpayCallTransfer(SpyPaymentAmazonpay $payment)
     {
-        $amazonpayCallTransfer = new AmazonpayCallTransfer();
         $amazonPayment = $this->getFactory()
             ->createPaymentAmazonpayConverter()
             ->mapEntityToTransfer($payment);
+
+        $amazonpayCallTransfer = new AmazonpayCallTransfer();
         $amazonpayCallTransfer->setAmazonpayPayment($amazonPayment);
 
         return $amazonpayCallTransfer;
@@ -227,7 +223,6 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
 
         $itemTransfer->setUnitGrossPrice($salesOrderItemEntity->getGrossPrice());
         $itemTransfer->setUnitNetPrice($salesOrderItemEntity->getNetPrice());
-
         $itemTransfer->setUnitPrice($salesOrderItemEntity->getPrice());
         $itemTransfer->setUnitPriceToPayAggregation($salesOrderItemEntity->getPriceToPayAggregation());
         $itemTransfer->setUnitSubtotalAggregation($salesOrderItemEntity->getSubtotalAggregation());
@@ -240,6 +235,20 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
         $itemTransfer->setRefundableAmount($salesOrderItemEntity->getRefundableAmount());
 
         return $itemTransfer;
+    }
+
+    /**
+     * @param \IteratorAggregate|SpySalesOrderItem[] $salesOrderItems
+     * @param string $statusName
+     */
+    protected function setOrderItemsStatus(IteratorAggregate $salesOrderItems, $statusName)
+    {
+        $statusEntity = SpyOmsOrderItemStateQuery::create()->findByName($statusName)[0];
+
+        foreach ($salesOrderItems as $salesOrderItem) {
+            $salesOrderItem->setFkOmsOrderItemState($statusEntity->getIdOmsOrderItemState());
+            $salesOrderItem->save();
+        }
     }
 
 }

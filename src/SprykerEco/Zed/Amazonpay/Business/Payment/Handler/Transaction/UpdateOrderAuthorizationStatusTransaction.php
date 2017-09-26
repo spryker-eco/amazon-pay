@@ -59,6 +59,11 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
         if ($paymentStatus !== false) {
             $this->paymentEntity->setStatus($paymentStatus);
         }
+        if ($this->apiResponse->getCaptureDetails()->getAmazonCaptureId()) {
+            $this->paymentEntity->setAmazonCaptureId(
+                $this->apiResponse->getCaptureDetails()->getAmazonCaptureId()
+            );
+        }
 
         $this->paymentEntity->save();
 

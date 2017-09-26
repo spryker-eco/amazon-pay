@@ -44,14 +44,6 @@ class AmazonpayCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface
-     */
-    public function getMessengerFacade()
-    {
-        return $this->getProvidedDependency(AmazonpayDependencyProvider::FACADE_MESSENGER);
-    }
-
-    /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\RequestAmountCalculatorInterface
      */
     public function createRequestAmountCalculator()

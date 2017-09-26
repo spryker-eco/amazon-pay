@@ -88,6 +88,6 @@ interface TransactionFactoryInterface
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
-    public function createUpdateOrderCaptureStatusTransaction();
+    public function createUpdateOrderCaptureStatusHandler();
 
 }

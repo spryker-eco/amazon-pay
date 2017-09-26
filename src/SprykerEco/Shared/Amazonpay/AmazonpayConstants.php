@@ -62,6 +62,7 @@ interface AmazonpayConstants
     const OMS_STATUS_MANUAL_AUTH_REQUIRED = 'manual auth requried';
     const OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT = 'auth transaction timed out';
     const OMS_STATUS_AUTH_OPEN = 'auth open';
+    const OMS_STATUS_AUTH_OPEN_NO_CANCEL = 'auth open no cancel';
     const OMS_STATUS_AUTH_EXPIRED = 'auth expired';
     const OMS_STATUS_AUTH_CLOSED = 'auth closed';
     const OMS_STATUS_PAYMENT_METHOD_CHANGED = 'payment method changed';
