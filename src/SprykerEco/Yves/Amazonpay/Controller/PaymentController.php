@@ -185,7 +185,7 @@ class PaymentController extends AbstractController
             ->getAuthorizationStatus()
             ->getIsPaymentMethodInvalid()
         ) {
-            return $this->redirectResponseInternal(AmazonpayControllerProvider::CHANGE_PAYMENT_METHOD);
+            return $this->redirectResponseInternal(AmazonpayControllerProvider::CHECKOUT);
         }
 
         if (!$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
