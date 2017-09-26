@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
 use ArrayObject;
+use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\MessageTransfer;
@@ -16,6 +17,7 @@ use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
 use Orm\Zed\Sales\Persistence\SpySalesExpense;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
+use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use Spryker\Shared\Shipment\ShipmentConstants;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
@@ -249,6 +251,18 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
             $salesOrderItem->setFkOmsOrderItemState($statusEntity->getIdOmsOrderItemState());
             $salesOrderItem->save();
         }
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderAddress $address
+     *
+     * @return \Generated\Shared\Transfer\AddressTransfer
+     */
+    protected function buildAddressTransfer(SpySalesOrderAddress $address)
+    {
+        return (new AddressTransfer())
+            ->fromArray($address->toArray(), true)
+            ->fromArray($address->getCountry()->toArray(), true);
     }
 
 }

@@ -23,6 +23,8 @@ class ReauthorizeExpiredOrderCommandPlugin extends AbstractAmazonpayCommandPlugi
         $customerEmail = $orderEntity->getEmail() ?? $orderEntity->getCustomer()->getEmail();
 
         foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
+            $amazonpayCallTransfer->setShippingAddress($this->buildAddressTransfer($orderEntity->getShippingAddress()))
+                ->setBillingAddress($this->buildAddressTransfer($orderEntity->getBillingAddress()));
             $amazonpayCallTransfer->setEmail($customerEmail);
             $amazonpayCallTransfer->setRequestedAmount(
                 $this->getRequestedAmountByOrderAndItems($orderEntity, $amazonpayCallTransfer->getItems())
