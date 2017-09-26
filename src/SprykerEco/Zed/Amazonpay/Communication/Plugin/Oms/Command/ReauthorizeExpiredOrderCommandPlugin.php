@@ -20,7 +20,7 @@ class ReauthorizeExpiredOrderCommandPlugin extends AbstractAmazonpayCommandPlugi
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
         $amazonpayCallTransfers = $this->groupSalesOrderItemsByAuthId($salesOrderItems);
-        $customerEmail = $orderEntity->getCustomer()->getEmail();
+        $customerEmail = $orderEntity->getEmail() ?? $orderEntity->getCustomer()->getEmail();
 
         foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
             $amazonpayCallTransfer->setEmail($customerEmail);
