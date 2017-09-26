@@ -11,6 +11,7 @@ use Spryker\Yves\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Yves\Kernel\Container;
 use SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToCalculationBridge;
 use SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToCheckoutBridge;
+use SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToCustomerBridge;
 use SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToQuoteBridge;
 use SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToShipmentBridge;
 
@@ -20,6 +21,7 @@ class AmazonpayDependencyProvider extends AbstractBundleDependencyProvider
     const CLIENT_QUOTE = 'cart client';
     const CLIENT_SHIPMENT = 'shipment client';
     const CLIENT_CHECKOUT = 'checkout client';
+    const CLIENT_CUSTOMER = 'customer client';
     const CLIENT_CALCULATION = 'calculation client';
     const PLUGIN_CHECKOUT_BREADCRUMB = 'plugin checkout breadcrumb';
 
@@ -51,6 +53,12 @@ class AmazonpayDependencyProvider extends AbstractBundleDependencyProvider
         $container[self::CLIENT_CALCULATION] = function () use ($container) {
             return new AmazonpayToCalculationBridge(
                 $container->getLocator()->calculation()->client()
+            );
+        };
+
+        $container[self::CLIENT_CUSTOMER] = function () use ($container) {
+            return new AmazonpayToCustomerBridge(
+                $container->getLocator()->customer()->client()
             );
         };
 
