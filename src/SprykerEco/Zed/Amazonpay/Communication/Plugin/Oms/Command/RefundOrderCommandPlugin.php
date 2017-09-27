@@ -37,13 +37,7 @@ class RefundOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
                 $refundTransfer->getAmount()
             );
 
-            $orderTransfer = $this->getFacade()->refundOrder($amazonpayCallTransfer);
-
-            if ($orderTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-                $this->getFactory()
-                    ->getRefundFacade()
-                    ->saveRefund($refundTransfer);
-            }
+            $this->getFacade()->refundOrder($amazonpayCallTransfer);
         }
 
         return [];

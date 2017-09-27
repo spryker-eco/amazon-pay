@@ -14,6 +14,7 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactory;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ConverterFactory;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverter;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverter;
+use SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderModel;
 use SprykerEco\Zed\Amazonpay\Business\Order\Saver;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnFactory;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLogger;
@@ -37,7 +38,8 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
             $this->createTransactionLogger(),
             $this->getQueryContainer(),
             $this->createAmazonpayConverter(),
-            $this->createAmazonpayTransferToEntityConverter()
+            $this->createAmazonpayTransferToEntityConverter(),
+            $this->createRefundOrderModel()
         );
     }
 
@@ -70,7 +72,8 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
         return new IpnFactory(
             $this->getOmsFacade(),
             $this->getQueryContainer(),
-            $this->getUtilEncodingService()
+            $this->getUtilEncodingService(),
+            $this->createRefundOrderModel()
         );
     }
 
@@ -184,6 +187,14 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     protected function createAmazonpayTransferToEntityConverter()
     {
         return new AmazonpayTransferToEntityConverter();
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface
+     */
+    protected function createRefundOrderModel()
+    {
+        return new RefundOrderModel($this->getRefundFacade());
     }
 
 }

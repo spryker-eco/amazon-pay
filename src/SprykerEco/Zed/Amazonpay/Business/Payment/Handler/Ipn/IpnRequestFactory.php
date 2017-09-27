@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
 use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
@@ -17,33 +18,40 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
 {
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface
      */
     protected $omsFacade;
-
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
+     * @var \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface
      */
     protected $amazonpayQueryContainer;
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface
      */
     protected $ipnRequestLogger;
+
+    /**
+     * @var \SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface
+     */
+    protected $refundOrderModel;
 
     /**
      * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
      * @param \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
      * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
+     * @param \SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface $refundOrderModel
      */
     public function __construct(
         AmazonpayToOmsInterface $omsFacade,
         AmazonpayQueryContainerInterface $amazonpayQueryContainer,
-        IpnRequestLoggerInterface $ipnRequestLogger
+        IpnRequestLoggerInterface $ipnRequestLogger,
+        RefundOrderInterface $refundOrderModel
     ) {
         $this->omsFacade = $omsFacade;
         $this->amazonpayQueryContainer = $amazonpayQueryContainer;
         $this->ipnRequestLogger = $ipnRequestLogger;
+        $this->refundOrderModel = $refundOrderModel;
     }
 
     /**
@@ -172,7 +180,8 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
             return new IpnPaymentRefundCompletedHandler(
                 $this->omsFacade,
                 $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger
+                $this->ipnRequestLogger,
+                $this->refundOrderModel
             );
         }
 

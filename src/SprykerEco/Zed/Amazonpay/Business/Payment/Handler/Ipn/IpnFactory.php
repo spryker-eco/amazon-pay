@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
+use SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLogger;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface;
@@ -16,14 +17,14 @@ class IpnFactory implements IpnFactoryInterface
 {
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface
-     */
-    protected $amazonpayQueryContainer;
-
-    /**
      * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface
      */
     protected $omsFacade;
+
+    /**
+     * @var \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface
+     */
+    protected $amazonpayQueryContainer;
 
     /**
      * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface
@@ -31,18 +32,26 @@ class IpnFactory implements IpnFactoryInterface
     protected $encodingService;
 
     /**
+     * @var \SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface
+     */
+    protected $refundOrderModel;
+
+    /**
      * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
      * @param \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
      * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface $amazonpayToUtilEncoding
+     * @param \SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface $refundOrderModel
      */
     public function __construct(
         AmazonpayToOmsInterface $omsFacade,
         AmazonpayQueryContainerInterface $amazonpayQueryContainer,
-        AmazonpayToUtilEncodingInterface $amazonpayToUtilEncoding
+        AmazonpayToUtilEncodingInterface $amazonpayToUtilEncoding,
+        RefundOrderInterface $refundOrderModel
     ) {
         $this->omsFacade = $omsFacade;
         $this->amazonpayQueryContainer = $amazonpayQueryContainer;
         $this->encodingService = $amazonpayToUtilEncoding;
+        $this->refundOrderModel = $refundOrderModel;
     }
 
     /**
@@ -61,7 +70,8 @@ class IpnFactory implements IpnFactoryInterface
         return new IpnRequestFactory(
             $this->omsFacade,
             $this->amazonpayQueryContainer,
-            $this->createIpnRequestLogger()
+            $this->createIpnRequestLogger(),
+            $this->refundOrderModel
         );
     }
 

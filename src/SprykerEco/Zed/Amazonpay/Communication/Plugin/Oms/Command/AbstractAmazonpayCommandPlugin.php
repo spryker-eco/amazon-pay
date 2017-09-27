@@ -24,7 +24,7 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 
 /**
- * @method \SprykerEco\Zed\Amazonpay\Business\AmazonpayFacade getFacade()
+ * @method \SprykerEco\Zed\Amazonpay\Business\AmazonpayFacadeInterface getFacade()
  * @method \SprykerEco\Zed\Amazonpay\Communication\AmazonpayCommunicationFactory getFactory()
  */
 abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements CommandByOrderInterface

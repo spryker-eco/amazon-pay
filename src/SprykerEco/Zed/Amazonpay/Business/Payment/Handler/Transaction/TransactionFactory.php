@@ -11,6 +11,7 @@ use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverterInterface;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverterInterface;
+use SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface;
 use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
@@ -48,12 +49,18 @@ class TransactionFactory implements TransactionFactoryInterface
     protected $toEntityConverter;
 
     /**
+     * @var \SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface
+     */
+    protected $refundOrderModel;
+
+    /**
      * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface $adapterFactory
      * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
      * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface $transactionLogger
      * @param \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
      * @param \SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverterInterface $converter
      * @param \SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverterInterface $toEntityConverter
+     * @param \SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface $refundOrderModel
      */
     public function __construct(
         AdapterFactoryInterface $adapterFactory,
@@ -61,7 +68,8 @@ class TransactionFactory implements TransactionFactoryInterface
         TransactionLoggerInterface $transactionLogger,
         AmazonpayQueryContainerInterface $amazonpayQueryContainer,
         AmazonpayConverterInterface $converter,
-        AmazonpayTransferToEntityConverterInterface $toEntityConverter
+        AmazonpayTransferToEntityConverterInterface $toEntityConverter,
+        RefundOrderInterface $refundOrderModel
     ) {
         $this->adapterFactory = $adapterFactory;
         $this->config = $config;
@@ -69,6 +77,7 @@ class TransactionFactory implements TransactionFactoryInterface
         $this->amazonpayQueryContainer = $amazonpayQueryContainer;
         $this->converter = $converter;
         $this->toEntityConverter = $toEntityConverter;
+        $this->refundOrderModel = $refundOrderModel;
     }
 
     /**
@@ -288,7 +297,8 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->config,
             $this->transactionLogger,
             $this->amazonpayQueryContainer,
-            $this->toEntityConverter
+            $this->toEntityConverter,
+            $this->refundOrderModel
         );
     }
 

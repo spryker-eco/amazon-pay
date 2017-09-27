@@ -14,7 +14,7 @@ abstract class IpnAbstractPaymentRefundHandler extends IpnAbstractTransferReques
 {
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $amazonpayIpnPaymentRefundRequestTransfer
+     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\AmazonpayResponseTransfer $amazonpayIpnPaymentRefundRequestTransfer
      *
      * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay
      */
