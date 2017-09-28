@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class AuthorizeTransaction extends AbstractAmazonpayTransaction
@@ -31,17 +32,30 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
             return $amazonpayCallTransfer;
         }
 
+        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
+
+        if ($isPartialProcessing) {
+            $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
+        }
+
         $amazonpayCallTransfer->getAmazonpayPayment()->setAuthorizationDetails(
             $this->apiResponse->getAuthorizationDetails()
         );
 
-        if ($amazonpayCallTransfer->getAmazonpayPayment()
+        $statusDetails = $amazonpayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
-            ->getAuthorizationStatus()
-            ->getIsDeclined()) {
+            ->getAuthorizationStatus();
+        if ($statusDetails->getIsDeclined()) {
             $amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()
                 ->setIsSuccess(false)
                 ->setErrorCode($this->buildErrorCode($amazonpayCallTransfer));
+        }
+
+        $this->paymentEntity->setStatus($this->getStatus($statusDetails));
+        $this->paymentEntity->save();
+
+        if ($isPartialProcessing) {
+            $this->assignAmazonpayPaymentToItemsIfNew($this->paymentEntity, $amazonpayCallTransfer);
         }
 
         return $amazonpayCallTransfer;
@@ -59,6 +73,28 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
             ->getAuthorizationDetails()
             ->getAuthorizationStatus()
             ->getReasonCode();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $statusDetails
+     *
+     * @return string
+     */
+    protected function getStatus(AmazonpayStatusTransfer $statusDetails)
+    {
+        if ($statusDetails->getIsOpen()) {
+            return AmazonpayConstants::OMS_STATUS_AUTH_OPEN;
+        }
+
+        if ($statusDetails->getIsPending()) {
+            return AmazonpayConstants::OMS_STATUS_AUTH_PENDING;
+        }
+
+        if ($statusDetails->getIsSuspended()) {
+            return AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED;
+        }
+
+        return AmazonpayConstants::OMS_STATUS_AUTH_DECLINED;
     }
 
 }

@@ -67,7 +67,7 @@ class AuthorizeResponse extends AbstractResponse
       <CaptureNow>' . $requestParameters['capture_now'] . '</CaptureNow>
       <SellerAuthorizationNote/>
       <CreationTimestamp>2017-05-15T09:52:52.911Z</CreationTimestamp>
-      <AmazonAuthorizationId>S02-6182376-4189497-A003388</AmazonAuthorizationId>
+      <AmazonAuthorizationId>'.$this->orderReferenceId.'</AmazonAuthorizationId>
       <AuthorizationReferenceId>S02-6182376-418949759197a6b8ba90</AuthorizationReferenceId>
     </AuthorizationDetails>
   </AuthorizeResult>

@@ -9,6 +9,7 @@ namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
 use Functional\SprykerEco\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class AmazonpayFacadeReauthorizeExpiredOrderTest extends AmazonpayFacadeAbstractTest
 {
@@ -17,12 +18,18 @@ class AmazonpayFacadeReauthorizeExpiredOrderTest extends AmazonpayFacadeAbstract
      * @dataProvider reauthorizeExpiredOrderProvider
      *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $transfer
+     * @param string $expectedStatus
      *
      * @return void
      */
-    public function testReauthorizeExpiredOrderTest(AmazonpayCallTransfer $transfer)
+    public function testReauthorizeExpiredOrderTest(AmazonpayCallTransfer $transfer, $expectedStatus)
     {
-        $this->createFacade()->reauthorizeExpiredOrder($transfer);
+        $result = $this->createFacade()->reauthorizeExpiredOrder($transfer);
+
+        $payment = $this->getAmazonpayPayment($result->getAmazonpayPayment()->getOrderReferenceId());
+
+        $this->assertEquals($expectedStatus, $payment->getStatus());
+
     }
 
     /**
@@ -31,24 +38,18 @@ class AmazonpayFacadeReauthorizeExpiredOrderTest extends AmazonpayFacadeAbstract
     public function reauthorizeExpiredOrderProvider()
     {
         return [
-            'first' =>
-                [
-        $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                    'S02-5989383-0864061-0000AR1',
-                    'S02-5989383-0864061-0000RR1',
-                ],
-                'second' =>
-                [
+            'opened' => [
+                $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
+                AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
+            ],
+            'declined' => [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                    'S02-5989383-0864061-0000AR2',
-                    'S02-5989383-0864061-0000RR2',
-                ],
-                'third' =>
-                [
+                AmazonpayConstants::OMS_STATUS_AUTH_CLOSED,
+            ],
+            'suspended' => [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                    'S02-5989383-0864061-0000AR3',
-                    'S02-5989383-0864061-0000RR3',
-                ],
+                AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED,
+            ],
         ];
     }
 

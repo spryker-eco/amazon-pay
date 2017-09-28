@@ -42,15 +42,11 @@ class AmazonpayFacadeUpdateAuthorizationStatusTest extends AmazonpayFacadeAbstra
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
+                AmazonpayConstants::OMS_STATUS_AUTH_CLOSED,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
-            ],
-            [
-                $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_4),
-                AmazonpayConstants::OMS_STATUS_AUTH_CLOSED,
+                AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED,
             ],
         ];
     }

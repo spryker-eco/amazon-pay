@@ -30,13 +30,16 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
     /**
      * @dataProvider providerQuotes
      *
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quote
+     * @param string $orderReference
+     * @param string $idsList
+     * @param AmazonpayStatusTransfer $status
+     * @param SpyOmsOrderItemState $omsState
      * @param string $expectedPaymentStatus
-     *
-     * @return void
      */
-    public function testSaveOrderPayment(QuoteTransfer $quote, $expectedPaymentStatus)
+    public function testSaveOrderPayment($orderReference, $idsList, AmazonpayStatusTransfer $status, SpyOmsOrderItemState $omsState, $expectedPaymentStatus)
     {
+        $quote = $this->createQuote($orderReference, $idsList, $status, $omsState);
+
         $checkoutResponseTransfer = new CheckoutResponseTransfer();
         $checkoutResponseTransfer->setSaveOrder(
             (new SaveOrderTransfer())
@@ -74,27 +77,27 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
 
         return [
             [
-                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1 . 'save', '', (new AmazonpayStatusTransfer())->setIsDeclined(1), $omsState),
+                AbstractResponse::ORDER_REFERENCE_ID_1 . 'save', '', (new AmazonpayStatusTransfer())->setIsDeclined(1), $omsState,
                 AmazonpayConstants::OMS_STATUS_AUTH_DECLINED,
             ],
             [
-                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_2 . 'save', '', (new AmazonpayStatusTransfer())->setIsPending(1), $omsState),
+                AbstractResponse::ORDER_REFERENCE_ID_2 . 'save', '', (new AmazonpayStatusTransfer())->setIsPending(1), $omsState,
                 AmazonpayConstants::OMS_STATUS_AUTH_PENDING,
             ],
             [
-                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_3 . 'save', '', (new AmazonpayStatusTransfer())->setIsOpen(1), $omsState),
+                AbstractResponse::ORDER_REFERENCE_ID_3 . 'save', '', (new AmazonpayStatusTransfer())->setIsOpen(1), $omsState,
                 AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
             ],
             [
-                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_4 . 'save', '1,', (new AmazonpayStatusTransfer())->setIsDeclined(1), $omsState),
+                AbstractResponse::ORDER_REFERENCE_ID_4 . 'save', '1,', (new AmazonpayStatusTransfer())->setIsDeclined(1), $omsState,
                 AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED,
             ],
             [
-                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_5 . 'save', '1,', (new AmazonpayStatusTransfer())->setIsPending(1), $omsState),
+                AbstractResponse::ORDER_REFERENCE_ID_5 . 'save', '1,', (new AmazonpayStatusTransfer())->setIsPending(1), $omsState,
                 AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED,
             ],
             [
-                $this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_6 . 'save', '1,', (new AmazonpayStatusTransfer())->setIsOpen(1), $omsState),
+                AbstractResponse::ORDER_REFERENCE_ID_6 . 'save', '1,', (new AmazonpayStatusTransfer())->setIsOpen(1), $omsState,
                 AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED,
             ],
         ];

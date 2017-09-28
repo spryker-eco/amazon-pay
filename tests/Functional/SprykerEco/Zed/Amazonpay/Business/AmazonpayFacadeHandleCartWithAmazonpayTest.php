@@ -8,6 +8,7 @@
 namespace Functional\SprykerEco\Zed\Amazonpay\Business;
 
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
+use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
@@ -23,6 +24,7 @@ class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstract
     protected function createQuote($total = 0)
     {
         $quote = new QuoteTransfer();
+        $quote->setCustomer(new CustomerTransfer());
         $quote->setAmazonpayPayment(new AmazonpayPaymentTransfer());
         $quote->setTotals(
             (new TotalsTransfer())

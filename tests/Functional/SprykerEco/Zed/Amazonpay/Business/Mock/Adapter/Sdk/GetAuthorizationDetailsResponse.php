@@ -78,11 +78,16 @@ class GetAuthorizationDetailsResponse extends AbstractResponse
     {
         switch ($amazonAuthId) {
             case 'S02-5989383-0864061-A000001':
+            case 'S02-5989383-0864061-0000001':
                 return AbstractConverter::STATUS_OPEN;
             case 'S02-5989383-0864061-A000002':
+            case 'S02-5989383-0864061-0000002':
                 return AbstractConverter::STATUS_CLOSED;
             case 'S02-5989383-0864061-A000003':
+            case 'S02-5989383-0864061-0000003':
                 return AbstractConverter::STATUS_SUSPENDED;
+            case 'S02-5989383-0864061-A000004':
+                return AbstractConverter::STATUS_CLOSED;
         }
 
         throw new Exception('Not mocked request.');

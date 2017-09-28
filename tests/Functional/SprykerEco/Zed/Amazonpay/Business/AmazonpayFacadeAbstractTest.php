@@ -161,11 +161,13 @@ class AmazonpayFacadeAbstractTest extends Test
     }
 
     /**
+     * @param array|null $additionalConfig
+     *
      * @return \Functional\SprykerEco\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock
      */
-    protected function createFacade()
+    protected function createFacade($additionalConfig = null)
     {
-        return new AmazonpayFacadeMock();
+        return new AmazonpayFacadeMock($additionalConfig);
     }
 
     /**

@@ -42,13 +42,13 @@ class AmazonpayFacadeCaptureOrderTest extends AmazonpayFacadeAbstractTest
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
                 'Completed',
             ],
-            'Pending' => [
-                $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                'Pending',
-            ],
             'Declined' => [
-                $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
+                $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
                 'Declined',
+            ],
+            'Pending' => [
+                $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
+                'Pending',
             ],
         ];
     }
