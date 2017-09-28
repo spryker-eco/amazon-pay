@@ -53,16 +53,23 @@ class PaymentController extends AbstractController
         $quoteTransfer = $this->getClient()->handleCartWithAmazonpay($quoteTransfer);
         $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
 
-        $cartItems = $this->getFactory()->createProductBundleGrouper()->getGroupedBundleItems(
-            $quoteTransfer->getItems(),
-            $quoteTransfer->getBundleItems()
-        );
+        $cartItems = $this->getCartItems($quoteTransfer);
 
         return [
             self::QUOTE_TRANSFER => $quoteTransfer,
             self::CART_ITEMS => $cartItems,
             self::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
         ];
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \ArrayObject|\Generated\Shared\Transfer\ItemTransfer[]
+     */
+    protected function getCartItems(QuoteTransfer $quoteTransfer)
+    {
+        return $quoteTransfer->getItems();
     }
 
     /**
@@ -109,7 +116,7 @@ class PaymentController extends AbstractController
     {
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
-        if ($this->notAnAmazonPayment($quoteTransfer)) {
+        if (!$this->isAmazonPayment($quoteTransfer)) {
             return $this->getFailedRedirectResponse();
         }
 
@@ -125,7 +132,7 @@ class PaymentController extends AbstractController
     {
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
-        if ($this->notAnAmazonPayment($quoteTransfer)) {
+        if (!$this->isAmazonPayment($quoteTransfer)) {
             return $this->getFailedRedirectResponse();
         }
 
@@ -147,7 +154,7 @@ class PaymentController extends AbstractController
     {
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
-        if ($this->notAnAmazonPayment($quoteTransfer)) {
+        if (!$this->isAmazonPayment($quoteTransfer)) {
             return $this->getFailedRedirectResponse();
         }
 
@@ -172,7 +179,7 @@ class PaymentController extends AbstractController
     {
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
-        if ($this->notAnAmazonPayment($quoteTransfer)) {
+        if (!$this->isAmazonPayment($quoteTransfer)) {
             return $this->getFailedRedirectResponse();
         }
 
@@ -211,9 +218,9 @@ class PaymentController extends AbstractController
      *
      * @return bool
      */
-    protected function notAnAmazonPayment(QuoteTransfer $quoteTransfer)
+    protected function isAmazonPayment(QuoteTransfer $quoteTransfer)
     {
-        return $quoteTransfer->getAmazonpayPayment() === null;
+        return $quoteTransfer->getAmazonpayPayment() !== null;
     }
 
     /**
@@ -246,8 +253,8 @@ class PaymentController extends AbstractController
         $this->getFactory()->getQuoteClient()->clearQuote();
 
         $isAsynchronous =
-            ($this->getFactory()->getConfig()->getAuthTransactionTimeout() > 0)
-            && (!$this->getFactory()->getConfig()->getCaptureNow());
+            ($this->getAmazonPayConfig()->getAuthTransactionTimeout() > 0)
+            && (!$this->getAmazonPayConfig()->getCaptureNow());
 
         return [
             self::IS_ASYNCHRONOUS => $isAsynchronous,
@@ -260,7 +267,7 @@ class PaymentController extends AbstractController
      */
     protected function getAmazonPayConfig()
     {
-        return $this->getFactory()->getConfig();
+        return $this->getFactory()->createAmazonpayConfig();
     }
 
 }

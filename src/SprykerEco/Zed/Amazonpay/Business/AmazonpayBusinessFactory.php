@@ -34,7 +34,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     {
         return new TransactionFactory(
             $this->createAdapterFactory(),
-            $this->getConfig(),
+            $this->createAmazonpayConfig(),
             $this->createTransactionLogger(),
             $this->getQueryContainer(),
             $this->createAmazonpayConverter(),
@@ -44,9 +44,9 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \SprykerEco\Shared\Amazonpay\AmazonpayConfig
+     * @return \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface
      */
-    public function getConfig()
+    public function createAmazonpayConfig()
     {
         return new AmazonpayConfig();
     }
@@ -58,7 +58,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     {
         return new QuoteUpdateFactory(
             $this->createAdapterFactory(),
-            $this->getConfig(),
+            $this->createAmazonpayConfig(),
             $this->getShipmentFacade(),
             $this->getMessengerFacade()
         );
@@ -123,7 +123,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     public function createAdapterFactory()
     {
         return new AdapterFactory(
-            $this->getConfig(),
+            $this->createAmazonpayConfig(),
             $this->createConverterFactory(),
             $this->getMoneyFacade()
         );
@@ -150,7 +150,7 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
      */
     public function createTransactionLogger()
     {
-        return new TransactionLogger($this->getConfig()->getErrorReportLevel());
+        return new TransactionLogger($this->createAmazonpayConfig()->getErrorReportLevel());
     }
 
     /**

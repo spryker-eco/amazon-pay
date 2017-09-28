@@ -58,6 +58,12 @@ class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
      */
     protected function updateCustomer(QuoteTransfer $quoteTransfer, CustomerTransfer $customer)
     {
+        if (!$quoteTransfer->getCustomer()) {
+            $quoteTransfer->setCustomer($customer);
+
+            return;
+        }
+
         $quoteTransfer->getCustomer()->fromArray($customer->modifiedToArray());
 
         if ($quoteTransfer->getCustomer()->getIdCustomer()) {

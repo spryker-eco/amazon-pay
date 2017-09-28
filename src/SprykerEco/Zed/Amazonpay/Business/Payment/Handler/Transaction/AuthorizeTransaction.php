@@ -32,7 +32,7 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
             return $amazonpayCallTransfer;
         }
 
-        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
+        $isPartialProcessing = $this->paymentEntity && $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
 
         if ($isPartialProcessing) {
             $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
@@ -51,8 +51,10 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
                 ->setErrorCode($this->buildErrorCode($amazonpayCallTransfer));
         }
 
-        $this->paymentEntity->setStatus($this->getStatus($statusDetails));
-        $this->paymentEntity->save();
+        if ($this->paymentEntity) {
+            $this->paymentEntity->setStatus($this->getStatus($statusDetails));
+            $this->paymentEntity->save();
+        }
 
         if ($isPartialProcessing) {
             $this->assignAmazonpayPaymentToItemsIfNew($this->paymentEntity, $amazonpayCallTransfer);

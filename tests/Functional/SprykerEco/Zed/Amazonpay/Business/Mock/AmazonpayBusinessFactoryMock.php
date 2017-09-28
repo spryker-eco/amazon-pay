@@ -25,7 +25,7 @@ class AmazonpayBusinessFactoryMock extends AmazonpayBusinessFactory
     /**
      * @return \Functional\SprykerEco\Zed\Amazonpay\Business\Mock\AmazonpayConfigMock
      */
-    public function getConfig()
+    public function createAmazonpayConfig()
     {
         return new AmazonpayConfigMock($this->additionalConfig);
     }
@@ -36,16 +36,16 @@ class AmazonpayBusinessFactoryMock extends AmazonpayBusinessFactory
     public function createAdapterFactory()
     {
         return new AdapterFactoryMock(
-            $this->getConfig(),
+            $this->createAmazonpayConfig(),
             $this->createConverterFactory(),
             $this->getMoneyFacade()
         );
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainer
+     * @return \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface
      */
-    protected function getQueryContainer()
+    public function getQueryContainer()
     {
         return new AmazonpayQueryContainer();
     }

@@ -60,7 +60,7 @@ class WidgetController extends AbstractController
      */
     protected function getAmazonPayConfig()
     {
-        return $this->getFactory()->getConfig();
+        return $this->getFactory()->createAmazonpayConfig();
     }
 
 }

@@ -8,7 +8,6 @@
 namespace SprykerEco\Yves\Amazonpay;
 
 use Spryker\Yves\Kernel\AbstractFactory;
-use Spryker\Yves\ProductBundle\Grouper\ProductBundleGrouper;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class AmazonpayFactory extends AbstractFactory
@@ -31,9 +30,9 @@ class AmazonpayFactory extends AbstractFactory
     }
 
     /**
-     * @return \SprykerEco\Shared\Amazonpay\AmazonpayConfig
+     * @return \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface
      */
-    public function getConfig()
+    public function createAmazonpayConfig()
     {
         return new AmazonpayConfig();
     }
@@ -60,14 +59,6 @@ class AmazonpayFactory extends AbstractFactory
     public function getCustomerClient()
     {
         return $this->getProvidedDependency(AmazonpayDependencyProvider::CLIENT_CUSTOMER);
-    }
-
-    /**
-     * @return \Spryker\Yves\ProductBundle\Grouper\ProductBundleGrouperInterface
-     */
-    public function createProductBundleGrouper()
-    {
-        return new ProductBundleGrouper();
     }
 
 }
