@@ -32,11 +32,7 @@
                     <div class="callout">
                         <ul class="no-bullet">
                             {% for item in cartItems %}
-                                {% if item.bundleProduct is defined %}
-                                    {% include '@checkout/checkout/partials/summary-item.twig' with {'item': item.bundleProduct, 'bundleItems' : item.bundleItems} %}
-                                {% else %}
-                                    {% include '@checkout/checkout/partials/summary-item.twig' %}
-                                {% endif %}
+                                {% include '@amazonpay/payment/partials/checkout-item.twig' %}
                             {% endfor %}
                         </ul>
                     </div>
