@@ -1,6 +1,15 @@
-tools:
-    external_code_coverage: true
-
+build:
+    environment:
+        php:
+            version: 7.1
 checks:
     php:
         code_rating: true
+
+filter:
+    excluded_paths:
+        - config/*
+        - tests/*
+
+tools:
+    external_code_coverage: true
