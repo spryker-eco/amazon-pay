@@ -25,7 +25,7 @@ class AmazonpayFacadeMock extends AmazonpayFacade
      *
      * @return \Spryker\Zed\Kernel\Business\BusinessFactoryInterface
      */
-    protected function getFactory()
+    public function getFactory()
     {
         return new AmazonpayBusinessFactoryMock($this->additionalConfig);
     }
