@@ -7,8 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Dependency\Client;
 
-use Generated\Shared\Transfer\QuoteTransfer;
-
 class AmazonpayToCustomerBridge implements AmazonpayToCustomerInterface
 {
 

@@ -21,6 +21,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface
      */
     protected $omsFacade;
+
     /**
      * @var \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface
      */

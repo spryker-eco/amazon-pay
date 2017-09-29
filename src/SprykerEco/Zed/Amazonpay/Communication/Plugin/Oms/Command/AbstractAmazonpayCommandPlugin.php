@@ -11,11 +11,9 @@ use ArrayObject;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
-use Generated\Shared\Transfer\MessageTransfer;
 use IteratorAggregate;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
-use Orm\Zed\Sales\Persistence\SpySalesExpense;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
@@ -65,7 +63,7 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
     }
 
     /**
-     * @param ArrayObject $itemTransfers
+     * @param \ArrayObject $itemTransfers
      *
      * @return int
      */
@@ -240,8 +238,10 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
     }
 
     /**
-     * @param \IteratorAggregate|SpySalesOrderItem[] $salesOrderItems
+     * @param \IteratorAggregate|\Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $salesOrderItems
      * @param string $statusName
+     *
+     * @return void
      */
     protected function setOrderItemsStatus(IteratorAggregate $salesOrderItems, $statusName)
     {

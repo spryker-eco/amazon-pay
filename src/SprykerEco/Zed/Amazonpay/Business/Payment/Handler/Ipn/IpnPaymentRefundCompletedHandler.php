@@ -33,8 +33,8 @@ class IpnPaymentRefundCompletedHandler extends IpnAbstractPaymentRefundHandler
         AmazonpayQueryContainerInterface $amazonpayQueryContainer,
         IpnRequestLoggerInterface $ipnRequestLogger,
         RefundOrderInterface $refundOrderModel
-    )
-    {
+    ) {
+
         parent::__construct($omsFacade, $amazonpayQueryContainer, $ipnRequestLogger);
 
         $this->refundOrderModel = $refundOrderModel;
@@ -65,4 +65,5 @@ class IpnPaymentRefundCompletedHandler extends IpnAbstractPaymentRefundHandler
 
         $this->refundOrderModel->refundPayment($paymentEntity);
     }
+
 }

@@ -7,8 +7,8 @@
 
 namespace SprykerEco\Shared\Amazonpay;
 
-use Spryker\Shared\Kernel\Store;
 use Spryker\Shared\Kernel\AbstractBundleConfig;
+use Spryker\Shared\Kernel\Store;
 
 class AmazonpayConfig extends AbstractBundleConfig implements AmazonpayConfigInterface
 {

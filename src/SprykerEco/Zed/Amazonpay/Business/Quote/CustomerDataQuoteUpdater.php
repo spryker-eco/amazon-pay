@@ -55,6 +55,8 @@ class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\CustomerTransfer $customer
+     *
+     * @return void
      */
     protected function updateCustomer(QuoteTransfer $quoteTransfer, CustomerTransfer $customer)
     {

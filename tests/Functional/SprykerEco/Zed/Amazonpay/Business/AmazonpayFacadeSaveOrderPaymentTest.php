@@ -32,9 +32,11 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
      *
      * @param string $orderReference
      * @param string $idsList
-     * @param AmazonpayStatusTransfer $status
-     * @param SpyOmsOrderItemState $omsState
+     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $status
+     * @param \Orm\Zed\Oms\Persistence\SpyOmsOrderItemState $omsState
      * @param string $expectedPaymentStatus
+     *
+     * @return void
      */
     public function testSaveOrderPayment($orderReference, $idsList, AmazonpayStatusTransfer $status, SpyOmsOrderItemState $omsState, $expectedPaymentStatus)
     {

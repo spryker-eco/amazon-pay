@@ -181,7 +181,6 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
         ];
     }
 
-
     /**
      * @dataProvider updateStatusOrderReferenceDataProvider
      *
@@ -246,6 +245,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
 
     /**
      * @param string $reference
+     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $status
      *
      * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
      */
@@ -293,9 +293,9 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
     }
 
     /**
-     * @param $authReferenceId
+     * @param string $authReferenceId
      *
-     * @return SpyPaymentAmazonpayQuery
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
      */
     protected function findPaymentEntityByAuthId($authReferenceId)
     {
@@ -305,6 +305,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
 
     /**
      * @param string $reference
+     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $status
      *
      * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
      */
@@ -352,9 +353,9 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
     }
 
     /**
-     * @param $referenceId
+     * @param string $referenceId
      *
-     * @return SpyPaymentAmazonpayQuery
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
      */
     protected function findPaymentEntityByCaptureId($referenceId)
     {
@@ -364,6 +365,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
 
     /**
      * @param string $reference
+     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $status
      *
      * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
      */
@@ -411,9 +413,9 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
     }
 
     /**
-     * @param $referenceId
+     * @param string $referenceId
      *
-     * @return SpyPaymentAmazonpayQuery
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
      */
     protected function findPaymentEntityByRefundId($referenceId)
     {
@@ -423,6 +425,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
 
     /**
      * @param string $reference
+     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $status
      *
      * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
      */
@@ -466,16 +469,14 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
     }
 
     /**
-     * @param $referenceId
+     * @param string $referenceId
      *
-     * @return SpyPaymentAmazonpayQuery
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
      */
     protected function findPaymentEntityByOrderReferenceId($referenceId)
     {
         return SpyPaymentAmazonpayQuery::create()
             ->filterByOrderReferenceId($referenceId);
     }
-
-
 
 }

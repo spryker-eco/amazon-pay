@@ -40,8 +40,8 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
         AmazonpayQueryContainerInterface $amazonpayQueryContainer,
         AmazonpayTransferToEntityConverterInterface $converter,
         RefundOrderInterface $refundOrderModel
-    )
-    {
+    ) {
+
         parent::__construct($executionAdapter, $config, $transactionLogger, $amazonpayQueryContainer, $converter);
 
         $this->refundOrderModel = $refundOrderModel;

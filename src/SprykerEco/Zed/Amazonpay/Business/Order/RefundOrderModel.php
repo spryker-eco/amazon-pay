@@ -18,8 +18,8 @@ class RefundOrderModel implements RefundOrderInterface
      */
     public function __construct(
         AmazonpayToRefundInterface $refundFacade
-    )
-    {
+    ) {
+
         $this->refundFacade = $refundFacade;
     }
 

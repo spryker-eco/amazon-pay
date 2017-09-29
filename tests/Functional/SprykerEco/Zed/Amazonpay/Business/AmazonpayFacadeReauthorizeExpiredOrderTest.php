@@ -29,7 +29,6 @@ class AmazonpayFacadeReauthorizeExpiredOrderTest extends AmazonpayFacadeAbstract
         $payment = $this->getAmazonpayPayment($result->getAmazonpayPayment()->getOrderReferenceId());
 
         $this->assertEquals($expectedStatus, $payment->getStatus());
-
     }
 
     /**
