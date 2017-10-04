@@ -75,8 +75,7 @@ build:
                  "  > config/Shared/config_default.php
             - mkdir -p src/Pyz/Zed/Console
             - >
-              echo "
-                  <?php
+              echo "<?php
 
                   namespace Pyz\Zed\Console;
 
@@ -102,11 +101,11 @@ build:
                       }
 
                       /**
-                       * @param \Spryker\Zed\Kernel\Container $container
+                       * @param \Spryker\Zed\Kernel\Container \$container
                        *
                        * @return \Symfony\Component\EventDispatcher\EventSubscriberInterface[]
                        */
-                      protected function getEventSubscriber(Container $container)
+                      protected function getEventSubscriber(Container \$container)
                       {
                           return [];
                       }
