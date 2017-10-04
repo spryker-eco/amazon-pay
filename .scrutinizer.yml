@@ -2,7 +2,7 @@ build:
     dependencies:
         before:
             - composer require --dev spryker/console
-            - composer require --dev spryker/transfer
+            - APPLICATION_STORE=DE APPLICATION_ENV=development vendor/bin/console
             - APPLICATION_STORE=DE APPLICATION_ENV=development vendor/bin/console transfer:generate
     environment:
         php:
