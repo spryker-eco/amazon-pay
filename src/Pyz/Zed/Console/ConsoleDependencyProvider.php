@@ -2,7 +2,6 @@
 
 namespace Pyz\Zed\Console;
 
-use Spryker\Shared\Config\Environment;
 use Spryker\Zed\Console\ConsoleDependencyProvider as SprykerConsoleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Transfer\Communication\Console\GeneratorConsole;
@@ -17,13 +16,9 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
      */
     public function getConsoleCommands(Container $container)
     {
-        $commands = [
+        $commands = parent::getConsoleCommands($container);
 
-        ];
-
-        if (Environment::isDevelopment() || Environment::isTesting()) {
-            $commands[] = new GeneratorConsole();
-        }
+        $commands[] = new GeneratorConsole();
 
         return $commands;
     }

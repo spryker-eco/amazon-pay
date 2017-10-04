@@ -2,7 +2,7 @@ build:
     dependencies:
         before:
             - composer require --dev spryker/console
-            - APPLICATION_STORE=DE APPLICATION_ENV=development vendor/bin/console
+            - sed -i -e 's/"Spryker"\:/""\:/g' composer.json
             - APPLICATION_STORE=DE APPLICATION_ENV=development vendor/bin/console transfer:generate
     environment:
         php:
