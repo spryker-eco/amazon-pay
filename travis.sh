@@ -65,8 +65,6 @@ function checkModuleWithLatestVersionOfModule {
 
 # create folder for demoshop
 #cd travis
-echo "Cloning demoshop..."
-git clone git@github.com:spryker/demoshop.git .
 
 # try installation of eco-module as-is
 cd demoshop/
