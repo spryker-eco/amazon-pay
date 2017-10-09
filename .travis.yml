@@ -41,9 +41,8 @@ services:
 sudo: required
 
 install:
-  - echo "Moving module to a subfolder..."
-  - mkdir module
-  - if [ `mv * module/` ]; then echo 'copied' fi
+  - chmod +x move-module.sh
+  - ./move-module.sh
   - echo "Cloning demoshop..."
   - git clone https://github.com/spryker/demoshop.git demoshop
 
@@ -67,10 +66,10 @@ before_script:
   - cp config/Shared/ci/travis/config_ci.php config/Shared/config_default-devtest_DE.php
   - cp config/Shared/ci/travis/params_test_env.sh deploy/setup/params_test_env.sh
   - cd ..
-  - chmod a+x travis.sh
+  - chmod a+x ./module/travis.sh
 
 script:
-  - ./travis.sh
+  - ./module/travis.sh
 
 notifications:
   email: false
