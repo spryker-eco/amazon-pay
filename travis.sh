@@ -70,5 +70,9 @@ function checkModuleWithLatestVersionOfModule {
 cd demoshop/
 #git checkout composer.json composer.lock config/Shared/config_default-devtest.php
 composer install
+vendor/bin/console propel:install
+./setup_test -f
+vendor/bin/codecept run
+exit
 
 checkWithLatestDemoShop
