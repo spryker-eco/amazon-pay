@@ -42,7 +42,7 @@ sudo: required
 
 install:
   - echo "Cloning demoshop..."
-  - git clone git@github.com:spryker/demoshop.git demoshop
+  - git clone https://github.com/spryker/demoshop.git demoshop
 
   - cd demoshop/
   - chmod -R a+x config/Shared/ci/travis/
