@@ -67,7 +67,7 @@ before_script:
   - chmod a+x travis.sh
 
 script:
-  - travis.sh
+  - ./travis.sh
 
 notifications:
   email: false
