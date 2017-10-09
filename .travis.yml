@@ -16,30 +16,30 @@ env:
 matrix:
   fast_finish: true
   include:
-     - php: "5.6"
-       env:
-          - TEST_GROUP=without-acceptance
-          - ON_EVENTS=cron,push
-     - php: "7.0"
-       env:
-          - TEST_GROUP=without-acceptance
-          - ON_EVENTS=cron,push
+#     - php: "5.6"
+#       env:
+#          - TEST_GROUP=without-acceptance
+#          - ON_EVENTS=cron,push
+#     - php: "7.0"
+#       env:
+#          - TEST_GROUP=without-acceptance
+#          - ON_EVENTS=cron,push
      - php: "7.1.2"
        env:
-          - TEST_GROUP=without-acceptance
+#          - TEST_GROUP=without-acceptance
           - ON_EVENTS=cron,push
-     - php: "5.6"
-       env:
-          - TEST_GROUP=acceptance
-          - ON_EVENTS=cron
-     - php: "7.0"
-       env:
-          - TEST_GROUP=acceptance
-          - ON_EVENTS=cron
-     - php: "7.1.2"
-       env:
-          - TEST_GROUP=acceptance
-          - ON_EVENTS=push,cron
+#     - php: "5.6"
+#       env:
+#          - TEST_GROUP=acceptance
+#          - ON_EVENTS=cron
+#     - php: "7.0"
+#       env:
+#          - TEST_GROUP=acceptance
+#          - ON_EVENTS=cron
+#     - php: "7.1.2"
+#       env:
+#          - TEST_GROUP=acceptance
+#          - ON_EVENTS=push,cron
 addons:
   postgresql: 9.4
 
@@ -81,24 +81,12 @@ before_script:
   - mv config/Zed/propel.ci.yml config/Zed/propel.yml
   - cp config/Shared/ci/travis/config_ci.php config/Shared/config_default-devtest_DE.php
   - cp config/Shared/ci/travis/params_test_env.sh deploy/setup/params_test_env.sh
+  - chmod a+x travis.sh
 
-  - if [[ $TEST_GROUP == 'acceptance' ]]; then config/Shared/ci/travis/acceptance_env.sh; fi
-  - if [[ $TEST_GROUP == 'acceptance' ]]; then ./setup_test -f; fi
-  - if [[ $TEST_GROUP == 'without-acceptance' ]]; then ./setup_test -b; fi
-
-  - vendor/bin/console twig:cache:warmer
+#  - vendor/bin/console twig:cache:warmer
 
 script:
-  - vendor/bin/phantomjs --webdriver=4444 > /dev/null &
-  - if [[ $TEST_GROUP == 'without-acceptance' ]]; then vendor/bin/codecept run -x Acceptance -x Presentation -vvv ; fi
-  - if [[ $TEST_GROUP == 'acceptance' ]]; then vendor/bin/codecept run -g Acceptance -g Presentation ; fi
-
-  - if [[ $TRAVIS_PHP_VERSION == 7.0 ]] ; then vendor/bin/console code:sniff ; fi
-  - if [[ $TRAVIS_PHP_VERSION == 7.0 ]] ; then vendor/bin/console dev:dependency:build-tree ; fi
-  - if [[ $TRAVIS_PHP_VERSION == 7.0 ]] ; then vendor/bin/console dev:dependency:find-violations ; fi
-
-  - if [[ $TRAVIS_PHP_VERSION == 7.0 && $TEST_GROUP == 'without-acceptance' ]] ; then vendor/bin/phpmd src/ text vendor/spryker/spryker/Bundles/Development/src/Spryker/Zed/Development/Business/PhpMd/ruleset.xml ; fi
-  - if [[ $TRAVIS_PHP_VERSION == 7.0 && $TEST_GROUP == 'without-acceptance' ]] ; then vendor/bin/phpmd src/ text vendor/spryker/architecture-sniffer/src/ruleset.xml --minimumpriority 1 ; fi
+  - travis.sh
 
 notifications:
   email: false
