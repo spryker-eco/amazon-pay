@@ -37,4 +37,3 @@ $config[AclConstants::ACL_USER_RULE_WHITELIST][] =
 
 $config[PropelConstants::ZED_DB_USERNAME] = 'devtest';
 $config[PropelConstants::ZED_DB_PASSWORD] = 'mate20mg';
-$config[PropelConstants::ZED_DB_DATABASE] = 'DE_devtest_zed';
