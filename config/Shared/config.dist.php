@@ -1,6 +1,7 @@
 <?php
 
 use Spryker\Shared\Acl\AclConstants;
+use Spryker\Shared\Propel\PropelConstants;
 use Spryker\Shared\Sales\SalesConstants;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
@@ -33,3 +34,7 @@ $config[AclConstants::ACL_USER_RULE_WHITELIST][] =
         'action' => 'endpoint',
         'type' => 'allow',
     ];
+
+$config[PropelConstants::ZED_DB_USERNAME] = 'devtest';
+$config[PropelConstants::ZED_DB_PASSWORD] = 'mate20mg';
+$config[PropelConstants::ZED_DB_DATABASE] = 'DE_devtest_zed';
