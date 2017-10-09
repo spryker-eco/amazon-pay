@@ -24,9 +24,9 @@ function runTests {
 
 function checkWithLatestDemoShop {
     echo "Checking with latest DemoShop"
-    php composer.phar config repositories.amazonpay git https://github.com/spryker-eco/AmazonPay.git
+    composer config repositories.amazonpay git https://github.com/spryker-eco/AmazonPay.git
 
-    php composer.phar require spryker-eco/amazon-pay=dev-feature/ECO-573-per-item-processing
+    composer require spryker-eco/amazon-pay=dev-feature/ECO-573-per-item-processing
     result=$?
     if [ "$result" = 0 ]; then
         echo "Latest version of module is COMPATIBLE with latest DemoShop modules' versions"
@@ -46,13 +46,13 @@ function checkModuleWithLatestVersionOfModule {
     git checkout composer.json
 
     echo "Updating module dependencies..."
-    php composer.phar config repositories.amazonpay path $modulePath
+    composer config repositories.amazonpay path $modulePath
 
     echo "Merging dependencies..."
     php "$cpath/merge-composer.php" "$modulePath/composer.json" composer.json "$modulePath/composer.json"
 
     echo "Installing module with merged dependencies..."
-    php composer.phar require "spryker-eco/amazon-pay @dev"
+    composer require "spryker-eco/amazon-pay @dev"
     result=$?
     if [ "$result" = 0 ]; then
         echo "Module is COMPATIBLE with latest versions of modules used in DemoShop"
@@ -69,6 +69,6 @@ function checkModuleWithLatestVersionOfModule {
 # try installation of eco-module as-is
 cd demoshop/
 #git checkout composer.json composer.lock config/Shared/config_default-devtest.php
-php composer.phar install
+composer install
 
 checkWithLatestDemoShop
