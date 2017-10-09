@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cpath=`pwd`
-modulePath="./amazon-pay"
+modulePath="$cpath"
 
 function runTests {
     echo "Preparing environment..."
