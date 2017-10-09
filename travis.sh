@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cpath=`pwd`
-modulePath="$cpath"
+modulePath="$cpath/module"
 
 function runTests {
     echo "Preparing environment..."
@@ -12,7 +12,7 @@ function runTests {
     echo "Copy configuration..."
     if [ -f vendor/spryker-eco/amazon-pay/config/Shared/config.dist.php ]; then
         tail -n +2 vendor/spryker-eco/amazon-pay/config/Shared/config.dist.php >> config/Shared/config_default-devtest.php
-        php fix-config.php config/Shared/config_default-devtest.php
+        php "$modulePath/fix-config.php" config/Shared/config_default-devtest.php
     fi
     echo "Setup test environment..."
     vendor/bin/console propel:install
@@ -49,7 +49,7 @@ function checkModuleWithLatestVersionOfModule {
     composer config repositories.amazonpay path $modulePath
 
     echo "Merging dependencies..."
-    php "$cpath/merge-composer.php" "$modulePath/composer.json" composer.json "$modulePath/composer.json"
+    php "$modulePath/merge-composer.php" "$modulePath/composer.json" composer.json "$modulePath/composer.json"
 
     echo "Installing module with merged dependencies..."
     composer require "spryker-eco/amazon-pay @dev"

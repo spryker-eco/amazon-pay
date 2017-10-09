@@ -41,6 +41,9 @@ services:
 sudo: required
 
 install:
+  - echo "Moving module to a subfolder..."
+  - mkdir module
+  - mv * module/
   - echo "Cloning demoshop..."
   - git clone https://github.com/spryker/demoshop.git demoshop
 
