@@ -6,7 +6,7 @@ modulePath="$cpath/module"
 function runTests {
     echo "Preparing environment..."
     echo "Copying test files to DemoShop folder "
-    cp -r vendor/spryker-eco/amazon-pay/tests/Functional/SprykerEco/Zed/Amazonpay tests/PyzTest/Zed/
+    cp -v -r vendor/spryker-eco/amazon-pay/tests/Functional/SprykerEco/Zed/Amazonpay tests/PyzTest/Zed/
     echo "Fix namespace of tests..."
     grep -rl ' Functional\\SprykerEco' tests/PyzTest/Zed/Amazonpay/Business/ | xargs sed -i -e 's/ Functional\\SprykerEco/ PyzTest/g'
     echo "Copy configuration..."
@@ -70,9 +70,5 @@ function checkModuleWithLatestVersionOfModule {
 cd demoshop/
 #git checkout composer.json composer.lock config/Shared/config_default-devtest.php
 composer install
-#vendor/bin/console propel:install
-#./setup_test -f
-#vendor/bin/codecept run
-#exit
 
 checkWithLatestDemoShop
