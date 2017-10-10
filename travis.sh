@@ -3,11 +3,12 @@
 cpath=`pwd`
 modulePath="$cpath/module"
 globalResult=1
+message=""
 
 function runTests {
     echo "Preparing environment..."
     echo "Copying test files to DemoShop folder "
-    cp -v -r vendor/spryker-eco/amazon-pay/tests/Functional/SprykerEco/Zed/Amazonpay tests/PyzTest/Zed/
+    cp -r vendor/spryker-eco/amazon-pay/tests/Functional/SprykerEco/Zed/Amazonpay tests/PyzTest/Zed/
     echo "Fix namespace of tests..."
     grep -rl ' Functional\\SprykerEco' tests/PyzTest/Zed/Amazonpay/Business/ | xargs sed -i -e 's/ Functional\\SprykerEco/ PyzTest/g'
     echo "Copy configuration..."
@@ -30,15 +31,17 @@ function checkWithLatestDemoShop {
     composer require "spryker-eco/amazon-pay @dev"
     result=$?
     if [ "$result" = 0 ]; then
-        echo "Current version of module is COMPATIBLE with latest DemoShop modules' versions"
+        newMessage=$"\nCurrent version of module is COMPATIBLE with latest DemoShop modules' versions"
+        message="$message$newMessage"
 
         if runTests; then
             globalResult=0
-            echo "Result is >$globalResult<"
+
             checkModuleWithLatestVersionOfDemoshop
         fi
     else
-        echo "Current version of module is NOT COMPATIBLE with latest DemoShop due to modules' versions"
+        newMessage=$"\nCurrent version of module is NOT COMPATIBLE with latest DemoShop due to modules' versions"
+        message="$message$newMessage"
 
         checkModuleWithLatestVersionOfDemoshop
     fi
@@ -46,17 +49,21 @@ function checkWithLatestDemoShop {
 
 function checkModuleWithLatestVersionOfDemoshop {
     echo "Merging composer.json dependencies..."
-    php "$modulePath/merge-composer.php" "$modulePath/composer.json" composer.json "$modulePath/composer.json"
+    updates=`php "$modulePath/merge-composer.php" "$modulePath/composer.json" composer.json "$modulePath/composer.json"`
+    newMessage=$"\nUpdated dependencies in module to match demoShop\n$updates"
+    message="$message$newMessage"
 
     echo "Installing module with updated dependencies..."
     composer require "spryker-eco/amazon-pay @dev"
     result=$?
     if [ "$result" = 0 ]; then
-        echo "Module is COMPATIBLE with latest versions of modules used in DemoShop"
+        newMessage=$"\nModule is COMPATIBLE with latest versions of modules used in DemoShop"
+        message="$message$newMessage"
 
         runTests
     else
-        echo "Module is NOT COMPATIBLE with latest versions of modules used in DemoShop"
+        newMessage=$"\nModule is NOT COMPATIBLE with latest versions of modules used in DemoShop"
+        message="$message$newMessage"
     fi
 }
 
@@ -70,5 +77,5 @@ composer install
 
 checkWithLatestDemoShop
 
-echo "Result is >$globalResult<"
+echo $message
 exit $globalResult
