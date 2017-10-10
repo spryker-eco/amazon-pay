@@ -45,9 +45,6 @@ function checkWithLatestDemoShop {
 }
 
 function checkModuleWithLatestVersionOfDemoshop {
-    echo "Revert Demoshop composer.json ..."
-    git checkout composer.json
-
     echo "Merging composer.json dependencies..."
     php "$modulePath/merge-composer.php" "$modulePath/composer.json" composer.json "$modulePath/composer.json"
 
