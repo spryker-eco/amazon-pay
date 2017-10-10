@@ -1,5 +1,7 @@
 # Amazon Pay Module
 
+[![Build Status](https://travis-ci.org/spryker-eco/amazon-pay.svg?branch=feature/ECO-807-travis-ci)](https://travis-ci.org/spryker-eco/amazon-pay)
+
 ## Installation
 
 ```
