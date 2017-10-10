@@ -2,6 +2,7 @@
 
 cpath=`pwd`
 modulePath="$cpath/module"
+globalResult=1
 
 function runTests {
     echo "Preparing environment..."
@@ -23,35 +24,34 @@ function runTests {
 }
 
 function checkWithLatestDemoShop {
-    echo "Checking with latest DemoShop"
-    composer config repositories.amazonpay git https://github.com/spryker-eco/AmazonPay.git
+    echo "Checking module with latest DemoShop"
+    composer config repositories.amazonpay path $modulePath
 
-    composer require spryker-eco/amazon-pay=dev-feature/ECO-573-per-item-processing
+    composer require "spryker-eco/amazon-pay @dev"
     result=$?
     if [ "$result" = 0 ]; then
-        echo "Latest version of module is COMPATIBLE with latest DemoShop modules' versions"
+        echo "Current version of module is COMPATIBLE with latest DemoShop modules' versions"
 
         if runTests; then
-            checkModuleWithLatestVersionOfModule
+            globalResult=0
+            echo "Result is >$globalResult<"
+            checkModuleWithLatestVersionOfDemoshop
         fi
     else
-        echo "Latest version of module is NOT COMPATIBLE with latest DemoShop due to modules' versions"
+        echo "Current version of module is NOT COMPATIBLE with latest DemoShop due to modules' versions"
 
-        checkModuleWithLatestVersionOfModule
+        checkModuleWithLatestVersionOfDemoshop
     fi
 }
 
-function checkModuleWithLatestVersionOfModule {
-    echo "Revert composer..."
+function checkModuleWithLatestVersionOfDemoshop {
+    echo "Revert Demoshop composer.json ..."
     git checkout composer.json
 
-    echo "Updating module dependencies..."
-    composer config repositories.amazonpay path $modulePath
-
-    echo "Merging dependencies..."
+    echo "Merging composer.json dependencies..."
     php "$modulePath/merge-composer.php" "$modulePath/composer.json" composer.json "$modulePath/composer.json"
 
-    echo "Installing module with merged dependencies..."
+    echo "Installing module with updated dependencies..."
     composer require "spryker-eco/amazon-pay @dev"
     result=$?
     if [ "$result" = 0 ]; then
@@ -72,3 +72,6 @@ cd demoshop/
 composer install
 
 checkWithLatestDemoShop
+
+echo "Result is >$globalResult<"
+exit $globalResult
