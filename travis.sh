@@ -77,5 +77,5 @@ composer install
 
 checkWithLatestDemoShop
 
-echo $message
+echo "$message"
 exit $globalResult
