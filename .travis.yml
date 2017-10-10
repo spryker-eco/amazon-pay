@@ -16,8 +16,6 @@ matrix:
   fast_finish: true
   include:
      - php: "7.0"
-       env:
-          - ON_EVENTS=cron,push
 addons:
   postgresql: 9.4
 
@@ -42,6 +40,8 @@ sudo: required
 
 install:
   - chmod +x move-module.sh
+  - chmod +x checkout-latest-tag.sh
+  - if [[ *$TRAVIS_EVENT_TYPE* = 'cron' ]]; then ./checkout-latest-tag.sh fi
   - ./move-module.sh
   - echo "Cloning demoshop..."
   - git clone https://github.com/spryker/demoshop.git demoshop
