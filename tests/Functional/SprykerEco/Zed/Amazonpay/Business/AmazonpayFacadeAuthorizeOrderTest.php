@@ -41,6 +41,8 @@ class AmazonpayFacadeAuthorizeOrderTest extends AmazonpayFacadeAbstractTest
      */
     public function cancelOrderDataProvider()
     {
+        $this->prepareFixtures();
+
         return [
             [
                 1,

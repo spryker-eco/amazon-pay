@@ -32,6 +32,8 @@ class AmazonpayFacadeCloseOrderTest extends AmazonpayFacadeAbstractTest
      */
     public function closeOrderDataProvider()
     {
+        $this->prepareFixtures();
+
         return [
             [$this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1)],
             [$this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2)],

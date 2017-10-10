@@ -32,6 +32,8 @@ class AmazonpayFacadeReauthorizeOrderTest extends AmazonpayFacadeAbstractTest
      */
     public function cancelOrderDataProvider()
     {
+        $this->prepareFixtures();
+
         return [
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),

@@ -51,23 +51,35 @@ class AmazonpayFacadeAbstractTest extends Test
 
         foreach ($this->getOrderStatusMap() as $orderReference => $status) {
             $i++;
-
-            $payment = new SpyPaymentAmazonpay();
-            $payment->setOrderReferenceId($orderReference);
-            $payment->setSellerOrderId(sprintf('S02-5989383-0864061-000000%sR00%s', $i, $i));
-
-            $payment->setAmazonCaptureId(sprintf('S02-5989383-0864061-C00000%s', $i));
-            $payment->setCaptureReferenceId(sprintf('S02-5989383-0864061-C00000%sR00%s', $i, $i));
-
-            $payment->setAmazonAuthorizationId(sprintf('S02-5989383-0864061-A00000%s', $i));
-            $payment->setAuthorizationReferenceId(sprintf('S02-5989383-0864061-A00000%sR00%s', $i, $i));
-
-            $payment->setAmazonRefundId(sprintf('S02-5989383-0864061-R00000%s', $i));
-            $payment->setRefundReferenceId(sprintf('S02-5989383-0864061-R00000%sR00%s', $i, $i));
-            $payment->setStatus($this->getOrderStatusMap()[$payment->getOrderReferenceId()]);
-            $payment->setIsSandbox(true);
-            $payment->save();
+            $this->createPaymentAmazonpay($orderReference, $i);
         }
+    }
+
+    /**
+     * @param string $orderReference
+     * @param int $index
+     *
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay
+     */
+    protected function createPaymentAmazonpay($orderReference, $index)
+    {
+        $payment = new SpyPaymentAmazonpay();
+        $payment->setOrderReferenceId($orderReference);
+        $payment->setSellerOrderId(sprintf('S02-5989383-0864061-000000%sR00%s', $index, $index));
+
+        $payment->setAmazonCaptureId(sprintf('S02-5989383-0864061-C00000%s', $index));
+        $payment->setCaptureReferenceId(sprintf('S02-5989383-0864061-C00000%sR00%s', $index, $index));
+
+        $payment->setAmazonAuthorizationId(sprintf('S02-5989383-0864061-A00000%s', $index));
+        $payment->setAuthorizationReferenceId(sprintf('S02-5989383-0864061-A00000%sR00%s', $index, $index));
+
+        $payment->setAmazonRefundId(sprintf('S02-5989383-0864061-R00000%s', $index));
+        $payment->setRefundReferenceId(sprintf('S02-5989383-0864061-R00000%sR00%s', $index, $index));
+        $payment->setStatus($this->getOrderStatusMap()[$payment->getOrderReferenceId()]);
+        $payment->setIsSandbox(true);
+        $payment->save();
+
+        return $payment;
     }
 
     /**

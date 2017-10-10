@@ -37,6 +37,8 @@ class AmazonpayFacadeCaptureOrderTest extends AmazonpayFacadeAbstractTest
      */
     public function captureOrderDataProvider()
     {
+        $this->prepareFixtures();
+
         return [
             'Completed' => [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),

@@ -50,6 +50,8 @@ class AmazonpayFacadeRefundOrderTest extends AmazonpayFacadeAbstractTest
      */
     public function refundOrderDataProvider()
     {
+        $this->prepareFixtures();
+
         return [
             'first' =>
                 [

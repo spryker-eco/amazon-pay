@@ -36,6 +36,8 @@ class AmazonpayFacadeReauthorizeExpiredOrderTest extends AmazonpayFacadeAbstract
      */
     public function reauthorizeExpiredOrderProvider()
     {
+        $this->prepareFixtures();
+
         return [
             'opened' => [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
