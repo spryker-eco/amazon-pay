@@ -21,6 +21,13 @@ function runTests {
     ./setup_test -f
     echo "Running tests..."
     vendor/bin/codecept run -c tests/PyzTest/Zed/Amazonpay Business
+    if [ "$?" = 0 ]; then
+        newMessage=$'\nTests are green'
+        message="$message$newMessage"
+    else
+        newMessage=$'\nTests are failing'
+        message="$message$newMessage"
+    fi
     echo "Done tests"
 }
 
@@ -50,7 +57,7 @@ function checkWithLatestDemoShop {
 function checkModuleWithLatestVersionOfDemoshop {
     echo "Merging composer.json dependencies..."
     updates=`php "$modulePath/merge-composer.php" "$modulePath/composer.json" composer.json "$modulePath/composer.json"`
-    newMessage=$'\nUpdated dependencies in module to match demoShop\n'
+    newMessage=$'\nUpdated dependencies in module to match DemoShop\n'
     message="$message$newMessage$updates"
 
     echo "Installing module with updated dependencies..."
