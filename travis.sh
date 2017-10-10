@@ -31,7 +31,7 @@ function checkWithLatestDemoShop {
     composer require "spryker-eco/amazon-pay @dev"
     result=$?
     if [ "$result" = 0 ]; then
-        newMessage=$"\nCurrent version of module is COMPATIBLE with latest DemoShop modules' versions"
+        newMessage=$'\nCurrent version of module is COMPATIBLE with latest DemoShop modules\' versions'
         message="$message$newMessage"
 
         if runTests; then
@@ -40,7 +40,7 @@ function checkWithLatestDemoShop {
             checkModuleWithLatestVersionOfDemoshop
         fi
     else
-        newMessage=$"\nCurrent version of module is NOT COMPATIBLE with latest DemoShop due to modules' versions"
+        newMessage=$'\nCurrent version of module is NOT COMPATIBLE with latest DemoShop due to modules\' versions'
         message="$message$newMessage"
 
         checkModuleWithLatestVersionOfDemoshop
@@ -50,19 +50,19 @@ function checkWithLatestDemoShop {
 function checkModuleWithLatestVersionOfDemoshop {
     echo "Merging composer.json dependencies..."
     updates=`php "$modulePath/merge-composer.php" "$modulePath/composer.json" composer.json "$modulePath/composer.json"`
-    newMessage=$"\nUpdated dependencies in module to match demoShop\n$updates"
-    message="$message$newMessage"
+    newMessage=$'\nUpdated dependencies in module to match demoShop\n'
+    message="$message$newMessage$updates"
 
     echo "Installing module with updated dependencies..."
     composer require "spryker-eco/amazon-pay @dev"
     result=$?
     if [ "$result" = 0 ]; then
-        newMessage=$"\nModule is COMPATIBLE with latest versions of modules used in DemoShop"
+        newMessage=$'\nModule is COMPATIBLE with latest versions of modules used in DemoShop'
         message="$message$newMessage"
 
         runTests
     else
-        newMessage=$"\nModule is NOT COMPATIBLE with latest versions of modules used in DemoShop"
+        newMessage=$'\nModule is NOT COMPATIBLE with latest versions of modules used in DemoShop'
         message="$message$newMessage"
     fi
 }
