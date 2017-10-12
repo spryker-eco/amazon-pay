@@ -46,7 +46,7 @@ function checkWithLatestDemoShop {
     composer require "spryker-eco/$MODULE_NAME @dev"
     result=$?
     if [ "$result" = 0 ]; then
-        buildMessage="${buildMessage}\n${GREEN}$MODULE_NAME is compatible with the modules used in Demo Shop"
+        buildMessage="$buildMessage\n${GREEN}$MODULE_NAME is compatible with the modules used in Demo Shop"
 
         if runTests; then
             globalResult=0
@@ -54,7 +54,7 @@ function checkWithLatestDemoShop {
             checkModuleWithLatestVersionOfDemoshop
         fi
     else
-        buildMessage="${buildMessage}\n${RED}$MODULE_NAME is not compatible with the modules used in Demo Shop"
+        buildMessage="$buildMessage\n${RED}$MODULE_NAME is not compatible with the modules used in Demo Shop"
 
         checkModuleWithLatestVersionOfDemoshop
     fi
@@ -65,11 +65,11 @@ function checkModuleWithLatestVersionOfDemoshop {
     updates=`php "$scriptPath/merge-composer.php" "$modulePath/composer.json" composer.json "$modulePath/composer.json"`
 
     if [ "$updates" = "" ]; then
-        buildMessage="${buildMessage}\n${GREEN}$MODULE_NAME is already using the latest versions of modules used in Demo Shop"
+        buildMessage="$buildMessage\n${GREEN}$MODULE_NAME is already using the latest versions of modules used in Demo Shop"
         return
     fi
 
-    buildMessage="$buildMessage\nUpdated dependencies in module to match DemoShop\n$updates\n"
+    buildMessage="$buildMessage\nUpdated dependencies in module to match DemoShop\n$updates"
 
     echo "Installing module with updated dependencies..."
     composer require "spryker-eco/$MODULE_NAME @dev"
