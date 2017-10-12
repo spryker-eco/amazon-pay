@@ -127,8 +127,7 @@ class AdapterFactory implements AdapterFactoryInterface
         return new CaptureOrderAdapter(
             $this->createSdkAdapterFactory()->createAmazonpayClient($this->config),
             $this->converterFactory->createCaptureOrderConverter(),
-            $this->moneyFacade,
-            $this->config
+            $this->moneyFacade
         );
     }
 
