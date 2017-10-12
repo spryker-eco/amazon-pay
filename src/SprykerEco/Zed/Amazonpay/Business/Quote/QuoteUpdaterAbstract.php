@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface;
 
 abstract class QuoteUpdaterAbstract implements QuoteUpdaterInterface
 {
@@ -17,6 +18,15 @@ abstract class QuoteUpdaterAbstract implements QuoteUpdaterInterface
      * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     protected $executionAdapter;
+
+    /**
+     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface $executionAdapter
+     */
+    public function __construct(
+        CallAdapterInterface $executionAdapter
+    ) {
+        $this->executionAdapter = $executionAdapter;
+    }
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer

@@ -13,6 +13,7 @@
     "spryker/checkout": "^3.0.0",
     "spryker/money": "^2.0.1",
     "spryker/oms": "^7.0.0",
+    "spryker/payment": "^3.0.0",
     "spryker/quote": "^1.0.0",
     "spryker/refund": "^5.0.0",
     "spryker/sales": "^8.0.0",

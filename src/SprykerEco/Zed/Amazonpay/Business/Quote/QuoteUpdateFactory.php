@@ -16,17 +16,17 @@ class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
 {
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactory
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface
      */
     protected $adapterFactory;
 
     /**
-     * @var \SprykerEco\Shared\Amazonpay\AmazonpayConfig
+     * @var \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface
      */
     protected $config;
 
     /**
-     * @var \Spryker\Zed\Shipment\Business\ShipmentFacadeInterface
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface
      */
     protected $shipmentFacade;
 

@@ -151,7 +151,7 @@ class AmazonpayTransferToEntityConverter implements AmazonpayTransferToEntityCon
             return AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED;
         }
 
-        return $amazonpayStatusTransfer;
+        return AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED;
     }
 
 }

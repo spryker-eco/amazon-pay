@@ -13,7 +13,7 @@ class AmazonpayToCheckoutBridge implements AmazonpayToCheckoutInterface
 {
 
     /**
-     * @var \Spryker\Client\Checkout\CheckoutClient
+     * @var \Spryker\Client\Checkout\CheckoutClientInterface
      */
     protected $checkoutClient;
 

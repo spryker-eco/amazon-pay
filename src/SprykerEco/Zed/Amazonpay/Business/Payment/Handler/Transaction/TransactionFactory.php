@@ -19,7 +19,7 @@ class TransactionFactory implements TransactionFactoryInterface
 {
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactory
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface
      */
     protected $adapterFactory;
 

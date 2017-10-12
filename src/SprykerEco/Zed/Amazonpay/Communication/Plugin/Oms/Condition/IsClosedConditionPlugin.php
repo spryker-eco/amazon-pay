@@ -13,7 +13,7 @@ class IsClosedConditionPlugin extends AbstractByOrderItemConditionPlugin
 {
 
     /**
-     * @return bool
+     * @return string
      */
     public function getConditionalStatus()
     {

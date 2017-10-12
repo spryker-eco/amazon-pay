@@ -21,7 +21,7 @@ class AdapterFactory implements AdapterFactoryInterface
     protected $config;
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ConverterFactory
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ConverterFactoryInterface
      */
     protected $converterFactory;
 

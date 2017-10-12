@@ -14,7 +14,7 @@ class AmazonpayStub implements AmazonpayStubInterface
 {
 
     /**
-     * @var \Spryker\Client\ZedRequest\Client\ZedClientInterface
+     * @var \Spryker\Client\ZedRequest\ZedRequestClientInterface
      */
     protected $zedStub;
 

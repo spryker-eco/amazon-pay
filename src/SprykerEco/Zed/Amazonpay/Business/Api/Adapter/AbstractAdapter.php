@@ -23,7 +23,7 @@ abstract class AbstractAdapter implements CallAdapterInterface
     const AMAZON_REFUND_ID = 'amazon_refund_id';
 
     /**
-     * @var \PayWithAmazon\Client
+     * @var \PayWithAmazon\ClientInterface
      */
     protected $client;
 

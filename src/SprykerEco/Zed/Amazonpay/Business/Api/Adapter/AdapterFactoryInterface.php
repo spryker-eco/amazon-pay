@@ -78,4 +78,14 @@ interface AdapterFactoryInterface
      */
     public function createIpnRequestAdapter(array $headers, $body);
 
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
+     */
+    public function createCancelPreOrderAdapter();
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
+     */
+    public function createCaptureOrderAdapter();
+
 }

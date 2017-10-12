@@ -24,7 +24,6 @@ class RefundOrderAdapter extends AbstractAdapter
     {
         $refundAmount = $this->moneyFacade->convertIntegerToDecimal(
             $amazonpayCallTransfer->getRequestedAmount()
-            //            $orderTransfer->getTotals()->getRefundTotal()
         );
 
         $result = $this->client->refund([

@@ -28,11 +28,11 @@ class AmazonpayToMessengerBridge implements AmazonpayToMessengerInterface
     /**
      * @param \Generated\Shared\Transfer\MessageTransfer $messenger
      *
-     * @return array
+     * @return void
      */
     public function addErrorMessage(MessageTransfer $messenger)
     {
-        return $this->messengerFacade->addErrorMessage($messenger);
+        $this->messengerFacade->addErrorMessage($messenger);
     }
 
 }

@@ -18,7 +18,7 @@ class TransactionLogger implements TransactionLoggerInterface
     const REPORT_LEVEL_DISABLED = 'DISABLED';
 
     /**
-     * @var int
+     * @var string
      */
     protected $reportLevel;
 

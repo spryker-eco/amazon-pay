@@ -27,7 +27,7 @@
 
     <transfer name="AmazonpayResponse">
         <property name="shippingAddress" type="Address"/>
-        <property name="orderReferenceStatus" type="string"/>
+        <property name="orderReferenceStatus" type="AmazonpayStatus"/>
         <property name="isSandbox" type="bool"/>
         <property name="shippingAddress" type="Address"/>
         <property name="billingAddress" type="Address"/>
