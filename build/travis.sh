@@ -79,7 +79,7 @@ function checkModuleWithLatestVersionOfDemoshop {
     fi
 }
 
-cd $SHOP_DOR/
+cd $SHOP_DIR/
 composer install
 
 checkWithLatestDemoShop
