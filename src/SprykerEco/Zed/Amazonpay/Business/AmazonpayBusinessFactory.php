@@ -58,7 +58,6 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     {
         return new QuoteUpdateFactory(
             $this->createAdapterFactory(),
-            $this->createAmazonpayConfig(),
             $this->getShipmentFacade(),
             $this->getMessengerFacade()
         );

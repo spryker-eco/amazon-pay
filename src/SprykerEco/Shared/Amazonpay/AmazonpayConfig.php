@@ -70,7 +70,7 @@ class AmazonpayConfig extends AbstractBundleConfig implements AmazonpayConfigInt
     }
 
     /**
-     * @return string
+     * @return bool
      */
     public function isSandbox()
     {
@@ -98,7 +98,7 @@ class AmazonpayConfig extends AbstractBundleConfig implements AmazonpayConfigInt
      */
     public function getAuthTransactionTimeout()
     {
-        return $this->get(AmazonpayConstants::AUTH_TRANSACTION_TIMEOUT);
+        return (int)$this->get(AmazonpayConstants::AUTH_TRANSACTION_TIMEOUT);
     }
 
     /**

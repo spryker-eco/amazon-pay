@@ -38,7 +38,7 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
     public function update(QuoteTransfer $quoteTransfer)
     {
         $shipmentMethodTransfer = $this->shipmentFacade->getShipmentMethodTransferById(
-            $quoteTransfer->getShipment()->getShipmentSelection()
+            (int)$quoteTransfer->getShipment()->getShipmentSelection()
         );
 
         $quoteTransfer->getShipment()->setMethod($shipmentMethodTransfer);

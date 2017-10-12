@@ -8,28 +8,28 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use PayWithAmazon\Client;
+use PayWithAmazon\ClientInterface;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface;
 
 class ObtainProfileInformationAdapter implements CallAdapterInterface
 {
 
     /**
-     * @var \PayWithAmazon\Client
+     * @var \PayWithAmazon\ClientInterface
      */
     protected $client;
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface
      */
     protected $converter;
 
     /**
-     * @param \PayWithAmazon\Client $client
+     * @param \PayWithAmazon\ClientInterface $client
      * @param \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $converter
      */
     public function __construct(
-        Client $client,
+        ClientInterface $client,
         ArrayConverterInterface $converter
     ) {
         $this->client = $client;

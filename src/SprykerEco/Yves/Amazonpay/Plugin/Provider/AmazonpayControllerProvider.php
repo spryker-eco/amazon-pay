@@ -7,10 +7,11 @@
 
 namespace SprykerEco\Yves\Amazonpay\Plugin\Provider;
 
-use Pyz\Yves\Application\Plugin\Provider\AbstractYvesControllerProvider;
 use Silex\Application;
+use Spryker\Shared\Kernel\Store;
+use Spryker\Yves\Application\Plugin\Provider\YvesControllerProvider;
 
-class AmazonpayControllerProvider extends AbstractYvesControllerProvider
+class AmazonpayControllerProvider extends YvesControllerProvider
 {
 
     const CHECKOUT = 'amazonpay_checkout';
@@ -71,5 +72,18 @@ class AmazonpayControllerProvider extends AbstractYvesControllerProvider
         // endpoint
         $this->createController('/amazonpay/endpoint', static::ENDPOINT, self::BUNDLE_NAME, 'Payment', 'endpoint');
     }
+
+
+    /**
+     * @return string
+     */
+    public function getAllowedLocalesPattern()
+    {
+        $systemLocales = Store::getInstance()->getLocales();
+        $implodedLocales = implode('|', array_keys($systemLocales));
+
+        return '(' . $implodedLocales . ')\/';
+    }
+
 
 }

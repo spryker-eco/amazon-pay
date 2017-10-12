@@ -133,15 +133,15 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
         $header->setIsSuccess($this->isSuccess($responseParser));
         $header->setStatusCode($statusCode);
 
-        if ($metadata) {
+        if (isset($metadata[static::REQUEST_ID])) {
             $header->setRequestId($metadata[static::REQUEST_ID]);
+            $responseArray = $responseParser->toArray();
+
+            if (!empty($responseArray[static::ERROR])) {
+                return $this->updateHeaderWithError($header, $responseArray);
+            }
         }
 
-        $responseArray = $responseParser->toArray();
-
-        if (!empty($responseArray[static::ERROR])) {
-            return $this->updateHeaderWithError($header, $responseArray);
-        }
 
         $header->setConstraints($constraints);
         $this->extractErrorFromConstraints($header);
@@ -206,7 +206,7 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     /**
      * @param \PayWithAmazon\ResponseInterface $responseParser
      *
-     * @return \ArrayObject|\Generated\Shared\Transfer\AmazonpayResponseConstraintTransfer[]
+     * @return \ArrayObject | \Generated\Shared\Transfer\AmazonpayResponseConstraintTransfer[]
      */
     protected function extractConstraints(ResponseInterface $responseParser)
     {
@@ -311,11 +311,11 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     /**
      * @param string|array $value
      *
-     * @return null
+     * @return string|null
      */
     protected function getStringValue($value)
     {
-        return empty($value) ? null : $value;
+        return empty($value) ? null : (string)$value;
     }
 
 }

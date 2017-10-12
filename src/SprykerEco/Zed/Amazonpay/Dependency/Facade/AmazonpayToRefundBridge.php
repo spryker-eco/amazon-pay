@@ -14,7 +14,7 @@ class AmazonpayToRefundBridge implements AmazonpayToRefundInterface
 {
 
     /**
-     * @var \Spryker\Zed\Refund\Business\RefundFacade
+     * @var \Spryker\Zed\Refund\Business\RefundFacadeInterface
      */
     protected $refundFacade;
 

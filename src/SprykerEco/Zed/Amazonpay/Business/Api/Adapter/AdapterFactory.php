@@ -21,7 +21,7 @@ class AdapterFactory implements AdapterFactoryInterface
     protected $config;
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ConverterFactory
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ConverterFactoryInterface
      */
     protected $converterFactory;
 
@@ -127,8 +127,7 @@ class AdapterFactory implements AdapterFactoryInterface
         return new CaptureOrderAdapter(
             $this->createSdkAdapterFactory()->createAmazonpayClient($this->config),
             $this->converterFactory->createCaptureOrderConverter(),
-            $this->moneyFacade,
-            $this->config
+            $this->moneyFacade
         );
     }
 
@@ -150,18 +149,6 @@ class AdapterFactory implements AdapterFactoryInterface
     public function createCancelOrderAdapter()
     {
         return new CancelOrderAdapter(
-            $this->createSdkAdapterFactory()->createAmazonpayClient($this->config),
-            $this->converterFactory->createCancelOrderConverter(),
-            $this->moneyFacade
-        );
-    }
-
-    /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
-     */
-    public function createCancelPreOrderAdapter()
-    {
-        return new CancelPreOrderAdapter(
             $this->createSdkAdapterFactory()->createAmazonpayClient($this->config),
             $this->converterFactory->createCancelOrderConverter(),
             $this->moneyFacade

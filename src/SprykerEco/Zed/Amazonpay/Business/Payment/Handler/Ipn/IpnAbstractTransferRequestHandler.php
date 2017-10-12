@@ -18,7 +18,7 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
 {
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsBridge $omsFacade
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
      */
     protected $omsFacade;
 
@@ -75,7 +75,7 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
     /**
      * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $paymentEntity
      *
-     * @return \Propel\Runtime\Collection\ObjectCollection|\Orm\Zed\Sales\Persistence\SpySalesOrderItem[]
+     * @return \Propel\Runtime\Collection\ObjectCollection | \Orm\Zed\Sales\Persistence\SpySalesOrderItem[]
      */
     protected function getAffectedSalesOrderItems(SpyPaymentAmazonpay $paymentEntity)
     {

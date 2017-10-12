@@ -61,7 +61,7 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
         );
         $newStatus = $this->getPaymentStatus($amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus());
 
-        if ($newStatus !== false) {
+        if ($newStatus !== '') {
             $this->paymentEntity->setStatus($newStatus);
         }
 
@@ -77,25 +77,23 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
     /**
      * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $captureStatus
      *
-     * @return bool
+     * @return string
      */
     protected function getPaymentStatus(AmazonpayStatusTransfer $captureStatus)
     {
-        $paymentStatus = false;
-
         if ($captureStatus->getIsDeclined()) {
-            $paymentStatus = AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED;
+            return AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED;
         }
 
         if ($captureStatus->getIsPending()) {
-            $paymentStatus = AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING;
+            return AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING;
         }
 
         if ($captureStatus->getIsCompleted()) {
-            $paymentStatus = AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED;
+            return AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED;
         }
 
-        return $paymentStatus;
+        return '';
     }
 
 }

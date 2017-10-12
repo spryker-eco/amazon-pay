@@ -21,21 +21,24 @@ class CancelOrderTransaction extends AbstractAmazonpayTransaction
     public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
-        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
 
-        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
-            return $amazonpayCallTransfer;
-        }
+        if ($this->paymentEntity) {
+            $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
 
-        if ($isPartialProcessing) {
-            $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
-        }
+            if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+                return $amazonpayCallTransfer;
+            }
 
-        $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CANCELLED);
-        $this->paymentEntity->save();
+            if ($isPartialProcessing) {
+                $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
+            }
 
-        if ($isPartialProcessing) {
-            $this->assignAmazonpayPaymentToItemsIfNew($this->paymentEntity, $amazonpayCallTransfer);
+            $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CANCELLED);
+            $this->paymentEntity->save();
+
+            if ($isPartialProcessing) {
+                $this->assignAmazonpayPaymentToItemsIfNew($this->paymentEntity, $amazonpayCallTransfer);
+            }
         }
 
         return $amazonpayCallTransfer;

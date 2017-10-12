@@ -9,33 +9,9 @@ namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
 use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
-use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface;
 
 class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
 {
-
-    /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\ObtainProfileInformationAdapter
-     */
-    protected $executionAdapter;
-
-    /**
-     * @var \SprykerEco\Shared\Amazonpay\AmazonpayConfig
-     */
-    protected $config;
-
-    /**
-     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface $executionAdapter
-     * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
-     */
-    public function __construct(
-        CallAdapterInterface $executionAdapter,
-        AmazonpayConfigInterface $config
-    ) {
-        $this->executionAdapter = $executionAdapter;
-        $this->config = $config;
-    }
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
@@ -45,6 +21,7 @@ class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
     public function update(QuoteTransfer $quoteTransfer)
     {
         $amazonCallTransfer = $this->convertQuoteTransferToAmazonPayTransfer($quoteTransfer);
+        /** @var \Generated\Shared\Transfer\CustomerTransfer $customer */
         $customer = $this->executionAdapter->call($amazonCallTransfer);
 
         $this->updateCustomer($quoteTransfer, $customer);

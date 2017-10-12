@@ -24,7 +24,7 @@ class OrderMessageFactory implements OrderMessageFactoryInterface
             ->getAuthorizationStatus()
             ->getIsSuspended()
         ) {
-            return new OrderAuthFailedSoftDeclineMessage($amazonpayCallTransfer);
+            return $this->createOrderAuthFailedSoftDeclineMessage($amazonpayCallTransfer);
         }
 
         if ($amazonpayCallTransfer->getAmazonpayPayment()
@@ -32,10 +32,30 @@ class OrderMessageFactory implements OrderMessageFactoryInterface
             ->getAuthorizationStatus()
             ->getIsDeclined()
         ) {
-            return new OrderAuthFailedHardDeclineMessage($amazonpayCallTransfer);
+            return $this->createOrderAuthFailedHardDeclineMessage($amazonpayCallTransfer);
         }
 
         return null;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage
+     */
+    protected function createOrderAuthFailedSoftDeclineMessage(AmazonpayCallTransfer $amazonpayCallTransfer)
+    {
+        return new OrderAuthFailedSoftDeclineMessage($amazonpayCallTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage
+     */
+    protected function createOrderAuthFailedHardDeclineMessage(AmazonpayCallTransfer $amazonpayCallTransfer)
+    {
+        return new OrderAuthFailedHardDeclineMessage($amazonpayCallTransfer);
     }
 
 }

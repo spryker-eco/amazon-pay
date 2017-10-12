@@ -113,8 +113,7 @@ build:
 
                   }" > src/Pyz/Zed/Console/ConsoleDependencyProvider.php
             - sed -i -e 's/"Spryker"\:/""\:/g' composer.json
-            - composer config repositories.spryker git git@github.com:spryker/spryker.git
-            - composer config repositories.spryker-private composer https://code.spryker.com/repo/private
+            - composer config repositories.spryker composer https://code.spryker.com/repo/private
             - composer require --dev spryker/console
             - APPLICATION_STORE=DE APPLICATION_ENV=development vendor/bin/console transfer:generate
     environment:

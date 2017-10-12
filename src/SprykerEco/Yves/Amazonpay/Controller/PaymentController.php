@@ -17,8 +17,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
+ * @method \SprykerEco\Client\Amazonpay\AmazonpayClientInterface getClient()
  * @method \SprykerEco\Yves\Amazonpay\AmazonpayFactory getFactory()
- * @method \SprykerEco\Client\Amazonpay\AmazonpayClient getClient()
  */
 class PaymentController extends AbstractController
 {

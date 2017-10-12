@@ -19,7 +19,7 @@ class TransactionFactory implements TransactionFactoryInterface
 {
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactory
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface
      */
     protected $adapterFactory;
 
@@ -115,20 +115,6 @@ class TransactionFactory implements TransactionFactoryInterface
     {
         return new GetOrderReferenceDetailsTransaction(
             $this->adapterFactory->createGetOrderReferenceDetailsAmazonpayAdapter(),
-            $this->config,
-            $this->transactionLogger,
-            $this->amazonpayQueryContainer,
-            $this->toEntityConverter
-        );
-    }
-
-    /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
-     */
-    public function createCancelPreOrderTransaction()
-    {
-        return new CancelPreOrderTransaction(
-            $this->adapterFactory->createCancelPreOrderAdapter(),
             $this->config,
             $this->transactionLogger,
             $this->amazonpayQueryContainer,
@@ -350,7 +336,7 @@ class TransactionFactory implements TransactionFactoryInterface
     {
         return new HandleDeclinedOrderTransaction(
             $this->createGetOrderReferenceDetailsTransaction(),
-            $this->createCancelPreOrderTransaction()
+            $this->createCancelOrderTransaction()
         );
     }
 

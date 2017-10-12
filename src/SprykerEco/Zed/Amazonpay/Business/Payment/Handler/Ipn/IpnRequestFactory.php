@@ -216,11 +216,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
                 );
             }
 
-            return new IpnEmptyHandler(
-                $this->omsFacade,
-                $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger
-            );
+            return new IpnEmptyHandler();
         }
 
         if ($ipnRequest->getOrderReferenceStatus()->getIsSuspended()) {
