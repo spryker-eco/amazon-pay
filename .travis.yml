@@ -48,6 +48,7 @@ install:
   - cd $SHOP_DIR/
   - composer self-update && composer --version
   - composer install --no-interaction
+  - config/Shared/ci/travis/install_elasticsearch.sh
 
 before_script:
   - mkdir -p data/DE/logs -m 0777
