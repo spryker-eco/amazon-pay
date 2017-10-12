@@ -81,11 +81,6 @@ interface AdapterFactoryInterface
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
-    public function createCancelPreOrderAdapter();
-
-    /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
-     */
     public function createCaptureOrderAdapter();
 
 }

@@ -20,7 +20,7 @@ class ObtainProfileInformationAdapter implements CallAdapterInterface
     protected $client;
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface
      */
     protected $converter;
 

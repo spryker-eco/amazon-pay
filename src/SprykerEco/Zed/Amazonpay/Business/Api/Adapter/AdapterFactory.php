@@ -159,18 +159,6 @@ class AdapterFactory implements AdapterFactoryInterface
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
-    public function createCancelPreOrderAdapter()
-    {
-        return new CancelPreOrderAdapter(
-            $this->createSdkAdapterFactory()->createAmazonpayClient($this->config),
-            $this->converterFactory->createCancelOrderConverter(),
-            $this->moneyFacade
-        );
-    }
-
-    /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
-     */
     public function createRefundOrderAdapter()
     {
         return new RefundOrderAdapter(
