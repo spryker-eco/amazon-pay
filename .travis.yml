@@ -57,7 +57,7 @@ before_script:
   - cp config/Shared/ci/travis/config_ci.php config/Shared/config_default-devtest_DE.php
   - cp config/Shared/ci/travis/params_test_env.sh deploy/setup/params_test_env.sh
   - cd ..
-  - chmod a+x ./$MODULE_DIR/travis.sh
+  - chmod a+x ./$MODULE_DIR/build/travis.sh
 
 script:
   - ./$MODULE_DIR/build/travis.sh
