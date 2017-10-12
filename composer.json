@@ -9,6 +9,7 @@
   "require": {
     "amzn/amazon-pay-sdk-php": "^2.1",
     "ralouphie/getallheaders": "^2.0",
+    "spryker/application": "^3.6.0",
     "spryker/calculation": "^4.0.0",
     "spryker/checkout": "^3.0.0",
     "spryker/money": "^2.0.1",
@@ -33,5 +34,11 @@
   },
   "config": {
     "sort-packages": true
+  },
+  "repositories": {
+    "spryker": {
+      "type": "composer",
+      "url": "https://code.spryker.com/repo/private"
+    }
   }
 }

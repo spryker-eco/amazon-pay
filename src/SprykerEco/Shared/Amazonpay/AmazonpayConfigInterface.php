@@ -46,7 +46,7 @@ interface AmazonpayConfigInterface
     public function getCurrencyIsoCode();
 
     /**
-     * @return string
+     * @return bool
      */
     public function isSandbox();
 

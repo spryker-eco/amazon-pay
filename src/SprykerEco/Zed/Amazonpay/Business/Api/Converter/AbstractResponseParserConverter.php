@@ -315,7 +315,7 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
      */
     protected function getStringValue($value)
     {
-        return empty($value) ? null : $value;
+        return empty($value) ? null : (string)$value;
     }
 
 }

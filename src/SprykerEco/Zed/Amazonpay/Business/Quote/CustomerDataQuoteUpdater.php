@@ -21,6 +21,7 @@ class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
     public function update(QuoteTransfer $quoteTransfer)
     {
         $amazonCallTransfer = $this->convertQuoteTransferToAmazonPayTransfer($quoteTransfer);
+        /** @var \Generated\Shared\Transfer\CustomerTransfer $customer */
         $customer = $this->executionAdapter->call($amazonCallTransfer);
 
         $this->updateCustomer($quoteTransfer, $customer);
