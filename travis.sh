@@ -19,7 +19,6 @@ function runTests {
         php "$modulePath/fix-config.php" config/Shared/config_default-devtest.php
     fi
     echo "Setup test environment..."
-    vendor/bin/console propel:install
     ./setup_test -f
     echo "Running tests..."
     vendor/bin/codecept run -c "tests/PyzTest/Zed/$moduleNiceName" Business
