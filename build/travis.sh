@@ -4,6 +4,7 @@ RED='\033[1;31m'
 GREEN='\033[1;32m'
 moduleNiceName='Amazonpay'
 modulePath="$TRAVIS_BUILD_DIR/$MODULE_DIR"
+scriptPath="$TRAVIS_BUILD_DIR/$MODULE_DIR/build"
 globalResult=1
 buildMessage=""
 
@@ -16,7 +17,7 @@ function runTests {
     echo "Copy configuration..."
     if [ -f "vendor/spryker-eco/$MODULE_NAME/config/Shared/config.dist.php" ]; then
         tail -n +2 "vendor/spryker-eco/$MODULE_NAME/config/Shared/config.dist.php" >> config/Shared/config_default-devtest.php
-        php "$modulePath/fix-config.php" config/Shared/config_default-devtest.php
+        php "$scriptPath/fix-config.php" config/Shared/config_default-devtest.php
     fi
     echo "Setup test environment..."
     ./setup_test -f
@@ -30,7 +31,6 @@ function runTests {
         result=1
     fi
 
-    cd "$TRAVIS_BUILD_DIR/$SHOP_DIR"
     echo "Tests finished"
     return $result
 }
@@ -58,7 +58,7 @@ function checkWithLatestDemoShop {
 
 function checkModuleWithLatestVersionOfDemoshop {
     echo "Merging composer.json dependencies..."
-    updates=`php "$modulePath/merge-composer.php" "$modulePath/composer.json" composer.json "$modulePath/composer.json"`
+    updates=`php "$scriptPath/merge-composer.php" "$modulePath/composer.json" composer.json "$modulePath/composer.json"`
 
     if [ "$updates" = "" ]; then
         buildMessage="${buildMessage}\n${GREEN}$MODULE_NAME is already using the latest versions of modules used in Demo Shop"
