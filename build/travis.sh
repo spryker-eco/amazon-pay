@@ -63,7 +63,6 @@ function checkWithLatestDemoShop {
 
         if runTests; then
             globalResult=0
-            checkArchRules
 
             checkModuleWithLatestVersionOfDemoshop
         fi
@@ -92,7 +91,6 @@ function checkModuleWithLatestVersionOfDemoshop {
         buildMessage="$buildMessage\n${GREEN}$MODULE_NAME is COMPATIBLE with latest versions of modules used in Demo Shop"
 
         runTests
-        checkArchRules
     else
         buildMessage="$buildMessage\n${RED}$MODULE_NAME is NOT COMPATIBLE with latest versions of modules used in Demo Shop"
     fi
@@ -100,5 +98,8 @@ function checkModuleWithLatestVersionOfDemoshop {
 
 cd $SHOP_DIR
 checkWithLatestDemoShop
+if [ -d "vendor/spryker-eco/$MODULE_NAME/src" ]; then
+    checkArchRules
+fi
 echo -e "$buildMessage"
 exit $globalResult
