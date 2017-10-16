@@ -19,20 +19,20 @@ class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
     protected $orderFailedAuthNotificationSender;
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageFactoryInterface
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageBuilderInterface
      */
-    protected $orderMessageFactory;
+    protected $orderMessageBuilder;
 
     /**
      * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderNotificationSenderInterface $orderFailedAuthNotificationSender
-     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageFactoryInterface $orderMessageFactory
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageBuilderInterface $orderMessageBuilder
      */
     public function __construct(
         OrderNotificationSenderInterface $orderFailedAuthNotificationSender,
-        OrderMessageFactoryInterface $orderMessageFactory
+        OrderMessageBuilderInterface $orderMessageBuilder
     ) {
         $this->orderFailedAuthNotificationSender = $orderFailedAuthNotificationSender;
-        $this->orderMessageFactory = $orderMessageFactory;
+        $this->orderMessageBuilder = $orderMessageBuilder;
     }
 
     /**
@@ -42,7 +42,7 @@ class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
      */
     public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $message = $this->orderMessageFactory->createFailedAuthMessage($amazonpayCallTransfer);
+        $message = $this->orderMessageBuilder->createFailedAuthMessage($amazonpayCallTransfer);
 
         if ($amazonpayCallTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()

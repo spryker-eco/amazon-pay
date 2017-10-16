@@ -92,39 +92,71 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     protected function createIpnPaymentAuthorizeHandler(AbstractTransfer $ipnRequest)
     {
         if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsSuspended()) {
-            return new IpnPaymentAuthorizeSuspendedHandler(
-                $this->omsFacade,
-                $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger
-            );
+            return $this->createIpnPaymentAuthorizeSuspendedHandler();
         }
 
         if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsDeclined()) {
-            return new IpnPaymentAuthorizeDeclineHandler(
-                $this->omsFacade,
-                $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger
-            );
+            return $this->createIpnPaymentAuthorizeDeclineHandler();
         }
 
         if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsOpen()) {
-            return new IpnPaymentAuthorizeOpenHandler(
-                $this->omsFacade,
-                $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger
-            );
+            return $this->createIpnPaymentAuthorizeOpenHandler();
         }
 
         if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsClosed()) {
-            return new IpnPaymentAuthorizeClosedHandler(
-                $this->omsFacade,
-                $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger
-            );
+            return $this->createIpnPaymentAuthorizeClosedHandler();
         }
 
         throw new IpnHandlerNotFoundException('No IPN handler for auth payment and status ' .
             $ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getState());
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnPaymentAuthorizeSuspendedHandler
+     */
+    protected function createIpnPaymentAuthorizeSuspendedHandler()
+    {
+        return new IpnPaymentAuthorizeSuspendedHandler(
+            $this->omsFacade,
+            $this->amazonpayQueryContainer,
+            $this->ipnRequestLogger
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnPaymentAuthorizeDeclineHandler
+     */
+    protected function createIpnPaymentAuthorizeDeclineHandler()
+    {
+        return new IpnPaymentAuthorizeDeclineHandler(
+            $this->omsFacade,
+            $this->amazonpayQueryContainer,
+            $this->ipnRequestLogger
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnPaymentAuthorizeOpenHandler
+     */
+    protected function createIpnPaymentAuthorizeOpenHandler()
+    {
+        return new IpnPaymentAuthorizeOpenHandler(
+            $this->omsFacade,
+            $this->amazonpayQueryContainer,
+            $this->ipnRequestLogger
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnPaymentAuthorizeClosedHandler
+     */
+    protected function createIpnPaymentAuthorizeClosedHandler()
+    {
+        return new IpnPaymentAuthorizeClosedHandler(
+            $this->omsFacade,
+            $this->amazonpayQueryContainer,
+            $this->ipnRequestLogger
+        );
     }
 
     /**
@@ -137,27 +169,60 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     protected function createIpnPaymentCaptureHandler(AbstractTransfer $ipnRequest)
     {
         if ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsDeclined()) {
-            return new IpnPaymentCaptureDeclineHandler(
-                $this->omsFacade,
-                $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger
-            );
+            return $this->createIpnPaymentCaptureDeclineHandler();
         }
 
         if ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsCompleted()) {
-            return new IpnPaymentCaptureCompletedHandler(
-                $this->omsFacade,
-                $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger
-            );
+            return $this->createIpnPaymentCaptureCompletedHandler();
         }
 
         if ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsClosed()) {
-            return new IpnEmptyHandler();
+            return $this->createIpnEmptyHandler();
         }
 
-        throw new IpnHandlerNotFoundException('No IPN handler for capture and status ' .
-            $ipnRequest->getCaptureDetails()->getCaptureStatus()->getState());
+        throw $this->createIpnHandlerNotFoundException($ipnRequest->getCaptureDetails()->getCaptureStatus()->getState());
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnPaymentCaptureDeclineHandler
+     */
+    protected function createIpnPaymentCaptureDeclineHandler()
+    {
+        return new IpnPaymentCaptureDeclineHandler(
+            $this->omsFacade,
+            $this->amazonpayQueryContainer,
+            $this->ipnRequestLogger
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnPaymentCaptureCompletedHandler
+     */
+    protected function createIpnPaymentCaptureCompletedHandler()
+    {
+        return new IpnPaymentCaptureCompletedHandler(
+            $this->omsFacade,
+            $this->amazonpayQueryContainer,
+            $this->ipnRequestLogger
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnEmptyHandler
+     */
+    protected function createIpnEmptyHandler()
+    {
+        return new IpnEmptyHandler();
+    }
+
+    /**
+     * @param string $state
+     *
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
+     */
+    protected function createIpnHandlerNotFoundException($state)
+    {
+        return new IpnHandlerNotFoundException('No IPN handler for capture and status ' . $state);
     }
 
     /**
@@ -170,24 +235,39 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     protected function createIpnPaymentRefundHandler(AbstractTransfer $ipnRequest)
     {
         if ($ipnRequest->getRefundDetails()->getRefundStatus()->getIsDeclined()) {
-            return new IpnPaymentRefundDeclineHandler(
-                $this->omsFacade,
-                $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger
-            );
+            return $this->createIpnPaymentRefundDeclineHandler();
         }
 
         if ($ipnRequest->getRefundDetails()->getRefundStatus()->getIsCompleted()) {
-            return new IpnPaymentRefundCompletedHandler(
-                $this->omsFacade,
-                $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger,
-                $this->refundOrderModel
-            );
+            return $this->createIpnPaymentRefundCompletedHandler();
         }
 
-        throw new IpnHandlerNotFoundException('No IPN handler for payment refund and status ' .
-            $ipnRequest->getRefundDetails()->getRefundStatus()->getState());
+        throw $this->createIpnHandlerNotFoundException($ipnRequest->getRefundDetails()->getRefundStatus()->getState());
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnPaymentRefundDeclineHandler
+     */
+    protected function createIpnPaymentRefundDeclineHandler()
+    {
+        return new IpnPaymentRefundDeclineHandler(
+            $this->omsFacade,
+            $this->amazonpayQueryContainer,
+            $this->ipnRequestLogger
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnPaymentRefundCompletedHandler
+     */
+    protected function createIpnPaymentRefundCompletedHandler()
+    {
+        return new IpnPaymentRefundCompletedHandler(
+            $this->omsFacade,
+            $this->amazonpayQueryContainer,
+            $this->ipnRequestLogger,
+            $this->refundOrderModel
+        );
     }
 
     /**
@@ -200,43 +280,74 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     protected function createIpnOrderReferenceHandler(AbstractTransfer $ipnRequest)
     {
         if ($ipnRequest->getOrderReferenceStatus()->getIsOpen()) {
-            return new IpnOrderReferenceOpenHandler(
-                $this->omsFacade,
-                $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger
-            );
+            return $this->createIpnOrderReferenceOpenHandler();
         }
 
         if ($ipnRequest->getOrderReferenceStatus()->getIsClosed()) {
             if ($ipnRequest->getOrderReferenceStatus()->getIsClosedByAmazon()) {
-                return new IpnOrderReferenceClosedHandler(
-                    $this->omsFacade,
-                    $this->amazonpayQueryContainer,
-                    $this->ipnRequestLogger
-                );
+                return $this->createIpnOrderReferenceClosedHandler();
             }
 
-            return new IpnEmptyHandler();
+            return $this->createIpnEmptyHandler();
         }
 
         if ($ipnRequest->getOrderReferenceStatus()->getIsSuspended()) {
-            return new IpnOrderReferenceSuspendedHandler(
-                $this->omsFacade,
-                $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger
-            );
+            return $this->createIpnOrderReferenceSuspendedHandler();
         }
 
         if ($ipnRequest->getOrderReferenceStatus()->getIsCancelled()) {
-            return new IpnOrderReferenceCancelledHandler(
-                $this->omsFacade,
-                $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger
-            );
+            return $this->createIpnOrderReferenceCancelledHandler();
         }
 
-        throw new IpnHandlerNotFoundException('No IPN handler for order reference and status ' .
-            $ipnRequest->getOrderReferenceStatus()->getState());
+        throw $this->createIpnHandlerNotFoundException($ipnRequest->getOrderReferenceStatus()->getState());
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnOrderReferenceOpenHandler
+     */
+    protected function createIpnOrderReferenceOpenHandler()
+    {
+        return new IpnOrderReferenceOpenHandler(
+            $this->omsFacade,
+            $this->amazonpayQueryContainer,
+            $this->ipnRequestLogger
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnOrderReferenceClosedHandler
+     */
+    protected function createIpnOrderReferenceClosedHandler()
+    {
+        return new IpnOrderReferenceClosedHandler(
+            $this->omsFacade,
+            $this->amazonpayQueryContainer,
+            $this->ipnRequestLogger
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnOrderReferenceSuspendedHandler
+     */
+    protected function createIpnOrderReferenceSuspendedHandler()
+    {
+        return new IpnOrderReferenceSuspendedHandler(
+            $this->omsFacade,
+            $this->amazonpayQueryContainer,
+            $this->ipnRequestLogger
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnOrderReferenceCancelledHandler
+     */
+    protected function createIpnOrderReferenceCancelledHandler()
+    {
+        return new IpnOrderReferenceCancelledHandler(
+            $this->omsFacade,
+            $this->amazonpayQueryContainer,
+            $this->ipnRequestLogger
+        );
     }
 
 }
