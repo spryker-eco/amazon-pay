@@ -41,8 +41,8 @@ function runTests {
 
 function checkArchRules {
     echo "Running Architecture sniffer..."
-    $errors=`vendor/bin/phpmd "vendor/spryker-eco/$MODULE_NAME/src" text vendor/spryker/architecture-sniffer/src/ruleset.xml --minimumpriority=2`
-    $errorsCount=`echo $errors | wc -l`
+    errors=`vendor/bin/phpmd "vendor/spryker-eco/$MODULE_NAME/src" text vendor/spryker/architecture-sniffer/src/ruleset.xml --minimumpriority=2`
+    errorsCount=`echo "$errors" | wc -l`
 
     if [[ "$errorsCount" = "0" ]]; then
         buildMessage="$buildMessage\n${GREEN}Architecture sniffer reports no errors"
