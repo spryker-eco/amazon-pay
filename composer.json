@@ -2,8 +2,8 @@
   "name": "spryker-eco/amazon-pay",
   "autoload": {
     "psr-0": {
-      "Spryker": "src/",
-      "Function": "tests/"
+      "SprykerEco": "src/",
+      "SprykerEcoTest": "tests/"
     }
   },
   "require": {
