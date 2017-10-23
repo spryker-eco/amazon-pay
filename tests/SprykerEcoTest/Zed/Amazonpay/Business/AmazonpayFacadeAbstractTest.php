@@ -9,6 +9,10 @@ namespace SprykerEcoTest\Zed\Amazonpay\Business;
 
 use ArrayObject;
 use Codeception\TestCase\Test;
+use Orm\Zed\Country\Persistence\SpyCountry;
+use Orm\Zed\Country\Persistence\SpyCountryQuery;
+use Orm\Zed\Shipment\Persistence\SpyShipmentMethod;
+use Orm\Zed\Shipment\Persistence\SpyShipmentMethodQuery;
 use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use SprykerEcoTest\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
@@ -88,6 +92,33 @@ class AmazonpayFacadeAbstractTest extends Test
     }
 
     /**
+     * @param int $count
+     *
+     * @return array
+     */
+    protected function createShipmentMethods($count)
+    {
+        $shipmentMethods = SpyShipmentMethodQuery::create()
+            ->limit($count)
+            ->find();
+
+        $ids = [];
+        foreach ($shipmentMethods as $shipmentMethod){
+            $ids[] = $shipmentMethod->getIdShipmentMethod();
+        }
+
+        if (count($ids) < $count) {
+            for ($i=count($ids); $i<$count; $i++) {
+                $shipmentMethod = new SpyShipmentMethod();
+                $shipmentMethod->save();
+                $ids[] = $shipmentMethod->getIdShipmentMethod();
+            }
+        }
+
+        return $ids;
+    }
+
+    /**
      * @param string $orderReference
      * @param int $index
      *
@@ -115,14 +146,33 @@ class AmazonpayFacadeAbstractTest extends Test
     }
 
     /**
+     * @return int
+     */
+    protected function getCountryId()
+    {
+        $countries = SpyCountryQuery::create()->limit(1)->find();
+        if (count($countries)) {
+            return $countries[0]->getIdCountry();
+        }
+
+        $country = new SpyCountry();
+        $country->setIso2Code('XX');
+        $country->save();
+
+        return $country->getIdCountry();
+    }
+
+    /**
      * @param string $orderReference
      *
      * @return \Orm\Zed\Sales\Persistence\SpySalesOrder $orderReference
      */
     protected function createSalesOrder($orderReference)
     {
+        $countryId = $this->getCountryId();
+
         $address = new SpySalesOrderAddress();
-        $address->setFkCountry(1);
+        $address->setFkCountry($countryId);
         $address->setCity('Berlin');
         $address->setFirstName('John');
         $address->setLastName('Doe');

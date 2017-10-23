@@ -54,9 +54,11 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
      */
     public function addSelectedShipmentMethodToQuoteProvider()
     {
+        $shipmentMethodIds = $this->createShipmentMethods(2);
+
         return [
-            'Standard delivery' => [$this->createQuote(1), 'Standard', 490],
-            'Express delivery' => [$this->createQuote(2), 'Express', 590],
+            'Standard delivery' => [$this->createQuote($shipmentMethodIds[0]), 'Standard', 490],
+            'Express delivery' => [$this->createQuote($shipmentMethodIds[1]), 'Express', 590],
         ];
     }
 
