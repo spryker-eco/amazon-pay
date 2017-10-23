@@ -11,7 +11,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AuthorizeAdapter;
 
 class AuthorizeResponse extends AbstractResponse
 {
-
     /**
      * @var int
      */
@@ -132,5 +131,4 @@ class AuthorizeResponse extends AbstractResponse
             return sprintf($authorizationStatus, 'Pending', '');
         }
     }
-
 }

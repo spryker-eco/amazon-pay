@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
 interface AdapterFactoryInterface
 {
-
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
@@ -82,5 +81,4 @@ interface AdapterFactoryInterface
      * @return \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
     public function createCaptureOrderAdapter();
-
 }

@@ -10,11 +10,10 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -55,22 +54,21 @@ class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
     protected function getPaymentStatus(AmazonpayStatusTransfer $status)
     {
         if ($status->getIsDeclined()) {
-            return AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED;
+            return AmazonpayConfig::OMS_STATUS_CAPTURE_DECLINED;
         }
 
         if ($status->getIsCompleted()) {
-            return AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED;
+            return AmazonpayConfig::OMS_STATUS_CAPTURE_COMPLETED;
         }
 
         if ($status->getIsClosed()) {
-            return AmazonpayConstants::OMS_STATUS_CAPTURE_CLOSED;
+            return AmazonpayConfig::OMS_STATUS_CAPTURE_CLOSED;
         }
 
         if ($status->getIsPending()) {
-            return AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING;
+            return AmazonpayConfig::OMS_STATUS_CAPTURE_PENDING;
         }
 
-        return AmazonpayConstants::OMS_STATUS_CANCELLED;
+        return AmazonpayConfig::OMS_STATUS_CANCELLED;
     }
-
 }

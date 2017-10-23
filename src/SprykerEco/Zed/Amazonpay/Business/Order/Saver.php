@@ -13,11 +13,10 @@ use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItem;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class Saver implements SaverInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
@@ -106,22 +105,21 @@ class Saver implements SaverInterface
     protected function getOrderStatus(AmazonpayPaymentTransfer $paymentTransfer)
     {
         if ($paymentTransfer->getAuthorizationDetails()->getIdList()) {
-            return AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED;
+            return AmazonpayConfig::OMS_STATUS_CAPTURE_COMPLETED;
         }
 
         if ($paymentTransfer->getAuthorizationDetails()->getAuthorizationStatus()->getIsDeclined()) {
-            return AmazonpayConstants::OMS_STATUS_AUTH_DECLINED;
+            return AmazonpayConfig::OMS_STATUS_AUTH_DECLINED;
         }
 
         if ($paymentTransfer->getAuthorizationDetails()->getAuthorizationStatus()->getIsPending()) {
-            return AmazonpayConstants::OMS_STATUS_AUTH_PENDING;
+            return AmazonpayConfig::OMS_STATUS_AUTH_PENDING;
         }
 
         if ($paymentTransfer->getAuthorizationDetails()->getAuthorizationStatus()->getIsOpen()) {
-            return AmazonpayConstants::OMS_STATUS_AUTH_OPEN;
+            return AmazonpayConfig::OMS_STATUS_AUTH_OPEN;
         }
 
-        return AmazonpayConstants::OMS_STATUS_CANCELLED;
+        return AmazonpayConfig::OMS_STATUS_CANCELLED;
     }
-
 }

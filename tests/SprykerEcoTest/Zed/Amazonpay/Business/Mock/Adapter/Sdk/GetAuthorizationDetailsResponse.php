@@ -13,7 +13,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractConverter;
 
 class GetAuthorizationDetailsResponse extends AbstractResponse
 {
-
     /**
      * @param array $requestParameters
      */
@@ -92,5 +91,4 @@ class GetAuthorizationDetailsResponse extends AbstractResponse
 
         throw new Exception('Not mocked request.');
     }
-
 }

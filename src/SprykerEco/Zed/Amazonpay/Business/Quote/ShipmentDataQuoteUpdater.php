@@ -16,7 +16,6 @@ use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface;
 
 class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface
      */
@@ -84,5 +83,4 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
 
         return $shipmentExpenseTransfer;
     }
-
 }

@@ -20,7 +20,6 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
  */
 class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
 {
-
     /**
      * {@inheritdoc}
      *
@@ -305,5 +304,4 @@ class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
             ->createConcreteIpnRequestHandler($ipnRequestTransfer)
             ->handle($ipnRequestTransfer);
     }
-
 }

@@ -13,7 +13,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractConverter;
 
 class GetRefundDetailsResponse extends AbstractResponse
 {
-
     /**
      * @param array $requestParameters
      */
@@ -74,5 +73,4 @@ class GetRefundDetailsResponse extends AbstractResponse
 
         throw new Exception('Not mocked request.');
     }
-
 }

@@ -9,14 +9,12 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notifica
 
 class OrderFailedAuthNotificationSender implements OrderNotificationSenderInterface
 {
-
     /**
-     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage $notificationMessage
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\NotificationMessageInterface $notificationMessage
      *
      * @return void
      */
-    public function notify(AbstractNotificationMessage $notificationMessage)
+    public function notify(NotificationMessageInterface $notificationMessage)
     {
     }
-
 }

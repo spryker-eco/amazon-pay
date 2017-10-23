@@ -11,7 +11,6 @@ use Propel\Runtime\Collection\ObjectCollection;
 
 interface AmazonpayToOmsInterface
 {
-
     /**
      * @param string $eventId
      * @param \Propel\Runtime\Collection\ObjectCollection $orderItems
@@ -29,5 +28,4 @@ interface AmazonpayToOmsInterface
      * @return bool
      */
     public function isOrderFlaggedAll($idOrder, $flag);
-
 }

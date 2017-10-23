@@ -8,11 +8,10 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class AuthorizeOrderIfRequiredTransaction extends ReauthorizeOrderTransaction
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -43,7 +42,7 @@ class AuthorizeOrderIfRequiredTransaction extends ReauthorizeOrderTransaction
             $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
         }
 
-        $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING);
+        $this->paymentEntity->setStatus(AmazonpayConfig::OMS_STATUS_CAPTURE_PENDING);
         $this->paymentEntity->save();
 
         if ($isPartialProcessing) {
@@ -52,5 +51,4 @@ class AuthorizeOrderIfRequiredTransaction extends ReauthorizeOrderTransaction
 
         return $amazonpayCallTransfer;
     }
-
 }

@@ -12,7 +12,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface;
 
 class IpnRequestAdapter implements IpnRequestAdapterInterface
 {
-
     /**
      * @var \PayWithAmazon\IpnHandlerInterface
      */
@@ -44,5 +43,4 @@ class IpnRequestAdapter implements IpnRequestAdapterInterface
             $this->ipnHandler->toArray()
         );
     }
-
 }

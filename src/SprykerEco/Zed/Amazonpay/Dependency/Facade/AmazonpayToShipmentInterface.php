@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Dependency\Facade;
 
 interface AmazonpayToShipmentInterface
 {
-
     /**
      * @api
      *
@@ -18,5 +17,4 @@ interface AmazonpayToShipmentInterface
      * @return \Generated\Shared\Transfer\ShipmentMethodTransfer
      */
     public function getShipmentMethodTransferById($idMethod);
-
 }

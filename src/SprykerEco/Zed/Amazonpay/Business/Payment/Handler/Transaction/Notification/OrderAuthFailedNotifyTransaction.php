@@ -12,7 +12,6 @@ use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTrans
 
 class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderNotificationSenderInterface
      */
@@ -42,7 +41,7 @@ class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
      */
     public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $message = $this->orderMessageFactory->createFailedAuthMessage($amazonpayCallTransfer);
+        $message = $this->orderMessageFactory->getFailedAuthMessage($amazonpayCallTransfer);
 
         if ($amazonpayCallTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()
@@ -54,5 +53,4 @@ class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
 
         return $amazonpayCallTransfer;
     }
-
 }

@@ -12,7 +12,6 @@ use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 
 interface AmazonpayTransferToEntityConverterInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayPaymentTransfer $amazonpayPaymentTransfer
      *
@@ -43,5 +42,4 @@ interface AmazonpayTransferToEntityConverterInterface
      * @return void
      */
     public function updateAfterCapture(SpyPaymentAmazonpay $entity, AmazonpayPaymentTransfer $amazonpayPaymentTransfer);
-
 }

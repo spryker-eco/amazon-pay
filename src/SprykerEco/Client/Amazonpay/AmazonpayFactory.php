@@ -12,7 +12,6 @@ use SprykerEco\Client\Amazonpay\Zed\AmazonpayStub;
 
 class AmazonpayFactory extends AbstractFactory
 {
-
     /**
      * @return \SprykerEco\Client\Amazonpay\Zed\AmazonpayStubInterface
      */
@@ -20,5 +19,4 @@ class AmazonpayFactory extends AbstractFactory
     {
         return new AmazonpayStub($this->getProvidedDependency(AmazonpayDependencyProvider::CLIENT_ZED_REQUEST));
     }
-
 }

@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class GetOrderAuthorizationDetailsAdapter extends AbstractAdapter
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -29,5 +28,4 @@ class GetOrderAuthorizationDetailsAdapter extends AbstractAdapter
 
         return $this->converter->convert($result);
     }
-
 }

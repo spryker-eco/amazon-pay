@@ -9,11 +9,10 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class AuthorizeTransaction extends AbstractAmazonpayTransaction
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -70,7 +69,7 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
      */
     protected function buildErrorCode(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        return AmazonpayConstants::PREFIX_AMAZONPAY_PAYMENT_ERROR .
+        return AmazonpayConfig::PREFIX_AMAZONPAY_PAYMENT_ERROR .
         $amazonpayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->getAuthorizationStatus()
@@ -85,18 +84,17 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
     protected function getStatus(AmazonpayStatusTransfer $statusDetails)
     {
         if ($statusDetails->getIsOpen()) {
-            return AmazonpayConstants::OMS_STATUS_AUTH_OPEN;
+            return AmazonpayConfig::OMS_STATUS_AUTH_OPEN;
         }
 
         if ($statusDetails->getIsPending()) {
-            return AmazonpayConstants::OMS_STATUS_AUTH_PENDING;
+            return AmazonpayConfig::OMS_STATUS_AUTH_PENDING;
         }
 
         if ($statusDetails->getIsSuspended()) {
-            return AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED;
+            return AmazonpayConfig::OMS_STATUS_AUTH_SUSPENDED;
         }
 
-        return AmazonpayConstants::OMS_STATUS_AUTH_DECLINED;
+        return AmazonpayConfig::OMS_STATUS_AUTH_DECLINED;
     }
-
 }

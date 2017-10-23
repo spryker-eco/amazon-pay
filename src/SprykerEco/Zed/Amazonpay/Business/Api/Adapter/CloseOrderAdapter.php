@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class CloseOrderAdapter extends AbstractAdapter
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -25,5 +24,4 @@ class CloseOrderAdapter extends AbstractAdapter
 
         return $this->converter->convert($result);
     }
-
 }

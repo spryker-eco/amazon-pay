@@ -9,10 +9,8 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notifica
 
 interface OrderNotificationFactoryInterface
 {
-
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createOrderAuthFailedTransaction();
-
 }

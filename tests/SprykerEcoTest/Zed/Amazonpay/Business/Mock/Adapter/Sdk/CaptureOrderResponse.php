@@ -11,7 +11,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CaptureOrderAdapter;
 
 class CaptureOrderResponse extends AbstractResponse
 {
-
     /**
      * @param array $requestParameters
      */
@@ -63,8 +62,7 @@ class CaptureOrderResponse extends AbstractResponse
      */
     protected function getStatus($authorizationId)
     {
-        switch ($authorizationId)
-        {
+        switch ($authorizationId) {
             case 'S02-5989383-0864061-A000001':
                 return 'Completed';
             case 'S02-5989383-0864061-A000002':
@@ -73,5 +71,4 @@ class CaptureOrderResponse extends AbstractResponse
                 return 'Declined';
         }
     }
-
 }

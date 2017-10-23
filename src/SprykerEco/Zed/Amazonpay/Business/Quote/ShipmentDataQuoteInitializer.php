@@ -12,7 +12,6 @@ use Generated\Shared\Transfer\ShipmentTransfer;
 
 class ShipmentDataQuoteInitializer implements QuoteUpdaterInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -25,5 +24,4 @@ class ShipmentDataQuoteInitializer implements QuoteUpdaterInterface
 
         return $quoteTransfer;
     }
-
 }

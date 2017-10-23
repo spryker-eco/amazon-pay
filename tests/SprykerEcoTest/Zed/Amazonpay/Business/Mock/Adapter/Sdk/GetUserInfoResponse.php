@@ -9,7 +9,6 @@ namespace SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk;
 
 class GetUserInfoResponse
 {
-
     /**
      * @param string $accessToken
      */
@@ -29,5 +28,4 @@ class GetUserInfoResponse
             'email' => 'john@doe.xxx',
         ];
     }
-
 }

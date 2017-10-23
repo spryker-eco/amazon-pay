@@ -1,14 +1,18 @@
 <?php
 
+/**
+ * Apache OSL-2
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerEcoTest\Zed\Amazonpay\Business\Mock;
 
-use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\AdapterFactoryMock;
 use SprykerEco\Zed\Amazonpay\Business\AmazonpayBusinessFactory;
 use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainer;
+use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\AdapterFactoryMock;
 
 class AmazonpayBusinessFactoryMock extends AmazonpayBusinessFactory
 {
-
     /**
      * @var array
      */
@@ -49,5 +53,4 @@ class AmazonpayBusinessFactoryMock extends AmazonpayBusinessFactory
     {
         return new AmazonpayQueryContainer();
     }
-
 }

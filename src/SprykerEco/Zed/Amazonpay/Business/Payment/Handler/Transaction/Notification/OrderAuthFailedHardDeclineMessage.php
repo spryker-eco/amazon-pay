@@ -9,14 +9,12 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notifica
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
-class OrderAuthFailedHardDeclineMessage extends AbstractNotificationMessage
+class OrderAuthFailedHardDeclineMessage implements NotificationMessageInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      */
     public function __construct(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
     }
-
 }

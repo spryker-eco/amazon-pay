@@ -17,7 +17,6 @@ use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
 abstract class AbstractAmazonpayTransaction extends AbstractTransaction implements AmazonpayTransactionInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface
      */
@@ -180,5 +179,4 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
     {
         return true;
     }
-
 }

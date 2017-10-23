@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class SetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -38,5 +37,4 @@ class SetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
 
         return parent::execute($amazonpayCallTransfer);
     }
-
 }

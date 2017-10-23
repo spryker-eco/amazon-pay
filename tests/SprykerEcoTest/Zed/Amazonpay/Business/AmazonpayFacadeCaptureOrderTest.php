@@ -7,12 +7,11 @@
 
 namespace SprykerEcoTest\Zed\Amazonpay\Business;
 
-use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 
 class AmazonpayFacadeCaptureOrderTest extends AmazonpayFacadeAbstractTest
 {
-
     /**
      * @dataProvider captureOrderDataProvider
      *
@@ -54,5 +53,4 @@ class AmazonpayFacadeCaptureOrderTest extends AmazonpayFacadeAbstractTest
             ],
         ];
     }
-
 }

@@ -9,8 +9,8 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverterInterface;
 use SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface;
@@ -19,7 +19,6 @@ use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
 class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface
      */
@@ -72,7 +71,7 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
 
         $status = $this->getPaymentStatus($this->apiResponse->getRefundDetails()->getRefundStatus());
 
-        $refundIsRequired = ($status === AmazonpayConstants::OMS_STATUS_REFUND_COMPLETED
+        $refundIsRequired = ($status === AmazonpayConfig::OMS_STATUS_REFUND_COMPLETED
             && $this->paymentEntity->getStatus() !== $status);
 
         $this->paymentEntity->setStatus($status);
@@ -97,18 +96,17 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
     protected function getPaymentStatus(AmazonpayStatusTransfer $status)
     {
         if ($status->getIsPending()) {
-            return AmazonpayConstants::OMS_STATUS_REFUND_PENDING;
+            return AmazonpayConfig::OMS_STATUS_REFUND_PENDING;
         }
 
         if ($status->getIsDeclined()) {
-            return AmazonpayConstants::OMS_STATUS_REFUND_DECLINED;
+            return AmazonpayConfig::OMS_STATUS_REFUND_DECLINED;
         }
 
         if ($status->getIsCompleted()) {
-            return AmazonpayConstants::OMS_STATUS_REFUND_COMPLETED;
+            return AmazonpayConfig::OMS_STATUS_REFUND_COMPLETED;
         }
 
-        return AmazonpayConstants::OMS_STATUS_CANCELLED;
+        return AmazonpayConfig::OMS_STATUS_CANCELLED;
     }
-
 }

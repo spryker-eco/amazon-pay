@@ -7,17 +7,15 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class IpnPaymentRefundDeclineHandler extends IpnAbstractPaymentRefundHandler
 {
-
     /**
      * @return string
      */
     protected function getOmsStatusName()
     {
-        return AmazonpayConstants::OMS_STATUS_REFUND_DECLINED;
+        return AmazonpayConfig::OMS_STATUS_REFUND_DECLINED;
     }
-
 }

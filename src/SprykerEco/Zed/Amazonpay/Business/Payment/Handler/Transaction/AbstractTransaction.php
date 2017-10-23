@@ -13,7 +13,6 @@ use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Logger\Transac
 
 abstract class AbstractTransaction
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
@@ -43,5 +42,4 @@ abstract class AbstractTransaction
         $this->config = $config;
         $this->transactionsLogger = $transactionLogger;
     }
-
 }

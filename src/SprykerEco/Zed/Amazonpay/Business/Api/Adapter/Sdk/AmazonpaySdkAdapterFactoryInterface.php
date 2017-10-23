@@ -11,7 +11,6 @@ use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
 
 interface AmazonpaySdkAdapterFactoryInterface
 {
-
     /**
      * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
      *
@@ -26,5 +25,4 @@ interface AmazonpaySdkAdapterFactoryInterface
      * @return \PayWithAmazon\IpnHandler
      */
     public function createAmazonpayIpnHandler(array $headers, $body);
-
 }

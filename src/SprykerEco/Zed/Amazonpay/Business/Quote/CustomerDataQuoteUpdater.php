@@ -12,7 +12,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -49,5 +48,4 @@ class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
             $quoteTransfer->getCustomer()->setIsGuest(false);
         }
     }
-
 }

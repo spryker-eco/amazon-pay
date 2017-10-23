@@ -19,7 +19,6 @@ use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingBridge;
 
 class AmazonpayDependencyProvider extends AbstractBundleDependencyProvider
 {
-
     const FACADE_MONEY = 'money facade';
     const FACADE_SHIPMENT = 'shipment facade';
     const FACADE_SALES = 'sales facade';
@@ -156,5 +155,4 @@ class AmazonpayDependencyProvider extends AbstractBundleDependencyProvider
 
         return $container;
     }
-
 }

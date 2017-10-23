@@ -7,14 +7,13 @@
 
 namespace SprykerEcoTest\Zed\Amazonpay\Business;
 
-use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
+use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 
 class AmazonpayFacadeAddSelectedAddressToQuoteTest extends AmazonpayFacadeAbstractTest
 {
-
     /**
      * @param string $orderReferenceId
      *
@@ -82,5 +81,4 @@ class AmazonpayFacadeAddSelectedAddressToQuoteTest extends AmazonpayFacadeAbstra
             ],
         ];
     }
-
 }

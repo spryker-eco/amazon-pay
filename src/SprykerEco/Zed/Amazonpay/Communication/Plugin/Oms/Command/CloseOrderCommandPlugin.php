@@ -12,7 +12,6 @@ use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 
 class CloseOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
-
     /**
      * @inheritdoc
      */
@@ -25,5 +24,4 @@ class CloseOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
 
         return [];
     }
-
 }

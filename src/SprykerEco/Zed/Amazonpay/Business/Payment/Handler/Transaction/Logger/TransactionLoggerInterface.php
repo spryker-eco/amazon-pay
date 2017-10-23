@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
 
 interface TransactionLoggerInterface
 {
-
     /**
      * @param string $orderReferenceId
      * @param \Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer $headerTransfer
@@ -19,5 +18,4 @@ interface TransactionLoggerInterface
      * @return void
      */
     public function log($orderReferenceId, AmazonpayResponseHeaderTransfer $headerTransfer);
-
 }

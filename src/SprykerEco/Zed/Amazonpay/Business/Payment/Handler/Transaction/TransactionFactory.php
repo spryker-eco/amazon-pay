@@ -17,7 +17,6 @@ use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
 class TransactionFactory implements TransactionFactoryInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface
      */
@@ -356,5 +355,4 @@ class TransactionFactory implements TransactionFactoryInterface
             $this->converter
         );
     }
-
 }

@@ -12,7 +12,6 @@ use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class AmazonpayFactory extends AbstractFactory
 {
-
     /**
      * @return \SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToQuoteInterface
      */
@@ -60,5 +59,4 @@ class AmazonpayFactory extends AbstractFactory
     {
         return $this->getProvidedDependency(AmazonpayDependencyProvider::CLIENT_CUSTOMER);
     }
-
 }

@@ -11,13 +11,12 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class OrderMessageFactory implements OrderMessageFactoryInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage|null
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\NotificationMessageInterface|null
      */
-    public function createFailedAuthMessage(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function getFailedAuthMessage(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         if ($amazonpayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
@@ -41,7 +40,7 @@ class OrderMessageFactory implements OrderMessageFactoryInterface
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\NotificationMessageInterface
      */
     protected function createOrderAuthFailedSoftDeclineMessage(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
@@ -51,11 +50,10 @@ class OrderMessageFactory implements OrderMessageFactoryInterface
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\NotificationMessageInterface
      */
     protected function createOrderAuthFailedHardDeclineMessage(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         return new OrderAuthFailedHardDeclineMessage($amazonpayCallTransfer);
     }
-
 }

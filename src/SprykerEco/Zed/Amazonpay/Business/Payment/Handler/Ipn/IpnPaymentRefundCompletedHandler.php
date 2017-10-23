@@ -8,7 +8,7 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 use SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
@@ -16,7 +16,6 @@ use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
 class IpnPaymentRefundCompletedHandler extends IpnAbstractPaymentRefundHandler
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface
      */
@@ -45,7 +44,7 @@ class IpnPaymentRefundCompletedHandler extends IpnAbstractPaymentRefundHandler
      */
     protected function getOmsStatusName()
     {
-        return AmazonpayConstants::OMS_STATUS_REFUND_COMPLETED;
+        return AmazonpayConfig::OMS_STATUS_REFUND_COMPLETED;
     }
 
     /**
@@ -65,5 +64,4 @@ class IpnPaymentRefundCompletedHandler extends IpnAbstractPaymentRefundHandler
 
         $this->refundOrderModel->refundPayment($paymentEntity);
     }
-
 }

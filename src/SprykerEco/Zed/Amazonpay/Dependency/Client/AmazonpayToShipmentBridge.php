@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 class AmazonpayToShipmentBridge implements AmazonpayToShipmentBridgeInterface
 {
-
     /**
      * @var \Spryker\Client\Shipment\ShipmentClientInterface
      */
@@ -34,5 +33,4 @@ class AmazonpayToShipmentBridge implements AmazonpayToShipmentBridgeInterface
     {
         return $this->shipmentClient->getAvailableMethods($quoteTransfer);
     }
-
 }

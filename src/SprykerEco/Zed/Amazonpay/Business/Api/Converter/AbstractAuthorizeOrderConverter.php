@@ -12,7 +12,6 @@ use PayWithAmazon\ResponseInterface;
 
 abstract class AbstractAuthorizeOrderConverter extends AbstractResponseParserConverter
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $authDetailsConverter
      */
@@ -40,5 +39,4 @@ abstract class AbstractAuthorizeOrderConverter extends AbstractResponseParserCon
 
         return parent::setBody($responseTransfer, $responseParser);
     }
-
 }

@@ -12,7 +12,6 @@ use Spryker\Zed\Oms\Dependency\Plugin\Condition\ConditionInterface;
 
 abstract class AbstractByOrderConditionPlugin implements ConditionInterface
 {
-
     /**
      * @return array
      */
@@ -33,5 +32,4 @@ abstract class AbstractByOrderConditionPlugin implements ConditionInterface
 
         return false;
     }
-
 }

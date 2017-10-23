@@ -7,19 +7,17 @@
 
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition;
 
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class IsCancelledOrderConditionPlugin extends AbstractByOrderConditionPlugin
 {
-
     /**
      * @return array
      */
     protected function getStatuses()
     {
         return [
-            AmazonpayConstants::OMS_STATUS_CANCELLED,
+            AmazonpayConfig::OMS_STATUS_CANCELLED,
         ];
     }
-
 }

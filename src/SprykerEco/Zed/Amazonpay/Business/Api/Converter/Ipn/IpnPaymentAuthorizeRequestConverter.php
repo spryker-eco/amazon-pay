@@ -12,7 +12,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface;
 
 class IpnPaymentAuthorizeRequestConverter extends IpnPaymentAbstractRequestConverter
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $authDetailsConverter
      */
@@ -42,5 +41,4 @@ class IpnPaymentAuthorizeRequestConverter extends IpnPaymentAbstractRequestConve
 
         return $ipnPaymentAuthorizeRequestTransfer;
     }
-
 }

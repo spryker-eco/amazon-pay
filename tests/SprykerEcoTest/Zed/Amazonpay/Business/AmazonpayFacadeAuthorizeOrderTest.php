@@ -7,13 +7,13 @@
 
 namespace SprykerEcoTest\Zed\Amazonpay\Business;
 
-use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 
 class AmazonpayFacadeAuthorizeOrderTest extends AmazonpayFacadeAbstractTest
 {
-
     /**
      * @dataProvider cancelOrderDataProvider
      *
@@ -48,51 +48,50 @@ class AmazonpayFacadeAuthorizeOrderTest extends AmazonpayFacadeAbstractTest
                 1,
                 0,
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                AmazonpayConstants::OMS_STATUS_AUTH_PENDING,
+                AmazonpayConfig::OMS_STATUS_AUTH_PENDING,
             ],
             [
                 1,
                 1,
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                AmazonpayConstants::OMS_STATUS_AUTH_PENDING,
+                AmazonpayConfig::OMS_STATUS_AUTH_PENDING,
             ],
             [
                 0,
                 1,
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                AmazonpayConstants::OMS_STATUS_AUTH_DECLINED,
+                AmazonpayConfig::OMS_STATUS_AUTH_DECLINED,
             ],
             [
                 0,
                 1,
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                AmazonpayConstants::OMS_STATUS_AUTH_DECLINED,
+                AmazonpayConfig::OMS_STATUS_AUTH_DECLINED,
             ],
             [
                 0,
                 1,
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED,
+                AmazonpayConfig::OMS_STATUS_AUTH_SUSPENDED,
             ],
             [
                 0,
                 0,
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
+                AmazonpayConfig::OMS_STATUS_AUTH_OPEN,
             ],
             [
                 0,
                 0,
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                AmazonpayConstants::OMS_STATUS_AUTH_DECLINED,
+                AmazonpayConfig::OMS_STATUS_AUTH_DECLINED,
             ],
             [
                 0,
                 0,
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED,
+                AmazonpayConfig::OMS_STATUS_AUTH_SUSPENDED,
             ],
         ];
     }
-
 }

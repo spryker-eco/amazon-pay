@@ -16,7 +16,6 @@ use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
 abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
      */
@@ -106,5 +105,4 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
      * @return string
      */
     abstract protected function getOmsStatusName();
-
 }

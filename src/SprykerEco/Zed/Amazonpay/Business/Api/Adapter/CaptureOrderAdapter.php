@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class CaptureOrderAdapter extends AbstractAdapter
 {
-
     const CAPTURE_REFERENCE_ID = 'capture_reference_id';
     const CAPTURE_AMOUNT = 'capture_amount';
 
@@ -36,5 +35,4 @@ class CaptureOrderAdapter extends AbstractAdapter
 
         return $this->converter->convert($result);
     }
-
 }

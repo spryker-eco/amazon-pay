@@ -8,17 +8,16 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class IpnPaymentCaptureCompletedHandler extends IpnAbstractPaymentCaptureHandler
 {
-
     /**
      * @return string
      */
     protected function getOmsStatusName()
     {
-        return AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED;
+        return AmazonpayConfig::OMS_STATUS_CAPTURE_COMPLETED;
     }
 
     /**
@@ -45,5 +44,4 @@ class IpnPaymentCaptureCompletedHandler extends IpnAbstractPaymentCaptureHandler
 
         parent::handle($amazonpayIpnRequestTransfer);
     }
-
 }

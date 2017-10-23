@@ -9,12 +9,10 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notifica
 
 interface OrderNotificationSenderInterface
 {
-
     /**
-     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage $message
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\NotificationMessageInterface $message
      *
      * @return void
      */
-    public function notify(AbstractNotificationMessage $message);
-
+    public function notify(NotificationMessageInterface $message);
 }

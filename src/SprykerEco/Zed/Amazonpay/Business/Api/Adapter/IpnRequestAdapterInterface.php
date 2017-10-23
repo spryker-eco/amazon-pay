@@ -9,10 +9,8 @@ namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
 interface IpnRequestAdapterInterface
 {
-
     /**
      * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
      */
     public function getIpnRequest();
-
 }

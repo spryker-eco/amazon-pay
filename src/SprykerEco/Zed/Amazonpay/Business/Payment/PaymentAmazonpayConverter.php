@@ -14,11 +14,10 @@ use Generated\Shared\Transfer\AmazonpayRefundDetailsTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class PaymentAmazonpayConverter implements PaymentAmazonpayConverterInterface
 {
-
     /**
      * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $entity
      *
@@ -98,24 +97,24 @@ class PaymentAmazonpayConverter implements PaymentAmazonpayConverterInterface
         $amazonpayStatusTransfer = new AmazonpayStatusTransfer();
 
         $amazonpayStatusTransfer->setIsPending(
-            $statusName === AmazonpayConstants::OMS_STATUS_AUTH_PENDING
+            $statusName === AmazonpayConfig::OMS_STATUS_AUTH_PENDING
         );
 
         $amazonpayStatusTransfer->setIsDeclined(
-            $statusName === AmazonpayConstants::OMS_STATUS_AUTH_DECLINED ||
-            $statusName === AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED
+            $statusName === AmazonpayConfig::OMS_STATUS_AUTH_DECLINED ||
+            $statusName === AmazonpayConfig::OMS_STATUS_AUTH_SUSPENDED
         );
 
         $amazonpayStatusTransfer->setIsSuspended(
-            $statusName === AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED
+            $statusName === AmazonpayConfig::OMS_STATUS_AUTH_SUSPENDED
         );
 
         $amazonpayStatusTransfer->setIsTransactionTimedOut(
-            $statusName === AmazonpayConstants::OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT
+            $statusName === AmazonpayConfig::OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT
         );
 
         $amazonpayStatusTransfer->setIsOpen(
-            $statusName === AmazonpayConstants::OMS_STATUS_AUTH_OPEN
+            $statusName === AmazonpayConfig::OMS_STATUS_AUTH_OPEN
         );
 
         return $amazonpayStatusTransfer;
@@ -131,19 +130,19 @@ class PaymentAmazonpayConverter implements PaymentAmazonpayConverterInterface
         $amazonpayStatusTransfer = new AmazonpayStatusTransfer();
 
         $amazonpayStatusTransfer->setIsPending(
-            $statusName === AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING
+            $statusName === AmazonpayConfig::OMS_STATUS_CAPTURE_PENDING
         );
 
         $amazonpayStatusTransfer->setIsDeclined(
-            $statusName === AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED
+            $statusName === AmazonpayConfig::OMS_STATUS_CAPTURE_DECLINED
         );
 
         $amazonpayStatusTransfer->setIsCompleted(
-            $statusName === AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED
+            $statusName === AmazonpayConfig::OMS_STATUS_CAPTURE_COMPLETED
         );
 
         $amazonpayStatusTransfer->setIsClosed(
-            $statusName === AmazonpayConstants::OMS_STATUS_CAPTURE_CLOSED
+            $statusName === AmazonpayConfig::OMS_STATUS_CAPTURE_CLOSED
         );
 
         return $amazonpayStatusTransfer;
@@ -159,18 +158,17 @@ class PaymentAmazonpayConverter implements PaymentAmazonpayConverterInterface
         $amazonpayStatusTransfer = new AmazonpayStatusTransfer();
 
         $amazonpayStatusTransfer->setIsPending(
-            $statusName === AmazonpayConstants::OMS_STATUS_REFUND_PENDING
+            $statusName === AmazonpayConfig::OMS_STATUS_REFUND_PENDING
         );
 
         $amazonpayStatusTransfer->setIsDeclined(
-            $statusName === AmazonpayConstants::OMS_STATUS_REFUND_DECLINED
+            $statusName === AmazonpayConfig::OMS_STATUS_REFUND_DECLINED
         );
 
         $amazonpayStatusTransfer->setIsCompleted(
-            $statusName === AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED
+            $statusName === AmazonpayConfig::OMS_STATUS_CAPTURE_COMPLETED
         );
 
         return $amazonpayStatusTransfer;
     }
-
 }

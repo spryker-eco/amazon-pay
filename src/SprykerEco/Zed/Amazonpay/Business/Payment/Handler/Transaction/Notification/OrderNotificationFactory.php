@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notifica
 
 class OrderNotificationFactory implements OrderNotificationFactoryInterface
 {
-
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
@@ -36,5 +35,4 @@ class OrderNotificationFactory implements OrderNotificationFactoryInterface
     {
         return new OrderMessageFactory();
     }
-
 }

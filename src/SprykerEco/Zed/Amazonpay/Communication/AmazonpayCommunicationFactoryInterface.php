@@ -9,10 +9,8 @@ namespace SprykerEco\Zed\Amazonpay\Communication;
 
 interface AmazonpayCommunicationFactoryInterface
 {
-
     /**
      * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToSalesInterface
      */
     public function getSalesFacade();
-
 }

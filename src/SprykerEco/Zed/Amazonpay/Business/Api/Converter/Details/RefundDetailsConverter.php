@@ -12,7 +12,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter;
 
 class RefundDetailsConverter extends AbstractArrayConverter
 {
-
     const AMAZON_REFUND_ID = 'AmazonRefundId';
     const REFUND_REFERENCE_ID = 'RefundReferenceId';
     const REFUND_AMOUNT = 'RefundAmount';
@@ -45,5 +44,4 @@ class RefundDetailsConverter extends AbstractArrayConverter
 
         return $refundDetails;
     }
-
 }

@@ -9,7 +9,6 @@ namespace SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk;
 
 class ConfirmOrderReferenceResponse extends AbstractResponse
 {
-
     /**
      * @param array $requestParameters
      */
@@ -25,5 +24,4 @@ class ConfirmOrderReferenceResponse extends AbstractResponse
   </ResponseMetadata>
 </ConfirmOrderReferenceResponse>';
     }
-
 }

@@ -13,7 +13,6 @@ use PayWithAmazon\ResponseInterface;
 
 class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
 {
-
     const ORDER_REFERENCE_DETAILS = 'OrderReferenceDetails';
     const ORDER_REFERENCE_STATUS = 'OrderReferenceStatus';
 
@@ -85,5 +84,4 @@ class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
 
         return parent::setBody($responseTransfer, $responseParser);
     }
-
 }
