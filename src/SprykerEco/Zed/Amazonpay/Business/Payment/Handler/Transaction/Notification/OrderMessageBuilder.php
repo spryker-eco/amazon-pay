@@ -9,7 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notifica
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
-class OrderMessageFactory implements OrderMessageFactoryInterface
+class OrderMessageBuilder implements OrderMessageBuilderInterface
 {
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer

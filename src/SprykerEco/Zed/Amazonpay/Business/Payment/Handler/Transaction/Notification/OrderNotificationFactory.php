@@ -16,7 +16,7 @@ class OrderNotificationFactory implements OrderNotificationFactoryInterface
     {
         return new OrderAuthFailedNotifyTransaction(
             $this->createFailedAuthNotificationSender(),
-            $this->createOrderMessageFactory()
+            $this->createOrderMessageBuilder()
         );
     }
 
@@ -29,10 +29,10 @@ class OrderNotificationFactory implements OrderNotificationFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageFactoryInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageBuilderInterface
      */
-    protected function createOrderMessageFactory()
+    protected function createOrderMessageBuilder()
     {
-        return new OrderMessageFactory();
+        return new OrderMessageBuilder();
     }
 }
