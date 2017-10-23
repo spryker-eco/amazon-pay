@@ -7,32 +7,49 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class CancelOrderTransaction extends AbstractOrderTransaction
+class CancelOrderTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpayCancelOrderResponseTransfer
-     */
-    protected $apiResponse;
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(OrderTransfer $orderTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $orderTransfer = parent::execute($orderTransfer);
+        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
-        if ($this->apiResponse->getHeader()->getIsSuccess()) {
+        if ($this->paymentEntity) {
+            $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
+
+            if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+                return $amazonpayCallTransfer;
+            }
+
+            if ($isPartialProcessing) {
+                $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
+            }
+
             $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CANCELLED);
             $this->paymentEntity->save();
+
+            if ($isPartialProcessing) {
+                $this->assignAmazonpayPaymentToItemsIfNew($this->paymentEntity, $amazonpayCallTransfer);
+            }
         }
 
-        return $orderTransfer;
+        return $amazonpayCallTransfer;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function allowPartialProcessing()
+    {
+        return false;
     }
 
 }

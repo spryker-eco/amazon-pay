@@ -7,8 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Dependency\Facade;
 
-use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
-
 class AmazonpayToUtilEncodingBridge implements AmazonpayToUtilEncodingInterface
 {
 
@@ -20,7 +18,7 @@ class AmazonpayToUtilEncodingBridge implements AmazonpayToUtilEncodingInterface
     /**
      * @param \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface $utilEncodingService
      */
-    public function __construct(UtilEncodingServiceInterface $utilEncodingService)
+    public function __construct($utilEncodingService)
     {
         $this->utilEncodingService = $utilEncodingService;
     }
@@ -30,7 +28,7 @@ class AmazonpayToUtilEncodingBridge implements AmazonpayToUtilEncodingInterface
      *
      * @api
      *
-     * @param string $jsonValue
+     * @param mixed $jsonValue
      * @param int|null $options
      * @param int|null $depth
      *

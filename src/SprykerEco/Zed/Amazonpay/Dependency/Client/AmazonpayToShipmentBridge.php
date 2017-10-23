@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\Amazonpay\Dependency\Client;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Client\Shipment\ShipmentClientInterface;
 
 class AmazonpayToShipmentBridge implements AmazonpayToShipmentBridgeInterface
 {
@@ -21,13 +20,13 @@ class AmazonpayToShipmentBridge implements AmazonpayToShipmentBridgeInterface
     /**
      * @param \Spryker\Client\Shipment\ShipmentClientInterface $shipmentClient
      */
-    public function __construct(ShipmentClientInterface $shipmentClient)
+    public function __construct($shipmentClient)
     {
         $this->shipmentClient = $shipmentClient;
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return \Generated\Shared\Transfer\ShipmentMethodsTransfer
      */
@@ -35,4 +34,5 @@ class AmazonpayToShipmentBridge implements AmazonpayToShipmentBridgeInterface
     {
         return $this->shipmentClient->getAvailableMethods($quoteTransfer);
     }
+
 }

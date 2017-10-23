@@ -7,63 +7,93 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class CaptureOrderTransaction extends AbstractOrderTransaction
+class CaptureOrderTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpayCaptureOrderResponseTransfer
-     */
-    protected $apiResponse;
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(OrderTransfer $orderTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        if (!$orderTransfer->getAmazonpayPayment()
-                ->getAuthorizationDetails()
-                ->getAuthorizationStatus()
-                ->getIsOpen()
-        ) {
-            return $orderTransfer;
+        if (!in_array($amazonpayCallTransfer->getAmazonpayPayment()->getStatus(), [
+            AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING,
+            AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
+            AmazonpayConstants::OMS_STATUS_PAYMENT_METHOD_CHANGED,
+        ], true)) {
+            return $amazonpayCallTransfer;
         }
 
-        $orderTransfer->getAmazonpayPayment()->getCaptureDetails()->setCaptureReferenceId(
-            $this->generateOperationReferenceId($orderTransfer)
+        if ($amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()
+            && $amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getAmazonCaptureId()) {
+            return $amazonpayCallTransfer;
+        }
+
+        $amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->setCaptureReferenceId(
+            $this->generateOperationReferenceId($amazonpayCallTransfer)
         );
 
-        $orderTransfer = parent::execute($orderTransfer);
+        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
-        if ($orderTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-            $orderTransfer->getAmazonpayPayment()->setCaptureDetails(
-                $this->apiResponse->getCaptureDetails()
-            );
-
-            $this->paymentEntity->setAmazonCaptureId(
-                $this->apiResponse->getCaptureDetails()->getAmazonCaptureId()
-            );
-
-            $this->paymentEntity->setCaptureReferenceId(
-                $this->apiResponse->getCaptureDetails()->getCaptureReferenceId()
-            );
+        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+            return $amazonpayCallTransfer;
         }
 
-        if ($orderTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus()->getIsDeclined()) {
-            $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED);
-        } elseif ($orderTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus()->getIsPending()) {
-            $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING);
-        } elseif ($orderTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus()->getIsCompleted()) {
-            $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED);
+        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
+
+        if ($isPartialProcessing) {
+            $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
+        }
+
+        $amazonpayCallTransfer->getAmazonpayPayment()->setCaptureDetails(
+            $this->apiResponse->getCaptureDetails()
+        );
+        $this->paymentEntity->setAmazonCaptureId(
+            $this->apiResponse->getCaptureDetails()->getAmazonCaptureId()
+        );
+        $this->paymentEntity->setCaptureReferenceId(
+            $this->apiResponse->getCaptureDetails()->getCaptureReferenceId()
+        );
+        $newStatus = $this->getPaymentStatus($amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus());
+
+        if ($newStatus !== '') {
+            $this->paymentEntity->setStatus($newStatus);
         }
 
         $this->paymentEntity->save();
 
-        return $orderTransfer;
+        if ($isPartialProcessing) {
+            $this->assignAmazonpayPaymentToItemsIfNew($this->paymentEntity, $amazonpayCallTransfer);
+        }
+
+        return $amazonpayCallTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $captureStatus
+     *
+     * @return string
+     */
+    protected function getPaymentStatus(AmazonpayStatusTransfer $captureStatus)
+    {
+        if ($captureStatus->getIsDeclined()) {
+            return AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED;
+        }
+
+        if ($captureStatus->getIsPending()) {
+            return AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING;
+        }
+
+        if ($captureStatus->getIsCompleted()) {
+            return AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED;
+        }
+
+        return '';
     }
 
 }

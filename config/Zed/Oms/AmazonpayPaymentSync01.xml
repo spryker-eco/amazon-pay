@@ -6,7 +6,7 @@
 
     <process name="AmazonpayPaymentSync01" main="true">
         <subprocesses>
-            <process>AmazonpayCaptured</process>
+            <process>AmazonpayCaptured01</process>
         </subprocesses>
 
         <states>
@@ -26,6 +26,6 @@
         </transitions>
     </process>
 
-    <process name="AmazonpayCaptured" file="AmazonpayCapturedSubprocess01.xml"/>
+    <process file="AmazonpayCapturedSubprocess01.xml"/>
 
 </statemachine>

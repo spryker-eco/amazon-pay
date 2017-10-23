@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Generated\Shared\Transfer\ShipmentMethodTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
 
 class ShipmentDataQuoteInitializer implements QuoteUpdaterInterface
@@ -21,10 +20,7 @@ class ShipmentDataQuoteInitializer implements QuoteUpdaterInterface
      */
     public function update(QuoteTransfer $quoteTransfer)
     {
-        $shipmentMethod = new ShipmentMethodTransfer();
         $shipmentTransfer = new ShipmentTransfer();
-        $shipmentTransfer->setMethod($shipmentMethod);
-
         $quoteTransfer->setShipment($shipmentTransfer);
 
         return $quoteTransfer;

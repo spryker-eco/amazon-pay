@@ -7,31 +7,55 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class OrderMessageFactory implements OrderMessageFactoryInterface
 {
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage|null
      */
-    public function createFailedAuthMessage(OrderTransfer $orderTransfer)
+    public function createFailedAuthMessage(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        if ($orderTransfer->getAmazonpayPayment()
+        if ($amazonpayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->getAuthorizationStatus()
             ->getIsSuspended()
         ) {
-            return new OrderAuthFailedSoftDeclineMessage($orderTransfer);
-        } elseif ($orderTransfer->getAmazonpayPayment()
+            return $this->createOrderAuthFailedSoftDeclineMessage($amazonpayCallTransfer);
+        }
+
+        if ($amazonpayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->getAuthorizationStatus()
             ->getIsDeclined()
         ) {
-            return new OrderAuthFailedHardDeclineMessage($orderTransfer);
+            return $this->createOrderAuthFailedHardDeclineMessage($amazonpayCallTransfer);
         }
+
+        return null;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage
+     */
+    protected function createOrderAuthFailedSoftDeclineMessage(AmazonpayCallTransfer $amazonpayCallTransfer)
+    {
+        return new OrderAuthFailedSoftDeclineMessage($amazonpayCallTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage
+     */
+    protected function createOrderAuthFailedHardDeclineMessage(AmazonpayCallTransfer $amazonpayCallTransfer)
+    {
+        return new OrderAuthFailedHardDeclineMessage($amazonpayCallTransfer);
     }
 
 }

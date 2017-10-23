@@ -7,24 +7,29 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
-use Generated\Shared\Transfer\QuoteTransfer;
-use PayWithAmazon\Client;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use PayWithAmazon\ClientInterface;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface;
 
-class ObtainProfileInformationAdapter extends AbstractAdapter implements QuoteAdapterInterface
+class ObtainProfileInformationAdapter implements CallAdapterInterface
 {
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter
+     * @var \PayWithAmazon\ClientInterface
+     */
+    protected $client;
+
+    /**
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface
      */
     protected $converter;
 
     /**
-     * @param \PayWithAmazon\Client $client
+     * @param \PayWithAmazon\ClientInterface $client
      * @param \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $converter
      */
     public function __construct(
-        Client $client,
+        ClientInterface $client,
         ArrayConverterInterface $converter
     ) {
         $this->client = $client;
@@ -32,15 +37,19 @@ class ObtainProfileInformationAdapter extends AbstractAdapter implements QuoteAd
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\CustomerTransfer
      */
-    public function call(QuoteTransfer $quoteTransfer)
+    public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $result = $this->client->getUserInfo($quoteTransfer->getAmazonpayPayment()->getAddressConsentToken());
+        $result = $this->client->getUserInfo($amazonpayCallTransfer->getAmazonpayPayment()->getAddressConsentToken());
 
-        return $this->converter->convert($result);
+        /** @var \Generated\Shared\Transfer\CustomerTransfer $customer */
+        $customer = $this->converter->convert($result);
+        $customer->setIsGuest(true);
+
+        return $customer;
     }
 
 }

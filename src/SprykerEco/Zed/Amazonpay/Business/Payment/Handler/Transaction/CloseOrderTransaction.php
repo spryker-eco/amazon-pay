@@ -7,32 +7,56 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use Propel\Runtime\ActiveQuery\Criteria;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class CloseOrderTransaction extends AbstractOrderTransaction
+class CloseOrderTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpayCloseOrderResponseTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    protected $apiResponse;
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    {
+        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+
+        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+            return $amazonpayCallTransfer;
+        }
+        $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CLOSED);
+        $this->paymentEntity->save();
+
+        $this->closeAllPaymentsForThisOrder($this->paymentEntity->getOrderReferenceId());
+
+        return $amazonpayCallTransfer;
+    }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param string $orderReferenceId
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return void
      */
-    public function execute(OrderTransfer $orderTransfer)
+    protected function closeAllPaymentsForThisOrder($orderReferenceId)
     {
-        $orderTransfer = parent::execute($orderTransfer);
+        $payments = $this->amazonpayQueryContainer->queryPaymentByOrderReferenceId($orderReferenceId)
+            ->filterByStatus(AmazonpayConstants::OMS_STATUS_CLOSED, Criteria::NOT_EQUAL)
+            ->find();
 
-        if ($this->apiResponse->getHeader()->getIsSuccess()) {
-            $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CLOSED);
-            $this->paymentEntity->save();
+        foreach ($payments as $payment) {
+            $payment->setStatus(AmazonpayConstants::OMS_STATUS_CLOSED);
+            $payment->save();
         }
+    }
 
-        return $orderTransfer;
+    /**
+     * @return bool
+     */
+    protected function allowPartialProcessing()
+    {
+        return false;
     }
 
 }

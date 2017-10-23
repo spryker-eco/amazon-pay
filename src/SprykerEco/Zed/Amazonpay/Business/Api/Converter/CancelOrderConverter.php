@@ -7,8 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 
-use Generated\Shared\Transfer\AmazonpayCancelOrderResponseTransfer;
-
 class CancelOrderConverter extends AbstractResponseParserConverter
 {
 
@@ -18,14 +16,6 @@ class CancelOrderConverter extends AbstractResponseParserConverter
     protected function getResponseType()
     {
         return 'CancelOrderReferenceResult';
-    }
-
-    /**
-     * @return \Generated\Shared\Transfer\AmazonpayCancelOrderResponseTransfer
-     */
-    protected function createTransferObject()
-    {
-        return new AmazonpayCancelOrderResponseTransfer();
     }
 
 }

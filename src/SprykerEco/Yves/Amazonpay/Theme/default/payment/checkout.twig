@@ -22,30 +22,22 @@
                             <li>
                                 <span class="__secondary">{{ 'checkout.step.summary.with_method' | trans }}</span> {{ quoteTransfer.payment.paymentMethod }}
                             </li>
-                            <li>
-                                {% if quoteTransfer.billingAddress %}
-                                    {% include '@checkout/checkout/partials/summary-address.twig' with {'address': quoteTransfer.billingAddress} %}
-                                {% endif %}
-                            </li>
                         </ul>
                     </div>
                     {% endif %}
                 </div>
+
+                {% if cartItems is defined %}
                 <div class="small-12 medium-6 xlarge-12 columns">
-                    {% if quoteTransfer.shipment.method.idShipmentMethod %}
                     <div class="callout">
-                        <h5>{{ 'checkout.step.summary.shipping' | trans }}</h5>
                         <ul class="no-bullet">
-                            <li><span class="__secondary">{{ 'checkout.step.summary.with_method' | trans }}</span> {{ quoteTransfer.shipment.method.name }}</li>
-                            <li>
-                                {% if quoteTransfer.shippingAddress %}
-                                    {% include '@checkout/checkout/partials/summary-address.twig' with {'address': quoteTransfer.shippingAddress} %}
-                                {% endif %}
-                            </li>
+                            {% for item in cartItems %}
+                                {% include '@amazonpay/payment/partials/checkout-item.twig' %}
+                            {% endfor %}
                         </ul>
                     </div>
-                    {% endif %}
                 </div>
+                {% endif %}
             </div>
         </div>
         <div class="small-12 medium-6 columns">
@@ -54,18 +46,6 @@
             {% endblock %}
             <div class="callout">
                 <div id="shipmentMethods"></div>
-
-                {% if cartItems is defined %}
-                <ul class="no-bullet">
-                    {% for item in cartItems %}
-                        {% if item.bundleProduct is defined %}
-                            {% include '@checkout/checkout/partials/summary-item.twig' with {'item': item.bundleProduct, 'bundleItems' : item.bundleItems} %}
-                        {% else %}
-                            {% include '@checkout/checkout/partials/summary-item.twig' %}
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-                {% endif %}
             </div>
         </div>
 

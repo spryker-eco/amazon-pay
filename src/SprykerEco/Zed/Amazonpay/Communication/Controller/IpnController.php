@@ -11,7 +11,7 @@ use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @method \SprykerEco\Zed\Amazonpay\Business\AmazonpayFacade getFacade()
+ * @method \SprykerEco\Zed\Amazonpay\Business\AmazonpayFacadeInterface getFacade()
  */
 class IpnController extends AbstractController
 {
@@ -23,6 +23,28 @@ class IpnController extends AbstractController
     {
         $headers = getallheaders();
         $body = file_get_contents('php://input');
+
+        $ipnRequestTransfer = $this->getFacade()->convertAmazonpayIpnRequest($headers, $body);
+        $this->getFacade()->handleAmazonpayIpnRequest($ipnRequestTransfer);
+
+        return new Response('Request has been processed');
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function endpointDebugAction()
+    {
+        $headersRaw = unserialize(file_get_contents('./header.txt'), []);
+
+        $headers = [];
+        foreach ($headersRaw as $headerKey => $headerValue) {
+            if (strpos($headerKey, 'Amz')) {
+                $headers[strtolower($headerKey)] = $headerValue;
+            }
+        }
+
+        $body = unserialize(file_get_contents('./body.txt'), []);
 
         $ipnRequestTransfer = $this->getFacade()->convertAmazonpayIpnRequest($headers, $body);
         $this->getFacade()->handleAmazonpayIpnRequest($ipnRequestTransfer);

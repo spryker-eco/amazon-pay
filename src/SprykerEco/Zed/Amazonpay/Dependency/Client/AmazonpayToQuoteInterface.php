@@ -28,4 +28,5 @@ interface AmazonpayToQuoteInterface
      * @return void
      */
     public function clearQuote();
+
 }

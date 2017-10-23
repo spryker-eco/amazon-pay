@@ -7,31 +7,31 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
-class CaptureOrderAdapter extends AbstractAdapter implements OrderAdapterInterface
+class CaptureOrderAdapter extends AbstractAdapter
 {
 
     const CAPTURE_REFERENCE_ID = 'capture_reference_id';
     const CAPTURE_AMOUNT = 'capture_amount';
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\AmazonpayAuthorizeOrderResponseTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    public function call(OrderTransfer $orderTransfer)
+    public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         $result = $this->client->capture([
             static::AMAZON_AUTHORIZATION_ID =>
-                $orderTransfer->getAmazonpayPayment()
+                $amazonpayCallTransfer->getAmazonpayPayment()
                     ->getAuthorizationDetails()
                     ->getAmazonAuthorizationId(),
             static::CAPTURE_REFERENCE_ID =>
-                $orderTransfer->getAmazonpayPayment()
+                $amazonpayCallTransfer->getAmazonpayPayment()
                     ->getCaptureDetails()
                     ->getCaptureReferenceId(),
-            static::CAPTURE_AMOUNT => $this->getAmount($orderTransfer),
+            static::CAPTURE_AMOUNT => $this->getAmount($amazonpayCallTransfer),
         ]);
 
         return $this->converter->convert($result);

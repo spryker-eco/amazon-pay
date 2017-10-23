@@ -18,4 +18,5 @@ interface AmazonpayToCheckoutInterface
      * @return \Generated\Shared\Transfer\CheckoutResponseTransfer
      */
     public function placeOrder(QuoteTransfer $quoteTransfer);
+
 }

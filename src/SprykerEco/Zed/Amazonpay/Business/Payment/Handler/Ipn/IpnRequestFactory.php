@@ -7,8 +7,9 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
 use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
@@ -17,39 +18,47 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
 {
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface
      */
     protected $omsFacade;
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
+     * @var \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface
      */
     protected $amazonpayQueryContainer;
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface
      */
     protected $ipnRequestLogger;
+
+    /**
+     * @var \SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface
+     */
+    protected $refundOrderModel;
 
     /**
      * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
      * @param \SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface $amazonpayQueryContainer
      * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
+     * @param \SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface $refundOrderModel
      */
     public function __construct(
         AmazonpayToOmsInterface $omsFacade,
         AmazonpayQueryContainerInterface $amazonpayQueryContainer,
-        IpnRequestLoggerInterface $ipnRequestLogger
+        IpnRequestLoggerInterface $ipnRequestLogger,
+        RefundOrderInterface $refundOrderModel
     ) {
         $this->omsFacade = $omsFacade;
         $this->amazonpayQueryContainer = $amazonpayQueryContainer;
         $this->ipnRequestLogger = $ipnRequestLogger;
+        $this->refundOrderModel = $refundOrderModel;
     }
 
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentAuthorizeRequestTransfer $ipnRequest
      *
-     * @throws IpnHandlerNotFoundException
+     * @throws \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
      *
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
@@ -76,7 +85,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentAuthorizeRequestTransfer $ipnRequest
      *
-     * @throws IpnHandlerNotFoundException
+     * @throws \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
      *
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
@@ -88,19 +97,25 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
                 $this->amazonpayQueryContainer,
                 $this->ipnRequestLogger
             );
-        } elseif ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsDeclined()) {
+        }
+
+        if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsDeclined()) {
             return new IpnPaymentAuthorizeDeclineHandler(
                 $this->omsFacade,
                 $this->amazonpayQueryContainer,
                 $this->ipnRequestLogger
             );
-        } elseif ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsOpen()) {
+        }
+
+        if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsOpen()) {
             return new IpnPaymentAuthorizeOpenHandler(
                 $this->omsFacade,
                 $this->amazonpayQueryContainer,
                 $this->ipnRequestLogger
             );
-        } elseif ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsClosed()) {
+        }
+
+        if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsClosed()) {
             return new IpnPaymentAuthorizeClosedHandler(
                 $this->omsFacade,
                 $this->amazonpayQueryContainer,
@@ -115,7 +130,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentCaptureRequestTransfer $ipnRequest
      *
-     * @throws IpnHandlerNotFoundException
+     * @throws \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
      *
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
@@ -127,13 +142,17 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
                 $this->amazonpayQueryContainer,
                 $this->ipnRequestLogger
             );
-        } elseif ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsCompleted()) {
+        }
+
+        if ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsCompleted()) {
             return new IpnPaymentCaptureCompletedHandler(
                 $this->omsFacade,
                 $this->amazonpayQueryContainer,
                 $this->ipnRequestLogger
             );
-        } elseif ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsClosed()) {
+        }
+
+        if ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsClosed()) {
             return new IpnEmptyHandler();
         }
 
@@ -144,7 +163,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentRefundRequestTransfer $ipnRequest
      *
-     * @throws IpnHandlerNotFoundException
+     * @throws \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
      *
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
@@ -156,11 +175,14 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
                 $this->amazonpayQueryContainer,
                 $this->ipnRequestLogger
             );
-        } elseif ($ipnRequest->getRefundDetails()->getRefundStatus()->getIsCompleted()) {
+        }
+
+        if ($ipnRequest->getRefundDetails()->getRefundStatus()->getIsCompleted()) {
             return new IpnPaymentRefundCompletedHandler(
                 $this->omsFacade,
                 $this->amazonpayQueryContainer,
-                $this->ipnRequestLogger
+                $this->ipnRequestLogger,
+                $this->refundOrderModel
             );
         }
 
@@ -171,7 +193,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnOrderReferenceNotificationTransfer $ipnRequest
      *
-     * @throws IpnHandlerNotFoundException
+     * @throws \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
      *
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
@@ -192,17 +214,21 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
                     $this->amazonpayQueryContainer,
                     $this->ipnRequestLogger
                 );
-            } else {
-                return new IpnEmptyHandler(
-                    $this->omsFacade,
-                    $this->amazonpayQueryContainer,
-                    $this->ipnRequestLogger
-                );
             }
+
+            return new IpnEmptyHandler();
         }
 
         if ($ipnRequest->getOrderReferenceStatus()->getIsSuspended()) {
             return new IpnOrderReferenceSuspendedHandler(
+                $this->omsFacade,
+                $this->amazonpayQueryContainer,
+                $this->ipnRequestLogger
+            );
+        }
+
+        if ($ipnRequest->getOrderReferenceStatus()->getIsCancelled()) {
+            return new IpnOrderReferenceCancelledHandler(
                 $this->omsFacade,
                 $this->amazonpayQueryContainer,
                 $this->ipnRequestLogger

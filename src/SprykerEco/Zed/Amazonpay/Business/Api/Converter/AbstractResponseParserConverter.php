@@ -7,16 +7,40 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 
+use ArrayObject;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseConstraintTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
+use Generated\Shared\Transfer\AmazonpayResponseTransfer;
 use PayWithAmazon\ResponseInterface;
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 abstract class AbstractResponseParserConverter extends AbstractConverter implements ResponseParserConverterInterface
 {
 
     const STATUS_CODE_SUCCESS = 200;
+    const ORDER_REFERENCE_DETAILS = 'OrderReferenceDetails';
+    const CONSTRAINTS = 'Constraints';
+    const DESCRIPTION = 'Description';
+    const CONSTRAINT_ID = 'ConstraintID';
+    const REQUEST_ID = 'RequestId';
+    const ERROR = 'Error';
+    const RESPONSE_METADATA = 'ResponseMetadata';
+    const RESPONSE_STATUS = 'ResponseStatus';
+    const MESSAGE = 'Message';
+    const CODE = 'Code';
+    const DESTINATION = 'Destination';
+    const PHYSICAL_DESTINATION = 'PhysicalDestination';
+    const NAME = 'Name';
+    const CITY = 'City';
+    const COUNTRY_CODE = 'CountryCode';
+    const POSTAL_CODE = 'PostalCode';
+    const ADDRESS_LINE_1 = 'AddressLine1';
+    const ADDRESS_LINE_2 = 'AddressLine2';
+    const ADDRESS_LINE_3 = 'AddressLine3';
+    const DISTRICT = 'District';
+    const STATE_OR_REGION = 'StateOrRegion';
+    const PHONE = 'Phone';
 
     /**
      * @var string
@@ -29,30 +53,34 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     abstract protected function getResponseType();
 
     /**
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    abstract protected function createTransferObject();
+    protected function createTransferObject()
+    {
+        return new AmazonpayResponseTransfer();
+    }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $responseTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayResponseTransfer $responseTransfer
      * @param \PayWithAmazon\ResponseInterface $responseParser
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    protected function setBody(AbstractTransfer $responseTransfer, ResponseInterface $responseParser)
+    protected function setBody(AmazonpayResponseTransfer $responseTransfer, ResponseInterface $responseParser)
     {
         return $responseTransfer;
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $responseTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayResponseTransfer $responseTransfer
      * @param \PayWithAmazon\ResponseInterface $responseParser
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    protected function setResponseDataToTransfer(AbstractTransfer $responseTransfer, ResponseInterface $responseParser)
+    protected function mapResponseDataToTransfer(AmazonpayResponseTransfer $responseTransfer, ResponseInterface $responseParser)
     {
         $responseTransfer->setHeader($this->extractHeader($responseParser));
+
         if ($responseTransfer->getHeader()->getIsSuccess()) {
             return $this->setBody($responseTransfer, $responseParser);
         }
@@ -63,11 +91,11 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     /**
      * @param \PayWithAmazon\ResponseInterface $responseParser
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     public function convert(ResponseInterface $responseParser)
     {
-        return $this->setResponseDataToTransfer($this->createTransferObject(), $responseParser);
+        return $this->mapResponseDataToTransfer($this->createTransferObject(), $responseParser);
     }
 
     /**
@@ -77,9 +105,7 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
      */
     protected function extractMetadata(ResponseInterface $responseParser)
     {
-        return empty($responseParser->toArray()['ResponseMetadata'])
-            ? []
-            : $responseParser->toArray()['ResponseMetadata'];
+        return $responseParser->toArray()[static::RESPONSE_METADATA] ?? [];
     }
 
     /**
@@ -89,7 +115,7 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
      */
     protected function extractStatusCode(ResponseInterface $responseParser)
     {
-        return (int)$responseParser->toArray()['ResponseStatus'];
+        return (int)$responseParser->toArray()[static::RESPONSE_STATUS];
     }
 
     /**
@@ -107,23 +133,50 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
         $header->setIsSuccess($this->isSuccess($responseParser));
         $header->setStatusCode($statusCode);
 
-        if ($metadata) {
-            $header->setRequestId($metadata['RequestId']);
+        if (isset($metadata[static::REQUEST_ID])) {
+            $header->setRequestId($metadata[static::REQUEST_ID]);
+            $responseArray = $responseParser->toArray();
+
+            if (!empty($responseArray[static::ERROR])) {
+                return $this->updateHeaderWithError($header, $responseArray);
+            }
         }
 
-        if (!empty($responseParser->toArray()['Error'])) {
-            $header->setErrorMessage($responseParser->toArray()['Error']['Message']);
-            $header->setErrorCode($responseParser->toArray()['Error']['Code']);
-            $header->setRequestId($responseParser->toArray()['RequestId']);
 
-            return $header;
-        }
-
-        if ($constraints) {
-            $header->setConstraints($constraints);
-        }
+        $header->setConstraints($constraints);
+        $this->extractErrorFromConstraints($header);
 
         return $header;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer $header
+     * @param array $responseArray
+     *
+     * @return \Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer
+     */
+    protected function updateHeaderWithError(AmazonpayResponseHeaderTransfer $header, array $responseArray)
+    {
+        $header->setErrorMessage($responseArray[static::ERROR][static::MESSAGE]);
+        $header->setErrorCode($responseArray[static::ERROR][static::CODE]);
+        $header->setRequestId($responseArray[static::REQUEST_ID]);
+
+        return $header;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer $header
+     *
+     * @return void
+     */
+    protected function extractErrorFromConstraints(AmazonpayResponseHeaderTransfer $header)
+    {
+        if ($header->getConstraints()->count() === 0) {
+            return;
+        }
+
+        $constraint = $header->getConstraints()[0];
+        $header->setErrorCode(AmazonpayConstants::PREFIX_AMAZONPAY_PAYMENT_ERROR . $constraint->getConstraintId());
     }
 
     /**
@@ -134,8 +187,8 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     protected function isSuccess(ResponseInterface $responseParser)
     {
         return
-            $this->extractStatusCode($responseParser) == self::STATUS_CODE_SUCCESS
-            && empty($this->extractConstraints($responseParser));
+            $this->extractStatusCode($responseParser) === static::STATUS_CODE_SUCCESS
+            && $this->extractConstraints($responseParser)->count() === 0;
     }
 
     /**
@@ -147,41 +200,61 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     {
         $responseType = $this->getResponseType();
 
-        return !empty($responseParser->toArray()[$responseType])
-            ? $responseParser->toArray()[$responseType]
-            : [];
+        return $responseParser->toArray()[$responseType] ?? [];
     }
 
     /**
      * @param \PayWithAmazon\ResponseInterface $responseParser
      *
-     * @return \Generated\Shared\Transfer\AmazonpayResponseConstraintTransfer[]
+     * @return \ArrayObject | \Generated\Shared\Transfer\AmazonpayResponseConstraintTransfer[]
      */
     protected function extractConstraints(ResponseInterface $responseParser)
     {
         $result = $this->extractResult($responseParser);
 
-        if (empty($result['OrderReferenceDetails']['Constraints'])) {
-            return [];
+        $constraintTransfers = new ArrayObject();
+
+        if (empty($result[static::ORDER_REFERENCE_DETAILS][static::CONSTRAINTS])) {
+            return $constraintTransfers;
         }
 
-        $constraintTransfers = [];
-
-        if (count($result['OrderReferenceDetails']['Constraints']) === 1) {
-            $constraints = array_values($result['OrderReferenceDetails']['Constraints']);
-        } else {
-            $constraints = $result['OrderReferenceDetails']['Constraints'];
-        }
+        $constraints = $this->getConstraints($result);
 
         foreach ($constraints as $constraint) {
-            $constraintTransfer = new AmazonpayResponseConstraintTransfer();
-            $constraintTransfer->setConstraintId($constraint['ConstraintID']);
-            $constraintTransfer->setConstraintId($constraint['Description']);
-
-            $constraintTransfers[] = $constraintTransfer;
+            if (!empty($constraint[static::CONSTRAINT_ID]) && !empty($constraint[static::DESCRIPTION])) {
+                $constraintTransfers[] = $this->buildConstraintTransfer($constraint);
+            }
         }
 
         return $constraintTransfers;
+    }
+
+    /**
+     * @param array $result
+     *
+     * @return array
+     */
+    protected function getConstraints(array $result)
+    {
+        if (count($result[static::ORDER_REFERENCE_DETAILS][static::CONSTRAINTS]) === 1) {
+            return array_values($result[static::ORDER_REFERENCE_DETAILS][static::CONSTRAINTS]);
+        }
+
+        return $result[static::ORDER_REFERENCE_DETAILS][static::CONSTRAINTS];
+    }
+
+    /**
+     * @param array $constraint
+     *
+     * @return \Generated\Shared\Transfer\AmazonpayResponseConstraintTransfer
+     */
+    protected function buildConstraintTransfer(array $constraint)
+    {
+        $constraintTransfer = new AmazonpayResponseConstraintTransfer();
+        $constraintTransfer->setConstraintId($constraint[static::CONSTRAINT_ID]);
+        $constraintTransfer->setConstraintDescription($constraint[static::DESCRIPTION]);
+
+        return $constraintTransfer;
     }
 
     /**
@@ -198,9 +271,13 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
         }
 
         $aResponseAddress =
-            $this->extractResult($responseParser)['OrderReferenceDetails']['Destination']['PhysicalDestination'];
+            $this->extractResult($responseParser)[static::ORDER_REFERENCE_DETAILS][self::DESTINATION][self::PHYSICAL_DESTINATION] ?? null;
 
-        return $this->convertAddressToTransfer($aResponseAddress);
+        if ($aResponseAddress !== null) {
+            $address = $this->convertAddressToTransfer($aResponseAddress);
+        }
+
+        return $address;
     }
 
     /**
@@ -212,39 +289,33 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     {
         $address = new AddressTransfer();
 
-        $address->setCity($addressData['City']);
-        $address->setIso2Code($addressData['CountryCode']);
-        $address->setZipCode($addressData['PostalCode']);
-
-        if (!empty($addressData['Name'])) {
-            $address = $this->updateNameData($address, $addressData['Name']);
+        if (!empty($addressData[self::NAME])) {
+            $address = $this->updateNameData($address, $addressData[self::NAME]);
         }
 
-        if (!empty($addressData['AddressLine1'])) {
-            $address->setAddress1($addressData['AddressLine1']);
-        }
+        $addressData = array_map([$this, 'getStringValue'], $addressData);
 
-        if (!empty($addressData['AddressLine2'])) {
-            $address->setAddress2($addressData['AddressLine2']);
-        }
-
-        if (!empty($addressData['AddressLine3'])) {
-            $address->setAddress3($addressData['AddressLine3']);
-        }
-
-        if (!empty($addressData['District'])) {
-            $address->setRegion($addressData['District']);
-        }
-
-        if (!empty($addressData['StateOrRegion'])) {
-            $address->setState($addressData['StateOrRegion']);
-        }
-
-        if (!empty($addressData['Phone'])) {
-            $address->setPhone($addressData['Phone']);
-        }
+        $address->setCity($addressData[self::CITY] ?? null);
+        $address->setIso2Code($addressData[self::COUNTRY_CODE] ?? null);
+        $address->setZipCode($addressData[self::POSTAL_CODE] ?? null);
+        $address->setAddress1($addressData[self::ADDRESS_LINE_1] ?? null);
+        $address->setAddress2($addressData[self::ADDRESS_LINE_2] ?? null);
+        $address->setAddress3($addressData[self::ADDRESS_LINE_3] ?? null);
+        $address->setRegion($addressData[self::DISTRICT] ?? null);
+        $address->setState($addressData[self::STATE_OR_REGION] ?? null);
+        $address->setPhone($addressData[self::PHONE] ?? null);
 
         return $address;
+    }
+
+    /**
+     * @param string|array $value
+     *
+     * @return string|null
+     */
+    protected function getStringValue($value)
+    {
+        return empty($value) ? null : (string)$value;
     }
 
 }

@@ -8,12 +8,14 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AddressTransfer;
-use Generated\Shared\Transfer\AmazonpayGetOrderReferenceDetailsResponseTransfer;
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
+use Generated\Shared\Transfer\AmazonpayResponseTransfer;
 use PayWithAmazon\ResponseInterface;
 
 class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
 {
+
+    const ORDER_REFERENCE_DETAILS = 'OrderReferenceDetails';
+    const ORDER_REFERENCE_STATUS = 'OrderReferenceStatus';
 
     /**
      * @return string
@@ -30,7 +32,7 @@ class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
      */
     protected function extractOrderReferenceStatus(ResponseInterface $responseParser)
     {
-        return $this->extractResult($responseParser)['OrderReferenceDetails']['OrderReferenceStatus']['State'];
+        return $this->extractResult($responseParser)[self::ORDER_REFERENCE_DETAILS][self::ORDER_REFERENCE_STATUS]['State'];
     }
 
     /**
@@ -40,7 +42,7 @@ class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
      */
     protected function extractIsSandbox(ResponseInterface $responseParser)
     {
-        return ($this->extractResult($responseParser)['OrderReferenceDetails']['ReleaseEnvironment'] === 'Sandbox');
+        return ($this->extractResult($responseParser)[self::ORDER_REFERENCE_DETAILS]['ReleaseEnvironment'] === 'Sandbox');
     }
 
     /**
@@ -56,33 +58,25 @@ class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
             return $address;
         }
 
+        $response = $this->extractResult($responseParser);
+
         $aResponseAddress =
-            $this->extractResult($responseParser)['OrderReferenceDetails']['BillingAddress']['PhysicalAddress'];
+            $response[self::ORDER_REFERENCE_DETAILS]['BillingAddress']['PhysicalAddress'];
 
         return $this->convertAddressToTransfer($aResponseAddress);
     }
 
     /**
-     * @return \Generated\Shared\Transfer\AmazonpayGetOrderReferenceDetailsResponseTransfer
-     */
-    protected function createTransferObject()
-    {
-        return new AmazonpayGetOrderReferenceDetailsResponseTransfer();
-    }
-
-    /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $responseTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayResponseTransfer $responseTransfer
      * @param \PayWithAmazon\ResponseInterface $responseParser
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    protected function setBody(
-        AbstractTransfer $responseTransfer,
-        ResponseInterface $responseParser
-    ) {
+    protected function setBody(AmazonpayResponseTransfer $responseTransfer, ResponseInterface $responseParser)
+    {
         $responseTransfer->setOrderReferenceStatus(
             $this->convertStatusToTransfer(
-                $this->extractResult($responseParser)['OrderReferenceDetails']['OrderReferenceStatus']
+                $this->extractResult($responseParser)[self::ORDER_REFERENCE_DETAILS][self::ORDER_REFERENCE_STATUS]
             )
         );
         $responseTransfer->setIsSandbox($this->extractIsSandbox($responseParser));

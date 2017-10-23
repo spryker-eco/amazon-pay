@@ -7,14 +7,15 @@
 
 namespace SprykerEco\Zed\Amazonpay;
 
+use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
+use Spryker\Zed\Kernel\Container;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerBridge;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyBridge;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsBridge;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToRefundBridge;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToSalesBridge;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentBridge;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingBridge;
-use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
-use Spryker\Zed\Kernel\Container;
 
 class AmazonpayDependencyProvider extends AbstractBundleDependencyProvider
 {
@@ -24,6 +25,7 @@ class AmazonpayDependencyProvider extends AbstractBundleDependencyProvider
     const FACADE_SALES = 'sales facade';
     const FACADE_REFUND = 'refund facade';
     const FACADE_OMS = 'oms facade';
+    const FACADE_MESSENGER = 'messenger facade';
     const SERVICE_UTIL_ENCODING = 'encoding service';
 
     /**
@@ -38,6 +40,7 @@ class AmazonpayDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addRefundFacade($container);
         $container = $this->addOmsFacade($container);
         $container = $this->addUtilEncodingService($container);
+        $container = $this->addMessengerFacade($container);
 
         return $container;
     }
@@ -50,7 +53,19 @@ class AmazonpayDependencyProvider extends AbstractBundleDependencyProvider
     public function provideCommunicationLayerDependencies(Container $container)
     {
         $container = $this->addRefundFacade($container);
+        $container = $this->addSalesFacade($container);
+        $container = $this->addOmsFacade($container);
 
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addSalesFacade(Container $container)
+    {
         $container[self::FACADE_SALES] = function (Container $container) {
             return new AmazonpayToSalesBridge($container->getLocator()->sales()->facade());
         };
@@ -123,6 +138,20 @@ class AmazonpayDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container[self::FACADE_OMS] = function (Container $container) {
             return new AmazonpayToOmsBridge($container->getLocator()->oms()->facade());
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addMessengerFacade(Container $container)
+    {
+        $container[self::FACADE_MESSENGER] = function (Container $container) {
+            return new AmazonpayToMessengerBridge($container->getLocator()->messenger()->facade());
         };
 
         return $container;

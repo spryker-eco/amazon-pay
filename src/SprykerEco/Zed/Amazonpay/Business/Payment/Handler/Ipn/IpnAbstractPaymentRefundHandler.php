@@ -7,14 +7,14 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 abstract class IpnAbstractPaymentRefundHandler extends IpnAbstractTransferRequestHandler
 {
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $amazonpayIpnPaymentRefundRequestTransfer
+     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\AmazonpayResponseTransfer $amazonpayIpnPaymentRefundRequestTransfer
      *
      * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay
      */

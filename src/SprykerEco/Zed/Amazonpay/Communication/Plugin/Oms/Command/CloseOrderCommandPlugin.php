@@ -18,10 +18,10 @@ class CloseOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        // no partial closing should be possible
-        if (count($orderEntity->getItems()) === count($salesOrderItems)) {
-            $this->getFacade()->closeOrder($this->getOrderTransfer($orderEntity));
-        }
+        $payment = $this->getPaymentDetails($salesOrderItems[0]);
+        $amazonpayCallTransfer = $this->createAmazonpayCallTransfer($payment);
+
+        $this->getFacade()->closeOrder($amazonpayCallTransfer);
 
         return [];
     }

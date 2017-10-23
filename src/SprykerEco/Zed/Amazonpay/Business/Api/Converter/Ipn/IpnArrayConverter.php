@@ -17,14 +17,14 @@ class IpnArrayConverter extends AbstractArrayConverter
 {
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn\IpnConverterFactory
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn\IpnConverterFactoryInterface
      */
     protected $ipnConverterFactory;
 
     /**
-     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn\IpnConverterFactory $ipnConverterFactory
+     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn\IpnConverterFactoryInterface $ipnConverterFactory
      */
-    public function __construct(IpnConverterFactory $ipnConverterFactory)
+    public function __construct(IpnConverterFactoryInterface $ipnConverterFactory)
     {
         $this->ipnConverterFactory = $ipnConverterFactory;
     }

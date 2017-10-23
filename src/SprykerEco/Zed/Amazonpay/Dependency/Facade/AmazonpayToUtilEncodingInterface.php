@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Dependency\Facade;
 
-
 interface AmazonpayToUtilEncodingInterface
 {
 
@@ -16,7 +15,7 @@ interface AmazonpayToUtilEncodingInterface
      *
      * @api
      *
-     * @param string $jsonValue
+     * @param mixed $jsonValue
      * @param int|null $options
      * @param int|null $depth
      *

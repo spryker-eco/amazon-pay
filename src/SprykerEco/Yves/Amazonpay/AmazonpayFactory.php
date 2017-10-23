@@ -7,14 +7,14 @@
 
 namespace SprykerEco\Yves\Amazonpay;
 
-use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 use Spryker\Yves\Kernel\AbstractFactory;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
-class AmazonpayFactory extends AbstractFactory implements AmazonpayFactoryInterface
+class AmazonpayFactory extends AbstractFactory
 {
 
     /**
-     * @return \Spryker\Client\Quote\QuoteClientInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToQuoteInterface
      */
     public function getQuoteClient()
     {
@@ -22,7 +22,7 @@ class AmazonpayFactory extends AbstractFactory implements AmazonpayFactoryInterf
     }
 
     /**
-     * @return \Spryker\Client\Checkout\CheckoutClientInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToCheckoutInterface
      */
     public function getCheckoutClient()
     {
@@ -30,15 +30,15 @@ class AmazonpayFactory extends AbstractFactory implements AmazonpayFactoryInterf
     }
 
     /**
-     * @return \SprykerEco\Shared\Amazonpay\AmazonpayConfig
+     * @return \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface
      */
-    public function getConfig()
+    public function createAmazonpayConfig()
     {
         return new AmazonpayConfig();
     }
 
     /**
-     * @return \Spryker\Client\Shipment\ShipmentClientInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToShipmentBridgeInterface
      */
     public function getShipmentClient()
     {
@@ -46,11 +46,19 @@ class AmazonpayFactory extends AbstractFactory implements AmazonpayFactoryInterf
     }
 
     /**
-     * @return \Spryker\Client\Calculation\CalculationClientInterface
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToCalculationInterface
      */
     public function getCalculationClient()
     {
         return $this->getProvidedDependency(AmazonpayDependencyProvider::CLIENT_CALCULATION);
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToCustomerInterface
+     */
+    public function getCustomerClient()
+    {
+        return $this->getProvidedDependency(AmazonpayDependencyProvider::CLIENT_CUSTOMER);
     }
 
 }

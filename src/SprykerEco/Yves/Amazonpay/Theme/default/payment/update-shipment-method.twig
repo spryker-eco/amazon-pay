@@ -9,15 +9,17 @@
 
     {% include '@checkout/checkout/partials/summary-discounts.twig' %}
 
-    <li><strong>{{ 'checkout.step.summary.shipping' | trans }}</strong></li>
-    <li>
-        {% if quoteTransfer.shipment.method.name is not empty %}
-            {{ quoteTransfer.shipment.method.name }}
-        {% endif %}
-        {% if quoteTransfer.shipment.method.defaultPrice is not null %}
-            {{ quoteTransfer.shipment.method.defaultPrice | money }}
-        {% endif %}
-    </li>
+    {% if quoteTransfer.shipment and quoteTransfer.shipment.method %}
+        <li><strong>{{ 'checkout.step.summary.shipping' | trans }}</strong></li>
+        <li>
+            {% if quoteTransfer.shipment.method.name is not empty %}
+                {{ quoteTransfer.shipment.method.name }}
+            {% endif %}
+            {% if quoteTransfer.shipment.method.defaultPrice is not null %}
+                {{ quoteTransfer.shipment.method.defaultPrice | money }}
+            {% endif %}
+        </li>
+    {% endif %}
     <li><hr></li>
     <li class="clearfix">
         <h5 class="float-left">{{ 'checkout.step.summary.grand_total' | trans }}</h5>

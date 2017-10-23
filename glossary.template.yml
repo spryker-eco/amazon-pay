@@ -1,0 +1,40 @@
+amazonpay.payment.failed:
+  translations:
+    en_EN: "General payment failure."
+    de_DE: ""
+amazonpay.payment.wrong:
+  translations:
+    en_EN: "Wrong payment"
+    de_DE: ""
+checkout.amazonpay:
+  translations:
+    en_EN: "AmazonPay checkout"
+    de_DE: ""
+amazonpay.success.asyncronous.text:
+  translations:
+    en_EN: "Your transaction with Amazon Pay is currently being validated. Please be aware that we will inform you shortly as needed."
+    de_DE: ""
+amazonpay.timeout.error:
+  translations:
+    en_EN: "Timeout during payment processing."
+    de_DE: ""
+amazonpay.payment.place-order.failed:
+  translations:
+    en_EN: "Unknown error during place order. Please repeat your attempt."
+    de_DE: ""
+amazonpay.payment.error.PaymentMethodNotAllowed:
+  translations:
+    en_EN: "Chosen payment method is not allowed."
+    de_DE: ""
+amazonpay.payment.error.TransactionTimedOut:
+  translations:
+    en_EN: "Transaction processing timeout."
+    de_DE: ""
+amazonpay.payment.error.AmazonRejected:
+  translations:
+    en_EN: "Your payment was rejected by Amazon."
+    de_DE: ""
+amazonpay.payment.error.InvalidPaymentMethod:
+  translations:
+    en_EN: "Invalid payment method."
+    de_DE: ""

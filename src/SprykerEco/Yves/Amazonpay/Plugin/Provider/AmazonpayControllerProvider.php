@@ -8,26 +8,24 @@
 namespace SprykerEco\Yves\Amazonpay\Plugin\Provider;
 
 use Silex\Application;
+use Spryker\Shared\Kernel\Store;
 use Spryker\Yves\Application\Plugin\Provider\YvesControllerProvider;
-use Pyz\Yves\Application\Plugin\Provider\AbstractYvesControllerProvider;
 
-class AmazonpayControllerProvider extends AbstractYvesControllerProvider
+class AmazonpayControllerProvider extends YvesControllerProvider
 {
 
     const CHECKOUT = 'amazonpay_checkout';
     const ENDPOINT = 'amazonpay_endpoint';
     const CONFIRM_PURCHASE = 'amazonpay_confirm_purchase';
     const SUCCESS = 'amazonpay_success';
-    const CHANGE_PAYMENT_METHOD = 'amazonpay_change_payment_method';
     const PAYMENT_FAILED = 'amazonpay_payment_failed';
 
     const SET_ORDER_REFERENCE = 'amazonpay_set_order_reference';
     const UPDATE_SHIPMENT_METHOD = 'amazonpay_update_shipment_method';
     const GET_SHIPMENT_METHODS = 'amazonpay_get_shipment_methods';
 
-    const PAYBUTTON = 'amazonpay_paybutton';
+    const PAY_BUTTON = 'amazonpay_paybutton';
     const CHECKOUT_WIDGET = 'amazonpay_checkout_widget';
-    const WALLET_WIDGET = 'amazonpay_wallet_widget';
 
     const BUNDLE_NAME = 'Amazonpay';
 
@@ -51,10 +49,6 @@ class AmazonpayControllerProvider extends AbstractYvesControllerProvider
             ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
             ->value('amazonpay', 'amazonpay');
 
-        $this->createController('/{amazonpay}/change-payment-method', static::CHANGE_PAYMENT_METHOD, self::BUNDLE_NAME, 'Payment', 'changePaymentMethod')
-            ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
-            ->value('amazonpay', 'amazonpay');
-
         $this->createController('/{amazonpay}/payment-failed', static::PAYMENT_FAILED, self::BUNDLE_NAME, 'Payment', 'paymentFailed')
             ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
             ->value('amazonpay', 'amazonpay');
@@ -67,7 +61,7 @@ class AmazonpayControllerProvider extends AbstractYvesControllerProvider
             ->value('amazonpay', 'amazonpay');
 
         // widgets
-        $this->createController('/{amazonpay}/paybutton', static::PAYBUTTON, self::BUNDLE_NAME, 'Widget', 'payButton')
+        $this->createController('/{amazonpay}/paybutton', static::PAY_BUTTON, self::BUNDLE_NAME, 'Widget', 'payButton')
             ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
             ->value('amazonpay', 'amazonpay');
 
@@ -75,12 +69,21 @@ class AmazonpayControllerProvider extends AbstractYvesControllerProvider
             ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
             ->value('amazonpay', 'amazonpay');
 
-        $this->createController('/{amazonpay}/wallet-widget', static::WALLET_WIDGET, self::BUNDLE_NAME, 'Widget', 'walletWidget')
-            ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
-            ->value('amazonpay', 'amazonpay');
-
         // endpoint
         $this->createController('/amazonpay/endpoint', static::ENDPOINT, self::BUNDLE_NAME, 'Payment', 'endpoint');
     }
+
+
+    /**
+     * @return string
+     */
+    public function getAllowedLocalesPattern()
+    {
+        $systemLocales = Store::getInstance()->getLocales();
+        $implodedLocales = implode('|', array_keys($systemLocales));
+
+        return '(' . $implodedLocales . ')\/';
+    }
+
 
 }

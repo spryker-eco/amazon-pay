@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
 
-    <process name="AmazonpayCaptured">
+    <process name="AmazonpayCaptured01">
         <states>
             <state name="capture completed" reserved="true"/>
 
@@ -12,21 +12,28 @@
             <state name="refund completed"/>
             <state name="refund declined"/>
 
+            <state name="close allowed" reserved="true"/>
             <state name="closed" reserved="true"/>
+            <state name="completed non refundable"/>
         </states>
 
         <events>
             <event name="update refund status" manual="true" command="Amazonpay/UpdateRefundStatus" />
-            <event name="capture" manual="true" command="Amazonpay/Capture" />
+            <event name="capture" command="Amazonpay/Capture" manual="true" />
             <event name="close" onEnter="true" command="Amazonpay/CloseOrder" />
             <event name="refund" manual="true" command="Amazonpay/RefundOrder" />
-            <event name="cancel" manual="true" command="Amazonpay/CancelOrder" />
+            <event name="refund allowed time exceeded" timeout="30days" />
         </events>
 
         <transitions>
             <!-- close -->
-            <transition condition="Amazonpay/IsClosed" happy="true">
+            <transition happy="true" condition="Amazonpay/IsCloseAllowed">
                 <source>capture completed</source>
+                <target>close allowed</target>
+            </transition>
+
+            <transition happy="true" condition="Amazonpay/IsClosed">
+                <source>close allowed</source>
                 <target>closed</target>
                 <event>close</event>
             </transition>
@@ -61,6 +68,13 @@
                 <source>refund pending</source>
                 <target>refund declined</target>
                 <event>update refund status</event>
+            </transition>
+
+            <!-- from closed -->
+            <transition happy="true">
+                <source>closed</source>
+                <target>completed non refundable</target>
+                <event>refund allowed time exceeded</event>
             </transition>
         </transitions>
     </process>

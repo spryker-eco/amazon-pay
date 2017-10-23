@@ -18,9 +18,10 @@ class UpdateCaptureStatusCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        if (count($orderEntity->getItems()) === count($salesOrderItems)) {
-            $orderTransfer = $this->getOrderTransfer($orderEntity);
-            $this->getFacade()->updateCaptureStatus($orderTransfer);
+        $amazonpayCallTransfers = $this->groupSalesOrderItemsByCaptureId($salesOrderItems);
+
+        foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
+            $this->getFacade()->updateCaptureStatus($amazonpayCallTransfer);
         }
 
         return [];

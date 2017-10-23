@@ -8,38 +8,9 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
-use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface;
 
-class ShippingAddressDataQuoteUpdater implements QuoteUpdaterInterface
+class ShippingAddressDataQuoteUpdater extends QuoteUpdaterAbstract
 {
-
-    /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface
-     */
-    protected $executionAdapter;
-
-    /**
-     * @var \SprykerEco\Shared\Amazonpay\AmazonpayConfig
-     */
-    protected $config;
-
-    /**
-     * @var \Generated\Shared\Transfer\AmazonpaySetOrderReferenceDetailsResponseTransfer
-     */
-    protected $apiResponse;
-
-    /**
-     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface $executionAdapter
-     * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfig $config
-     */
-    public function __construct(
-        QuoteAdapterInterface $executionAdapter,
-        AmazonpayConfig $config
-    ) {
-        $this->executionAdapter = $executionAdapter;
-        $this->config = $config;
-    }
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
@@ -48,12 +19,12 @@ class ShippingAddressDataQuoteUpdater implements QuoteUpdaterInterface
      */
     public function update(QuoteTransfer $quoteTransfer)
     {
-        $this->apiResponse = $this->executionAdapter->call($quoteTransfer);
+        $amazonCallTransfer = $this->convertQuoteTransferToAmazonPayTransfer($quoteTransfer);
+        $apiResponse = $this->executionAdapter->call($amazonCallTransfer);
 
-        if ($this->apiResponse->getHeader()->getIsSuccess()) {
-            $quoteTransfer->setShippingAddress($this->apiResponse->getShippingAddress());
+        if ($apiResponse->getHeader()->getIsSuccess()) {
+            $quoteTransfer->setShippingAddress($apiResponse->getShippingAddress());
         }
-
 
         return $quoteTransfer;
     }

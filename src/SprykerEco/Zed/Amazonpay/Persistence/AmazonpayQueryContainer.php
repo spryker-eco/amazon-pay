@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Persistence;
 
+use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\Kernel\Persistence\AbstractQueryContainer;
 
 /**
@@ -69,6 +70,56 @@ class AmazonpayQueryContainer extends AbstractQueryContainer implements Amazonpa
         return $this
             ->queryPayments()
             ->filterByRefundReferenceId($refundReferenceId);
+    }
+
+    /**
+     * @api
+     *
+     * @param string $authorizationReferenceId
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $excludeItems
+     *
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
+     */
+    public function querySalesOrderItemsByPaymentReferenceId($authorizationReferenceId, $excludeItems = [])
+    {
+        return $this->getFactory()
+            ->createSpySalesOrderItemQuery()
+            ->filterByIdSalesOrderItem($excludeItems, Criteria::NOT_IN)
+            ->useSpyPaymentAmazonpaySalesOrderItemQuery()
+                ->useSpyPaymentAmazonpayQuery()
+                    ->filterByAuthorizationReferenceId($authorizationReferenceId)
+                ->endUse()
+            ->endUse();
+    }
+
+    /**
+     * @api
+     *
+     * @param int $salesOrderItemId
+     *
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
+     */
+    public function queryPaymentBySalesOrderItemId($salesOrderItemId)
+    {
+        return $this->getFactory()
+            ->createPaymentAmazonpayQuery()
+            ->useSpyPaymentAmazonpaySalesOrderItemQuery()
+                ->filterByFkSalesOrderItem($salesOrderItemId)
+            ->endUse();
+    }
+
+    /**
+     * @api
+     *
+     * @param int $salesOrderItemId
+     *
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItemQuery
+     */
+    public function queryBySalesOrderItemId($salesOrderItemId)
+    {
+        return $this->getFactory()
+            ->createPaymentAmazonpaySalesOrderItemQuery()
+            ->filterByFkSalesOrderItem($salesOrderItemId);
     }
 
     /**

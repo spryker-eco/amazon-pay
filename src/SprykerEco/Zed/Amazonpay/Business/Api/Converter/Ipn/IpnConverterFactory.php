@@ -7,25 +7,27 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn;
 
-use Exception;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\Details\AuthorizationDetailsConverter;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\Details\CaptureDetailsConverter;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\Details\RefundDetailsConverter;
+use SprykerEco\Zed\Amazonpay\Business\Exception\InvalidIpnCallException;
 
 class IpnConverterFactory implements IpnConverterFactoryInterface
 {
 
+    const NOTIFICATION_TYPE = 'NotificationType';
+
     /**
      * @param array $request
      *
-     * @throws \Exception
+     * @throws \SprykerEco\Zed\Amazonpay\Business\Exception\InvalidIpnCallException
      *
      * @return \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface
      */
     public function createIpnRequestConverter(array $request)
     {
-        switch ($request['NotificationType'])
+        switch ($request[self::NOTIFICATION_TYPE])
         {
             case AmazonpayConstants::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE:
                 return $this->createIpnPaymentAuthorizeRequestConverter();
@@ -40,7 +42,7 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
                 return $this->createIpnOrderReferenceNotificationConverter();
         }
 
-        throw new Exception('Unknown notification type: ' . $request['NotificationType']);
+        throw new InvalidIpnCallException('Unknown notification type: ' . $request[self::NOTIFICATION_TYPE]);
     }
 
     /**

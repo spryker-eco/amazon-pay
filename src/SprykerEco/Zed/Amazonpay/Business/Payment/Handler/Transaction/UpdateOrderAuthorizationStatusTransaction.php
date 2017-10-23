@@ -7,75 +7,102 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
-class UpdateOrderAuthorizationStatusTransaction extends AbstractOrderTransaction
+class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransaction
 {
 
     /**
-     * @var \Generated\Shared\Transfer\AmazonpayAuthorizeOrderResponseTransfer
-     */
-    protected $apiResponse;
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(OrderTransfer $orderTransfer)
+    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $orderTransfer = parent::execute($orderTransfer);
-
-        $orderTransfer->getAmazonpayPayment()->setAuthorizationDetails(
-            $this->apiResponse->getAuthorizationDetails()
-        );
-
-        if ($this->apiResponse->getHeader()->getIsSuccess()) {
-            if ($this->apiResponse->getAuthorizationDetails()->getIdList()) {
-                $this->paymentEntity->setAmazonCaptureId(
-                    $this->apiResponse->getAuthorizationDetails()->getIdList()
-                );
-
-                $this->paymentEntity->setStatus(
-                    AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED
-                );
-
-                $this->paymentEntity->save();
-
-                return $orderTransfer;
-            }
-
-            $status = $this->apiResponse->getAuthorizationDetails()->getAuthorizationStatus();
-
-            if ($status->getIsPending()) {
-                return $orderTransfer;
-            }
-
-            if ($status->getIsDeclined()) {
-                if ($status->getIsSuspended()) {
-                    $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED);
-                } else {
-                    $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_AUTH_DECLINED);
-                }
-            }
-
-            if ($status->getIsOpen()) {
-                $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_AUTH_OPEN);
-            }
-
-            if ($status->getIsClosed()) {
-                if ($status->getIsReauthorizable()) {
-                    $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_AUTH_EXPIRED);
-                } else {
-                    $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_AUTH_CLOSED);
-                }
-            }
-
-            $this->paymentEntity->save();
+        if (!$amazonpayCallTransfer->getAmazonpayPayment()
+            ->getAuthorizationDetails()
+            ->getAmazonAuthorizationId()) {
+            return $amazonpayCallTransfer;
         }
 
-        return $orderTransfer;
+        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+
+        $amazonPayment = $amazonpayCallTransfer->getAmazonpayPayment();
+
+        if (!$amazonPayment->getResponseHeader()->getIsSuccess()) {
+            return $amazonpayCallTransfer;
+        }
+        $status = $amazonPayment->getAuthorizationDetails()->getAuthorizationStatus();
+
+        if ($amazonPayment->getAuthorizationDetails()->getIdList()) {
+            $this->paymentEntity->setAmazonCaptureId(
+                $amazonPayment->getAuthorizationDetails()->getIdList()
+            )
+                ->setStatus(
+                    $status->getIsClosed()
+                        ? AmazonpayConstants::OMS_STATUS_CLOSED
+                        : AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED
+                )
+                ->save();
+
+            return $amazonpayCallTransfer;
+        }
+
+        if ($status->getIsPending()) {
+            return $amazonpayCallTransfer;
+        }
+
+        $paymentStatus = $this->getPaymentStatus($status);
+
+        if ($paymentStatus !== false) {
+            $this->paymentEntity->setStatus($paymentStatus);
+        }
+        if ($this->apiResponse->getCaptureDetails() &&
+            $this->apiResponse->getCaptureDetails()->getAmazonCaptureId()) {
+            $this->paymentEntity->setAmazonCaptureId(
+                $this->apiResponse->getCaptureDetails()->getAmazonCaptureId()
+            );
+        }
+
+        $this->paymentEntity->save();
+
+        return $amazonpayCallTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $status
+     *
+     * @return bool|string
+     */
+    protected function getPaymentStatus(AmazonpayStatusTransfer $status)
+    {
+        if ($status->getIsDeclined()) {
+            if ($status->getIsSuspended()) {
+                return AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED;
+            }
+
+            if ($status->getIsTransactionTimedOut()) {
+                return AmazonpayConstants::OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT;
+            }
+
+            return AmazonpayConstants::OMS_STATUS_AUTH_DECLINED;
+        }
+
+        if ($status->getIsOpen()) {
+            return AmazonpayConstants::OMS_STATUS_AUTH_OPEN;
+        }
+
+        if ($status->getIsClosed()) {
+            if ($status->getIsReauthorizable()) {
+                return AmazonpayConstants::OMS_STATUS_AUTH_EXPIRED;
+            }
+
+            return AmazonpayConstants::OMS_STATUS_AUTH_CLOSED;
+        }
+
+        return false;
     }
 
 }

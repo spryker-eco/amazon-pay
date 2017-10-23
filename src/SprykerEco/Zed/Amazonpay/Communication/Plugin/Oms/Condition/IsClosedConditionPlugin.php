@@ -7,28 +7,17 @@
 
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition;
 
-use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
-use Spryker\Zed\Oms\Communication\Plugin\Oms\Condition\ConditionInterface;
 
-class IsClosedConditionPlugin implements ConditionInterface
+class IsClosedConditionPlugin extends AbstractByOrderItemConditionPlugin
 {
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
-     *
-     * @return bool
+     * @return string
      */
-    public function check(SpySalesOrderItem $orderItem)
+    public function getConditionalStatus()
     {
-        foreach ($orderItem->getOrder()->getItems() as $nextOrderItem) {
-            if ($nextOrderItem->getOrder()->getSpyPaymentAmazonpays()->getFirst()->getStatus()
-                    !== AmazonpayConstants::OMS_STATUS_CLOSED) {
-                return false;
-            }
-        }
-
-        return true;
+        return AmazonpayConstants::OMS_STATUS_CLOSED;
     }
 
 }

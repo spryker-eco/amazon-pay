@@ -21,13 +21,7 @@ abstract class IpnPaymentAbstractRequestConverter extends AbstractArrayConverter
     protected function extractMessage(array $request)
     {
         $ipnRequestMessageTransfer = new AmazonpayIpnRequestMessageTransfer();
-        $ipnRequestMessageTransfer->setMessageId($request['MessageId']);
-        $ipnRequestMessageTransfer->setNotificationReferenceId($request['NotificationReferenceId']);
-        $ipnRequestMessageTransfer->setNotificationType($request['NotificationType']);
-        $ipnRequestMessageTransfer->setReleaseEnvironment($request['ReleaseEnvironment']);
-        $ipnRequestMessageTransfer->setSellerId($request['SellerId']);
-        $ipnRequestMessageTransfer->setTopicArn($request['TopicArn']);
-        $ipnRequestMessageTransfer->setType($request['Type']);
+        $ipnRequestMessageTransfer->fromArray($request, true);
 
         return $ipnRequestMessageTransfer;
     }

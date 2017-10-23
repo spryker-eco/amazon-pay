@@ -7,11 +7,12 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Order;
 
+use ArrayObject;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use Generated\Shared\Transfer\SaveOrderTransfer;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
+use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItem;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class Saver implements SaverInterface
@@ -25,19 +26,50 @@ class Saver implements SaverInterface
      */
     public function saveOrderPayment(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer)
     {
-        $this->savePaymentForOrder(
-            $quoteTransfer->getAmazonpayPayment(),
-            $checkoutResponseTransfer->getSaveOrder()
+        $paymentAmazonpayEntity = $this->createPaymentAmazonpay($quoteTransfer->getAmazonpayPayment());
+
+        $this->assignPaymentEntityToItems(
+            $paymentAmazonpayEntity,
+            $checkoutResponseTransfer->getSaveOrder()->getOrderItems()
         );
     }
 
     /**
+     * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $paymentEntity
+     * @param \ArrayObject|\Generated\Shared\Transfer\ItemTransfer[] $orderItems
+     *
+     * @return void
+     */
+    protected function assignPaymentEntityToItems(SpyPaymentAmazonpay $paymentEntity, ArrayObject $orderItems)
+    {
+        foreach ($orderItems as $itemTransfer) {
+            $this->assignPaymentToOrderItem($paymentEntity->getIdPaymentAmazonpay(), $itemTransfer->getIdSalesOrderItem());
+        }
+    }
+
+    /**
+     * @param int $idPayment
+     * @param int $orderItem
+     *
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItem
+     */
+    protected function assignPaymentToOrderItem($idPayment, $orderItem)
+    {
+        $entity = new SpyPaymentAmazonpaySalesOrderItem();
+        $entity->setFkPaymentAmazonpay($idPayment)
+            ->setFkSalesOrderItem($orderItem);
+
+        $entity->save();
+
+        return $entity;
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\AmazonpayPaymentTransfer $paymentTransfer
-     * @param \Generated\Shared\Transfer\SaveOrderTransfer $saveOrderTransfer
      *
      * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay
      */
-    protected function savePaymentForOrder(AmazonpayPaymentTransfer $paymentTransfer, SaveOrderTransfer $saveOrderTransfer)
+    protected function createPaymentAmazonpay(AmazonpayPaymentTransfer $paymentTransfer)
     {
         $paymentEntity = new SpyPaymentAmazonpay();
         $paymentEntity->setOrderReferenceId($paymentTransfer->getOrderReferenceId());
@@ -55,8 +87,6 @@ class Saver implements SaverInterface
         $paymentEntity->setAmazonCaptureId(
             $paymentTransfer->getAuthorizationDetails()->getIdList()
         );
-
-        $paymentEntity->setFkSalesOrder($saveOrderTransfer->getIdSalesOrder());
 
         $paymentEntity->setRequestId(
             $paymentTransfer->getResponseHeader()->getRequestId()
@@ -90,6 +120,8 @@ class Saver implements SaverInterface
         if ($paymentTransfer->getAuthorizationDetails()->getAuthorizationStatus()->getIsOpen()) {
             return AmazonpayConstants::OMS_STATUS_AUTH_OPEN;
         }
+
+        return AmazonpayConstants::OMS_STATUS_CANCELLED;
     }
 
 }

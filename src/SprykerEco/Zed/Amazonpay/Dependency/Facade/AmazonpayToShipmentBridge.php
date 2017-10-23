@@ -7,8 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Dependency\Facade;
 
-use Spryker\Zed\Shipment\Business\ShipmentFacadeInterface;
-
 class AmazonpayToShipmentBridge implements AmazonpayToShipmentInterface
 {
 
@@ -20,7 +18,7 @@ class AmazonpayToShipmentBridge implements AmazonpayToShipmentInterface
     /**
      * @param \Spryker\Zed\Shipment\Business\ShipmentFacadeInterface $shipmentFacade
      */
-    public function __construct(ShipmentFacadeInterface $shipmentFacade)
+    public function __construct($shipmentFacade)
     {
         $this->shipmentFacade = $shipmentFacade;
     }

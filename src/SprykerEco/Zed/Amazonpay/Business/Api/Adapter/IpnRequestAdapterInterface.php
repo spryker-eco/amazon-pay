@@ -11,7 +11,7 @@ interface IpnRequestAdapterInterface
 {
 
     /**
-     * @return array
+     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
      */
     public function getIpnRequest();
 

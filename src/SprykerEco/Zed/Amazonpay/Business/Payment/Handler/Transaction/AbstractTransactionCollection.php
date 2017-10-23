@@ -7,18 +7,18 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 abstract class AbstractTransactionCollection
 {
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractQuoteTransaction[]
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface[]
      */
     protected $transactionHandlers;
 
     /**
-     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractQuoteTransaction[] $transactionHandlers
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface[] $transactionHandlers
      */
     public function __construct(
         array $transactionHandlers
@@ -27,21 +27,24 @@ abstract class AbstractTransactionCollection
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $abstractTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    protected function executeHandlers(AbstractTransfer $abstractTransfer)
+    protected function executeHandlers(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        foreach ($this->transactionHandlers as $transactionHandler) {
-            $abstractTransfer = $transactionHandler->execute($abstractTransfer);
+        $amazonpayCallTransfer->getAmazonpayPayment()->setResponseHeader(null);
 
-            if (!$abstractTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-                return $abstractTransfer;
+        foreach ($this->transactionHandlers as $transactionHandler) {
+            $amazonpayCallTransfer = $transactionHandler->execute($amazonpayCallTransfer);
+
+            if ($amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader() &&
+                !$amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+                break;
             }
         }
 
-        return $abstractTransfer;
+        return $amazonpayCallTransfer;
     }
 
 }

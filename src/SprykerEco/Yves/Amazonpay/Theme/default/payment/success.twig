@@ -6,7 +6,18 @@
             <div class="callout success">
                 <h3>{{ 'checkout.step.success.title' | trans }}</h3>
                 {{ 'checkout.step.success.text' | trans }}
+
+                {% if isAsynchronous %}
+                    {{ 'amazonpay.success.asyncronous.text' | trans }}
+                {% endif %}
             </div>
         </div>
     </div>
+
+    <script>
+        window.onAmazonLoginReady = function() {
+            amazon.Login.logout();
+        };
+    </script>
+    <script async="async" src="{{ amazonpayConfig.isSandbox ? amazonpayConfig.widgetScriptPathSandbox : amazonpayConfig.widgetScriptPath }}"></script>
 {% endblock %}

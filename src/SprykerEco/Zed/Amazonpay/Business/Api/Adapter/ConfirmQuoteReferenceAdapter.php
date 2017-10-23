@@ -7,21 +7,21 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Adapter;
 
-use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
-class ConfirmQuoteReferenceAdapter extends AbstractAdapter implements QuoteAdapterInterface
+class ConfirmQuoteReferenceAdapter extends AbstractAdapter
 {
 
     /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\AmazonpayConfirmOrderReferenceResponseTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    public function call(QuoteTransfer $quoteTransfer)
+    public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         $result = $this->client->confirmOrderReference([
-            AbstractAdapter::AMAZON_ORDER_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
-            AbstractAdapter::AMAZON_AMOUNT => $this->getAmount($quoteTransfer),
+            AbstractAdapter::AMAZON_ORDER_REFERENCE_ID => $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId(),
+            AbstractAdapter::AMAZON_AMOUNT => $this->getAmount($amazonpayCallTransfer),
         ]);
 
         return $this->converter->convert($result);

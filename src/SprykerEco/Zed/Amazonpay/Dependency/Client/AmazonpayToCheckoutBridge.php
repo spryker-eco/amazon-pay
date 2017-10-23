@@ -8,20 +8,19 @@
 namespace SprykerEco\Zed\Amazonpay\Dependency\Client;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Client\Checkout\CheckoutClientInterface;
 
 class AmazonpayToCheckoutBridge implements AmazonpayToCheckoutInterface
 {
 
     /**
-     * @var \Spryker\Client\Checkout\CheckoutClient
+     * @var \Spryker\Client\Checkout\CheckoutClientInterface
      */
     protected $checkoutClient;
 
     /**
      * @param \Spryker\Client\Checkout\CheckoutClientInterface $checkoutClient
      */
-    public function __construct(CheckoutClientInterface $checkoutClient)
+    public function __construct($checkoutClient)
     {
         $this->checkoutClient = $checkoutClient;
     }
@@ -35,4 +34,5 @@ class AmazonpayToCheckoutBridge implements AmazonpayToCheckoutInterface
     {
         return $this->checkoutClient->placeOrder($quoteTransfer);
     }
+
 }

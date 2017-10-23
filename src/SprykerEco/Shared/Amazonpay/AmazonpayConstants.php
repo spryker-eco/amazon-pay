@@ -23,6 +23,27 @@ interface AmazonpayConstants
     const CAPTURE_NOW = 'CAPTURE_NOW';
     const AUTH_TRANSACTION_TIMEOUT = 'AUTH_TRANSACTION_TIMEOUT';
 
+    const PAYMENT_REJECT_ROUTE = 'AMAZONPAY:PAYMENT_REJECT_ROUTE';
+    const WIDGET_SCRIPT_PATH = 'AMAZONPAY:WIDGET_SCRIPT_PATH';
+    const WIDGET_SCRIPT_PATH_SANDBOX = 'AMAZONPAY:WIDGET_SCRIPT_PATH_SANDBOX';
+    const WIDGET_POPUP_LOGIN = 'AMAZONPAY:WIDGET_POPUP_LOGIN';
+
+    const WIDGET_BUTTON_TYPE = 'AMAZONPAY:WIDGET_BUTTON_TYPE';
+    const WIDGET_BUTTON_TYPE_FULL = 'PwA';
+    const WIDGET_BUTTON_TYPE_SHORT = 'Pay';
+    const WIDGET_BUTTON_TYPE_SQUARE = 'A';
+
+    const WIDGET_BUTTON_COLOR = 'AMAZONPAY:WIDGET_BUTTON_COLOR';
+    const WIDGET_BUTTON_COLOR_GOLD = 'Gold';
+    const WIDGET_BUTTON_COLOR_LIGHT_GRAY = 'LightGray';
+    const WIDGET_BUTTON_COLOR_DARK_GRAY = 'DarkGray';
+
+    const WIDGET_BUTTON_SIZE = 'AMAZONPAY:WIDGET_BUTTON_SIZE';
+    const WIDGET_BUTTON_SIZE_SMALL = 'small';
+    const WIDGET_BUTTON_SIZE_MEDIUM = 'medium';
+    const WIDGET_BUTTON_SIZE_LARGE = 'large';
+    const WIDGET_BUTTON_SIZE_XLARGE = 'x-large';
+
     const PAYMENT_METHOD = 'Amazon Pay';
     const PROVIDER_NAME = 'Amazon Pay';
 
@@ -38,7 +59,10 @@ interface AmazonpayConstants
     const OMS_STATUS_AUTH_PENDING = 'auth pending';
     const OMS_STATUS_AUTH_DECLINED = 'auth declined';
     const OMS_STATUS_AUTH_SUSPENDED = 'auth suspended';
+    const OMS_STATUS_MANUAL_AUTH_REQUIRED = 'manual auth requried';
+    const OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT = 'auth transaction timed out';
     const OMS_STATUS_AUTH_OPEN = 'auth open';
+    const OMS_STATUS_AUTH_OPEN_NO_CANCEL = 'auth open no cancel';
     const OMS_STATUS_AUTH_EXPIRED = 'auth expired';
     const OMS_STATUS_AUTH_CLOSED = 'auth closed';
     const OMS_STATUS_PAYMENT_METHOD_CHANGED = 'payment method changed';
@@ -61,14 +85,20 @@ interface AmazonpayConstants
     const OMS_EVENT_CLOSE = 'close';
     const OMS_EVENT_REFUND = 'refund';
 
+    const OMS_FLAG_NOT_AUTH = 'not auth';
+    const OMS_FLAG_NOT_CAPTURED = 'not captured';
+
     const REASON_CODE_EXPIRED_UNUSED = 'ExpiredUnused';
     const REASON_CODE_SELLER_CLOSED = 'SellerClosed';
     const REASON_CODE_PAYMENT_METHOD_INVALID = 'InvalidPaymentMethod';
     const REASON_CODE_AMAZON_CLOSED = 'AmazonClosed';
+    const REASON_CODE_TRANSACTION_TIMED_OUT = 'TransactionTimedOut';
 
     const IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE = 'PaymentAuthorize';
     const IPN_REQUEST_TYPE_PAYMENT_CAPTURE = 'PaymentCapture';
     const IPN_REQUEST_TYPE_PAYMENT_REFUND = 'PaymentRefund';
     const IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION = 'OrderReferenceNotification';
+
+    const PREFIX_AMAZONPAY_PAYMENT_ERROR = 'amazonpay.payment.error.';
 
 }

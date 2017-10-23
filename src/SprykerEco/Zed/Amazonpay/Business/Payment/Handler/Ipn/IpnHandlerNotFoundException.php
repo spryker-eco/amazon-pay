@@ -7,9 +7,8 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
-use \Exception;
+use Exception;
 
 class IpnHandlerNotFoundException extends Exception
 {
-
 }

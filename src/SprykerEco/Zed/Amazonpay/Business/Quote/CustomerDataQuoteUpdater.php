@@ -7,34 +7,11 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
+use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
-use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface;
 
-class CustomerDataQuoteUpdater implements QuoteUpdaterInterface
+class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
 {
-
-    /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\ObtainProfileInformationAdapter
-     */
-    protected $executionAdapter;
-
-    /**
-     * @var \SprykerEco\Shared\Amazonpay\AmazonpayConfig
-     */
-    protected $config;
-
-    /**
-     * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\QuoteAdapterInterface $executionAdapter
-     * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
-     */
-    public function __construct(
-        QuoteAdapterInterface $executionAdapter,
-        AmazonpayConfigInterface $config
-    ) {
-        $this->executionAdapter = $executionAdapter;
-        $this->config = $config;
-    }
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
@@ -43,13 +20,34 @@ class CustomerDataQuoteUpdater implements QuoteUpdaterInterface
      */
     public function update(QuoteTransfer $quoteTransfer)
     {
-        $quoteTransfer->setCustomer(
-            $this->executionAdapter->call($quoteTransfer)
-        );
+        $amazonCallTransfer = $this->convertQuoteTransferToAmazonPayTransfer($quoteTransfer);
+        /** @var \Generated\Shared\Transfer\CustomerTransfer $customer */
+        $customer = $this->executionAdapter->call($amazonCallTransfer);
 
-        $quoteTransfer->getCustomer()->setIsGuest(true);
+        $this->updateCustomer($quoteTransfer, $customer);
 
         return $quoteTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customer
+     *
+     * @return void
+     */
+    protected function updateCustomer(QuoteTransfer $quoteTransfer, CustomerTransfer $customer)
+    {
+        if (!$quoteTransfer->getCustomer()) {
+            $quoteTransfer->setCustomer($customer);
+
+            return;
+        }
+
+        $quoteTransfer->getCustomer()->fromArray($customer->modifiedToArray());
+
+        if ($quoteTransfer->getCustomer()->getIdCustomer()) {
+            $quoteTransfer->getCustomer()->setIsGuest(false);
+        }
     }
 
 }

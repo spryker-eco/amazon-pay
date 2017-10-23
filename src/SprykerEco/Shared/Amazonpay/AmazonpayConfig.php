@@ -7,14 +7,13 @@
 
 namespace SprykerEco\Shared\Amazonpay;
 
+use Spryker\Shared\Kernel\AbstractBundleConfig;
 use Spryker\Shared\Kernel\Store;
-use Spryker\Zed\Kernel\AbstractBundleConfig;
 
 class AmazonpayConfig extends AbstractBundleConfig implements AmazonpayConfigInterface
 {
 
     /**
-     *
      * @return string
      */
     public function getClientId()
@@ -71,7 +70,7 @@ class AmazonpayConfig extends AbstractBundleConfig implements AmazonpayConfigInt
     }
 
     /**
-     * @return string
+     * @return bool
      */
     public function isSandbox()
     {
@@ -99,7 +98,55 @@ class AmazonpayConfig extends AbstractBundleConfig implements AmazonpayConfigInt
      */
     public function getAuthTransactionTimeout()
     {
-        return $this->get(AmazonpayConstants::AUTH_TRANSACTION_TIMEOUT);
+        return (int)$this->get(AmazonpayConstants::AUTH_TRANSACTION_TIMEOUT);
+    }
+
+    /**
+     * @return string
+     */
+    public function getWidgetScriptPath()
+    {
+        return $this->get(AmazonpayConstants::WIDGET_SCRIPT_PATH);
+    }
+
+    /**
+     * @return string
+     */
+    public function getWidgetScriptPathSandbox()
+    {
+        return $this->get(AmazonpayConstants::WIDGET_SCRIPT_PATH_SANDBOX);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPopupLogin()
+    {
+        return (bool)$this->get(AmazonpayConstants::WIDGET_POPUP_LOGIN);
+    }
+
+    /**
+     * @return string
+     */
+    public function getButtonSize()
+    {
+        return $this->get(AmazonpayConstants::WIDGET_BUTTON_SIZE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getButtonColor()
+    {
+        return $this->get(AmazonpayConstants::WIDGET_BUTTON_COLOR);
+    }
+
+    /**
+     * @return string
+     */
+    public function getButtonType()
+    {
+        return $this->get(AmazonpayConstants::WIDGET_BUTTON_TYPE);
     }
 
 }

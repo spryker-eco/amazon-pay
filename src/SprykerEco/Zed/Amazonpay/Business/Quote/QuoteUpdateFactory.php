@@ -7,41 +7,41 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
-use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
 use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface;
+use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface;
 
 class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
 {
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactory
+     * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface
      */
     protected $adapterFactory;
 
     /**
-     * @var \SprykerEco\Shared\Amazonpay\AmazonpayConfig
-     */
-    protected $config;
-
-    /**
-     * @var \Spryker\Zed\Shipment\Business\ShipmentFacadeInterface
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface
      */
     protected $shipmentFacade;
 
     /**
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface
+     */
+    protected $messengerFacade;
+
+    /**
      * @param \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface $adapterFactory
-     * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
      * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface $shipmentFacade
+     * @param \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMessengerInterface $messengerFacade
      */
     public function __construct(
         AdapterFactoryInterface $adapterFactory,
-        AmazonpayConfigInterface $config,
-        AmazonpayToShipmentInterface $shipmentFacade
+        AmazonpayToShipmentInterface $shipmentFacade,
+        AmazonpayToMessengerInterface $messengerFacade
     ) {
         $this->adapterFactory = $adapterFactory;
-        $this->config = $config;
         $this->shipmentFacade = $shipmentFacade;
+        $this->messengerFacade = $messengerFacade;
     }
 
     /**
@@ -50,8 +50,7 @@ class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
     public function createShippingAddressQuoteDataUpdater()
     {
         return new ShippingAddressDataQuoteUpdater(
-            $this->adapterFactory->createSetOrderReferenceDetailsAmazonpayAdapter(),
-            $this->config
+            $this->adapterFactory->createSetOrderReferenceDetailsAmazonpayAdapter()
         );
     }
 
@@ -61,6 +60,7 @@ class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
     public function createQuoteDataInitializer()
     {
         return new PrepareQuoteCollection(
+            $this->messengerFacade,
             [
                 $this->createAmazonpayDataQuoteInitializer(),
                 $this->createCustomerDataQuoteUpdater(),
@@ -102,8 +102,7 @@ class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
     protected function createCustomerDataQuoteUpdater()
     {
         return new CustomerDataQuoteUpdater(
-            $this->adapterFactory->createObtainProfileInformationAdapter(),
-            $this->config
+            $this->adapterFactory->createObtainProfileInformationAdapter()
         );
     }
 

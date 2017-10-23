@@ -7,6 +7,8 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
+use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
+use Propel\Runtime\Collection\ObjectCollection;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
@@ -16,7 +18,7 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
 {
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsBridge $omsFacade
+     * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface $omsFacade
      */
     protected $omsFacade;
 
@@ -53,16 +55,37 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
     public function handle(AbstractTransfer $amazonpayIpnRequestTransfer)
     {
         $paymentEntity = $this->retrievePaymentEntity($amazonpayIpnRequestTransfer);
+
+        if ($paymentEntity === null) {
+            return;
+        }
+
         $paymentEntity->setStatus($this->getOmsStatusName());
         $paymentEntity->save();
 
         $this->omsFacade->triggerEvent(
             $this->getOmsEventId(),
-            $paymentEntity->getSpySalesOrder()->getItems(),
+            $this->getAffectedSalesOrderItems($paymentEntity),
             []
         );
 
         $this->ipnRequestLogger->log($amazonpayIpnRequestTransfer, $paymentEntity);
+    }
+
+    /**
+     * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $paymentEntity
+     *
+     * @return \Propel\Runtime\Collection\ObjectCollection | \Orm\Zed\Sales\Persistence\SpySalesOrderItem[]
+     */
+    protected function getAffectedSalesOrderItems(SpyPaymentAmazonpay $paymentEntity)
+    {
+        $items = new ObjectCollection();
+
+        foreach ($paymentEntity->getSpyPaymentAmazonpaySalesOrderItems() as $amazonpaySalesOrderItem) {
+            $items[] = $amazonpaySalesOrderItem->getSpySalesOrderItem();
+        }
+
+        return $items;
     }
 
     /**

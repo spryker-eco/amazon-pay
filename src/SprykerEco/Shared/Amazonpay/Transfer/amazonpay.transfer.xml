@@ -3,6 +3,14 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
 
+    <transfer name="Quote">
+        <property name="amazonpayPayment" type="AmazonpayPayment"/>
+    </transfer>
+
+    <transfer name="Order">
+        <property name="idSalesOrder" type="int" />
+    </transfer>
+
     <transfer name="AmazonpayPayment">
         <property name="fkSalesOrder" type="int" />
         <property name="orderReferenceId" type="string"/>
@@ -17,13 +25,16 @@
         <property name="responseHeader" type="AmazonpayResponseHeader"/>
     </transfer>
 
-    <transfer name="Quote">
-        <property name="amazonpayPayment" type="AmazonpayPayment"/>
-    </transfer>
-
-    <transfer name="Order">
-        <property name="idSalesOrder" type="int" />
-        <property name="amazonpayPayment" type="AmazonpayPayment" />
+    <transfer name="AmazonpayResponse">
+        <property name="shippingAddress" type="Address"/>
+        <property name="orderReferenceStatus" type="AmazonpayStatus"/>
+        <property name="isSandbox" type="bool"/>
+        <property name="shippingAddress" type="Address"/>
+        <property name="billingAddress" type="Address"/>
+        <property name="authorizationDetails" type="AmazonpayAuthorizationDetails"/>
+        <property name="captureDetails" type="AmazonpayCaptureDetails" />
+        <property name="refundDetails" type="AmazonpayRefundDetails"/>
+        <property name="header" type="AmazonpayResponseHeader"/>
     </transfer>
 
     <transfer name="AmazonpayResponseConstraint">
@@ -38,36 +49,6 @@
         <property name="constraints" type="AmazonpayResponseConstraint[]" singular="constraint" />
         <property name="errorCode" type="string" />
         <property name="errorMessage" type="string" />
-    </transfer>
-
-    <transfer name="AmazonpaySetOrderReferenceDetailsResponse">
-        <property name="header" type="AmazonpayResponseHeader"/>
-        <property name="shippingAddress" type="Address"/>
-    </transfer>
-
-    <transfer name="AmazonpayConfirmOrderReferenceResponse">
-        <property name="header" type="AmazonpayResponseHeader"/>
-    </transfer>
-
-    <transfer name="AmazonpayGetOrderReferenceDetailsResponse">
-        <property name="header" type="AmazonpayResponseHeader"/>
-        <property name="orderReferenceStatus" type="string"/>
-        <property name="isSandbox" type="bool"/>
-        <property name="shippingAddress" type="Address"/>
-        <property name="billingAddress" type="Address"/>
-    </transfer>
-
-    <transfer name="AmazonpayCancelOrderResponse">
-        <property name="header" type="AmazonpayResponseHeader"/>
-    </transfer>
-
-    <transfer name="AmazonpayCloseOrderResponse">
-        <property name="header" type="AmazonpayResponseHeader"/>
-    </transfer>
-
-    <transfer name="AmazonpayRefundOrderResponse">
-        <property name="header" type="AmazonpayResponseHeader"/>
-        <property name="refundDetails" type="AmazonpayRefundDetails"/>
     </transfer>
 
     <transfer name="AmazonpayPrice">
@@ -88,6 +69,8 @@
         <property name="isPaymentMethodInvalid" type="bool"/>
         <property name="isClosedByAmazon" type="bool"/>
         <property name="isReauthorizable" type="bool"/>
+        <property name="isCancelled" type="bool"/>
+        <property name="isTransactionTimedOut" type="bool"/>
     </transfer>
 
     <transfer name="AmazonpayOrderReferenceNotification">
@@ -126,22 +109,12 @@
         <property name="softDescriptor" type="string" />
     </transfer>
 
-    <transfer name="AmazonpayCaptureOrderResponse">
-        <property name="header" type="AmazonpayResponseHeader" />
-        <property name="captureDetails" type="AmazonpayCaptureDetails" />
-    </transfer>
-
     <transfer name="AmazonpayRefundDetails">
         <property name="AmazonRefundId" type="string"/>
         <property name="RefundReferenceId" type="string"/>
         <property name="RefundAmount" type="AmazonpayPrice"/>
         <property name="SellerRefundNote" type="string"/>
         <property name="refundStatus" type="AmazonpayStatus" />
-    </transfer>
-
-    <transfer name="AmazonpayAuthorizeOrderResponse">
-        <property name="header" type="AmazonpayResponseHeader"/>
-        <property name="authorizationDetails" type="AmazonpayAuthorizationDetails"/>
     </transfer>
 
     <transfer name="AmazonpayIpnRequestMessage">
@@ -173,6 +146,22 @@
         <property name="message" type="AmazonpayIpnRequestMessage" />
         <property name="amazonOrderReferenceId" type="string" />
         <property name="orderReferenceStatus" type="AmazonpayStatus" />
+    </transfer>
+
+    <transfer name="AmazonpayCall">
+        <property name="AmazonpayPayment" type="AmazonpayPayment" />
+        <property name="RequestedAmount" type="int" />
+        <property name="ShippingAddress" type="Address" />
+        <property name="BillingAddress" type="Address" />
+        <property name="BillingSameAsShipping" type="bool" />
+        <property name="OrderReference" type="string" />
+        <property name="Email" type="string" />
+        <property name="Items" type="Item[]" singular="Item"/>
+    </transfer>
+
+    <transfer name="AmazonpaySalesOrderItemGroup">
+        <property name="AmazonpayPayment" type="AmazonpayPayment" />
+        <property name="Items" type="Item[]" singular="Item"/>
     </transfer>
 
 </transfers>

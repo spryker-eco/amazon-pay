@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
+use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class ReauthorizeExpiredOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
@@ -18,12 +19,27 @@ class ReauthorizeExpiredOrderCommandPlugin extends AbstractAmazonpayCommandPlugi
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        // no partial closing should be possible
-        if (count($orderEntity->getItems()) === count($salesOrderItems)) {
-            $this->getFacade()->reauthorizeExpiredOrder($this->getOrderTransfer($orderEntity));
-        }
+        $amazonpayCallTransfers = $this->groupSalesOrderItemsByAuthId($salesOrderItems);
+        $customerEmail = $orderEntity->getEmail() ?? $orderEntity->getCustomer()->getEmail();
 
+        foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
+            $amazonpayCallTransfer->setShippingAddress($this->buildAddressTransfer($orderEntity->getShippingAddress()))
+                ->setBillingAddress($this->buildAddressTransfer($orderEntity->getBillingAddress()));
+            $amazonpayCallTransfer->setEmail($customerEmail);
+            $amazonpayCallTransfer->setRequestedAmount(
+                $this->getRequestedAmountByOrderAndItems($orderEntity, $amazonpayCallTransfer->getItems())
+            );
+            $this->getFacade()->reauthorizeExpiredOrder($amazonpayCallTransfer);
+        }
         return [];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getAffectingRequestedAmountItemsStateFlag()
+    {
+        return AmazonpayConstants::OMS_FLAG_NOT_AUTH;
     }
 
 }

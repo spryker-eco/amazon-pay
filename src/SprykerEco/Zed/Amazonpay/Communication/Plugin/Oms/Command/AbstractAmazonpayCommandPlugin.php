@@ -7,202 +7,262 @@
 
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
-use Generated\Shared\Transfer\AmazonpayAuthorizationDetailsTransfer;
-use Generated\Shared\Transfer\AmazonpayCaptureDetailsTransfer;
-use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
-use Generated\Shared\Transfer\AmazonpayRefundDetailsTransfer;
-use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
-use Generated\Shared\Transfer\AmazonpayStatusTransfer;
+use ArrayObject;
+use Generated\Shared\Transfer\AddressTransfer;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use Generated\Shared\Transfer\ItemTransfer;
+use IteratorAggregate;
+use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
+use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
+use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
+use Spryker\Shared\Shipment\ShipmentConstants;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 
 /**
- * @method \SprykerEco\Zed\Amazonpay\Business\AmazonpayFacade getFacade()
+ * @method \SprykerEco\Zed\Amazonpay\Business\AmazonpayFacadeInterface getFacade()
  * @method \SprykerEco\Zed\Amazonpay\Communication\AmazonpayCommunicationFactory getFactory()
  */
 abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements CommandByOrderInterface
 {
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param array $salesOrderItems
-     *
-     * @return \Generated\Shared\Transfer\OrderTransfer
+     * @var bool
      */
-    protected function getOrderTransfer(SpySalesOrder $orderEntity, array $salesOrderItems = [])
+    protected $wasShippingCharged;
+
+    /**
+     * @return string
+     */
+    protected function getAffectingRequestedAmountItemsStateFlag()
     {
-        $responseHeader = new AmazonpayResponseHeaderTransfer();
-        $responseHeader->setIsSuccess(true);
+        return '';
+    }
 
-        $paymentTransfer = new AmazonpayPaymentTransfer();
-        $paymentTransfer->setResponseHeader($responseHeader);
-        $paymentTransfer->setOrderReferenceStatus(new AmazonpayStatusTransfer());
-        $paymentTransfer->fromArray($this->getPaymentEntity($orderEntity)->toArray(), true);
-        $paymentTransfer->setAuthorizationDetails($this->getAuthorizationDetailsTransfer($orderEntity));
-        $paymentTransfer->setCaptureDetails($this->getCaptureDetailsTransfer($orderEntity));
-        $paymentTransfer->setRefundDetails($this->getAmazonpayRefundDetailsTransfer($orderEntity));
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param \ArrayObject|\Generated\Shared\Transfer\ItemTransfer[] $itemTransfers
+     *
+     * @return int
+     */
+    protected function getRequestedAmountByOrderAndItems(SpySalesOrder $orderEntity, ArrayObject $itemTransfers)
+    {
+        $subtotal = $this->getPriceToPay($itemTransfers);
 
-        $orderTransfer = $this
-            ->getFactory()
-            ->getSalesFacade()
-            ->getOrderByIdSalesOrder(
-                $orderEntity->getIdSalesOrder()
+        if (!$this->wasShippingCharged
+            && $this->getFactory()
+                ->createRequestAmountCalculator()
+                ->shouldChargeShipping($orderEntity, $this->getAffectingRequestedAmountItemsStateFlag())) {
+            $subtotal += $this->getShipmentPrice($orderEntity);
+            $this->wasShippingCharged = true;
+        }
+
+        return $subtotal;
+    }
+
+    /**
+     * @param \ArrayObject $itemTransfers
+     *
+     * @return int
+     */
+    protected function getPriceToPay(ArrayObject $itemTransfers)
+    {
+        $subtotal = 0;
+
+        foreach ($itemTransfers as $itemTransfer) {
+            $subtotal += $itemTransfer->getUnitPriceToPayAggregation();
+        }
+
+        return $subtotal;
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     *
+     * @return int
+     */
+    protected function getShipmentPrice(SpySalesOrder $orderEntity)
+    {
+        return $this->getExpenseByType($orderEntity, ShipmentConstants::SHIPMENT_EXPENSE_TYPE)
+            ->getPriceToPayAggregation();
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param string $type
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesExpense
+     */
+    protected function getExpenseByType(SpySalesOrder $orderEntity, $type)
+    {
+        foreach ($orderEntity->getExpenses() as $expense) {
+            if ($expense->getType() === $type) {
+                return $expense;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $salesOrderItems
+     *
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer[]
+     */
+    protected function groupSalesOrderItemsByAuthId(array $salesOrderItems)
+    {
+        $groups = [];
+
+        foreach ($salesOrderItems as $salesOrderItem) {
+            $payment = $this->getPaymentDetails($salesOrderItem);
+
+            if (!$payment) {
+                continue;
+            }
+
+            $groupData = $groups[$payment->getAuthorizationReferenceId()] ?? $this->createAmazonpayCallTransfer($payment);
+
+            $groupData->addItem(
+                $this->mapSalesOrderItemToItemTransfer($salesOrderItem)
             );
 
-        $orderTransfer->setAmazonpayPayment($paymentTransfer);
+            $groups[$payment->getAuthorizationReferenceId()] = $groupData;
+        }
 
-        return $orderTransfer;
+        return $groups;
     }
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $salesOrderItems
      *
-     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer[]
      */
-    protected function getPaymentEntity(SpySalesOrder $orderEntity)
+    protected function groupSalesOrderItemsByCaptureId(array $salesOrderItems)
     {
-        return $orderEntity->getSpyPaymentAmazonpays()->getFirst();
+        $groups = [];
+
+        foreach ($salesOrderItems as $salesOrderItem) {
+            $payment = $this->getPaymentDetails($salesOrderItem);
+
+            if (!$payment) {
+                continue;
+            }
+
+            $groupData = $groups[$payment->getAmazonCaptureId()] ?? $this->createAmazonpayCallTransfer($payment);
+
+            $groupData->addItem(
+                $this->mapSalesOrderItemToItemTransfer($salesOrderItem)
+            );
+
+            $groups[$payment->getAmazonCaptureId()] = $groupData;
+        }
+
+        return $groups;
     }
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $payment
      *
-     * @return \Generated\Shared\Transfer\AmazonpayAuthorizationDetailsTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    protected function getAuthorizationDetailsTransfer(SpySalesOrder $orderEntity)
+    protected function createAmazonpayCallTransfer(SpyPaymentAmazonpay $payment)
     {
-        $authDetailsTransfer = new AmazonpayAuthorizationDetailsTransfer();
-        $authDetailsTransfer->fromArray($this->getPaymentEntity($orderEntity)->toArray(), true);
-        $authDetailsTransfer->setAuthorizationStatus(
-            $this->getAuthStatusTransfer($this->getPaymentEntity($orderEntity)->getStatus())
+        $amazonPayment = $this->getFactory()
+            ->createPaymentAmazonpayConverter()
+            ->mapEntityToTransfer($payment);
+
+        $amazonpayCallTransfer = new AmazonpayCallTransfer();
+        $amazonpayCallTransfer->setAmazonpayPayment($amazonPayment);
+
+        return $amazonpayCallTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param array $salesOrderItems
+     *
+     * @return void
+     */
+    protected function populateItems(AmazonpayCallTransfer $amazonpayCallTransfer, array $salesOrderItems)
+    {
+        $amazonpayCallTransfer->setItems(
+            new ArrayObject(
+                array_map([$this, 'mapSalesOrderItemToItemTransfer'], $salesOrderItems)
+            )
         );
-
-        return $authDetailsTransfer;
     }
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $salesOrderItem
      *
-     * @return \Generated\Shared\Transfer\AmazonpayRefundDetailsTransfer
+     * @return null|\Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay
      */
-    protected function getAmazonpayRefundDetailsTransfer(SpySalesOrder $orderEntity)
+    protected function getPaymentDetails(SpySalesOrderItem $salesOrderItem)
     {
-        $refundDetailsTransfer = new AmazonpayRefundDetailsTransfer();
-        $refundDetailsTransfer->fromArray($this->getPaymentEntity($orderEntity)->toArray(), true);
-        $refundDetailsTransfer->setRefundStatus(
-            $this->getRefundStatusTransfer($this->getPaymentEntity($orderEntity)->getStatus())
-        );
+        /** @var \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItem $payment */
+        $payment = $salesOrderItem->getSpyPaymentAmazonpaySalesOrderItems()->getLast();
 
-        return $refundDetailsTransfer;
+        if (!$payment) {
+            return null;
+        }
+
+        return $payment->getSpyPaymentAmazonpay();
     }
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $salesOrderItemEntity
      *
-     * @return \Generated\Shared\Transfer\AmazonpayCaptureDetailsTransfer
+     * @return \Generated\Shared\Transfer\ItemTransfer
      */
-    protected function getCaptureDetailsTransfer($orderEntity)
+    protected function mapSalesOrderItemToItemTransfer(SpySalesOrderItem $salesOrderItemEntity)
     {
-        $captureDetailsTransfer = new AmazonpayCaptureDetailsTransfer();
-        $captureDetailsTransfer->fromArray($this->getPaymentEntity($orderEntity)->toArray(), true);
-        $captureDetailsTransfer->setCaptureStatus(
-            $this->getCaptureStatusTransfer($this->getPaymentEntity($orderEntity)->getStatus())
-        );
+        $itemTransfer = (new ItemTransfer())
+            ->fromArray($salesOrderItemEntity->toArray(), true);
 
-        return $captureDetailsTransfer;
+        $itemTransfer->setUnitGrossPrice($salesOrderItemEntity->getGrossPrice());
+        $itemTransfer->setUnitNetPrice($salesOrderItemEntity->getNetPrice());
+        $itemTransfer->setUnitPrice($salesOrderItemEntity->getPrice());
+        $itemTransfer->setUnitPriceToPayAggregation($salesOrderItemEntity->getPriceToPayAggregation());
+        $itemTransfer->setUnitSubtotalAggregation($salesOrderItemEntity->getSubtotalAggregation());
+        $itemTransfer->setUnitProductOptionPriceAggregation($salesOrderItemEntity->getProductOptionPriceAggregation());
+        $itemTransfer->setUnitExpensePriceAggregation($salesOrderItemEntity->getExpensePriceAggregation());
+        $itemTransfer->setUnitTaxAmount($salesOrderItemEntity->getTaxAmount());
+        $itemTransfer->setUnitTaxAmountFullAggregation($salesOrderItemEntity->getTaxAmountFullAggregation());
+        $itemTransfer->setUnitDiscountAmountAggregation($salesOrderItemEntity->getDiscountAmountAggregation());
+        $itemTransfer->setUnitDiscountAmountFullAggregation($salesOrderItemEntity->getDiscountAmountFullAggregation());
+        $itemTransfer->setRefundableAmount($salesOrderItemEntity->getRefundableAmount());
+
+        return $itemTransfer;
     }
 
     /**
+     * @param \IteratorAggregate|\Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $salesOrderItems
      * @param string $statusName
      *
-     * @return \Generated\Shared\Transfer\AmazonpayStatusTransfer
+     * @return void
      */
-    protected function getAuthStatusTransfer($statusName)
+    protected function setOrderItemsStatus(IteratorAggregate $salesOrderItems, $statusName)
     {
-        $amazonpayStatusTransfer = new AmazonpayStatusTransfer();
+        $statusEntity = SpyOmsOrderItemStateQuery::create()->findByName($statusName)[0];
 
-        $amazonpayStatusTransfer->setIsPending(
-            $statusName === AmazonpayConstants::OMS_STATUS_AUTH_PENDING
-        );
-
-        $amazonpayStatusTransfer->setIsDeclined(
-            $statusName === AmazonpayConstants::OMS_STATUS_AUTH_DECLINED ||
-            $statusName === AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED
-        );
-
-        $amazonpayStatusTransfer->setIsSuspended(
-            $statusName === AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED
-        );
-
-        $amazonpayStatusTransfer->setIsOpen(
-            $statusName === AmazonpayConstants::OMS_STATUS_AUTH_OPEN
-        );
-
-        return $amazonpayStatusTransfer;
+        foreach ($salesOrderItems as $salesOrderItem) {
+            $salesOrderItem->setFkOmsOrderItemState($statusEntity->getIdOmsOrderItemState());
+            $salesOrderItem->save();
+        }
     }
 
     /**
-     * @param string $statusName
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderAddress $address
      *
-     * @return \Generated\Shared\Transfer\AmazonpayStatusTransfer
+     * @return \Generated\Shared\Transfer\AddressTransfer
      */
-    protected function getCaptureStatusTransfer($statusName)
+    protected function buildAddressTransfer(SpySalesOrderAddress $address)
     {
-        $amazonpayStatusTransfer = new AmazonpayStatusTransfer();
-
-        $amazonpayStatusTransfer->setIsPending(
-            $statusName === AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING
-        );
-
-        $amazonpayStatusTransfer->setIsDeclined(
-            $statusName === AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED
-        );
-
-        $amazonpayStatusTransfer->setIsCompleted(
-            $statusName === AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED
-        );
-
-        $amazonpayStatusTransfer->setIsClosed(
-            $statusName === AmazonpayConstants::OMS_STATUS_CAPTURE_CLOSED
-        );
-
-        return $amazonpayStatusTransfer;
-    }
-
-    /**
-     * @param string $statusName
-     *
-     * @return \Generated\Shared\Transfer\AmazonpayStatusTransfer
-     */
-    protected function getRefundStatusTransfer($statusName)
-    {
-        $amazonpayStatusTransfer = new AmazonpayStatusTransfer();
-
-        $amazonpayStatusTransfer->setIsPending(
-            $statusName === AmazonpayConstants::OMS_STATUS_REFUND_PENDING
-        );
-
-        $amazonpayStatusTransfer->setIsDeclined(
-            $statusName === AmazonpayConstants::OMS_STATUS_REFUND_DECLINED
-        );
-
-        $amazonpayStatusTransfer->setIsCompleted(
-            $statusName === AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED
-        );
-
-        return $amazonpayStatusTransfer;
-    }
-
-    /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     *
-     * @return \Orm\Zed\Customer\Persistence\SpyCustomer
-     */
-    protected function getCustomerEntity(SpySalesOrder $orderEntity)
-    {
-        return $orderEntity->getCustomer();
+        return (new AddressTransfer())
+            ->fromArray($address->toArray(), true)
+            ->fromArray($address->getCountry()->toArray(), true);
     }
 
 }

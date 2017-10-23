@@ -46,7 +46,7 @@ interface AmazonpayConfigInterface
     public function getCurrencyIsoCode();
 
     /**
-     * @return string
+     * @return bool
      */
     public function isSandbox();
 
@@ -64,5 +64,14 @@ interface AmazonpayConfigInterface
      * @return int
      */
     public function getAuthTransactionTimeout();
+    /**
+     * @return string
+     */
+    public function getWidgetScriptPath();
+
+    /**
+     * @return string
+     */
+    public function getWidgetScriptPathSandbox();
 
 }

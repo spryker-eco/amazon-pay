@@ -48,4 +48,32 @@ interface AmazonpayQueryContainerInterface extends QueryContainerInterface
      */
     public function queryPaymentByRefundReferenceId($refundReferenceId);
 
+    /**
+     * @api
+     *
+     * @param string $authorizationReferenceId
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $excludeItems
+     *
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
+     */
+    public function querySalesOrderItemsByPaymentReferenceId($authorizationReferenceId, $excludeItems = []);
+
+    /**
+     * @api
+     *
+     * @param int $salesOrderItemId
+     *
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
+     */
+    public function queryPaymentBySalesOrderItemId($salesOrderItemId);
+
+    /**
+     * @api
+     *
+     * @param int $salesOrderItemId
+     *
+     * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItemQuery
+     */
+    public function queryBySalesOrderItemId($salesOrderItemId);
+
 }
