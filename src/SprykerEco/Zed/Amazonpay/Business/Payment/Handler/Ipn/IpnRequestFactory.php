@@ -111,7 +111,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnPaymentAuthorizeSuspendedHandler()
     {
@@ -123,19 +123,19 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnPaymentAuthorizeDeclineHandler()
     {
             return new IpnPaymentAuthorizeDeclineHandler(
-            $this->omsFacade,
-            $this->amazonpayQueryContainer,
-            $this->ipnRequestLogger
-        );
+                $this->omsFacade,
+                $this->amazonpayQueryContainer,
+                $this->ipnRequestLogger
+            );
     }
 
     /**
-     * @return IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnPaymentAuthorizeOpenHandler()
     {
@@ -147,7 +147,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnPaymentAuthorizeClosedHandler()
     {
@@ -184,7 +184,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnPaymentCaptureDeclineHandler()
     {
@@ -196,7 +196,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnPaymentCaptureCompletedHandler()
     {
@@ -208,7 +208,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnEmptyHandler()
     {
@@ -237,7 +237,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnPaymentRefundDeclineHandler()
     {
@@ -249,7 +249,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnPaymentRefundCompletedHandler()
     {
@@ -294,9 +294,8 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
             $ipnRequest->getOrderReferenceStatus()->getState());
     }
 
-
     /**
-     * @return IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnOrderReferenceOpenHandler()
     {
@@ -308,7 +307,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnOrderReferenceClosedHandler()
     {
@@ -320,7 +319,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnOrderReferenceSuspendedHandler()
     {
@@ -332,7 +331,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return IpnRequestHandlerInterface
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     protected function createIpnOrderReferenceCancelledHandler()
     {
@@ -342,5 +341,4 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
             $this->ipnRequestLogger
         );
     }
-
 }
