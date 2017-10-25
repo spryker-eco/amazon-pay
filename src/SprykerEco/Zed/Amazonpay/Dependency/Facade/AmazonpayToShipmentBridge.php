@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Dependency\Facade;
 
 class AmazonpayToShipmentBridge implements AmazonpayToShipmentInterface
 {
-
     /**
      * @var \Spryker\Zed\Shipment\Business\ShipmentFacadeInterface
      */
@@ -32,5 +31,4 @@ class AmazonpayToShipmentBridge implements AmazonpayToShipmentInterface
     {
         return $this->shipmentFacade->getShipmentMethodTransferById($idMethod);
     }
-
 }

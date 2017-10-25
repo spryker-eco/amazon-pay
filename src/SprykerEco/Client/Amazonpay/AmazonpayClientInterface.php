@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AmazonpayClientInterface
 {
-
     /**
      * Specification:
      *  - Set initial order data to quote
@@ -59,5 +58,4 @@ interface AmazonpayClientInterface
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function confirmPurchase(QuoteTransfer $quoteTransfer);
-
 }

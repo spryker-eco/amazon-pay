@@ -12,7 +12,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter;
 
 class AuthorizationDetailsConverter extends AbstractArrayConverter
 {
-
     const PAYMENT_METHOD_INVALID = 'InvalidPaymentMethod';
     const CAPTURE_NOW = 'CaptureNow';
     const CAPTURED_AMOUNT = 'CapturedAmount';
@@ -114,5 +113,4 @@ class AuthorizationDetailsConverter extends AbstractArrayConverter
             $authorizationDetails->setCaptureNow($authDetailsData[self::CAPTURE_NOW]);
         }
     }
-
 }

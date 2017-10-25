@@ -19,7 +19,6 @@ use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
  */
 interface AmazonpayFacadeInterface
 {
-
     /**
      * Specification
      * - Updates quote after user clicks Amazon Pay bundle
@@ -219,5 +218,4 @@ interface AmazonpayFacadeInterface
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
     public function updateRefundStatus(AmazonpayCallTransfer $amazonpayCallTransfer);
-
 }

@@ -9,7 +9,6 @@ namespace SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk;
 
 class CloseOrderResponse extends AbstractResponse
 {
-
     /**
      * @param array $requestParameters
      */
@@ -26,5 +25,4 @@ class CloseOrderResponse extends AbstractResponse
 </CloseOrderReferenceResponse>
 ';
     }
-
 }

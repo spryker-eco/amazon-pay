@@ -9,7 +9,6 @@ namespace SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk;
 
 class GetOrderReferenceDetailsResponse extends AbstractResponse
 {
-
     /**
      * @param array $requestParameters
      */
@@ -92,5 +91,4 @@ class GetOrderReferenceDetailsResponse extends AbstractResponse
                 return sprintf($destinationXml, 'Wien', '+4319999999', 'AT', '1050', 'Karl Küfer', 'Matzleinsdorferplatz 9999');
         }
     }
-
 }

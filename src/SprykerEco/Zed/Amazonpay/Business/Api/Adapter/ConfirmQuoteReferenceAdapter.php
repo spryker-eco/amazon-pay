@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class ConfirmQuoteReferenceAdapter extends AbstractAdapter
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -26,5 +25,4 @@ class ConfirmQuoteReferenceAdapter extends AbstractAdapter
 
         return $this->converter->convert($result);
     }
-
 }

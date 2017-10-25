@@ -11,12 +11,10 @@ use Generated\Shared\Transfer\MessageTransfer;
 
 interface AmazonpayToMessengerInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\MessageTransfer $messenger
      *
      * @return array
      */
     public function addErrorMessage(MessageTransfer $messenger);
-
 }

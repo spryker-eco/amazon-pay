@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 
 class GetRefundOrderDetailsConverter extends AbstractRefundOrderConverter
 {
-
     /**
      * @return string
      */
@@ -17,5 +16,4 @@ class GetRefundOrderDetailsConverter extends AbstractRefundOrderConverter
     {
         return 'GetRefundDetailsResult';
     }
-
 }

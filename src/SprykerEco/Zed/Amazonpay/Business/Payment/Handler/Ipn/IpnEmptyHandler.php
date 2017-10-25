@@ -11,7 +11,6 @@ use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 
 class IpnEmptyHandler implements IpnRequestHandlerInterface
 {
-
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $amazonpayIpnRequestTransfer
      *
@@ -21,5 +20,4 @@ class IpnEmptyHandler implements IpnRequestHandlerInterface
     {
         // do nothing. but probably logging has to be added. and for others transactions as well
     }
-
 }

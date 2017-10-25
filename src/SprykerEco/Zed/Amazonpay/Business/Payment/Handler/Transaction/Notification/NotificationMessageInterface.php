@@ -7,6 +7,6 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification;
 
-abstract class AbstractNotificationMessage
+interface NotificationMessageInterface
 {
 }

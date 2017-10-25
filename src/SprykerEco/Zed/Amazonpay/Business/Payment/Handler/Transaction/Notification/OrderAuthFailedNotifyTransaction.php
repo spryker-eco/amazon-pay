@@ -12,27 +12,26 @@ use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTrans
 
 class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderNotificationSenderInterface
      */
     protected $orderFailedAuthNotificationSender;
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageBuilderInterface
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageFactoryInterface
      */
-    protected $orderMessageBuilder;
+    protected $orderMessageFactory;
 
     /**
      * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderNotificationSenderInterface $orderFailedAuthNotificationSender
-     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageBuilderInterface $orderMessageBuilder
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageFactoryInterface $orderMessageFactory
      */
     public function __construct(
         OrderNotificationSenderInterface $orderFailedAuthNotificationSender,
-        OrderMessageBuilderInterface $orderMessageBuilder
+        OrderMessageFactoryInterface $orderMessageFactory
     ) {
         $this->orderFailedAuthNotificationSender = $orderFailedAuthNotificationSender;
-        $this->orderMessageBuilder = $orderMessageBuilder;
+        $this->orderMessageFactory = $orderMessageFactory;
     }
 
     /**
@@ -42,7 +41,7 @@ class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
      */
     public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        $message = $this->orderMessageBuilder->createFailedAuthMessage($amazonpayCallTransfer);
+        $message = $this->orderMessageFactory->getFailedAuthMessage($amazonpayCallTransfer);
 
         if ($amazonpayCallTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()
@@ -54,5 +53,4 @@ class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
 
         return $amazonpayCallTransfer;
     }
-
 }

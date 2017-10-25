@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Dependency\Facade;
 
 interface AmazonpayToUtilEncodingInterface
 {
-
     /**
      * {@inheritdoc}
      *
@@ -36,5 +35,4 @@ interface AmazonpayToUtilEncodingInterface
      * @return array
      */
     public function decodeJson($jsonValue, $assoc = false, $depth = null, $options = null);
-
 }

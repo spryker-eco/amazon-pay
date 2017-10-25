@@ -13,7 +13,6 @@ use SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface;
 
 class AmazonpaySdkAdapterFactory implements AmazonpaySdkAdapterFactoryInterface
 {
-
     const MERCHANT_ID = 'merchant_id';
     const PLATFORM_ID = 'platform_id';
     const ACCESS_KEY = 'access_key';
@@ -54,5 +53,4 @@ class AmazonpaySdkAdapterFactory implements AmazonpaySdkAdapterFactoryInterface
     {
         return new IpnHandler($headers, $body);
     }
-
 }

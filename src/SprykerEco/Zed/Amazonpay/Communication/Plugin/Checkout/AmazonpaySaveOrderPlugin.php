@@ -18,7 +18,6 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
  */
 class AmazonpaySaveOrderPlugin extends AbstractPlugin implements CheckoutSaveOrderInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponse
@@ -29,5 +28,4 @@ class AmazonpaySaveOrderPlugin extends AbstractPlugin implements CheckoutSaveOrd
     {
         $this->getFacade()->saveOrderPayment($quoteTransfer, $checkoutResponse);
     }
-
 }

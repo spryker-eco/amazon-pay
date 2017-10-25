@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 class AmazonpayToCheckoutBridge implements AmazonpayToCheckoutInterface
 {
-
     /**
      * @var \Spryker\Client\Checkout\CheckoutClientInterface
      */
@@ -34,5 +33,4 @@ class AmazonpayToCheckoutBridge implements AmazonpayToCheckoutInterface
     {
         return $this->checkoutClient->placeOrder($quoteTransfer);
     }
-
 }

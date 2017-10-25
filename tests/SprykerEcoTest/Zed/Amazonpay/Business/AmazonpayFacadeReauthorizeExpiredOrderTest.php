@@ -7,13 +7,12 @@
 
 namespace SprykerEcoTest\Zed\Amazonpay\Business;
 
-use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
+use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 
 class AmazonpayFacadeReauthorizeExpiredOrderTest extends AmazonpayFacadeAbstractTest
 {
-
     /**
      * @dataProvider reauthorizeExpiredOrderProvider
      *
@@ -41,17 +40,16 @@ class AmazonpayFacadeReauthorizeExpiredOrderTest extends AmazonpayFacadeAbstract
         return [
             'opened' => [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
+                AmazonpayConfig::OMS_STATUS_AUTH_OPEN,
             ],
             'declined' => [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                AmazonpayConstants::OMS_STATUS_AUTH_CLOSED,
+                AmazonpayConfig::OMS_STATUS_AUTH_CLOSED,
             ],
             'suspended' => [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED,
+                AmazonpayConfig::OMS_STATUS_AUTH_SUSPENDED,
             ],
         ];
     }
-
 }

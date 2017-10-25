@@ -9,29 +9,32 @@ namespace SprykerEcoTest\Zed\Amazonpay\Business;
 
 use ArrayObject;
 use Codeception\TestCase\Test;
-use Orm\Zed\Country\Persistence\SpyCountry;
-use Orm\Zed\Country\Persistence\SpyCountryQuery;
-use Orm\Zed\Shipment\Persistence\SpyShipmentMethod;
-use Orm\Zed\Shipment\Persistence\SpyShipmentMethodQuery;
-use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
-use SprykerEcoTest\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\Amazonpay\Persistence\Base\SpyPaymentAmazonpaySalesOrderItemQuery;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery;
+use Orm\Zed\Country\Persistence\SpyCountry;
+use Orm\Zed\Country\Persistence\SpyCountryQuery;
 use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateHistoryQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddressQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
+use Orm\Zed\Shipment\Persistence\SpyShipmentMethod;
+use Orm\Zed\Shipment\Persistence\SpyShipmentMethodQuery;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayEntityToTransferConverter;
 use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainer;
+use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
+use SprykerEcoTest\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock;
 use SprykerTest\Shared\Testify\Helper\ConfigHelper;
 
 class AmazonpayFacadeAbstractTest extends Test
 {
-
+    /**
+     * @return void
+     */
     protected function setUp()
     {
         parent::setUp();
@@ -54,9 +57,9 @@ class AmazonpayFacadeAbstractTest extends Test
         $config[AmazonpayConstants::WIDGET_SCRIPT_PATH] = '';
         $config[AmazonpayConstants::WIDGET_SCRIPT_PATH_SANDBOX] = '';
         $config[AmazonpayConstants::WIDGET_POPUP_LOGIN] = true;
-        $config[AmazonpayConstants::WIDGET_BUTTON_TYPE] = AmazonpayConstants::WIDGET_BUTTON_TYPE_FULL;
-        $config[AmazonpayConstants::WIDGET_BUTTON_SIZE] = AmazonpayConstants::WIDGET_BUTTON_SIZE_MEDIUM;
-        $config[AmazonpayConstants::WIDGET_BUTTON_COLOR] = AmazonpayConstants::WIDGET_BUTTON_COLOR_DARK_GRAY;
+        $config[AmazonpayConstants::WIDGET_BUTTON_TYPE] = AmazonpayConfig::WIDGET_BUTTON_TYPE_FULL;
+        $config[AmazonpayConstants::WIDGET_BUTTON_SIZE] = AmazonpayConfig::WIDGET_BUTTON_SIZE_MEDIUM;
+        $config[AmazonpayConstants::WIDGET_BUTTON_COLOR] = AmazonpayConfig::WIDGET_BUTTON_COLOR_DARK_GRAY;
 
         foreach ($config as $key => $value) {
             $configHelper->setConfig($key, $value);
@@ -69,10 +72,10 @@ class AmazonpayFacadeAbstractTest extends Test
     protected function getOrderStatusMap()
     {
         return [
-            AbstractResponse::ORDER_REFERENCE_ID_1 => AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
-            AbstractResponse::ORDER_REFERENCE_ID_2 => AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
-            AbstractResponse::ORDER_REFERENCE_ID_3 => AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
-            AbstractResponse::ORDER_REFERENCE_ID_4 => AmazonpayConstants::OMS_STATUS_AUTH_CLOSED,
+            AbstractResponse::ORDER_REFERENCE_ID_1 => AmazonpayConfig::OMS_STATUS_AUTH_OPEN,
+            AbstractResponse::ORDER_REFERENCE_ID_2 => AmazonpayConfig::OMS_STATUS_AUTH_OPEN,
+            AbstractResponse::ORDER_REFERENCE_ID_3 => AmazonpayConfig::OMS_STATUS_AUTH_OPEN,
+            AbstractResponse::ORDER_REFERENCE_ID_4 => AmazonpayConfig::OMS_STATUS_AUTH_CLOSED,
         ];
     }
 
@@ -103,12 +106,12 @@ class AmazonpayFacadeAbstractTest extends Test
             ->find();
 
         $ids = [];
-        foreach ($shipmentMethods as $shipmentMethod){
+        foreach ($shipmentMethods as $shipmentMethod) {
             $ids[] = $shipmentMethod->getIdShipmentMethod();
         }
 
         if (count($ids) < $count) {
-            for ($i=count($ids); $i<$count; $i++) {
+            for ($i = count($ids); $i < $count; $i++) {
                 $shipmentMethod = new SpyShipmentMethod();
                 $shipmentMethod->save();
                 $ids[] = $shipmentMethod->getIdShipmentMethod();
@@ -278,5 +281,4 @@ class AmazonpayFacadeAbstractTest extends Test
 
         $this->assertEquals($expectedStatus, $payment->getStatus());
     }
-
 }

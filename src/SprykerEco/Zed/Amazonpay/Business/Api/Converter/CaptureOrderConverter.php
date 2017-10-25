@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 
 class CaptureOrderConverter extends AbstractCaptureOrderConverter
 {
-
     /**
      * @return string
      */
@@ -17,5 +16,4 @@ class CaptureOrderConverter extends AbstractCaptureOrderConverter
     {
         return 'CaptureResult';
     }
-
 }

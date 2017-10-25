@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Apache OSL-2
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerEco\Zed\Amazonpay\Business\Payment;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
@@ -7,7 +12,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 class QuoteToAmazonpayConverter
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -21,5 +25,4 @@ class QuoteToAmazonpayConverter
 
         return $amazonpayCallTransfer;
     }
-
 }

@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\CustomerTransfer;
 
 class ObtainProfileInformationConverter extends AbstractArrayConverter
 {
-
     /**
      * @param array $response
      *
@@ -31,5 +30,4 @@ class ObtainProfileInformationConverter extends AbstractArrayConverter
 
         return $responseTransfer;
     }
-
 }

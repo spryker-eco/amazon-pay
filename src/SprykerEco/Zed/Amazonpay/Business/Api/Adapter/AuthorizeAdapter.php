@@ -16,7 +16,6 @@ use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyInterface;
 
 class AuthorizeAdapter extends AbstractAdapter
 {
-
     const AUTHORIZATION_AMOUNT = 'authorization_amount';
     const AUTHORIZATION_REFERENCE_ID = 'authorization_reference_id';
     const TRANSACTION_TIMEOUT = 'transaction_timeout';
@@ -99,5 +98,4 @@ class AuthorizeAdapter extends AbstractAdapter
             static::CAPTURE_NOW => $this->captureNow,
         ];
     }
-
 }

@@ -26,7 +26,6 @@ use SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdateFactory;
  */
 class AmazonpayBusinessFactory extends AbstractBusinessFactory
 {
-
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\TransactionFactoryInterface
      */
@@ -195,5 +194,4 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     {
         return new RefundOrderModel($this->getRefundFacade());
     }
-
 }

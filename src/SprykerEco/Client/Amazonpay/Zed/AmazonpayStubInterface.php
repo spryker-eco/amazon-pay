@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AmazonpayStubInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -39,5 +38,4 @@ interface AmazonpayStubInterface
      * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
      */
     public function confirmPurchase(QuoteTransfer $quoteTransfer);
-
 }

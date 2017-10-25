@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn;
 
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\Details\AuthorizationDetailsConverter;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\Details\CaptureDetailsConverter;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\Details\RefundDetailsConverter;
@@ -15,7 +15,6 @@ use SprykerEco\Zed\Amazonpay\Business\Exception\InvalidIpnCallException;
 
 class IpnConverterFactory implements IpnConverterFactoryInterface
 {
-
     const NOTIFICATION_TYPE = 'NotificationType';
 
     /**
@@ -27,18 +26,17 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
      */
     public function createIpnRequestConverter(array $request)
     {
-        switch ($request[self::NOTIFICATION_TYPE])
-        {
-            case AmazonpayConstants::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE:
+        switch ($request[self::NOTIFICATION_TYPE]) {
+            case AmazonpayConfig::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE:
                 return $this->createIpnPaymentAuthorizeRequestConverter();
 
-            case AmazonpayConstants::IPN_REQUEST_TYPE_PAYMENT_CAPTURE:
+            case AmazonpayConfig::IPN_REQUEST_TYPE_PAYMENT_CAPTURE:
                 return $this->createIpnPaymentCaptureRequestConverter();
 
-            case AmazonpayConstants::IPN_REQUEST_TYPE_PAYMENT_REFUND:
+            case AmazonpayConfig::IPN_REQUEST_TYPE_PAYMENT_REFUND:
                 return $this->createIpnPaymentRefundRequestConverter();
 
-            case AmazonpayConstants::IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION:
+            case AmazonpayConfig::IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION:
                 return $this->createIpnOrderReferenceNotificationConverter();
         }
 
@@ -106,5 +104,4 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
     {
         return new RefundDetailsConverter();
     }
-
 }

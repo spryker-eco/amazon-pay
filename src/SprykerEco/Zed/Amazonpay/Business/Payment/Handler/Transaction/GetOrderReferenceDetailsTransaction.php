@@ -9,11 +9,10 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class GetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -43,7 +42,7 @@ class GetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
             $orderReferenceStatus = new AmazonpayStatusTransfer();
             $orderReferenceStatus->setState($this->apiResponse->getOrderReferenceStatus());
             $orderReferenceStatus->setIsOpen(
-                $this->apiResponse->getOrderReferenceStatus() === AmazonpayConstants::ORDER_REFERENCE_STATUS_OPEN
+                $this->apiResponse->getOrderReferenceStatus() === AmazonpayConfig::ORDER_REFERENCE_STATUS_OPEN
             );
 
             $amazonpayCallTransfer->getAmazonpayPayment()->setOrderReferenceStatus($orderReferenceStatus);
@@ -51,5 +50,4 @@ class GetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
 
         return $amazonpayCallTransfer;
     }
-
 }

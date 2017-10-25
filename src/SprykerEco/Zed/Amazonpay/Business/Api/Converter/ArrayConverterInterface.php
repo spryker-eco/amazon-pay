@@ -9,12 +9,10 @@ namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 
 interface ArrayConverterInterface
 {
-
     /**
      * @param array $data
      *
      * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
      */
     public function convert(array $data);
-
 }

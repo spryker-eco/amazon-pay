@@ -9,11 +9,10 @@ namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class UpdateSuspendedOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
-
     /**
      * @inheritdoc
      */
@@ -27,7 +26,7 @@ class UpdateSuspendedOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
             );
 
             if ($amazonpayCallTransfer->getAmazonpayPayment()->getStatus()
-                === AmazonpayConstants::OMS_STATUS_PAYMENT_METHOD_CHANGED) {
+                === AmazonpayConfig::OMS_STATUS_PAYMENT_METHOD_CHANGED) {
                 $this->getFacade()->reauthorizeSuspendedOrder($amazonpayCallTransfer);
             }
 
@@ -42,7 +41,6 @@ class UpdateSuspendedOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     protected function getAffectingRequestedAmountItemsStateFlag()
     {
-        return AmazonpayConstants::OMS_FLAG_NOT_AUTH;
+        return AmazonpayConfig::OMS_FLAG_NOT_AUTH;
     }
-
 }

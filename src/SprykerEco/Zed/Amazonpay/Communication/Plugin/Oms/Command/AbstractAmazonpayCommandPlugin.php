@@ -27,7 +27,6 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
  */
 abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements CommandByOrderInterface
 {
-
     /**
      * @var bool
      */
@@ -264,5 +263,4 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
             ->fromArray($address->toArray(), true)
             ->fromArray($address->getCountry()->toArray(), true);
     }
-
 }

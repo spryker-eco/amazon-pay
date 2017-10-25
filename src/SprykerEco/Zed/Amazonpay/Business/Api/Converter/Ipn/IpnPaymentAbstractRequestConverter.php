@@ -12,7 +12,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter;
 
 abstract class IpnPaymentAbstractRequestConverter extends AbstractArrayConverter
 {
-
     /**
      * @param array $request
      *
@@ -25,5 +24,4 @@ abstract class IpnPaymentAbstractRequestConverter extends AbstractArrayConverter
 
         return $ipnRequestMessageTransfer;
     }
-
 }

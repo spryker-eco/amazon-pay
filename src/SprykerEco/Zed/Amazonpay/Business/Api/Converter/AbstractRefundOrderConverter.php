@@ -12,7 +12,6 @@ use PayWithAmazon\ResponseInterface;
 
 abstract class AbstractRefundOrderConverter extends AbstractResponseParserConverter
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $refundDetailsConverter
      */
@@ -40,5 +39,4 @@ abstract class AbstractRefundOrderConverter extends AbstractResponseParserConver
 
         return parent::setBody($responseTransfer, $responseParser);
     }
-
 }

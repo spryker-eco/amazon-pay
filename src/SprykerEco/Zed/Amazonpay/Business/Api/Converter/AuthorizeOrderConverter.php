@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 
 class AuthorizeOrderConverter extends AbstractAuthorizeOrderConverter
 {
-
     /**
      * @return string
      */
@@ -17,5 +16,4 @@ class AuthorizeOrderConverter extends AbstractAuthorizeOrderConverter
     {
         return 'AuthorizeResult';
     }
-
 }

@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 abstract class AbstractTransactionCollection
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface[]
      */
@@ -46,5 +45,4 @@ abstract class AbstractTransactionCollection
 
         return $amazonpayCallTransfer;
     }
-
 }

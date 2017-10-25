@@ -12,7 +12,6 @@ use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 
 interface IpnRequestLoggerInterface
 {
-
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $ipnRequest
      * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $paymentAmazonpay
@@ -20,5 +19,4 @@ interface IpnRequestLoggerInterface
      * @return void
      */
     public function log(AbstractTransfer $ipnRequest, SpyPaymentAmazonpay $paymentAmazonpay);
-
 }

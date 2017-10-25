@@ -8,11 +8,10 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class CancelOrderTransaction extends AbstractAmazonpayTransaction
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -33,7 +32,7 @@ class CancelOrderTransaction extends AbstractAmazonpayTransaction
                 $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
             }
 
-            $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CANCELLED);
+            $this->paymentEntity->setStatus(AmazonpayConfig::OMS_STATUS_CANCELLED);
             $this->paymentEntity->save();
 
             if ($isPartialProcessing) {
@@ -51,5 +50,4 @@ class CancelOrderTransaction extends AbstractAmazonpayTransaction
     {
         return false;
     }
-
 }

@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class RefundOrderAdapter extends AbstractAdapter
 {
-
     const REFUND_REFERENCE_ID = 'refund_reference_id';
     const REFUND_AMOUNT = 'refund_amount';
 
@@ -43,5 +42,4 @@ class RefundOrderAdapter extends AbstractAdapter
 
         return $this->converter->convert($result);
     }
-
 }

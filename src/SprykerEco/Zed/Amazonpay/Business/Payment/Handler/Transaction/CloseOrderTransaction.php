@@ -9,11 +9,10 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Propel\Runtime\ActiveQuery\Criteria;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class CloseOrderTransaction extends AbstractAmazonpayTransaction
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -26,7 +25,7 @@ class CloseOrderTransaction extends AbstractAmazonpayTransaction
         if (!$this->apiResponse->getHeader()->getIsSuccess()) {
             return $amazonpayCallTransfer;
         }
-        $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_CLOSED);
+        $this->paymentEntity->setStatus(AmazonpayConfig::OMS_STATUS_CLOSED);
         $this->paymentEntity->save();
 
         $this->closeAllPaymentsForThisOrder($this->paymentEntity->getOrderReferenceId());
@@ -42,11 +41,11 @@ class CloseOrderTransaction extends AbstractAmazonpayTransaction
     protected function closeAllPaymentsForThisOrder($orderReferenceId)
     {
         $payments = $this->amazonpayQueryContainer->queryPaymentByOrderReferenceId($orderReferenceId)
-            ->filterByStatus(AmazonpayConstants::OMS_STATUS_CLOSED, Criteria::NOT_EQUAL)
+            ->filterByStatus(AmazonpayConfig::OMS_STATUS_CLOSED, Criteria::NOT_EQUAL)
             ->find();
 
         foreach ($payments as $payment) {
-            $payment->setStatus(AmazonpayConstants::OMS_STATUS_CLOSED);
+            $payment->setStatus(AmazonpayConfig::OMS_STATUS_CLOSED);
             $payment->save();
         }
     }
@@ -58,5 +57,4 @@ class CloseOrderTransaction extends AbstractAmazonpayTransaction
     {
         return false;
     }
-
 }

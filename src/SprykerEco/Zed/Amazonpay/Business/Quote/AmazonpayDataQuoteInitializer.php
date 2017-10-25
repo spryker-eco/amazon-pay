@@ -15,7 +15,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 class AmazonpayDataQuoteInitializer implements QuoteUpdaterInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -78,5 +77,4 @@ class AmazonpayDataQuoteInitializer implements QuoteUpdaterInterface
     {
         return new AmazonpayStatusTransfer();
     }
-
 }

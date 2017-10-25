@@ -13,7 +13,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface;
 
 class ObtainProfileInformationAdapter implements CallAdapterInterface
 {
-
     /**
      * @var \PayWithAmazon\ClientInterface
      */
@@ -51,5 +50,4 @@ class ObtainProfileInformationAdapter implements CallAdapterInterface
 
         return $customer;
     }
-
 }

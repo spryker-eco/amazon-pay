@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Dependency\Facade;
 
 class AmazonpayToMoneyBridge implements AmazonpayToMoneyInterface
 {
-
     /**
      * @var \Spryker\Zed\Money\Business\MoneyFacadeInterface
      */
@@ -32,5 +31,4 @@ class AmazonpayToMoneyBridge implements AmazonpayToMoneyInterface
     {
         return $this->moneyFacade->convertIntegerToDecimal($value);
     }
-
 }

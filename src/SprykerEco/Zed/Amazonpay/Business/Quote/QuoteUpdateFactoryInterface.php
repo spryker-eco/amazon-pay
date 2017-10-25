@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
 interface QuoteUpdateFactoryInterface
 {
-
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface
      */
@@ -24,5 +23,4 @@ interface QuoteUpdateFactoryInterface
      * @return \SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface
      */
     public function createShipmentDataQuoteUpdater();
-
 }

@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class PaymentController extends AbstractController
 {
-
     const URL_PARAM_REFERENCE_ID = 'reference_id';
     const URL_PARAM_ACCESS_TOKEN = 'access_token';
     const URL_PARAM_SHIPMENT_METHOD_ID = 'shipment_method_id';
@@ -269,5 +268,4 @@ class PaymentController extends AbstractController
     {
         return $this->getFactory()->createAmazonpayConfig();
     }
-
 }

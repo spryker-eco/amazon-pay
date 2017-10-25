@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 class ShippingAddressDataQuoteUpdater extends QuoteUpdaterAbstract
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -28,5 +27,4 @@ class ShippingAddressDataQuoteUpdater extends QuoteUpdaterAbstract
 
         return $quoteTransfer;
     }
-
 }

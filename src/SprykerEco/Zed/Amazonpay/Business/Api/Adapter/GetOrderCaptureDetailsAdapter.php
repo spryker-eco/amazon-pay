@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class GetOrderCaptureDetailsAdapter extends AbstractAdapter
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -28,5 +27,4 @@ class GetOrderCaptureDetailsAdapter extends AbstractAdapter
 
         return $this->converter->convert($result);
     }
-
 }

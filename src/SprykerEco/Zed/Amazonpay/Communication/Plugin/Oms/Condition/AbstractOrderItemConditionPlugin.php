@@ -12,7 +12,6 @@ use Spryker\Zed\Oms\Dependency\Plugin\Condition\ConditionInterface;
 
 abstract class AbstractOrderItemConditionPlugin implements ConditionInterface
 {
-
     /**
      * @return string
      */
@@ -49,5 +48,4 @@ abstract class AbstractOrderItemConditionPlugin implements ConditionInterface
 
         return $lastPayment->getSpyPaymentAmazonpay();
     }
-
 }

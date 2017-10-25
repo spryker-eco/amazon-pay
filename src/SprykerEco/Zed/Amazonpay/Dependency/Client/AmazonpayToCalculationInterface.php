@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AmazonpayToCalculationInterface
 {
-
     /**
      * Recalculates the given quote and returns an updated one.
      *
@@ -22,5 +21,4 @@ interface AmazonpayToCalculationInterface
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function recalculate(QuoteTransfer $quoteTransfer);
-
 }

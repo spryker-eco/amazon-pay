@@ -12,7 +12,6 @@ use Generated\Shared\Transfer\ShipmentTransfer;
 
 class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacadeAbstractTest
 {
-
     /**
      * @param int $shipmentSelection
      *
@@ -61,5 +60,4 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
             'Express delivery' => [$this->createQuote($shipmentMethodIds[1]), 'Express', 590],
         ];
     }
-
 }

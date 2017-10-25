@@ -8,11 +8,10 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 abstract class IpnAbstractPaymentRefundHandler extends IpnAbstractTransferRequestHandler
 {
-
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\AmazonpayResponseTransfer $amazonpayIpnPaymentRefundRequestTransfer
      *
@@ -31,7 +30,6 @@ abstract class IpnAbstractPaymentRefundHandler extends IpnAbstractTransferReques
      */
     protected function getOmsEventId()
     {
-        return AmazonpayConstants::OMS_EVENT_UPDATE_REFUND_STATUS;
+        return AmazonpayConfig::OMS_EVENT_UPDATE_REFUND_STATUS;
     }
-
 }

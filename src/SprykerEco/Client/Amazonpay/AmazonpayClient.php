@@ -15,7 +15,6 @@ use Spryker\Client\Kernel\AbstractClient;
  */
 class AmazonpayClient extends AbstractClient implements AmazonpayClientInterface
 {
-
     /**
      * {@inheritdoc}
      *
@@ -71,5 +70,4 @@ class AmazonpayClient extends AbstractClient implements AmazonpayClientInterface
     {
         return $this->getFactory()->createZedStub()->confirmPurchase($quoteTransfer);
     }
-
 }

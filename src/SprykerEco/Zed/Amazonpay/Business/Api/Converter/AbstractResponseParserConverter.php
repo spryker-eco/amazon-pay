@@ -13,11 +13,10 @@ use Generated\Shared\Transfer\AmazonpayResponseConstraintTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseTransfer;
 use PayWithAmazon\ResponseInterface;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 abstract class AbstractResponseParserConverter extends AbstractConverter implements ResponseParserConverterInterface
 {
-
     const STATUS_CODE_SUCCESS = 200;
     const ORDER_REFERENCE_DETAILS = 'OrderReferenceDetails';
     const CONSTRAINTS = 'Constraints';
@@ -142,7 +141,6 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
             }
         }
 
-
         $header->setConstraints($constraints);
         $this->extractErrorFromConstraints($header);
 
@@ -176,7 +174,7 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
         }
 
         $constraint = $header->getConstraints()[0];
-        $header->setErrorCode(AmazonpayConstants::PREFIX_AMAZONPAY_PAYMENT_ERROR . $constraint->getConstraintId());
+        $header->setErrorCode(AmazonpayConfig::PREFIX_AMAZONPAY_PAYMENT_ERROR . $constraint->getConstraintId());
     }
 
     /**
@@ -317,5 +315,4 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     {
         return empty($value) ? null : (string)$value;
     }
-
 }

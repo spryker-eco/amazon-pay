@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 class AmazonpayToCalculationBridge implements AmazonpayToCalculationInterface
 {
-
     /**
      * @var \Spryker\Client\Calculation\CalculationClientInterface
      */
@@ -34,5 +33,4 @@ class AmazonpayToCalculationBridge implements AmazonpayToCalculationInterface
     {
         return $this->calculationClient->recalculate($quoteTransfer);
     }
-
 }

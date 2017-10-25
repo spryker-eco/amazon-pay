@@ -11,7 +11,6 @@ use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 
 abstract class IpnAbstractOrderReferenceHandler extends IpnAbstractTransferRequestHandler
 {
-
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\AmazonpayIpnOrderReferenceNotificationTransfer $amazonpayIpnOrderReferenceOpenTransfer
      *
@@ -23,5 +22,4 @@ abstract class IpnAbstractOrderReferenceHandler extends IpnAbstractTransferReque
             $amazonpayIpnOrderReferenceOpenTransfer->getAmazonOrderReferenceId()
         )->findOne();
     }
-
 }

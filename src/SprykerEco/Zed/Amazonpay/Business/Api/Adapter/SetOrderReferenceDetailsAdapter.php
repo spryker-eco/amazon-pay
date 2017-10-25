@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class SetOrderReferenceDetailsAdapter extends AbstractAdapter
 {
-
     const SELLER_ORDER_ID = 'seller_order_id';
 
     /**
@@ -30,5 +29,4 @@ class SetOrderReferenceDetailsAdapter extends AbstractAdapter
 
         return $this->converter->convert($result);
     }
-
 }

@@ -9,11 +9,10 @@ namespace SprykerEco\Zed\Amazonpay\Business\Quote;
 
 use Generated\Shared\Transfer\PaymentTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class PaymentDataQuoteUpdater implements QuoteUpdaterInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -22,12 +21,11 @@ class PaymentDataQuoteUpdater implements QuoteUpdaterInterface
     public function update(QuoteTransfer $quoteTransfer)
     {
         $paymentTransfer = new PaymentTransfer();
-        $paymentTransfer->setPaymentMethod(AmazonpayConstants::PAYMENT_METHOD);
-        $paymentTransfer->setPaymentProvider(AmazonpayConstants::PAYMENT_METHOD);
-        $paymentTransfer->setPaymentSelection(AmazonpayConstants::PAYMENT_METHOD);
+        $paymentTransfer->setPaymentMethod(AmazonpayConfig::PROVIDER_NAME);
+        $paymentTransfer->setPaymentProvider(AmazonpayConfig::PROVIDER_NAME);
+        $paymentTransfer->setPaymentSelection(AmazonpayConfig::PROVIDER_NAME);
         $quoteTransfer->setPayment($paymentTransfer);
 
         return $quoteTransfer;
     }
-
 }

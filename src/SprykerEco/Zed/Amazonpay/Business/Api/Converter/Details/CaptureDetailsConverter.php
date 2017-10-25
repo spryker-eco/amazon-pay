@@ -12,7 +12,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter;
 
 class CaptureDetailsConverter extends AbstractArrayConverter
 {
-
     const SELLER_CAPTURE_NOTE = 'SellerCaptureNote';
     const CREATION_TIMESTAMP = 'CreationTimestamp';
     const CAPTURE_STATUS = 'CaptureStatus';
@@ -81,5 +80,4 @@ class CaptureDetailsConverter extends AbstractArrayConverter
             $captureDetails->setCaptureStatus($this->convertStatusToTransfer($captureDetailsData[self::CAPTURE_STATUS]));
         }
     }
-
 }

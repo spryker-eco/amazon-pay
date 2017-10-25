@@ -15,7 +15,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractArrayConverter;
  */
 class IpnArrayConverter extends AbstractArrayConverter
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn\IpnConverterFactoryInterface
      */
@@ -38,5 +37,4 @@ class IpnArrayConverter extends AbstractArrayConverter
     {
         return $this->ipnConverterFactory->createIpnRequestConverter($ipnRequest)->convert($ipnRequest);
     }
-
 }

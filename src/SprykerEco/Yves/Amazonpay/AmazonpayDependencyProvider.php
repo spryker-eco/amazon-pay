@@ -17,7 +17,6 @@ use SprykerEco\Zed\Amazonpay\Dependency\Client\AmazonpayToShipmentBridge;
 
 class AmazonpayDependencyProvider extends AbstractBundleDependencyProvider
 {
-
     const CLIENT_QUOTE = 'cart client';
     const CLIENT_SHIPMENT = 'shipment client';
     const CLIENT_CHECKOUT = 'checkout client';
@@ -64,5 +63,4 @@ class AmazonpayDependencyProvider extends AbstractBundleDependencyProvider
 
         return $container;
     }
-
 }

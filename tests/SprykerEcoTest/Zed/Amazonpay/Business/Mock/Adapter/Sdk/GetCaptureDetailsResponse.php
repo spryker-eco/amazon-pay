@@ -13,7 +13,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\AbstractConverter;
 
 class GetCaptureDetailsResponse extends AbstractResponse
 {
-
     /**
      * @param array $requestParameters
      */
@@ -80,5 +79,4 @@ class GetCaptureDetailsResponse extends AbstractResponse
 
         throw new Exception('Not mocked request.');
     }
-
 }

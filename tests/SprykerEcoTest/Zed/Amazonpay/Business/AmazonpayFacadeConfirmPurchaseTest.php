@@ -7,18 +7,17 @@
 
 namespace SprykerEcoTest\Zed\Amazonpay\Business;
 
-use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
-use SprykerEcoTest\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock;
 use Generated\Shared\Transfer\AmazonpayAuthorizationDetailsTransfer;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
+use SprykerEcoTest\Zed\Amazonpay\Business\Mock\AmazonpayFacadeMock;
 
 class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
 {
-
     /**
      * @param string $orderReferenceId
      *
@@ -120,5 +119,4 @@ class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
                 [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_3), 1000, false, 'Pending', '', ''],
         ];
     }
-
 }

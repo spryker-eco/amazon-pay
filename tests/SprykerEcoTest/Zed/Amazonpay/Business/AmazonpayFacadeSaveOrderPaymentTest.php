@@ -7,7 +7,6 @@
 
 namespace SprykerEcoTest\Zed\Amazonpay\Business;
 
-use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayAuthorizationDetailsTransfer;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
@@ -19,11 +18,11 @@ use Generated\Shared\Transfer\SaveOrderTransfer;
 use Orm\Zed\Oms\Persistence\SpyOmsOrderItemState;
 use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
+use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 
 class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
 {
-
     const ITEMS_COUNT = 5;
     const SELLER_REFERENCE_ID = 'seller-reference-id';
 
@@ -80,27 +79,27 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
         return [
             [
                 AbstractResponse::ORDER_REFERENCE_ID_1 . 'save', '', (new AmazonpayStatusTransfer())->setIsDeclined(1), $omsState,
-                AmazonpayConstants::OMS_STATUS_AUTH_DECLINED,
+                AmazonpayConfig::OMS_STATUS_AUTH_DECLINED,
             ],
             [
                 AbstractResponse::ORDER_REFERENCE_ID_2 . 'save', '', (new AmazonpayStatusTransfer())->setIsPending(1), $omsState,
-                AmazonpayConstants::OMS_STATUS_AUTH_PENDING,
+                AmazonpayConfig::OMS_STATUS_AUTH_PENDING,
             ],
             [
                 AbstractResponse::ORDER_REFERENCE_ID_3 . 'save', '', (new AmazonpayStatusTransfer())->setIsOpen(1), $omsState,
-                AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
+                AmazonpayConfig::OMS_STATUS_AUTH_OPEN,
             ],
             [
                 AbstractResponse::ORDER_REFERENCE_ID_4 . 'save', '1,', (new AmazonpayStatusTransfer())->setIsDeclined(1), $omsState,
-                AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED,
+                AmazonpayConfig::OMS_STATUS_CAPTURE_COMPLETED,
             ],
             [
                 AbstractResponse::ORDER_REFERENCE_ID_5 . 'save', '1,', (new AmazonpayStatusTransfer())->setIsPending(1), $omsState,
-                AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED,
+                AmazonpayConfig::OMS_STATUS_CAPTURE_COMPLETED,
             ],
             [
                 AbstractResponse::ORDER_REFERENCE_ID_6 . 'save', '1,', (new AmazonpayStatusTransfer())->setIsOpen(1), $omsState,
-                AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED,
+                AmazonpayConfig::OMS_STATUS_CAPTURE_COMPLETED,
             ],
         ];
     }
@@ -150,5 +149,4 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
 
         return $quote;
     }
-
 }

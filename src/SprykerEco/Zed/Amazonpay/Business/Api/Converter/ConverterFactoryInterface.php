@@ -1,16 +1,14 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: dmitrikadykov
- * Date: 03/05/2017
- * Time: 15:41
+ * Apache OSL-2
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 
 interface ConverterFactoryInterface
 {
-
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ResponseParserConverterInterface
      */
@@ -80,5 +78,4 @@ interface ConverterFactoryInterface
      * @return \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface
      */
     public function createIpnArrayConverter();
-
 }

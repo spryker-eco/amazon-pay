@@ -8,11 +8,10 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -34,7 +33,7 @@ class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
 
         $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
 
-        if ($isPartialProcessing && $this->paymentEntity->getStatus() !== AmazonpayConstants::OMS_STATUS_AUTH_PENDING) {
+        if ($isPartialProcessing && $this->paymentEntity->getStatus() !== AmazonpayConfig::OMS_STATUS_AUTH_PENDING) {
             $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
         }
 
@@ -50,7 +49,7 @@ class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
             $this->apiResponse->getAuthorizationDetails()->getAuthorizationReferenceId()
         );
 
-        $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_AUTH_PENDING);
+        $this->paymentEntity->setStatus(AmazonpayConfig::OMS_STATUS_AUTH_PENDING);
         $this->paymentEntity->save();
 
         if ($isPartialProcessing) {
@@ -59,5 +58,4 @@ class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
 
         return $amazonpayCallTransfer;
     }
-
 }

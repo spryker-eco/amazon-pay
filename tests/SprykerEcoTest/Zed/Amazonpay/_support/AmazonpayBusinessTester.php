@@ -1,8 +1,8 @@
 <?php
 
 /**
- * This file is part of the Spryker Demoshop.
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Apache OSL-2
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace SprykerEcoTest\Zed\Amazonpay;
@@ -26,10 +26,8 @@ use Codeception\Actor;
  */
 class AmazonpayBusinessTester extends Actor
 {
-
     use _generated\AmazonpayBusinessTesterActions;
    /**
     * Define custom actions here
     */
-
 }

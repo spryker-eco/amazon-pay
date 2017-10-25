@@ -10,11 +10,10 @@ namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 use Generated\Shared\Transfer\AmazonpayPriceTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Spryker\Shared\Kernel\Transfer\TransferInterface;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 abstract class AbstractConverter
 {
-
     const STATUS_DECLINED = 'Declined';
     const STATUS_PENDING = 'Pending';
     const STATUS_OPEN = 'Open';
@@ -59,20 +58,20 @@ abstract class AbstractConverter
         if (!empty($statusData[self::REASON_CODE])) {
             $status->setReasonCode($statusData[self::REASON_CODE]);
             $status->setIsReauthorizable(
-                $statusData[self::REASON_CODE] === AmazonpayConstants::REASON_CODE_SELLER_CLOSED
-                || $statusData[self::REASON_CODE] === AmazonpayConstants::REASON_CODE_EXPIRED_UNUSED
+                $statusData[self::REASON_CODE] === AmazonpayConfig::REASON_CODE_SELLER_CLOSED
+                || $statusData[self::REASON_CODE] === AmazonpayConfig::REASON_CODE_EXPIRED_UNUSED
             );
 
             $status->setIsPaymentMethodInvalid(
-                $statusData[self::REASON_CODE] === AmazonpayConstants::REASON_CODE_PAYMENT_METHOD_INVALID
+                $statusData[self::REASON_CODE] === AmazonpayConfig::REASON_CODE_PAYMENT_METHOD_INVALID
             );
 
             $status->setIsClosedByAmazon(
-                $statusData[self::REASON_CODE] === AmazonpayConstants::REASON_CODE_AMAZON_CLOSED
+                $statusData[self::REASON_CODE] === AmazonpayConfig::REASON_CODE_AMAZON_CLOSED
             );
 
             $status->setIsTransactionTimedOut(
-                $statusData[self::REASON_CODE] === AmazonpayConstants::REASON_CODE_TRANSACTION_TIMED_OUT
+                $statusData[self::REASON_CODE] === AmazonpayConfig::REASON_CODE_TRANSACTION_TIMED_OUT
             );
         }
 
@@ -129,5 +128,4 @@ abstract class AbstractConverter
 
         return $transfer;
     }
-
 }

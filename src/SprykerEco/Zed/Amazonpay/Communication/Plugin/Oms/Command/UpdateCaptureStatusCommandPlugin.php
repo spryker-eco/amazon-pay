@@ -12,7 +12,6 @@ use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 
 class UpdateCaptureStatusCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
-
     /**
      * @inheritdoc
      */
@@ -26,5 +25,4 @@ class UpdateCaptureStatusCommandPlugin extends AbstractAmazonpayCommandPlugin
 
         return [];
     }
-
 }

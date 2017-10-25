@@ -13,7 +13,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface;
 
 abstract class QuoteUpdaterAbstract implements QuoteUpdaterInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\CallAdapterInterface
      */
@@ -41,5 +40,4 @@ abstract class QuoteUpdaterAbstract implements QuoteUpdaterInterface
 
         return $amazonpayCallTransfer;
     }
-
 }

@@ -13,7 +13,6 @@ use Spryker\Yves\Application\Plugin\Provider\YvesControllerProvider;
 
 class AmazonpayControllerProvider extends YvesControllerProvider
 {
-
     const CHECKOUT = 'amazonpay_checkout';
     const ENDPOINT = 'amazonpay_endpoint';
     const CONFIRM_PURCHASE = 'amazonpay_confirm_purchase';
@@ -73,7 +72,6 @@ class AmazonpayControllerProvider extends YvesControllerProvider
         $this->createController('/amazonpay/endpoint', static::ENDPOINT, self::BUNDLE_NAME, 'Payment', 'endpoint');
     }
 
-
     /**
      * @return string
      */
@@ -84,6 +82,4 @@ class AmazonpayControllerProvider extends YvesControllerProvider
 
         return '(' . $implodedLocales . ')\/';
     }
-
-
 }

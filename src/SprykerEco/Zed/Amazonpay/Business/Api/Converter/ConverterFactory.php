@@ -15,7 +15,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\Ipn\IpnConverterFactory;
 
 class ConverterFactory implements ConverterFactoryInterface
 {
-
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ResponseParserConverterInterface
      */
@@ -165,5 +164,4 @@ class ConverterFactory implements ConverterFactoryInterface
     {
         return new RefundDetailsConverter();
     }
-
 }

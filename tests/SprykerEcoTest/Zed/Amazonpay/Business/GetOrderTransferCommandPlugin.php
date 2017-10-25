@@ -18,7 +18,6 @@ use SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command\AbstractAmazonpayC
 
 class GetOrderTransferCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
-
     /**
      * @inheritdoc
      */
@@ -55,5 +54,4 @@ class GetOrderTransferCommandPlugin extends AbstractAmazonpayCommandPlugin
 
         return $orderTransfer;
     }
-
 }

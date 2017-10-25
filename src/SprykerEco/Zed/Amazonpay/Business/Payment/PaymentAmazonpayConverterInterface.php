@@ -11,12 +11,10 @@ use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
 
 interface PaymentAmazonpayConverterInterface
 {
-
     /**
      * @param \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay $entity
      *
      * @return \Generated\Shared\Transfer\AmazonpayPaymentTransfer
      */
     public function mapPaymentEntity(SpyPaymentAmazonpay $entity);
-
 }
