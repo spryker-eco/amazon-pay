@@ -37,11 +37,11 @@ class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
     /**
      * @param \PayWithAmazon\ResponseInterface $responseParser
      *
-     * @return boolean
+     * @return int
      */
     protected function extractIsSandbox(ResponseInterface $responseParser)
     {
-        return ($this->extractResult($responseParser)[self::ORDER_REFERENCE_DETAILS]['ReleaseEnvironment'] === 'Sandbox');
+        return ($this->extractResult($responseParser)[self::ORDER_REFERENCE_DETAILS]['ReleaseEnvironment'] === 'Sandbox') ? 1 : 0;
     }
 
     /**

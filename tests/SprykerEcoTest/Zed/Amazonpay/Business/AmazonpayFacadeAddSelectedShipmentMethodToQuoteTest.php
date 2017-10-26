@@ -7,8 +7,10 @@
 
 namespace SprykerEcoTest\Zed\Amazonpay\Business;
 
+use Generated\Shared\Transfer\CurrencyTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
+use Spryker\Shared\Shipment\ShipmentConstants;
 
 class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacadeAbstractTest
 {
@@ -20,6 +22,11 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
     protected function createQuote($shipmentSelection)
     {
         $quote = new QuoteTransfer();
+        $quote->setCurrency(
+            (new CurrencyTransfer())
+                ->setCode('EUR')
+        )
+            ->setPriceMode(ShipmentConstants::PRICE_MODE_GROSS);
 
         $shipment = new ShipmentTransfer();
         $shipment->setShipmentSelection($shipmentSelection);

@@ -18,17 +18,17 @@ class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
     protected $orderFailedAuthNotificationSender;
 
     /**
-     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageFactoryInterface
+     * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageBuilderInterface
      */
     protected $orderMessageFactory;
 
     /**
      * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderNotificationSenderInterface $orderFailedAuthNotificationSender
-     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageFactoryInterface $orderMessageFactory
+     * @param \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\OrderMessageBuilderInterface $orderMessageFactory
      */
     public function __construct(
         OrderNotificationSenderInterface $orderFailedAuthNotificationSender,
-        OrderMessageFactoryInterface $orderMessageFactory
+        OrderMessageBuilderInterface $orderMessageFactory
     ) {
         $this->orderFailedAuthNotificationSender = $orderFailedAuthNotificationSender;
         $this->orderMessageFactory = $orderMessageFactory;

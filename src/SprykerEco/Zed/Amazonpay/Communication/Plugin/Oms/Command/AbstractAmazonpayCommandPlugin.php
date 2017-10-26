@@ -92,7 +92,7 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
      * @param string $type
      *
-     * @return \Orm\Zed\Sales\Persistence\SpySalesExpense
+     * @return \Orm\Zed\Sales\Persistence\SpySalesExpense|null
      */
     protected function getExpenseByType(SpySalesOrder $orderEntity, $type)
     {

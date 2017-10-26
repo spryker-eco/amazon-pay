@@ -20,6 +20,7 @@ class IpnController extends AbstractController
      */
     public function endpointAction()
     {
+        /** @var string[] $headers */
         $headers = getallheaders();
         $body = file_get_contents('php://input');
 

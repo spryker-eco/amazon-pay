@@ -67,7 +67,7 @@ class AuthorizeAdapter extends AbstractAdapter
 
     /**
      * @param \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface $config
-     * @param string|null $captureNow
+     * @param bool|null $captureNow
      *
      * @return void
      */
@@ -76,7 +76,7 @@ class AuthorizeAdapter extends AbstractAdapter
         if ($captureNow === null) {
             $this->captureNow = $config->getCaptureNow();
         } else {
-            $this->captureNow = (bool)$captureNow;
+            $this->captureNow = $captureNow;
         }
     }
 

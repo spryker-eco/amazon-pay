@@ -36,14 +36,41 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
      */
     public function update(QuoteTransfer $quoteTransfer)
     {
-        $shipmentMethodTransfer = $this->shipmentFacade->getShipmentMethodTransferById(
-            (int)$quoteTransfer->getShipment()->getShipmentSelection()
-        );
+        $shipmentMethodTransfer = $this->getShipmentMethodByQuote($quoteTransfer);
 
         $quoteTransfer->getShipment()->setMethod($shipmentMethodTransfer);
         $quoteTransfer = $this->updateExpenses($quoteTransfer);
 
         return $quoteTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\ShipmentMethodTransfer|null
+     */
+    protected function getShipmentMethodByQuote(QuoteTransfer $quoteTransfer)
+    {
+        $shipmentMethodsTransfer = $this->getAvailableShipmentMethods($quoteTransfer);
+        $idShipmentMethod = (int)$quoteTransfer->getShipment()->getShipmentSelection();
+
+        foreach ($shipmentMethodsTransfer->getMethods() as $shipmentMethodsTransfer) {
+            if ($shipmentMethodsTransfer->getIdShipmentMethod() === $idShipmentMethod) {
+                return $shipmentMethodsTransfer;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\ShipmentMethodsTransfer
+     */
+    protected function getAvailableShipmentMethods(QuoteTransfer $quoteTransfer)
+    {
+        return $this->shipmentFacade->getAvailableShipmentMethods($quoteTransfer);
     }
 
     /**
@@ -78,7 +105,7 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
         $shipmentExpenseTransfer = new ExpenseTransfer();
         $shipmentExpenseTransfer->fromArray($shipmentMethodTransfer->toArray(), true);
         $shipmentExpenseTransfer->setType(ShipmentConstants::SHIPMENT_EXPENSE_TYPE);
-        $shipmentExpenseTransfer->setUnitGrossPrice($shipmentMethodTransfer->getDefaultPrice());
+        $shipmentExpenseTransfer->setUnitGrossPrice($shipmentMethodTransfer->getStoreCurrencyPrice());
         $shipmentExpenseTransfer->setQuantity(1);
 
         return $shipmentExpenseTransfer;

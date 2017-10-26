@@ -142,7 +142,7 @@ class AmazonpayFacadeAbstractTest extends Test
         $payment->setAmazonRefundId(sprintf('S02-5989383-0864061-R00000%s', $index));
         $payment->setRefundReferenceId(sprintf('S02-5989383-0864061-R00000%sR00%s', $index, $index));
         $payment->setStatus($this->getOrderStatusMap()[$payment->getOrderReferenceId()]);
-        $payment->setIsSandbox(true);
+        $payment->setIsSandbox(1);
         $payment->save();
 
         return $payment;

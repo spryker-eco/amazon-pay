@@ -39,10 +39,12 @@ class GetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
                 $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId()
             );
 
+            $state = $this->apiResponse->getOrderReferenceStatus()->getState();
+
             $orderReferenceStatus = new AmazonpayStatusTransfer();
-            $orderReferenceStatus->setState($this->apiResponse->getOrderReferenceStatus());
+            $orderReferenceStatus->setState($state);
             $orderReferenceStatus->setIsOpen(
-                $this->apiResponse->getOrderReferenceStatus() === AmazonpayConfig::ORDER_REFERENCE_STATUS_OPEN
+                $state === AmazonpayConfig::ORDER_REFERENCE_STATUS_OPEN
             );
 
             $amazonpayCallTransfer->getAmazonpayPayment()->setOrderReferenceStatus($orderReferenceStatus);
