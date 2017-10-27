@@ -4,6 +4,7 @@ use Spryker\Shared\Acl\AclConstants;
 use Spryker\Shared\Sales\SalesConstants;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use Spryker\Shared\Oms\OmsConstants;
 
 $config[AmazonpayConstants::CLIENT_ID] = '';
 $config[AmazonpayConstants::CLIENT_SECRET] = '';
@@ -24,8 +25,11 @@ $config[AmazonpayConstants::WIDGET_BUTTON_TYPE] = AmazonpayConfig::WIDGET_BUTTON
 $config[AmazonpayConstants::WIDGET_BUTTON_SIZE] = AmazonpayConfig::WIDGET_BUTTON_SIZE_MEDIUM;
 $config[AmazonpayConstants::WIDGET_BUTTON_COLOR] = AmazonpayConfig::WIDGET_BUTTON_COLOR_DARK_GRAY;
 
-$config[SalesConstants::PAYMENT_METHOD_STATEMACHINE_MAPPING][AmazonpayConstants::PAYMENT_METHOD] =
+$config[SalesConstants::PAYMENT_METHOD_STATEMACHINE_MAPPING][AmazonpayConfig::PROVIDER_NAME] =
     $config[AmazonpayConstants::CAPTURE_NOW] ? 'AmazonpayPaymentSync01' : 'AmazonpayPaymentAsync01';
+
+$config[OmsConstants::ACTIVE_PROCESSES][] = 'AmazonpayPaymentAsync01';
+$config[OmsConstants::ACTIVE_PROCESSES][] = 'AmazonpayPaymentSync01';
 
 $config[AclConstants::ACL_USER_RULE_WHITELIST][] =
     [
