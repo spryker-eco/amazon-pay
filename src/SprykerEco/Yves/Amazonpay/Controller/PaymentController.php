@@ -183,6 +183,11 @@ class PaymentController extends AbstractController
         }
 
         $quoteTransfer = $this->getClient()->confirmPurchase($quoteTransfer);
+
+        if (!$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+            return $this->getRedirectForError($quoteTransfer, $request);
+        }
+
         $quoteTransfer = $this->getFactory()->getCalculationClient()->recalculate($quoteTransfer);
         $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
 
@@ -195,12 +200,7 @@ class PaymentController extends AbstractController
         }
 
         if (!$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-            $this->addErrorMessage(
-                $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getErrorMessage()
-                ?? self::ERROR_AMAZONPAY_PAYMENT_FAILED
-            );
-
-            return $this->redirectResponseExternal($request->headers->get('Referer'));
+            return $this->getRedirectForError($quoteTransfer, $request);
         }
 
         $checkoutResponseTransfer = $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
@@ -210,6 +210,16 @@ class PaymentController extends AbstractController
         }
 
         return $this->getFailedRedirectResponse(self::ERROR_AMAZONPAY_PAYMENT_FAILED);
+    }
+
+    protected function getRedirectForError(QuoteTransfer $quoteTransfer, Request $request)
+    {
+        $this->addErrorMessage(
+            $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getErrorMessage()
+            ?? self::ERROR_AMAZONPAY_PAYMENT_FAILED
+        );
+
+        return $this->redirectResponseExternal($request->headers->get('Referer'));
     }
 
     /**

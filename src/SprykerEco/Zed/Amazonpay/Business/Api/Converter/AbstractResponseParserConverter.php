@@ -174,7 +174,7 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
         }
 
         $constraint = $header->getConstraints()[0];
-        $header->setErrorCode(AmazonpayConfig::PREFIX_AMAZONPAY_PAYMENT_ERROR . $constraint->getConstraintId());
+        $header->setErrorMessage(AmazonpayConfig::PREFIX_AMAZONPAY_PAYMENT_ERROR . $constraint->getConstraintId());
     }
 
     /**
