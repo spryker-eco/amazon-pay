@@ -29,4 +29,27 @@ class IpnController extends AbstractController
 
         return new Response('Request has been processed');
     }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function endpointDebugAction()
+    {
+        $headersRaw = unserialize(file_get_contents('./header.txt'), []);
+
+        $headers = [];
+        foreach ($headersRaw as $headerKey => $headerValue) {
+            if (strpos($headerKey, 'Amz')) {
+                $headers[strtolower($headerKey)] = $headerValue;
+            }
+        }
+
+        $body = unserialize(file_get_contents('./body.txt'), []);
+
+        $ipnRequestTransfer = $this->getFacade()->convertAmazonpayIpnRequest($headers, $body);
+        $this->getFacade()->handleAmazonpayIpnRequest($ipnRequestTransfer);
+
+        return new Response('Request has been processed');
+    }
+
 }
