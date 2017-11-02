@@ -9,6 +9,12 @@
 
     <transfer name="Order">
         <property name="idSalesOrder" type="int" />
+        <property name="AmazonpayOrderInfo" type="AmazonpayOrderInfo" />
+    </transfer>
+
+    <transfer name="AmazonpayOrderInfo">
+        <property name="orderReferenceId" type="string"/>
+        <property name="isSandbox" type="int"/>
     </transfer>
 
     <transfer name="AmazonpayPayment">

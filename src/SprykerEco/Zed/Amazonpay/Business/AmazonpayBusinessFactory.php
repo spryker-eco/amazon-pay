@@ -14,6 +14,7 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactory;
 use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ConverterFactory;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverter;
 use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayTransferToEntityConverter;
+use SprykerEco\Zed\Amazonpay\Business\Order\AmazonpayOrderInfoHydrator;
 use SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderModel;
 use SprykerEco\Zed\Amazonpay\Business\Order\Saver;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnFactory;
@@ -193,5 +194,15 @@ class AmazonpayBusinessFactory extends AbstractBusinessFactory
     protected function createRefundOrderModel()
     {
         return new RefundOrderModel($this->getRefundFacade());
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Amazonpay\Business\Order\AmazonpayOrderInfoHydratorInterface
+     */
+    public function createAmazonpayOrderInfoHydrator()
+    {
+        return new AmazonpayOrderInfoHydrator(
+            $this->getQueryContainer()
+        );
     }
 }

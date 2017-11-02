@@ -1,10 +1,10 @@
 <?php
 
 use Spryker\Shared\Acl\AclConstants;
+use Spryker\Shared\Oms\OmsConstants;
 use Spryker\Shared\Sales\SalesConstants;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
-use Spryker\Shared\Oms\OmsConstants;
 
 $config[AmazonpayConstants::CLIENT_ID] = '';
 $config[AmazonpayConstants::CLIENT_SECRET] = '';

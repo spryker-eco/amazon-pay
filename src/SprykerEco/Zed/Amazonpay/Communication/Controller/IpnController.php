@@ -51,5 +51,4 @@ class IpnController extends AbstractController
 
         return new Response('Request has been processed');
     }
-
 }
