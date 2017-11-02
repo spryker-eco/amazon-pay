@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
 use ArrayObject;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
@@ -29,7 +30,7 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
             );
             $result = $this->getFacade()->captureOrder($amazonpayCallTransfer);
 
-            if ($result->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+            if ($this->isPaymentSuccess($result)) {
                 $wasSuccessful = true;
             }
         }
@@ -55,5 +56,17 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
     protected function getAffectingRequestedAmountItemsStateFlag()
     {
         return AmazonpayConfig::OMS_FLAG_NOT_CAPTURED;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $payment
+     *
+     * @return bool
+     */
+    protected function isPaymentSuccess(AmazonpayCallTransfer $payment)
+    {
+        return $payment->getAmazonpayPayment() &&
+        $payment->getAmazonpayPayment()->getResponseHeader() &&
+        $payment->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();
     }
 }

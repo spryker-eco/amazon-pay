@@ -179,4 +179,16 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
     {
         return true;
     }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $payment
+     *
+     * @return bool
+     */
+    protected function isPaymentSuccess(AmazonpayCallTransfer $payment)
+    {
+        return $payment->getAmazonpayPayment()
+            && $payment->getAmazonpayPayment()->getResponseHeader()
+            && $payment->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();
+    }
 }

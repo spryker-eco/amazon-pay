@@ -39,7 +39,7 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
 
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
-        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+        if (!$this->isPaymentSuccess($amazonpayCallTransfer)) {
             return $amazonpayCallTransfer;
         }
 

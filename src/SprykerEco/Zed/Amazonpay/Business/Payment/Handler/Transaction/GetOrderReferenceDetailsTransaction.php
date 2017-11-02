@@ -22,7 +22,7 @@ class GetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
     {
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
-        if ($amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+        if ($this->isPaymentSuccess($amazonpayCallTransfer)) {
             $amazonpayCallTransfer->setShippingAddress($this->apiResponse->getShippingAddress());
 
             if ($this->apiResponse->getBillingAddress()) {
