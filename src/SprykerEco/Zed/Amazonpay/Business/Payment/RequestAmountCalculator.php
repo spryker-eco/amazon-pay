@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Apache OSL-2
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerEco\Zed\Amazonpay\Business\Payment;
 
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
@@ -7,7 +12,6 @@ use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
 
 class RequestAmountCalculator implements RequestAmountCalculatorInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface
      */
@@ -31,5 +35,4 @@ class RequestAmountCalculator implements RequestAmountCalculatorInterface
     {
         return $this->omsFacade->isOrderFlaggedAll($orderEntity->getIdSalesOrder(), $itemsFlag);
     }
-
 }

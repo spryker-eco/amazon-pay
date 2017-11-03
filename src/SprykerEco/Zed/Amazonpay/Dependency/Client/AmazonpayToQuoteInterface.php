@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AmazonpayToQuoteInterface
 {
-
     /**
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
@@ -28,5 +27,4 @@ interface AmazonpayToQuoteInterface
      * @return void
      */
     public function clearQuote();
-
 }

@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
 interface IpnFactoryInterface
 {
-
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLogger
      */
@@ -19,5 +18,4 @@ interface IpnFactoryInterface
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestFactoryInterface
      */
     public function createIpnRequestFactory();
-
 }

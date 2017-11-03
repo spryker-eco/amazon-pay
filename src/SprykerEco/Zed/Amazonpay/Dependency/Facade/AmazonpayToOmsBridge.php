@@ -11,7 +11,6 @@ use Propel\Runtime\Collection\ObjectCollection;
 
 class AmazonpayToOmsBridge implements AmazonpayToOmsInterface
 {
-
     /**
      * @var \Spryker\Zed\Oms\Business\OmsFacadeInterface
      */
@@ -48,5 +47,4 @@ class AmazonpayToOmsBridge implements AmazonpayToOmsInterface
     {
         return $this->omsFacade->isOrderFlaggedAll($idOrder, $flag);
     }
-
 }

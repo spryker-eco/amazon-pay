@@ -11,12 +11,10 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 interface OrderMessageBuilderInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
-     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\AbstractNotificationMessage|null
+     * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\Notification\NotificationMessageInterface|null
      */
-    public function createFailedAuthMessage(AmazonpayCallTransfer $amazonpayCallTransfer);
-
+    public function getFailedAuthMessage(AmazonpayCallTransfer $amazonpayCallTransfer);
 }

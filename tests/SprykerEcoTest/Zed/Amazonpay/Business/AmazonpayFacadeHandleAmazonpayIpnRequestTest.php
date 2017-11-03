@@ -18,11 +18,10 @@ use Generated\Shared\Transfer\AmazonpayRefundDetailsTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstractTest
 {
-
     const REFERENCE_1 = 'asdasd-asdasd-asdasd';
 
     /**
@@ -36,7 +35,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      */
     public function testFacadeHandleAmazonpayIpnRequestAuth($referenceId, AbstractTransfer $transfer, $expectedStatus)
     {
-        $this->createPaymentEntityWithAuthIdAndStatus($referenceId, AmazonpayConstants::OMS_STATUS_NEW);
+        $this->createPaymentEntityWithAuthIdAndStatus($referenceId, AmazonpayConfig::OMS_STATUS_NEW);
         $this->createFacade()->handleAmazonpayIpnRequest($transfer);
         $this->assertEquals($expectedStatus, $this->getPaymentEntityByAuthId($referenceId)->getStatus());
     }
@@ -54,7 +53,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
                     (new AmazonpayStatusTransfer())
                         ->setIsDeclined(1)
                 ),
-                AmazonpayConstants::OMS_STATUS_AUTH_DECLINED,
+                AmazonpayConfig::OMS_STATUS_AUTH_DECLINED,
             ],
             'Auth Closed' => [
                 self::REFERENCE_1,
@@ -63,7 +62,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
                     (new AmazonpayStatusTransfer())
                         ->setIsClosed(1)
                 ),
-                AmazonpayConstants::OMS_STATUS_AUTH_CLOSED,
+                AmazonpayConfig::OMS_STATUS_AUTH_CLOSED,
             ],
             'Auth Suspended' => [
                 self::REFERENCE_1,
@@ -72,7 +71,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
                     (new AmazonpayStatusTransfer())
                         ->setIsSuspended(1)
                 ),
-                AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED,
+                AmazonpayConfig::OMS_STATUS_AUTH_SUSPENDED,
             ],
             'Auth Open' => [
                 self::REFERENCE_1,
@@ -81,7 +80,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
                     (new AmazonpayStatusTransfer())
                         ->setIsOpen(1)
                 ),
-                AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
+                AmazonpayConfig::OMS_STATUS_AUTH_OPEN,
             ],
             'Capture Completed' => [
                 self::REFERENCE_1,
@@ -90,7 +89,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
                     (new AmazonpayStatusTransfer())
                         ->setIsCompleted(1)
                 ),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED,
+                AmazonpayConfig::OMS_STATUS_CAPTURE_COMPLETED,
             ],
         ];
     }
@@ -106,7 +105,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      */
     public function testFacadeHandleAmazonpayIpnRequestCapture($referenceId, AbstractTransfer $transfer, $expectedStatus)
     {
-        $this->createPaymentEntityWithCaptureIdAndStatus($referenceId, AmazonpayConstants::OMS_STATUS_NEW);
+        $this->createPaymentEntityWithCaptureIdAndStatus($referenceId, AmazonpayConfig::OMS_STATUS_NEW);
         $this->createFacade()->handleAmazonpayIpnRequest($transfer);
         $this->assertEquals($expectedStatus, $this->getPaymentEntityByCaptureId($referenceId)->getStatus());
     }
@@ -124,7 +123,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
                     (new AmazonpayStatusTransfer())
                         ->setIsDeclined(1)
                 ),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED,
+                AmazonpayConfig::OMS_STATUS_CAPTURE_DECLINED,
             ],
             'Capture Completed' => [
                 self::REFERENCE_1,
@@ -133,7 +132,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
                     (new AmazonpayStatusTransfer())
                         ->setIsCompleted(1)
                 ),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED,
+                AmazonpayConfig::OMS_STATUS_CAPTURE_COMPLETED,
             ],
         ];
     }
@@ -149,7 +148,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      */
     public function testFacadeHandleAmazonpayIpnRequestRefund($referenceId, AbstractTransfer $transfer, $expectedStatus)
     {
-        $this->createPaymentEntityWithRefundIdAndStatus($referenceId, AmazonpayConstants::OMS_STATUS_NEW);
+        $this->createPaymentEntityWithRefundIdAndStatus($referenceId, AmazonpayConfig::OMS_STATUS_NEW);
         $this->createFacade()->handleAmazonpayIpnRequest($transfer);
         $this->assertEquals($expectedStatus, $this->getPaymentEntityByRefundId($referenceId)->getStatus());
     }
@@ -167,7 +166,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
                     (new AmazonpayStatusTransfer())
                         ->setIsCompleted(1)
                 ),
-                AmazonpayConstants::OMS_STATUS_REFUND_COMPLETED,
+                AmazonpayConfig::OMS_STATUS_REFUND_COMPLETED,
             ],
             'Refund Declined' => [
                 self::REFERENCE_1,
@@ -176,7 +175,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
                     (new AmazonpayStatusTransfer())
                         ->setIsDeclined(1)
                 ),
-                AmazonpayConstants::OMS_STATUS_REFUND_DECLINED,
+                AmazonpayConfig::OMS_STATUS_REFUND_DECLINED,
             ],
         ];
     }
@@ -192,7 +191,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      */
     public function testFacadeHandleAmazonpayIpnRequestOrderReference($referenceId, AbstractTransfer $transfer, $expectedStatus)
     {
-        $this->createPaymentEntityWithRefundIdAndStatus($referenceId, AmazonpayConstants::OMS_STATUS_NEW);
+        $this->createPaymentEntityWithRefundIdAndStatus($referenceId, AmazonpayConfig::OMS_STATUS_NEW);
         $this->createFacade()->handleAmazonpayIpnRequest($transfer);
         $this->assertEquals($expectedStatus, $this->getPaymentEntityByRefundId($referenceId)->getStatus());
     }
@@ -210,7 +209,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
                     (new AmazonpayStatusTransfer())
                         ->setIsCancelled(1)
                 ),
-                AmazonpayConstants::OMS_STATUS_CANCELLED,
+                AmazonpayConfig::OMS_STATUS_CANCELLED,
             ],
             'Order reference Closed' => [
                 self::REFERENCE_1,
@@ -220,7 +219,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
                         ->setIsClosed(1)
                         ->setIsClosedByAmazon(1)
                 ),
-                AmazonpayConstants::OMS_STATUS_AUTH_DECLINED,
+                AmazonpayConfig::OMS_STATUS_AUTH_DECLINED,
             ],
             'Order reference Open' => [
                 self::REFERENCE_1,
@@ -229,7 +228,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
                     (new AmazonpayStatusTransfer())
                         ->setIsOpen(1)
                 ),
-                AmazonpayConstants::OMS_STATUS_PAYMENT_METHOD_CHANGED,
+                AmazonpayConfig::OMS_STATUS_PAYMENT_METHOD_CHANGED,
             ],
             'Order reference Suspended' => [
                 self::REFERENCE_1,
@@ -238,7 +237,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
                     (new AmazonpayStatusTransfer())
                         ->setIsSuspended(1)
                 ),
-                AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED,
+                AmazonpayConfig::OMS_STATUS_AUTH_SUSPENDED,
             ],
         ];
     }
@@ -254,7 +253,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
         return (new AmazonpayIpnPaymentAuthorizeRequestTransfer())
             ->setMessage(
                 (new AmazonpayIpnRequestMessageTransfer())
-                ->setNotificationType(AmazonpayConstants::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE)
+                ->setNotificationType(AmazonpayConfig::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE)
             )
             ->setAuthorizationDetails(
                 (new AmazonpayAuthorizationDetailsTransfer())
@@ -314,7 +313,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
         return (new AmazonpayIpnPaymentCaptureRequestTransfer())
             ->setMessage(
                 (new AmazonpayIpnRequestMessageTransfer())
-                    ->setNotificationType(AmazonpayConstants::IPN_REQUEST_TYPE_PAYMENT_CAPTURE)
+                    ->setNotificationType(AmazonpayConfig::IPN_REQUEST_TYPE_PAYMENT_CAPTURE)
             )
             ->setCaptureDetails(
                 (new AmazonpayCaptureDetailsTransfer())
@@ -374,7 +373,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
         return (new AmazonpayIpnPaymentRefundRequestTransfer())
             ->setMessage(
                 (new AmazonpayIpnRequestMessageTransfer())
-                    ->setNotificationType(AmazonpayConstants::IPN_REQUEST_TYPE_PAYMENT_REFUND)
+                    ->setNotificationType(AmazonpayConfig::IPN_REQUEST_TYPE_PAYMENT_REFUND)
             )
             ->setRefundDetails(
                 (new AmazonpayRefundDetailsTransfer())
@@ -434,7 +433,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
         return (new AmazonpayIpnOrderReferenceNotificationTransfer())
             ->setMessage(
                 (new AmazonpayIpnRequestMessageTransfer())
-                    ->setNotificationType(AmazonpayConstants::IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION)
+                    ->setNotificationType(AmazonpayConfig::IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION)
             )
             ->setAmazonOrderReferenceId($reference)
             ->setOrderReferenceStatus($status);
@@ -478,5 +477,4 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
         return SpyPaymentAmazonpayQuery::create()
             ->filterByOrderReferenceId($referenceId);
     }
-
 }

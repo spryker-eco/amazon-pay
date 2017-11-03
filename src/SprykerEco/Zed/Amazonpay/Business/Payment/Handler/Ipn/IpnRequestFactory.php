@@ -8,7 +8,7 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 use SprykerEco\Zed\Amazonpay\Business\Order\RefundOrderInterface;
 use SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
 use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface;
@@ -16,7 +16,6 @@ use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
 class IpnRequestFactory implements IpnRequestFactoryInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface
      */
@@ -65,16 +64,16 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     public function createConcreteIpnRequestHandler(AbstractTransfer $ipnRequest)
     {
         switch ($ipnRequest->getMessage()->getNotificationType()) {
-            case AmazonpayConstants::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE:
+            case AmazonpayConfig::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE:
                 return $this->createIpnPaymentAuthorizeHandler($ipnRequest);
 
-            case AmazonpayConstants::IPN_REQUEST_TYPE_PAYMENT_CAPTURE:
+            case AmazonpayConfig::IPN_REQUEST_TYPE_PAYMENT_CAPTURE:
                 return $this->createIpnPaymentCaptureHandler($ipnRequest);
 
-            case AmazonpayConstants::IPN_REQUEST_TYPE_PAYMENT_REFUND:
+            case AmazonpayConfig::IPN_REQUEST_TYPE_PAYMENT_REFUND:
                 return $this->createIpnPaymentRefundHandler($ipnRequest);
 
-            case AmazonpayConstants::IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION:
+            case AmazonpayConfig::IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION:
                 return $this->createIpnOrderReferenceHandler($ipnRequest);
         }
 
@@ -128,11 +127,11 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      */
     protected function createIpnPaymentAuthorizeDeclineHandler()
     {
-        return new IpnPaymentAuthorizeDeclineHandler(
-            $this->omsFacade,
-            $this->amazonpayQueryContainer,
-            $this->ipnRequestLogger
-        );
+            return new IpnPaymentAuthorizeDeclineHandler(
+                $this->omsFacade,
+                $this->amazonpayQueryContainer,
+                $this->ipnRequestLogger
+            );
     }
 
     /**
@@ -180,7 +179,8 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
             return $this->createIpnEmptyHandler();
         }
 
-        throw new IpnHandlerNotFoundException('No IPN handler for capture and status ' . $ipnRequest->getCaptureDetails()->getCaptureStatus()->getState());
+        throw new IpnHandlerNotFoundException('No IPN handler for capture and status ' .
+            $ipnRequest->getCaptureDetails()->getCaptureStatus()->getState());
     }
 
     /**
@@ -232,7 +232,8 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
             return $this->createIpnPaymentRefundCompletedHandler();
         }
 
-        throw new IpnHandlerNotFoundException('No IPN handler for capture and status ' . $ipnRequest->getRefundDetails()->getRefundStatus()->getState());
+        throw new IpnHandlerNotFoundException('No IPN handler for payment refund and status ' .
+            $ipnRequest->getRefundDetails()->getRefundStatus()->getState());
     }
 
     /**
@@ -289,7 +290,8 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
             return $this->createIpnOrderReferenceCancelledHandler();
         }
 
-        throw new IpnHandlerNotFoundException('No IPN handler for capture and status ' . $ipnRequest->getOrderReferenceStatus()->getState());
+        throw new IpnHandlerNotFoundException('No IPN handler for order reference and status ' .
+            $ipnRequest->getOrderReferenceStatus()->getState());
     }
 
     /**
@@ -339,5 +341,4 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
             $this->ipnRequestLogger
         );
     }
-
 }

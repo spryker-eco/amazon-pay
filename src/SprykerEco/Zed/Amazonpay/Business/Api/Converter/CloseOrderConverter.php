@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Business\Api\Converter;
 
 class CloseOrderConverter extends AbstractResponseParserConverter
 {
-
     /**
      * @return string
      */
@@ -17,5 +16,4 @@ class CloseOrderConverter extends AbstractResponseParserConverter
     {
         return 'CloseOrderReferenceResult';
     }
-
 }

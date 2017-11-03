@@ -14,7 +14,6 @@ use Throwable;
 
 class PrepareQuoteCollection implements QuoteUpdaterInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Quote\QuoteUpdaterInterface[]
      */
@@ -63,5 +62,4 @@ class PrepareQuoteCollection implements QuoteUpdaterInterface
         return (new MessageTransfer())
             ->setValue($message);
     }
-
 }

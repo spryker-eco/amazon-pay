@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Business;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
@@ -20,7 +21,6 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
  */
 class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
 {
-
     /**
      * {@inheritdoc}
      *
@@ -306,4 +306,19 @@ class AmazonpayFacade extends AbstractFacade implements AmazonpayFacadeInterface
             ->handle($ipnRequestTransfer);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer
+     */
+    public function hydrateOrderInfo(OrderTransfer $orderTransfer)
+    {
+        return $this->getFactory()
+            ->createAmazonpayOrderInfoHydrator()
+            ->hydrateOrderInfo($orderTransfer);
+    }
 }

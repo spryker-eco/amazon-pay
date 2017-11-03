@@ -12,7 +12,6 @@ use Spryker\Client\ZedRequest\ZedRequestClientInterface;
 
 class AmazonpayStub implements AmazonpayStubInterface
 {
-
     /**
      * @var \Spryker\Client\ZedRequest\ZedRequestClientInterface
      */
@@ -68,5 +67,4 @@ class AmazonpayStub implements AmazonpayStubInterface
     {
         return $this->zedStub->call('/amazonpay/gateway/confirm-purchase', $quoteTransfer);
     }
-
 }

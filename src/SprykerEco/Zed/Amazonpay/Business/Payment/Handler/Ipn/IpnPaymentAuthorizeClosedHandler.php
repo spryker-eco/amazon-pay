@@ -7,17 +7,16 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class IpnPaymentAuthorizeClosedHandler extends IpnAbstractPaymentAuthorizeHandler
 {
-
     /**
      * @return string
      */
     protected function getOmsStatusName()
     {
-        return AmazonpayConstants::OMS_STATUS_AUTH_CLOSED;
+        return AmazonpayConfig::OMS_STATUS_AUTH_CLOSED;
     }
 
     /**
@@ -25,7 +24,6 @@ class IpnPaymentAuthorizeClosedHandler extends IpnAbstractPaymentAuthorizeHandle
      */
     protected function getOmsEventId()
     {
-        return AmazonpayConstants::OMS_EVENT_CAPTURE;
+        return AmazonpayConfig::OMS_EVENT_CAPTURE;
     }
-
 }

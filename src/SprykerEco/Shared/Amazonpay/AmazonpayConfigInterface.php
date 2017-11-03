@@ -9,7 +9,6 @@ namespace SprykerEco\Shared\Amazonpay;
 
 interface AmazonpayConfigInterface
 {
-
     /**
      * @return string
      */
@@ -73,5 +72,4 @@ interface AmazonpayConfigInterface
      * @return string
      */
     public function getWidgetScriptPathSandbox();
-
 }

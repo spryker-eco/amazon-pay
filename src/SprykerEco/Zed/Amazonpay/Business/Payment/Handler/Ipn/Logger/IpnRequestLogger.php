@@ -14,7 +14,6 @@ use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface;
 
 class IpnRequestLogger implements IpnRequestLoggerInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToUtilEncodingInterface
      */
@@ -43,5 +42,4 @@ class IpnRequestLogger implements IpnRequestLoggerInterface
         $ipnLog->setFkPaymentAmazonpay($paymentAmazonpay->getIdPaymentAmazonpay());
         $ipnLog->save();
     }
-
 }

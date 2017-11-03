@@ -15,12 +15,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class IpnController extends AbstractController
 {
-
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function endpointAction()
     {
+        /** @var string[] $headers */
         $headers = getallheaders();
         $body = file_get_contents('php://input');
 
@@ -51,5 +51,4 @@ class IpnController extends AbstractController
 
         return new Response('Request has been processed');
     }
-
 }

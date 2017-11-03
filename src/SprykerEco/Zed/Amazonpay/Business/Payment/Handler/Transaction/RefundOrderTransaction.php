@@ -8,11 +8,10 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class RefundOrderTransaction extends AbstractAmazonpayTransaction
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -43,7 +42,7 @@ class RefundOrderTransaction extends AbstractAmazonpayTransaction
             $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
         }
 
-        $this->paymentEntity->setStatus(AmazonpayConstants::OMS_STATUS_REFUND_PENDING);
+        $this->paymentEntity->setStatus(AmazonpayConfig::OMS_STATUS_REFUND_PENDING);
         $this->paymentEntity->setAmazonRefundId($this->apiResponse->getRefundDetails()->getAmazonRefundId());
         $this->paymentEntity->setRefundReferenceId($this->apiResponse->getRefundDetails()->getRefundReferenceId());
         $this->paymentEntity->save();
@@ -54,5 +53,4 @@ class RefundOrderTransaction extends AbstractAmazonpayTransaction
 
         return $amazonpayCallTransfer;
     }
-
 }

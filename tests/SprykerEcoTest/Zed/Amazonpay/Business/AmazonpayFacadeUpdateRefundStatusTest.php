@@ -7,13 +7,12 @@
 
 namespace SprykerEcoTest\Zed\Amazonpay\Business;
 
-use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
+use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 
 class AmazonpayFacadeUpdateRefundStatusTest extends AmazonpayFacadeAbstractTest
 {
-
     /**
      * @dataProvider updateRefundStatusDataProvider
      *
@@ -38,17 +37,16 @@ class AmazonpayFacadeUpdateRefundStatusTest extends AmazonpayFacadeAbstractTest
         return [
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                AmazonpayConstants::OMS_STATUS_REFUND_COMPLETED,
+                AmazonpayConfig::OMS_STATUS_REFUND_COMPLETED,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                AmazonpayConstants::OMS_STATUS_REFUND_DECLINED,
+                AmazonpayConfig::OMS_STATUS_REFUND_DECLINED,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                AmazonpayConstants::OMS_STATUS_REFUND_PENDING,
+                AmazonpayConfig::OMS_STATUS_REFUND_PENDING,
             ],
         ];
     }
-
 }

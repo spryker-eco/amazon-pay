@@ -12,7 +12,6 @@ use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 
 class UpdateRefundStatusCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
-
     /**
      * @inheritdoc
      */
@@ -26,5 +25,4 @@ class UpdateRefundStatusCommandPlugin extends AbstractAmazonpayCommandPlugin
 
         return [];
     }
-
 }

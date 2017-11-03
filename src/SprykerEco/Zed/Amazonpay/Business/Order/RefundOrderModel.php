@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Apache OSL-2
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerEco\Zed\Amazonpay\Business\Order;
 
 use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpay;
@@ -7,7 +12,6 @@ use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToRefundInterface;
 
 class RefundOrderModel implements RefundOrderInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToRefundInterface
      */
@@ -42,5 +46,4 @@ class RefundOrderModel implements RefundOrderInterface
             $this->refundFacade->saveRefund($refundTransfer);
         }
     }
-
 }

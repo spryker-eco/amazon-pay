@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\Amazonpay\Business;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 
@@ -19,7 +20,6 @@ use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
  */
 interface AmazonpayFacadeInterface
 {
-
     /**
      * Specification
      * - Updates quote after user clicks Amazon Pay bundle
@@ -220,4 +220,15 @@ interface AmazonpayFacadeInterface
      */
     public function updateRefundStatus(AmazonpayCallTransfer $amazonpayCallTransfer);
 
+    /**
+     *  Specification:
+     * - load amazonpay order info
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer
+     */
+    public function hydrateOrderInfo(OrderTransfer $orderTransfer);
 }

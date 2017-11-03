@@ -7,13 +7,12 @@
 
 namespace SprykerEcoTest\Zed\Amazonpay\Business;
 
-use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
+use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 
 class AmazonpayFacadeUpdateCaptureStatusTest extends AmazonpayFacadeAbstractTest
 {
-
     /**
      * @dataProvider updateCaptureStatusDataProvider
      *
@@ -38,21 +37,20 @@ class AmazonpayFacadeUpdateCaptureStatusTest extends AmazonpayFacadeAbstractTest
         return [
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED,
+                AmazonpayConfig::OMS_STATUS_CAPTURE_COMPLETED,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED,
+                AmazonpayConfig::OMS_STATUS_CAPTURE_DECLINED,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING,
+                AmazonpayConfig::OMS_STATUS_CAPTURE_PENDING,
             ],
             [
                 $this->getAmazonpayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_4),
-                AmazonpayConstants::OMS_STATUS_CAPTURE_CLOSED,
+                AmazonpayConfig::OMS_STATUS_CAPTURE_CLOSED,
             ],
         ];
     }
-
 }

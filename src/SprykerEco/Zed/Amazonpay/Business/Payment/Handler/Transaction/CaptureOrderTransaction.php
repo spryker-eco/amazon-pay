@@ -9,11 +9,10 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class CaptureOrderTransaction extends AbstractAmazonpayTransaction
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -22,9 +21,9 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
     public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         if (!in_array($amazonpayCallTransfer->getAmazonpayPayment()->getStatus(), [
-            AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING,
-            AmazonpayConstants::OMS_STATUS_AUTH_OPEN,
-            AmazonpayConstants::OMS_STATUS_PAYMENT_METHOD_CHANGED,
+            AmazonpayConfig::OMS_STATUS_CAPTURE_PENDING,
+            AmazonpayConfig::OMS_STATUS_AUTH_OPEN,
+            AmazonpayConfig::OMS_STATUS_PAYMENT_METHOD_CHANGED,
         ], true)) {
             return $amazonpayCallTransfer;
         }
@@ -40,7 +39,7 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
 
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
-        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+        if (!$this->isPaymentSuccess($amazonpayCallTransfer)) {
             return $amazonpayCallTransfer;
         }
 
@@ -82,18 +81,17 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
     protected function getPaymentStatus(AmazonpayStatusTransfer $captureStatus)
     {
         if ($captureStatus->getIsDeclined()) {
-            return AmazonpayConstants::OMS_STATUS_CAPTURE_DECLINED;
+            return AmazonpayConfig::OMS_STATUS_CAPTURE_DECLINED;
         }
 
         if ($captureStatus->getIsPending()) {
-            return AmazonpayConstants::OMS_STATUS_CAPTURE_PENDING;
+            return AmazonpayConfig::OMS_STATUS_CAPTURE_PENDING;
         }
 
         if ($captureStatus->getIsCompleted()) {
-            return AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED;
+            return AmazonpayConfig::OMS_STATUS_CAPTURE_COMPLETED;
         }
 
         return '';
     }
-
 }

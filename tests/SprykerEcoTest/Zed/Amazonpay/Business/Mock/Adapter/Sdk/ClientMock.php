@@ -11,7 +11,6 @@ use PayWithAmazon\Client;
 
 class ClientMock extends Client
 {
-
     /**
      * @param array $requestParameters
      *
@@ -155,5 +154,4 @@ class ClientMock extends Client
 
         return $responseWrapper->convertToResponseParser();
     }
-
 }

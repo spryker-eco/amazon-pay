@@ -13,7 +13,6 @@ use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToShipmentInterface;
 
 class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AdapterFactoryInterface
      */
@@ -113,5 +112,4 @@ class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
     {
         return new PaymentDataQuoteUpdater();
     }
-
 }

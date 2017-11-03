@@ -12,7 +12,6 @@ use Orm\Zed\Sales\Persistence\SpySalesOrder;
 
 interface AmazonpayToRefundInterface
 {
-
     /**
      * @param array $salesOrderItems
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $salesOrderEntity
@@ -27,5 +26,4 @@ interface AmazonpayToRefundInterface
      * @return bool
      */
     public function saveRefund(RefundTransfer $refundTransfer);
-
 }

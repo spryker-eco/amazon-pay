@@ -9,6 +9,12 @@
 
     <transfer name="Order">
         <property name="idSalesOrder" type="int" />
+        <property name="AmazonpayOrderInfo" type="AmazonpayOrderInfo" />
+    </transfer>
+
+    <transfer name="AmazonpayOrderInfo">
+        <property name="orderReferenceId" type="string"/>
+        <property name="isSandbox" type="int"/>
     </transfer>
 
     <transfer name="AmazonpayPayment">
@@ -18,7 +24,7 @@
         <property name="addressConsentToken" type="string"/>
         <property name="status" type="string"/>
         <property name="orderReferenceStatus" type="AmazonpayStatus"/>
-        <property name="isSandbox" type="string"/>
+        <property name="isSandbox" type="int"/>
         <property name="authorizationDetails" type="AmazonpayAuthorizationDetails"/>
         <property name="captureDetails" type="AmazonpayCaptureDetails"/>
         <property name="refundDetails" type="AmazonpayRefundDetails"/>
@@ -28,7 +34,7 @@
     <transfer name="AmazonpayResponse">
         <property name="shippingAddress" type="Address"/>
         <property name="orderReferenceStatus" type="AmazonpayStatus"/>
-        <property name="isSandbox" type="bool"/>
+        <property name="isSandbox" type="int"/>
         <property name="shippingAddress" type="Address"/>
         <property name="billingAddress" type="Address"/>
         <property name="authorizationDetails" type="AmazonpayAuthorizationDetails"/>

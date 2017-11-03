@@ -15,7 +15,6 @@ use Spryker\Zed\Kernel\Persistence\AbstractQueryContainer;
  */
 class AmazonpayQueryContainer extends AbstractQueryContainer implements AmazonpayQueryContainerInterface
 {
-
     /**
      * @api
      *
@@ -133,5 +132,4 @@ class AmazonpayQueryContainer extends AbstractQueryContainer implements Amazonpa
             ->getFactory()
             ->createPaymentAmazonpayQuery();
     }
-
 }

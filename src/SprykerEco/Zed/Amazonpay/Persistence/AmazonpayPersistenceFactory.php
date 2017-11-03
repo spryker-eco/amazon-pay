@@ -18,7 +18,6 @@ use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
  */
 class AmazonpayPersistenceFactory extends AbstractPersistenceFactory
 {
-
     /**
      * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayQuery
      */
@@ -42,5 +41,4 @@ class AmazonpayPersistenceFactory extends AbstractPersistenceFactory
     {
         return SpySalesOrderItemQuery::create();
     }
-
 }

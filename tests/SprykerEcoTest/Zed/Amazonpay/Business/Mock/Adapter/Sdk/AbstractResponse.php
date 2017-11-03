@@ -12,7 +12,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AuthorizeAdapter;
 
 class AbstractResponse
 {
-
     /**
      * @var array
      */
@@ -67,5 +66,4 @@ class AbstractResponse
             'ResponseBody' => $this->responseBodyXml,
         ]);
     }
-
 }

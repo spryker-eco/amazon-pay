@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
@@ -69,5 +68,4 @@ class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
 
         return $amazonpayCallTransfer;
     }
-
 }

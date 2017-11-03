@@ -7,16 +7,16 @@
 
 namespace SprykerEco\Zed\Amazonpay\Dependency\Facade;
 
+use Generated\Shared\Transfer\QuoteTransfer;
+
 interface AmazonpayToShipmentInterface
 {
-
     /**
      * @api
      *
-     * @param int $idMethod
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\ShipmentMethodTransfer
+     * @return \Generated\Shared\Transfer\ShipmentMethodsTransfer
      */
-    public function getShipmentMethodTransferById($idMethod);
-
+    public function getAvailableShipmentMethods(QuoteTransfer $quoteTransfer);
 }

@@ -14,7 +14,6 @@ use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyInterface;
 
 class AdapterFactory implements AdapterFactoryInterface
 {
-
     /**
      * @var \SprykerEco\Shared\Amazonpay\AmazonpayConfigInterface
      */
@@ -224,5 +223,4 @@ class AdapterFactory implements AdapterFactoryInterface
             $this->converterFactory->createIpnArrayConverter()
         );
     }
-
 }

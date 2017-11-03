@@ -11,11 +11,10 @@ use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstractTest
 {
-
     /**
      * @param int $total
      *
@@ -59,15 +58,15 @@ class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstract
         $this->assertEquals('Doe', $resultTransfer->getCustomer()->getLastName());
         $this->assertEquals(
             $resultTransfer->getPayment()->getPaymentMethod(),
-            AmazonpayConstants::PAYMENT_METHOD
+            AmazonpayConfig::PROVIDER_NAME
         );
         $this->assertEquals(
             $resultTransfer->getPayment()->getPaymentProvider(),
-            AmazonpayConstants::PAYMENT_METHOD
+            AmazonpayConfig::PROVIDER_NAME
         );
         $this->assertEquals(
             $resultTransfer->getPayment()->getPaymentSelection(),
-            AmazonpayConstants::PAYMENT_METHOD
+            AmazonpayConfig::PROVIDER_NAME
         );
     }
 
@@ -82,5 +81,4 @@ class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstract
             ],
         ];
     }
-
 }

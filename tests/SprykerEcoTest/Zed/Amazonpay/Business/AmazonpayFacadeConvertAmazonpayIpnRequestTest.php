@@ -11,7 +11,6 @@ use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 class AmazonpayFacadeConvertAmazonpayIpnRequestTest extends AmazonpayFacadeAbstractTest
 {
-
     /**
      * @dataProvider updateRefundStatusDataProvider
      *
@@ -67,5 +66,4 @@ class AmazonpayFacadeConvertAmazonpayIpnRequestTest extends AmazonpayFacadeAbstr
             ],
         ];
     }
-
 }

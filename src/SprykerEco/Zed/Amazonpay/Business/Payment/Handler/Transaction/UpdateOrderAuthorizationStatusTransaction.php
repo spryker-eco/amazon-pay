@@ -9,11 +9,10 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransaction
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -29,11 +28,11 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
 
         $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
 
-        $amazonPayment = $amazonpayCallTransfer->getAmazonpayPayment();
-
-        if (!$amazonPayment->getResponseHeader()->getIsSuccess()) {
+        if (!$this->isPaymentSuccess($amazonpayCallTransfer)) {
             return $amazonpayCallTransfer;
         }
+
+        $amazonPayment = $amazonpayCallTransfer->getAmazonpayPayment();
         $status = $amazonPayment->getAuthorizationDetails()->getAuthorizationStatus();
 
         if ($amazonPayment->getAuthorizationDetails()->getIdList()) {
@@ -42,8 +41,8 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
             )
                 ->setStatus(
                     $status->getIsClosed()
-                        ? AmazonpayConstants::OMS_STATUS_CLOSED
-                        : AmazonpayConstants::OMS_STATUS_CAPTURE_COMPLETED
+                        ? AmazonpayConfig::OMS_STATUS_CLOSED
+                        : AmazonpayConfig::OMS_STATUS_CAPTURE_COMPLETED
                 )
                 ->save();
 
@@ -80,29 +79,28 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
     {
         if ($status->getIsDeclined()) {
             if ($status->getIsSuspended()) {
-                return AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED;
+                return AmazonpayConfig::OMS_STATUS_AUTH_SUSPENDED;
             }
 
             if ($status->getIsTransactionTimedOut()) {
-                return AmazonpayConstants::OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT;
+                return AmazonpayConfig::OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT;
             }
 
-            return AmazonpayConstants::OMS_STATUS_AUTH_DECLINED;
+            return AmazonpayConfig::OMS_STATUS_AUTH_DECLINED;
         }
 
         if ($status->getIsOpen()) {
-            return AmazonpayConstants::OMS_STATUS_AUTH_OPEN;
+            return AmazonpayConfig::OMS_STATUS_AUTH_OPEN;
         }
 
         if ($status->getIsClosed()) {
             if ($status->getIsReauthorizable()) {
-                return AmazonpayConstants::OMS_STATUS_AUTH_EXPIRED;
+                return AmazonpayConfig::OMS_STATUS_AUTH_EXPIRED;
             }
 
-            return AmazonpayConstants::OMS_STATUS_AUTH_CLOSED;
+            return AmazonpayConfig::OMS_STATUS_AUTH_CLOSED;
         }
 
         return false;
     }
-
 }

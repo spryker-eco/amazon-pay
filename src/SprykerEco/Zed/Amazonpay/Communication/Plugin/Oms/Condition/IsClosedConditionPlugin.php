@@ -7,17 +7,15 @@
 
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Condition;
 
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class IsClosedConditionPlugin extends AbstractByOrderItemConditionPlugin
 {
-
     /**
      * @return string
      */
     public function getConditionalStatus()
     {
-        return AmazonpayConstants::OMS_STATUS_CLOSED;
+        return AmazonpayConfig::OMS_STATUS_CLOSED;
     }
-
 }

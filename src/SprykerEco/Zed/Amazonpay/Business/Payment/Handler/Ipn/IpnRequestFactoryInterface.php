@@ -11,12 +11,10 @@ use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 
 interface IpnRequestFactoryInterface
 {
-
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $ipnRequest
      *
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     public function createConcreteIpnRequestHandler(AbstractTransfer $ipnRequest);
-
 }

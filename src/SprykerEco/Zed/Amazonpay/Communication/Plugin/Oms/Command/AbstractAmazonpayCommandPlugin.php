@@ -27,7 +27,6 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
  */
 abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements CommandByOrderInterface
 {
-
     /**
      * @var bool
      */
@@ -93,7 +92,7 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
      * @param string $type
      *
-     * @return \Orm\Zed\Sales\Persistence\SpySalesExpense
+     * @return \Orm\Zed\Sales\Persistence\SpySalesExpense|null
      */
     protected function getExpenseByType(SpySalesOrder $orderEntity, $type)
     {
@@ -245,12 +244,26 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
      */
     protected function setOrderItemsStatus(IteratorAggregate $salesOrderItems, $statusName)
     {
-        $statusEntity = SpyOmsOrderItemStateQuery::create()->findByName($statusName)[0];
+        $statusEntity = $this->getOmsStatusByName($statusName);
 
         foreach ($salesOrderItems as $salesOrderItem) {
             $salesOrderItem->setFkOmsOrderItemState($statusEntity->getIdOmsOrderItemState());
             $salesOrderItem->save();
         }
+    }
+
+    /**
+     * @param string $statusName
+     *
+     * @return \Orm\Zed\Oms\Persistence\SpyOmsOrderItemState
+     */
+    protected function getOmsStatusByName($statusName)
+    {
+        $statusEntity = SpyOmsOrderItemStateQuery::create()->filterByName($statusName)
+            ->findOneOrCreate();
+        $statusEntity->save();
+
+        return $statusEntity;
     }
 
     /**
@@ -264,5 +277,4 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
             ->fromArray($address->toArray(), true)
             ->fromArray($address->getCountry()->toArray(), true);
     }
-
 }

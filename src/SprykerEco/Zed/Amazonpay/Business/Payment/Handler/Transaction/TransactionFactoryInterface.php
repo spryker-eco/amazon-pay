@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction;
 
 interface TransactionFactoryInterface
 {
-
     /**
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AbstractAmazonpayTransaction
      */
@@ -84,5 +83,4 @@ interface TransactionFactoryInterface
      * @return \SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
     public function createUpdateOrderCaptureStatusHandler();
-
 }

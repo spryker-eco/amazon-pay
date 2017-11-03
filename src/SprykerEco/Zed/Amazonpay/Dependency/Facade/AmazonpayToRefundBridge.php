@@ -12,7 +12,6 @@ use Orm\Zed\Sales\Persistence\SpySalesOrder;
 
 class AmazonpayToRefundBridge implements AmazonpayToRefundInterface
 {
-
     /**
      * @var \Spryker\Zed\Refund\Business\RefundFacadeInterface
      */
@@ -46,5 +45,4 @@ class AmazonpayToRefundBridge implements AmazonpayToRefundInterface
     {
         return $this->refundFacade->saveRefund($refundTransfer);
     }
-
 }

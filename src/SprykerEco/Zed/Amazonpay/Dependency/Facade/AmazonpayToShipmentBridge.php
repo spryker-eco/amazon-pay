@@ -7,9 +7,10 @@
 
 namespace SprykerEco\Zed\Amazonpay\Dependency\Facade;
 
+use Generated\Shared\Transfer\QuoteTransfer;
+
 class AmazonpayToShipmentBridge implements AmazonpayToShipmentInterface
 {
-
     /**
      * @var \Spryker\Zed\Shipment\Business\ShipmentFacadeInterface
      */
@@ -24,13 +25,12 @@ class AmazonpayToShipmentBridge implements AmazonpayToShipmentInterface
     }
 
     /**
-     * @param int $idMethod
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\ShipmentMethodTransfer
+     * @return \Generated\Shared\Transfer\ShipmentMethodsTransfer
      */
-    public function getShipmentMethodTransferById($idMethod)
+    public function getAvailableShipmentMethods(QuoteTransfer $quoteTransfer)
     {
-        return $this->shipmentFacade->getShipmentMethodTransferById($idMethod);
+        return $this->shipmentFacade->getAvailableMethods($quoteTransfer);
     }
-
 }

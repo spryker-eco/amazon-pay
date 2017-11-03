@@ -7,13 +7,12 @@
 
 namespace SprykerEcoTest\Zed\Amazonpay\Business;
 
-use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
+use SprykerEcoTest\Zed\Amazonpay\Business\Mock\Adapter\Sdk\AbstractResponse;
 
 class AmazonpayFacadeCancelOrderTest extends AmazonpayFacadeAbstractTest
 {
-
     /**
      * @dataProvider cancelOrderDataProvider
      *
@@ -24,7 +23,7 @@ class AmazonpayFacadeCancelOrderTest extends AmazonpayFacadeAbstractTest
     public function testCancelOrder(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         $result = $this->createFacade()->cancelOrder($amazonpayCallTransfer);
-        $this->validateResult($result, AmazonpayConstants::OMS_STATUS_CANCELLED);
+        $this->validateResult($result, AmazonpayConfig::OMS_STATUS_CANCELLED);
     }
 
     /**
@@ -46,5 +45,4 @@ class AmazonpayFacadeCancelOrderTest extends AmazonpayFacadeAbstractTest
             ],
         ];
     }
-
 }

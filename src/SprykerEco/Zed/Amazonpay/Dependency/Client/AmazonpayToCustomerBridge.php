@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Dependency\Client;
 
 class AmazonpayToCustomerBridge implements AmazonpayToCustomerInterface
 {
-
     /**
      * @var \Spryker\Client\Customer\CustomerClientInterface
      */
@@ -30,5 +29,4 @@ class AmazonpayToCustomerBridge implements AmazonpayToCustomerInterface
     {
         return $this->customerClient->getCustomer();
     }
-
 }

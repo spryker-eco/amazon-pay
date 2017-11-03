@@ -12,7 +12,6 @@ use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
 
 class AmazonpayConfigMock extends AmazonpayConfig
 {
-
     /**
      * @var array
      */
@@ -49,5 +48,4 @@ class AmazonpayConfigMock extends AmazonpayConfig
 
         return parent::getAuthTransactionTimeout();
     }
-
 }

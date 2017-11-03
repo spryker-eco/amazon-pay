@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class TransactionSequence extends AbstractTransactionCollection implements AmazonpayTransactionInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -21,5 +20,4 @@ class TransactionSequence extends AbstractTransactionCollection implements Amazo
     {
         return $this->executeHandlers($amazonpayCallTransfer);
     }
-
 }

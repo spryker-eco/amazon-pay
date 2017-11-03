@@ -13,7 +13,6 @@ use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 
 class RefundOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
-
     /**
      * @var array
      */
@@ -75,5 +74,4 @@ class RefundOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
             $this->salesOrderItemsMap[$salesOrderItem->getIdSalesOrderItem()] = $salesOrderItem;
         }
     }
-
 }

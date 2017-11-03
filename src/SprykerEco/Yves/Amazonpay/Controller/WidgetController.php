@@ -15,7 +15,6 @@ use Spryker\Yves\Kernel\Controller\AbstractController;
  */
 class WidgetController extends AbstractController
 {
-
     const AMAZONPAY_CONFIG = 'amazonpayConfig';
     const LOGOUT = 'logout';
 
@@ -62,5 +61,4 @@ class WidgetController extends AbstractController
     {
         return $this->getFactory()->createAmazonpayConfig();
     }
-
 }

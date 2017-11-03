@@ -11,7 +11,6 @@ use Exception;
 
 class SetOrderReferenceDetailsResponse extends AbstractResponse
 {
-
     /**
      * @param array $requestParameters
      */
@@ -76,5 +75,4 @@ class SetOrderReferenceDetailsResponse extends AbstractResponse
 
         throw new Exception('Not mocked request.');
     }
-
 }

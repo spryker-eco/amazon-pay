@@ -7,20 +7,21 @@
     </li>
     <li><hr></li>
 
-    {% include '@checkout/checkout/partials/summary-discounts.twig' %}
-
     {% if quoteTransfer.shipment and quoteTransfer.shipment.method %}
         <li><strong>{{ 'checkout.step.summary.shipping' | trans }}</strong></li>
         <li>
             {% if quoteTransfer.shipment.method.name is not empty %}
                 {{ quoteTransfer.shipment.method.name }}
             {% endif %}
-            {% if quoteTransfer.shipment.method.defaultPrice is not null %}
-                {{ quoteTransfer.shipment.method.defaultPrice | money }}
+            {% if quoteTransfer.shipment.method.storeCurrencyPrice is not null %}
+                {{ quoteTransfer.shipment.method.storeCurrencyPrice | money }}
             {% endif %}
         </li>
     {% endif %}
     <li><hr></li>
+
+    {% include '@checkout/checkout/partials/summary-discounts.twig' %}
+
     <li class="clearfix">
         <h5 class="float-left">{{ 'checkout.step.summary.grand_total' | trans }}</h5>
         <h5 class="float-right"><strong>{{ quoteTransfer.totals.grandtotal | money }}</strong></h5>

@@ -11,7 +11,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Adapter\AbstractAdapter;
 
 class RefundOrderResponse extends AbstractResponse
 {
-
     /**
      * @param array $requestParameters
      */
@@ -58,8 +57,7 @@ class RefundOrderResponse extends AbstractResponse
      */
     protected function getStatus($orderReferenceId)
     {
-        switch ($orderReferenceId)
-        {
+        switch ($orderReferenceId) {
             case AbstractResponse::ORDER_REFERENCE_ID_1:
                 return 'Completed';
             case AbstractResponse::ORDER_REFERENCE_ID_2:
@@ -76,8 +74,7 @@ class RefundOrderResponse extends AbstractResponse
      */
     protected function getAmazonRefundId($orderReferenceId)
     {
-        switch ($orderReferenceId)
-        {
+        switch ($orderReferenceId) {
             case AbstractResponse::ORDER_REFERENCE_ID_1:
                 return 'S02-5989383-0864061-0000AR1';
             case AbstractResponse::ORDER_REFERENCE_ID_2:
@@ -94,8 +91,7 @@ class RefundOrderResponse extends AbstractResponse
      */
     protected function getRefundReferenceId($orderReferenceId)
     {
-        switch ($orderReferenceId)
-        {
+        switch ($orderReferenceId) {
             case AbstractResponse::ORDER_REFERENCE_ID_1:
                 return 'S02-5989383-0864061-0000RR1';
             case AbstractResponse::ORDER_REFERENCE_ID_2:
@@ -104,5 +100,4 @@ class RefundOrderResponse extends AbstractResponse
                 return 'S02-5989383-0864061-0000RR3';
         }
     }
-
 }

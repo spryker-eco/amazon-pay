@@ -11,12 +11,10 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 interface CallAdapterInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     public function call(AmazonpayCallTransfer $amazonpayCallTransfer);
-
 }

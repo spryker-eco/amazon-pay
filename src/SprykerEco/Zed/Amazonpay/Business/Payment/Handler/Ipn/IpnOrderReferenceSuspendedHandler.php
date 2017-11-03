@@ -7,17 +7,16 @@
 
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class IpnOrderReferenceSuspendedHandler extends IpnAbstractOrderReferenceHandler
 {
-
     /**
      * @return string
      */
     protected function getOmsEventId()
     {
-        return AmazonpayConstants::OMS_EVENT_UPDATE_AUTH_STATUS;
+        return AmazonpayConfig::OMS_EVENT_UPDATE_AUTH_STATUS;
     }
 
     /**
@@ -25,7 +24,6 @@ class IpnOrderReferenceSuspendedHandler extends IpnAbstractOrderReferenceHandler
      */
     protected function getOmsStatusName()
     {
-        return AmazonpayConstants::OMS_STATUS_AUTH_SUSPENDED;
+        return AmazonpayConfig::OMS_STATUS_AUTH_SUSPENDED;
     }
-
 }

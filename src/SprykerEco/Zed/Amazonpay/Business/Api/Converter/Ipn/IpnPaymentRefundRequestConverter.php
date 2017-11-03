@@ -12,7 +12,6 @@ use SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface;
 
 class IpnPaymentRefundRequestConverter extends IpnPaymentAbstractRequestConverter
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Api\Converter\ArrayConverterInterface $refundDetailsConverter
      */
@@ -42,5 +41,4 @@ class IpnPaymentRefundRequestConverter extends IpnPaymentAbstractRequestConverte
 
         return $ipnPaymentRefundRequestTransfer;
     }
-
 }

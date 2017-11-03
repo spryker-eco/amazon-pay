@@ -18,7 +18,6 @@ use SprykerEco\Zed\Amazonpay\Business\Payment\RequestAmountCalculator;
  */
 class AmazonpayCommunicationFactory extends AbstractCommunicationFactory
 {
-
     /**
      * @return \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToSalesInterface
      */
@@ -58,5 +57,4 @@ class AmazonpayCommunicationFactory extends AbstractCommunicationFactory
     {
         return new AmazonpayEntityToTransferConverter();
     }
-
 }

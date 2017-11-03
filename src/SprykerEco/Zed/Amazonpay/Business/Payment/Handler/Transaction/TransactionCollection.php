@@ -12,7 +12,6 @@ use SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverterInterface;
 
 class TransactionCollection extends AbstractTransactionCollection implements TransactionCollectionInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Business\Converter\AmazonpayConverterInterface
      */
@@ -44,5 +43,4 @@ class TransactionCollection extends AbstractTransactionCollection implements Tra
 
         return $quoteTransfer;
     }
-
 }

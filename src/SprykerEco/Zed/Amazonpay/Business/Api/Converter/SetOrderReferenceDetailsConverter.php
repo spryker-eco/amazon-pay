@@ -12,7 +12,6 @@ use PayWithAmazon\ResponseInterface;
 
 class SetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
 {
-
     /**
      * @return string
      */
@@ -33,5 +32,4 @@ class SetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
 
         return parent::setBody($responseTransfer, $responseParser);
     }
-
 }

@@ -11,7 +11,6 @@ use Spryker\Zed\Kernel\Persistence\QueryContainer\QueryContainerInterface;
 
 interface AmazonpayQueryContainerInterface extends QueryContainerInterface
 {
-
     /**
      * @api
      *
@@ -75,5 +74,4 @@ interface AmazonpayQueryContainerInterface extends QueryContainerInterface
      * @return \Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpaySalesOrderItemQuery
      */
     public function queryBySalesOrderItemId($salesOrderItemId);
-
 }

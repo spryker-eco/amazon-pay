@@ -11,12 +11,10 @@ use PayWithAmazon\ResponseInterface;
 
 interface ResponseParserConverterInterface
 {
-
     /**
      * @param \PayWithAmazon\ResponseInterface $responseParser
      *
      * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     public function convert(ResponseInterface $responseParser);
-
 }

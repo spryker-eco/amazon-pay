@@ -14,7 +14,6 @@ use SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToMoneyInterface;
 
 abstract class AbstractAdapter implements CallAdapterInterface
 {
-
     const AMAZON_AUTHORIZATION_ID = 'amazon_authorization_id';
     const AMAZON_ORDER_REFERENCE_ID = 'amazon_order_reference_id';
     const AMAZON_ADDRESS_CONSENT_TOKEN = 'address_consent_token';
@@ -63,5 +62,4 @@ abstract class AbstractAdapter implements CallAdapterInterface
             $amazonpayCallTransfer->getRequestedAmount()
         );
     }
-
 }

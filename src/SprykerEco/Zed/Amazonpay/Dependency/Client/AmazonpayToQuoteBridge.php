@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 class AmazonpayToQuoteBridge implements AmazonpayToQuoteInterface
 {
-
     /**
      * @var \Spryker\Client\Quote\QuoteClientInterface
      */
@@ -52,5 +51,4 @@ class AmazonpayToQuoteBridge implements AmazonpayToQuoteInterface
     {
         $this->quoteClient->clearQuote();
     }
-
 }

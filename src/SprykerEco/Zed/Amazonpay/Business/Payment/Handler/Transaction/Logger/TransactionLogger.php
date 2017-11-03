@@ -12,7 +12,6 @@ use Orm\Zed\Amazonpay\Persistence\SpyPaymentAmazonpayApiLog;
 
 class TransactionLogger implements TransactionLoggerInterface
 {
-
     const REPORT_LEVEL_ALL = 'ALL';
     const REPORT_LEVEL_ERRORS_ONLY = 'ERRORS_ONLY';
     const REPORT_LEVEL_DISABLED = 'DISABLED';
@@ -72,5 +71,4 @@ class TransactionLogger implements TransactionLoggerInterface
         $logEntity->setErrorCode($headerTransfer->getErrorCode());
         $logEntity->save();
     }
-
 }

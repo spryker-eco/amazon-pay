@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Amazonpay\Dependency\Client;
 
 interface AmazonpayToCustomerInterface
 {
-
     /**
      * Gets current logged in customer.
      *
@@ -18,5 +17,4 @@ interface AmazonpayToCustomerInterface
      * @return \Generated\Shared\Transfer\CustomerTransfer|null
      */
     public function getCustomer();
-
 }

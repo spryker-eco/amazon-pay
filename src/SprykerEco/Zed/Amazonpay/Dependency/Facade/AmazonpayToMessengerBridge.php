@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\MessageTransfer;
 
 class AmazonpayToMessengerBridge implements AmazonpayToMessengerInterface
 {
-
     /**
      * @var \Spryker\Zed\Messenger\Business\MessengerFacadeInterface
      */
@@ -34,5 +33,4 @@ class AmazonpayToMessengerBridge implements AmazonpayToMessengerInterface
     {
         $this->messengerFacade->addErrorMessage($messenger);
     }
-
 }

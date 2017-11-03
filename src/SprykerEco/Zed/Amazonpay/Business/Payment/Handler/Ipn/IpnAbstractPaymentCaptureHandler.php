@@ -8,11 +8,10 @@
 namespace SprykerEco\Zed\Amazonpay\Business\Payment\Handler\Ipn;
 
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 abstract class IpnAbstractPaymentCaptureHandler extends IpnAbstractTransferRequestHandler
 {
-
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\AmazonpayIpnPaymentCaptureRequestTransfer $amazonpayIpnPaymentAuthorizeRequestTransfer
      *
@@ -31,7 +30,6 @@ abstract class IpnAbstractPaymentCaptureHandler extends IpnAbstractTransferReque
      */
     protected function getOmsEventId()
     {
-        return AmazonpayConstants::OMS_EVENT_UPDATE_CAPTURE_STATUS;
+        return AmazonpayConfig::OMS_EVENT_UPDATE_CAPTURE_STATUS;
     }
-
 }

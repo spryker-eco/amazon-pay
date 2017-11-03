@@ -15,7 +15,6 @@ use SprykerEco\Zed\Amazonpay\Persistence\AmazonpayQueryContainerInterface;
 
 class IpnFactory implements IpnFactoryInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Amazonpay\Dependency\Facade\AmazonpayToOmsInterface
      */
@@ -74,5 +73,4 @@ class IpnFactory implements IpnFactoryInterface
             $this->refundOrderModel
         );
     }
-
 }

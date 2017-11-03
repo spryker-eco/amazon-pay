@@ -8,13 +8,13 @@
 namespace SprykerEco\Zed\Amazonpay\Communication\Plugin\Oms\Command;
 
 use ArrayObject;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
-use SprykerEco\Shared\Amazonpay\AmazonpayConstants;
+use SprykerEco\Shared\Amazonpay\AmazonpayConfig;
 
 class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
-
     /**
      * @inheritdoc
      */
@@ -30,7 +30,7 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
             );
             $result = $this->getFacade()->captureOrder($amazonpayCallTransfer);
 
-            if ($result->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+            if ($this->isPaymentSuccess($result)) {
                 $wasSuccessful = true;
             }
         }
@@ -39,12 +39,12 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
             $items = new ArrayObject();
 
             foreach ($orderEntity->getItems() as $salesOrderItem) {
-                if ($salesOrderItem->getState()->getName() === AmazonpayConstants::OMS_STATUS_AUTH_OPEN) {
+                if ($salesOrderItem->getState()->getName() === AmazonpayConfig::OMS_STATUS_AUTH_OPEN) {
                     $items[] = $salesOrderItem;
                 }
             }
 
-            $this->setOrderItemsStatus($items, AmazonpayConstants::OMS_STATUS_AUTH_OPEN_NO_CANCEL);
+            $this->setOrderItemsStatus($items, AmazonpayConfig::OMS_STATUS_AUTH_OPEN_WITHOUT_CANCEL);
         }
 
         return [];
@@ -55,7 +55,18 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
      */
     protected function getAffectingRequestedAmountItemsStateFlag()
     {
-        return AmazonpayConstants::OMS_FLAG_NOT_CAPTURED;
+        return AmazonpayConfig::OMS_FLAG_NOT_CAPTURED;
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $payment
+     *
+     * @return bool
+     */
+    protected function isPaymentSuccess(AmazonpayCallTransfer $payment)
+    {
+        return $payment->getAmazonpayPayment() &&
+        $payment->getAmazonpayPayment()->getResponseHeader() &&
+        $payment->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();
+    }
 }
