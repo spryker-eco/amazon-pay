@@ -13,6 +13,7 @@ use Spryker\Zed\Sales\Dependency\Plugin\HydrateOrderPluginInterface;
 
 /**
  * @method \SprykerEco\Zed\AmazonPay\Business\AmazonPayFacadeInterface getFacade()
+ * @method \SprykerEco\Zed\AmazonPay\Communication\AmazonPayCommunicationFactory getFactory()
  */
 class AmazonpayOrderInfoHydratorPlugin extends AbstractPlugin implements HydrateOrderPluginInterface
 {
