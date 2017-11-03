@@ -1,0 +1,23 @@
+namespace: SprykerEcoTest\Zed\AmazonPay
+
+paths:
+    tests: .
+    data: _data
+    support: _support
+    log: _output
+
+suites:
+    Business:
+        path: Business
+        class_name: AmazonPayBusinessTester
+        modules:
+            enabled:
+                - Asserts
+                - \PyzTest\Shared\Testify\Helper\Environment
+                - \SprykerTest\Shared\Testify\Helper\ConfigHelper
+                - \SprykerTest\Shared\Testify\Helper\LocatorHelper:
+                    projectNamespaces:
+                        - 'SprykerEco'
+                        - 'SprykerEcoTest'
+                - \SprykerTest\Shared\Testify\Helper\DataCleanupHelper
+                - \SprykerTest\Shared\Propel\Helper\TransactionHelper

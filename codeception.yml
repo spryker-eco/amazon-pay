@@ -1,7 +1,7 @@
-namespace: Amazonpay
+namespace: AmazonPay
 
 include:
-    - tests/SprykerEcoTest/Zed/Amazonpay
+    - tests/SprykerEcoTest/Zed/AmazonPay
 
 paths:
     tests: tests

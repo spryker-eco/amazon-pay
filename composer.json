@@ -23,7 +23,7 @@
     "spryker/util-encoding": "^2.0.1",
     "spryker/zed-request": "^3.0.0"
   },
-  "description": "Amazon Pay Bundle",
+  "description": "Amazon Pay Module",
   "license": "Apache OSL-2",
   "minimum-stability": "dev",
   "prefer-stable": true,

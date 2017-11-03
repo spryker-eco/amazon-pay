@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="AmazonPaySubprocessAuth01">
+        <states>
+            <state name="auth pending" reserved="true"/>
+            <state name="auth open" reserved="true">
+                <flag>not captured</flag>
+            </state>
+            <state name="waiting for auth status" reserved="true"/>
+            <state name="auth open without cancel" reserved="true">
+                <flag>not captured</flag>
+            </state>
+            <state name="auth closed"/>
+            <state name="auth suspended" reserved="true">
+                <flag>not auth</flag>
+            </state>
+            <state name="auth transaction timed out" reserved="true"/>
+            <state name="auth expired" reserved="true"/>
+            <state name="auth declined">
+                <flag>not auth</flag>
+            </state>
+            <state name="cancelled" />
+        </states>
+
+        <events>
+            <event name="update authorization status" onEnter="true" command="AmazonPay/UpdateAuthorizationStatus" />
+            <event name="update suspended order" command="AmazonPay/UpdateSuspendedOrder" />
+            <event name="reauthorize expired order" manual="true" command="AmazonPay/ReauthorizeExpiredOrder" />
+            <event name="cancel" manual="true" command="AmazonPay/CancelOrder" />
+            <event name="close" onEnter="true" command="AmazonPay/CloseOrder" />
+            <event name="capture" command="AmazonPay/Capture" manual="true" />
+            <event name="cancel" manual="true" command="AmazonPay/CancelOrder" />
+        </events>
+
+        <transitions>
+            <transition condition="AmazonPay/IsAuthPending">
+                <source>waiting for order status</source>
+                <target>auth pending</target>
+            </transition>
+
+            <transition condition="AmazonPay/IsAuthOpen" happy="true">
+                <source>waiting for order status</source>
+                <target>auth open</target>
+            </transition>
+
+            <!-- from auth pending -->
+            <transition>
+                <source>auth pending</source>
+                <target>waiting for auth status</target>
+                <event>update authorization status</event>
+            </transition>
+
+            <transition condition="AmazonPay/IsAuthOpen">
+                <source>waiting for auth status</source>
+                <target>auth open</target>
+                <event>update authorization status</event>
+            </transition>
+
+            <transition condition="AmazonPay/IsAuthDeclined">
+                <source>waiting for auth status</source>
+                <target>auth declined</target>
+                <event>update authorization status</event>
+            </transition>
+
+            <transition condition="AmazonPay/IsAuthSuspended">
+                <source>waiting for auth status</source>
+                <target>auth suspended</target>
+                <event>update authorization status</event>
+            </transition>
+
+            <transition condition="AmazonPay/IsAuthTransactionTimedOut">
+                <source>waiting for auth status</source>
+                <target>auth transaction timed out</target>
+                <event>update authorization status</event>
+            </transition>
+
+            <transition condition="AmazonPay/IsAuthClosed">
+                <source>waiting for auth status</source>
+                <target>auth closed</target>
+                <event>update authorization status</event>
+            </transition>
+
+            <transition condition="AmazonPay/IsAuthClosed">
+                <source>waiting for capture status</source>
+                <target>auth closed</target>
+            </transition>
+
+            <transition condition="AmazonPay/IsAuthExpired">
+                <source>waiting for capture status</source>
+                <target>auth expired</target>
+            </transition>
+
+            <!-- from auth open -->
+            <transition condition="AmazonPay/IsCancelNotAllowed">
+                <source>auth open</source>
+                <target>auth open without cancel</target>
+            </transition>
+
+            <transition condition="AmazonPay/IsCancelled">
+                <source>auth open</source>
+                <target>cancelled</target>
+                <event>cancel</event>
+            </transition>
+
+            <transition condition="AmazonPay/IsOrderCancelled">
+                <source>auth open</source>
+                <target>cancelled</target>
+            </transition>
+
+            <!-- from auth expired -->
+            <transition>
+                <source>auth expired</source>
+                <target>waiting for capture status</target>
+                <event>reauthorize expired order</event>
+            </transition>
+
+            <!-- from transaction timed out -->
+            <transition>
+                <source>auth transaction timed out</source>
+                <target>waiting for capture status</target>
+                <event>reauthorize expired order</event>
+            </transition>
+
+            <!-- from auth_suspended -->
+            <transition>
+                <source>auth suspended</source>
+                <target>waiting for auth status</target>
+                <event>update suspended order</event>
+            </transition>
+
+            <!-- cancel all items -->
+            <transition condition="AmazonPay/IsOrderCancelled">
+                <source>auth transaction timed out</source>
+                <target>cancelled</target>
+            </transition>
+
+            <transition condition="AmazonPay/IsOrderCancelled">
+                <source>auth expired</source>
+                <target>cancelled</target>
+            </transition>
+
+            <transition happy="true">
+                <source>auth open</source>
+                <target>waiting for capture status</target>
+                <event>capture</event>
+            </transition>
+
+            <transition>
+                <source>auth open without cancel</source>
+                <target>waiting for capture status</target>
+                <event>capture</event>
+            </transition>
+        </transitions>
+    </process>
+
+</statemachine>
