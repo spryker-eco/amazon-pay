@@ -6,11 +6,13 @@
 
     <process name="AmazonpayPaymentSync01" main="true">
         <subprocesses>
-            <process>AmazonpayCaptured01</process>
+            <process>AmazonpaySubprocessRefund01</process>
+            <process>AmazonpaySubprocessClose01</process>
         </subprocesses>
 
         <states>
             <state name="new" reserved="true"/>
+            <state name="capture completed" reserved="true"/>
         </states>
 
         <events>
@@ -23,9 +25,11 @@
                 <target>capture completed</target>
                 <event>update order status</event>
             </transition>
+
         </transitions>
     </process>
 
-    <process file="AmazonpayCapturedSubprocess01.xml"/>
+    <process file="AmazonpaySubprocessRefund01.xml" />
+    <process file="AmazonpaySubprocessClose01.xml" />
 
 </statemachine>

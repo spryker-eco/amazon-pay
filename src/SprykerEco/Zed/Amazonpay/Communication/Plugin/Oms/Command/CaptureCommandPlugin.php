@@ -44,7 +44,7 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
                 }
             }
 
-            $this->setOrderItemsStatus($items, AmazonpayConfig::OMS_STATUS_AUTH_OPEN_NO_CANCEL);
+            $this->setOrderItemsStatus($items, AmazonpayConfig::OMS_STATUS_AUTH_OPEN_WITHOUT_CANCEL);
         }
 
         return [];
