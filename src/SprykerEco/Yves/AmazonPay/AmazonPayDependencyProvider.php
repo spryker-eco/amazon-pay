@@ -47,7 +47,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addQuoteClient(Container $container)
     {
-        $container[self::CLIENT_QUOTE] = function () use ($container) {
+        $container[static::CLIENT_QUOTE] = function () use ($container) {
             return new AmazonPayToQuoteBridge($container->getLocator()->quote()->client());
         };
     }
@@ -59,7 +59,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addShipmentClient(Container $container)
     {
-        $container[self::CLIENT_SHIPMENT] = function () use ($container) {
+        $container[static::CLIENT_SHIPMENT] = function () use ($container) {
             return new AmazonPayToShipmentBridge($container->getLocator()->shipment()->client());
         };
     }
@@ -71,7 +71,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addCheckoutClient(Container $container)
     {
-        $container[self::CLIENT_CHECKOUT] = function () use ($container) {
+        $container[static::CLIENT_CHECKOUT] = function () use ($container) {
             return new AmazonPayToCheckoutBridge($container->getLocator()->checkout()->client());
         };
     }
@@ -83,7 +83,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addCalculationClient(Container $container)
     {
-        $container[self::CLIENT_CALCULATION] = function () use ($container) {
+        $container[static::CLIENT_CALCULATION] = function () use ($container) {
             return new AmazonPayToCalculationBridge($container->getLocator()->calculation()->client());
         };
     }
@@ -95,7 +95,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addCustomerClient(Container $container)
     {
-        $container[self::CLIENT_CUSTOMER] = function () use ($container) {
+        $container[static::CLIENT_CUSTOMER] = function () use ($container) {
             return new AmazonPayToCustomerBridge($container->getLocator()->customer()->client());
         };
     }

@@ -44,16 +44,16 @@ class CaptureDetailsConverter extends AbstractArrayConverter
      */
     protected function convertGenericDetails(array $captureDetailsData, AmazonpayCaptureDetailsTransfer $captureDetails)
     {
-        if (!empty($captureDetailsData[self::ID_LIST])) {
-            $captureDetails->setIdList(array_values($captureDetailsData[self::ID_LIST])[0]);
+        if (!empty($captureDetailsData[static::ID_LIST])) {
+            $captureDetails->setIdList(array_values($captureDetailsData[static::ID_LIST])[0]);
         }
 
-        if (!empty($captureDetailsData[self::SELLER_CAPTURE_NOTE])) {
-            $captureDetails->setSellerCaptureNote($captureDetailsData[self::SELLER_CAPTURE_NOTE]);
+        if (!empty($captureDetailsData[static::SELLER_CAPTURE_NOTE])) {
+            $captureDetails->setSellerCaptureNote($captureDetailsData[static::SELLER_CAPTURE_NOTE]);
         }
 
-        if (!empty($captureDetailsData[self::CREATION_TIMESTAMP])) {
-            $captureDetails->setCreationTimestamp($captureDetailsData[self::CREATION_TIMESTAMP]);
+        if (!empty($captureDetailsData[static::CREATION_TIMESTAMP])) {
+            $captureDetails->setCreationTimestamp($captureDetailsData[static::CREATION_TIMESTAMP]);
         }
     }
 
@@ -65,19 +65,19 @@ class CaptureDetailsConverter extends AbstractArrayConverter
      */
     protected function convertCaptureDetails(array $captureDetailsData, AmazonpayCaptureDetailsTransfer $captureDetails)
     {
-        $captureDetails->setAmazonCaptureId($captureDetailsData[self::AMAZON_CAPTURE_ID]);
-        $captureDetails->setCaptureReferenceId($captureDetailsData[self::CAPTURE_REFERENCE_ID]);
+        $captureDetails->setAmazonCaptureId($captureDetailsData[static::AMAZON_CAPTURE_ID]);
+        $captureDetails->setCaptureReferenceId($captureDetailsData[static::CAPTURE_REFERENCE_ID]);
 
-        if (!empty($captureDetailsData[self::CAPTURE_AMOUNT])) {
-            $captureDetails->setCaptureAmount($this->convertPriceToTransfer($captureDetailsData[self::CAPTURE_AMOUNT]));
+        if (!empty($captureDetailsData[static::CAPTURE_AMOUNT])) {
+            $captureDetails->setCaptureAmount($this->convertPriceToTransfer($captureDetailsData[static::CAPTURE_AMOUNT]));
         }
 
-        if (!empty($captureDetailsData[self::CAPTURE_FEE])) {
-            $captureDetails->setCaptureFee($this->convertPriceToTransfer($captureDetailsData[self::CAPTURE_FEE]));
+        if (!empty($captureDetailsData[static::CAPTURE_FEE])) {
+            $captureDetails->setCaptureFee($this->convertPriceToTransfer($captureDetailsData[static::CAPTURE_FEE]));
         }
 
-        if (!empty($captureDetailsData[self::CAPTURE_STATUS])) {
-            $captureDetails->setCaptureStatus($this->convertStatusToTransfer($captureDetailsData[self::CAPTURE_STATUS]));
+        if (!empty($captureDetailsData[static::CAPTURE_STATUS])) {
+            $captureDetails->setCaptureStatus($this->convertStatusToTransfer($captureDetailsData[static::CAPTURE_STATUS]));
         }
     }
 }

@@ -26,20 +26,20 @@ class RefundDetailsConverter extends AbstractArrayConverter
     public function convert(array $refundDetailsData)
     {
         $refundDetails = new AmazonpayRefundDetailsTransfer();
-        $refundDetails->setAmazonRefundId($refundDetailsData[self::AMAZON_REFUND_ID]);
-        $refundDetails->setRefundReferenceId($refundDetailsData[self::REFUND_REFERENCE_ID]);
+        $refundDetails->setAmazonRefundId($refundDetailsData[static::AMAZON_REFUND_ID]);
+        $refundDetails->setRefundReferenceId($refundDetailsData[static::REFUND_REFERENCE_ID]);
         $refundDetails->setRefundAmount($this->convertPriceToTransfer(
-            $refundDetailsData[self::REFUND_AMOUNT]
+            $refundDetailsData[static::REFUND_AMOUNT]
         ));
 
-        if (!empty($refundDetailsData[self::REFUND_STATUS])) {
+        if (!empty($refundDetailsData[static::REFUND_STATUS])) {
             $refundDetails->setRefundStatus(
-                $this->convertStatusToTransfer($refundDetailsData[self::REFUND_STATUS])
+                $this->convertStatusToTransfer($refundDetailsData[static::REFUND_STATUS])
             );
         }
 
-        if (!empty($refundDetailsData[self::SELLER_REFUND_NOTE])) {
-            $refundDetails->setRefundReferenceId($refundDetailsData[self::SELLER_REFUND_NOTE]);
+        if (!empty($refundDetailsData[static::SELLER_REFUND_NOTE])) {
+            $refundDetails->setRefundReferenceId($refundDetailsData[static::SELLER_REFUND_NOTE]);
         }
 
         return $refundDetails;

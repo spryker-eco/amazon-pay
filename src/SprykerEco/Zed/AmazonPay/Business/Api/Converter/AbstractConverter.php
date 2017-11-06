@@ -49,60 +49,60 @@ abstract class AbstractConverter
     {
         $status = new AmazonpayStatusTransfer();
 
-        if (!empty($statusData[self::LAST_UPDATE_TIMESTAMP])) {
-            $status->setLastUpdateTimestamp($statusData[self::LAST_UPDATE_TIMESTAMP]);
+        if (!empty($statusData[static::LAST_UPDATE_TIMESTAMP])) {
+            $status->setLastUpdateTimestamp($statusData[static::LAST_UPDATE_TIMESTAMP]);
         }
 
-        $status->setState($statusData[self::STATE]);
+        $status->setState($statusData[static::STATE]);
 
-        if (!empty($statusData[self::REASON_CODE])) {
-            $status->setReasonCode($statusData[self::REASON_CODE]);
+        if (!empty($statusData[static::REASON_CODE])) {
+            $status->setReasonCode($statusData[static::REASON_CODE]);
             $status->setIsReauthorizable(
-                $statusData[self::REASON_CODE] === AmazonPayConfig::REASON_CODE_SELLER_CLOSED
-                || $statusData[self::REASON_CODE] === AmazonPayConfig::REASON_CODE_EXPIRED_UNUSED
+                $statusData[static::REASON_CODE] === AmazonPayConfig::REASON_CODE_SELLER_CLOSED
+                || $statusData[static::REASON_CODE] === AmazonPayConfig::REASON_CODE_EXPIRED_UNUSED
             );
 
             $status->setIsPaymentMethodInvalid(
-                $statusData[self::REASON_CODE] === AmazonPayConfig::REASON_CODE_PAYMENT_METHOD_INVALID
+                $statusData[static::REASON_CODE] === AmazonPayConfig::REASON_CODE_PAYMENT_METHOD_INVALID
             );
 
             $status->setIsClosedByAmazon(
-                $statusData[self::REASON_CODE] === AmazonPayConfig::REASON_CODE_AMAZON_CLOSED
+                $statusData[static::REASON_CODE] === AmazonPayConfig::REASON_CODE_AMAZON_CLOSED
             );
 
             $status->setIsTransactionTimedOut(
-                $statusData[self::REASON_CODE] === AmazonPayConfig::REASON_CODE_TRANSACTION_TIMED_OUT
+                $statusData[static::REASON_CODE] === AmazonPayConfig::REASON_CODE_TRANSACTION_TIMED_OUT
             );
         }
 
-        if ($statusData[self::STATE] === static::STATUS_DECLINED) {
+        if ($statusData[static::STATE] === static::STATUS_DECLINED) {
             $status->setIsSuspended($status->getIsPaymentMethodInvalid());
             $status->setIsDeclined(true);
         }
 
-        if ($statusData[self::STATE] === static::STATUS_SUSPENDED) {
+        if ($statusData[static::STATE] === static::STATUS_SUSPENDED) {
             $status->setIsSuspended(true);
             $status->setIsDeclined(true);
         }
 
         $status->setIsPending(
-            $statusData[self::STATE] === static::STATUS_PENDING
+            $statusData[static::STATE] === static::STATUS_PENDING
         );
 
         $status->setIsOpen(
-            $statusData[self::STATE] === static::STATUS_OPEN
+            $statusData[static::STATE] === static::STATUS_OPEN
         );
 
         $status->setIsClosed(
-            $statusData[self::STATE] === static::STATUS_CLOSED
+            $statusData[static::STATE] === static::STATUS_CLOSED
         );
 
         $status->setIsCompleted(
-            $statusData[self::STATE] === static::STATUS_COMPLETED
+            $statusData[static::STATE] === static::STATUS_COMPLETED
         );
 
         $status->setIsCancelled(
-            $statusData[self::STATE] === static::STATUS_CANCELLED
+            $statusData[static::STATE] === static::STATUS_CANCELLED
         );
 
         return $status;

@@ -26,7 +26,7 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
      */
     public function createIpnRequestConverter(array $request)
     {
-        switch ($request[self::NOTIFICATION_TYPE]) {
+        switch ($request[static::NOTIFICATION_TYPE]) {
             case AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE:
                 return $this->createIpnPaymentAuthorizeRequestConverter();
 
@@ -40,7 +40,7 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
                 return $this->createIpnOrderReferenceNotificationConverter();
         }
 
-        throw new InvalidIpnCallException('Unknown notification type: ' . $request[self::NOTIFICATION_TYPE]);
+        throw new InvalidIpnCallException('Unknown notification type: ' . $request[static::NOTIFICATION_TYPE]);
     }
 
     /**

@@ -36,15 +36,15 @@ class TransactionLogger implements TransactionLoggerInterface
      */
     protected function isLoggingEnabled(AmazonpayResponseHeaderTransfer $headerTransfer)
     {
-        if ($this->reportLevel === self::REPORT_LEVEL_ALL) {
+        if ($this->reportLevel === static::REPORT_LEVEL_ALL) {
             return true;
         };
 
-        if ($this->reportLevel === self::REPORT_LEVEL_DISABLED) {
+        if ($this->reportLevel === static::REPORT_LEVEL_DISABLED) {
             return false;
         };
 
-        if ($this->reportLevel === self::REPORT_LEVEL_ERRORS_ONLY) {
+        if ($this->reportLevel === static::REPORT_LEVEL_ERRORS_ONLY) {
             return !$headerTransfer->getIsSuccess();
         }
 

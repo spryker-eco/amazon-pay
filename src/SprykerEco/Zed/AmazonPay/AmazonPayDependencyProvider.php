@@ -65,7 +65,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addSalesFacade(Container $container)
     {
-        $container[self::FACADE_SALES] = function (Container $container) {
+        $container[static::FACADE_SALES] = function (Container $container) {
             return new AmazonPayToSalesBridge($container->getLocator()->sales()->facade());
         };
     }
@@ -77,7 +77,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addMoneyFacade(Container $container)
     {
-        $container[self::FACADE_MONEY] = function (Container $container) {
+        $container[static::FACADE_MONEY] = function (Container $container) {
             return new AmazonPayToMoneyBridge($container->getLocator()->money()->facade());
         };
     }
@@ -89,7 +89,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addShipmentFacade(Container $container)
     {
-        $container[self::FACADE_SHIPMENT] = function (Container $container) {
+        $container[static::FACADE_SHIPMENT] = function (Container $container) {
             return new AmazonPayToShipmentBridge($container->getLocator()->shipment()->facade());
         };
     }
@@ -101,7 +101,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addUtilEncodingService(Container $container)
     {
-        $container[self::SERVICE_UTIL_ENCODING] = function (Container $container) {
+        $container[static::SERVICE_UTIL_ENCODING] = function (Container $container) {
             return new AmazonPayToUtilEncodingBridge($container->getLocator()->utilEncoding()->service());
         };
     }
@@ -113,7 +113,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addRefundFacade(Container $container)
     {
-        $container[self::FACADE_REFUND] = function (Container $container) {
+        $container[static::FACADE_REFUND] = function (Container $container) {
             return new AmazonPayToRefundBridge($container->getLocator()->refund()->facade());
         };
     }
@@ -125,7 +125,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addOmsFacade(Container $container)
     {
-        $container[self::FACADE_OMS] = function (Container $container) {
+        $container[static::FACADE_OMS] = function (Container $container) {
             return new AmazonPayToOmsBridge($container->getLocator()->oms()->facade());
         };
     }
@@ -137,7 +137,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addMessengerFacade(Container $container)
     {
-        $container[self::FACADE_MESSENGER] = function (Container $container) {
+        $container[static::FACADE_MESSENGER] = function (Container $container) {
             return new AmazonPayToMessengerBridge($container->getLocator()->messenger()->facade());
         };
     }

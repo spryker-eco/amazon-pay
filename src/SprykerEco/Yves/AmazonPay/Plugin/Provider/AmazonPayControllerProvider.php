@@ -36,40 +36,40 @@ class AmazonPayControllerProvider extends YvesControllerProvider
     protected function defineControllers(Application $app)
     {
         $allowedLocalesPattern = $this->getAllowedLocalesPattern();
-        $this->createController('/{amazonpay}/checkout', static::CHECKOUT, self::BUNDLE_NAME, 'Payment', 'checkout')
+        $this->createController('/{amazonpay}/checkout', static::CHECKOUT, static::BUNDLE_NAME, 'Payment', 'checkout')
             ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
             ->value('amazonpay', 'amazonpay');
 
-        $this->createController('/{amazonpay}/confirm/purchase', static::CONFIRM_PURCHASE, self::BUNDLE_NAME, 'Payment', 'confirmPurchase')
+        $this->createController('/{amazonpay}/confirm/purchase', static::CONFIRM_PURCHASE, static::BUNDLE_NAME, 'Payment', 'confirmPurchase')
             ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
             ->value('amazonpay', 'amazonpay');
 
-        $this->createController('/{amazonpay}/success', static::SUCCESS, self::BUNDLE_NAME, 'Payment', 'success')
+        $this->createController('/{amazonpay}/success', static::SUCCESS, static::BUNDLE_NAME, 'Payment', 'success')
             ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
             ->value('amazonpay', 'amazonpay');
 
-        $this->createController('/{amazonpay}/payment-failed', static::PAYMENT_FAILED, self::BUNDLE_NAME, 'Payment', 'paymentFailed')
+        $this->createController('/{amazonpay}/payment-failed', static::PAYMENT_FAILED, static::BUNDLE_NAME, 'Payment', 'paymentFailed')
             ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
             ->value('amazonpay', 'amazonpay');
 
         // ajax
-        $this->createController('/amazonpay/set-order-reference', static::SET_ORDER_REFERENCE, self::BUNDLE_NAME, 'Payment', 'setOrderReference');
-        $this->createController('/amazonpay/update-shipment-method', static::UPDATE_SHIPMENT_METHOD, self::BUNDLE_NAME, 'Payment', 'updateShipmentMethod');
-        $this->createController('/{amazonpay}/get-shipment-methods', static::GET_SHIPMENT_METHODS, self::BUNDLE_NAME, 'Payment', 'getShipmentMethods')
+        $this->createController('/amazonpay/set-order-reference', static::SET_ORDER_REFERENCE, static::BUNDLE_NAME, 'Payment', 'setOrderReference');
+        $this->createController('/amazonpay/update-shipment-method', static::UPDATE_SHIPMENT_METHOD, static::BUNDLE_NAME, 'Payment', 'updateShipmentMethod');
+        $this->createController('/{amazonpay}/get-shipment-methods', static::GET_SHIPMENT_METHODS, static::BUNDLE_NAME, 'Payment', 'getShipmentMethods')
             ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
             ->value('amazonpay', 'amazonpay');
 
         // widgets
-        $this->createController('/{amazonpay}/paybutton', static::PAY_BUTTON, self::BUNDLE_NAME, 'Widget', 'payButton')
+        $this->createController('/{amazonpay}/paybutton', static::PAY_BUTTON, static::BUNDLE_NAME, 'Widget', 'payButton')
             ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
             ->value('amazonpay', 'amazonpay');
 
-        $this->createController('/{amazonpay}/checkout-widget', static::CHECKOUT_WIDGET, self::BUNDLE_NAME, 'Widget', 'checkoutWidget')
+        $this->createController('/{amazonpay}/checkout-widget', static::CHECKOUT_WIDGET, static::BUNDLE_NAME, 'Widget', 'checkoutWidget')
             ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
             ->value('amazonpay', 'amazonpay');
 
         // endpoint
-        $this->createController('/amazonpay/endpoint', static::ENDPOINT, self::BUNDLE_NAME, 'Payment', 'endpoint');
+        $this->createController('/amazonpay/endpoint', static::ENDPOINT, static::BUNDLE_NAME, 'Payment', 'endpoint');
     }
 
     /**

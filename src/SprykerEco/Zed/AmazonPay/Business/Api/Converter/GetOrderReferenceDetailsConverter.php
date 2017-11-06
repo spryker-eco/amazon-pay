@@ -31,7 +31,7 @@ class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
      */
     protected function extractOrderReferenceStatus(ResponseInterface $responseParser)
     {
-        return $this->extractResult($responseParser)[self::ORDER_REFERENCE_DETAILS][self::ORDER_REFERENCE_STATUS]['State'];
+        return $this->extractResult($responseParser)[static::ORDER_REFERENCE_DETAILS][static::ORDER_REFERENCE_STATUS]['State'];
     }
 
     /**
@@ -41,7 +41,7 @@ class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
      */
     protected function extractIsSandbox(ResponseInterface $responseParser)
     {
-        return ($this->extractResult($responseParser)[self::ORDER_REFERENCE_DETAILS]['ReleaseEnvironment'] === 'Sandbox') ? 1 : 0;
+        return ($this->extractResult($responseParser)[static::ORDER_REFERENCE_DETAILS]['ReleaseEnvironment'] === 'Sandbox') ? 1 : 0;
     }
 
     /**
@@ -60,7 +60,7 @@ class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
         $response = $this->extractResult($responseParser);
 
         $aResponseAddress =
-            $response[self::ORDER_REFERENCE_DETAILS]['BillingAddress']['PhysicalAddress'];
+            $response[static::ORDER_REFERENCE_DETAILS]['BillingAddress']['PhysicalAddress'];
 
         return $this->convertAddressToTransfer($aResponseAddress);
     }
@@ -75,7 +75,7 @@ class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
     {
         $responseTransfer->setOrderReferenceStatus(
             $this->convertStatusToTransfer(
-                $this->extractResult($responseParser)[self::ORDER_REFERENCE_DETAILS][self::ORDER_REFERENCE_STATUS]
+                $this->extractResult($responseParser)[static::ORDER_REFERENCE_DETAILS][static::ORDER_REFERENCE_STATUS]
             )
         );
         $responseTransfer->setIsSandbox($this->extractIsSandbox($responseParser));

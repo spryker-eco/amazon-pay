@@ -24,8 +24,8 @@ class WidgetController extends AbstractController
     public function payButtonAction()
     {
         return [
-            self::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
-            self::LOGOUT => (int)$this->isLogout(),
+            static::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
+            static::LOGOUT => (int)$this->isLogout(),
         ];
     }
 
@@ -46,7 +46,7 @@ class WidgetController extends AbstractController
     public function checkoutWidgetAction()
     {
         return [
-            self::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
+            static::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
         ];
     }
 
@@ -56,7 +56,7 @@ class WidgetController extends AbstractController
     public function walletWidgetAction()
     {
         return [
-            self::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
+            static::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
         ];
     }
 

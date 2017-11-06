@@ -25,8 +25,8 @@ class IpnOrderReferenceNotificationConverter extends IpnPaymentAbstractRequestCo
         $ipnOrderReferenceNotificationTransfer = new AmazonpayIpnOrderReferenceNotificationTransfer();
 
         $ipnOrderReferenceNotificationTransfer->setMessage($this->extractMessage($request));
-        $ipnOrderReferenceNotificationTransfer->setOrderReferenceStatus($this->convertStatusToTransfer($request[self::ORDER_REFERENCE][self::ORDER_REFERENCE_STATUS]));
-        $ipnOrderReferenceNotificationTransfer->setAmazonOrderReferenceId($request[self::ORDER_REFERENCE][self::AMAZON_ORDER_REFERENCE_ID]);
+        $ipnOrderReferenceNotificationTransfer->setOrderReferenceStatus($this->convertStatusToTransfer($request[static::ORDER_REFERENCE][static::ORDER_REFERENCE_STATUS]));
+        $ipnOrderReferenceNotificationTransfer->setAmazonOrderReferenceId($request[static::ORDER_REFERENCE][static::AMAZON_ORDER_REFERENCE_ID]);
 
         return $ipnOrderReferenceNotificationTransfer;
     }

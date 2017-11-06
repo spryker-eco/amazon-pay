@@ -55,9 +55,9 @@ class PaymentController extends AbstractController
         $cartItems = $this->getCartItems($quoteTransfer);
 
         return [
-            self::QUOTE_TRANSFER => $quoteTransfer,
-            self::CART_ITEMS => $cartItems,
-            self::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
+            static::QUOTE_TRANSFER => $quoteTransfer,
+            static::CART_ITEMS => $cartItems,
+            static::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
         ];
     }
 
@@ -121,7 +121,7 @@ class PaymentController extends AbstractController
 
         $quoteTransfer->getAmazonpayPayment()->setOrderReferenceId($request->request->get(static::URL_PARAM_REFERENCE_ID));
 
-        return new JsonResponse([self::SUCCESS => true]);
+        return new JsonResponse([static::SUCCESS => true]);
     }
 
     /**
@@ -140,7 +140,7 @@ class PaymentController extends AbstractController
         $shipmentMethods = $this->getFactory()->getShipmentClient()->getAvailableMethods($quoteTransfer);
 
         return [
-            self::SHIPMENT_METHODS => $shipmentMethods->getMethods(),
+            static::SHIPMENT_METHODS => $shipmentMethods->getMethods(),
         ];
     }
 
@@ -165,7 +165,7 @@ class PaymentController extends AbstractController
         $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
 
         return [
-            self::QUOTE_TRANSFER => $quoteTransfer,
+            static::QUOTE_TRANSFER => $quoteTransfer,
         ];
     }
 
@@ -209,7 +209,7 @@ class PaymentController extends AbstractController
             return $this->redirectResponseInternal(AmazonPayControllerProvider::SUCCESS);
         }
 
-        return $this->getFailedRedirectResponse(self::ERROR_AMAZONPAY_PAYMENT_FAILED);
+        return $this->getFailedRedirectResponse(static::ERROR_AMAZONPAY_PAYMENT_FAILED);
     }
 
     /**
@@ -222,7 +222,7 @@ class PaymentController extends AbstractController
     {
         $this->addErrorMessage(
             $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getErrorMessage()
-            ?? self::ERROR_AMAZONPAY_PAYMENT_FAILED
+            ?? static::ERROR_AMAZONPAY_PAYMENT_FAILED
         );
 
         return $this->redirectResponseExternal($request->headers->get('Referer'));
@@ -245,7 +245,7 @@ class PaymentController extends AbstractController
      */
     protected function getFailedRedirectResponse($message = null)
     {
-        $this->addErrorMessage($message ?? self::ERROR_AMAZONPAY_PAYMENT_FAILED);
+        $this->addErrorMessage($message ?? static::ERROR_AMAZONPAY_PAYMENT_FAILED);
 
         return $this->redirectResponseInternal($this->getPaymentRejectRoute());
     }
@@ -268,8 +268,8 @@ class PaymentController extends AbstractController
         $this->getFactory()->getQuoteClient()->clearQuote();
 
         return [
-            self::IS_ASYNCHRONOUS => $this->isAsynchronous(),
-            self::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
+            static::IS_ASYNCHRONOUS => $this->isAsynchronous(),
+            static::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
         ];
     }
 

@@ -269,7 +269,7 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
         }
 
         $aResponseAddress =
-            $this->extractResult($responseParser)[static::ORDER_REFERENCE_DETAILS][self::DESTINATION][self::PHYSICAL_DESTINATION] ?? null;
+            $this->extractResult($responseParser)[static::ORDER_REFERENCE_DETAILS][static::DESTINATION][static::PHYSICAL_DESTINATION] ?? null;
 
         if ($aResponseAddress !== null) {
             $address = $this->convertAddressToTransfer($aResponseAddress);
@@ -287,21 +287,21 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     {
         $address = new AddressTransfer();
 
-        if (!empty($addressData[self::NAME])) {
-            $address = $this->updateNameData($address, $addressData[self::NAME]);
+        if (!empty($addressData[static::NAME])) {
+            $address = $this->updateNameData($address, $addressData[static::NAME]);
         }
 
         $addressData = array_map([$this, 'getStringValue'], $addressData);
 
-        $address->setCity($addressData[self::CITY] ?? null);
-        $address->setIso2Code($addressData[self::COUNTRY_CODE] ?? null);
-        $address->setZipCode($addressData[self::POSTAL_CODE] ?? null);
-        $address->setAddress1($addressData[self::ADDRESS_LINE_1] ?? null);
-        $address->setAddress2($addressData[self::ADDRESS_LINE_2] ?? null);
-        $address->setAddress3($addressData[self::ADDRESS_LINE_3] ?? null);
-        $address->setRegion($addressData[self::DISTRICT] ?? null);
-        $address->setState($addressData[self::STATE_OR_REGION] ?? null);
-        $address->setPhone($addressData[self::PHONE] ?? null);
+        $address->setCity($addressData[static::CITY] ?? null);
+        $address->setIso2Code($addressData[static::COUNTRY_CODE] ?? null);
+        $address->setZipCode($addressData[static::POSTAL_CODE] ?? null);
+        $address->setAddress1($addressData[static::ADDRESS_LINE_1] ?? null);
+        $address->setAddress2($addressData[static::ADDRESS_LINE_2] ?? null);
+        $address->setAddress3($addressData[static::ADDRESS_LINE_3] ?? null);
+        $address->setRegion($addressData[static::DISTRICT] ?? null);
+        $address->setState($addressData[static::STATE_OR_REGION] ?? null);
+        $address->setPhone($addressData[static::PHONE] ?? null);
 
         return $address;
     }
