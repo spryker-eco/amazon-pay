@@ -65,14 +65,14 @@ class AuthorizeOrderIfRequiredTransaction extends ReauthorizeOrderTransaction
         $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonPayCallTransfer);
 
         if ($isPartialProcessing) {
-            $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
+            $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
 
         $this->paymentEntity->setStatus(AmazonPayConfig::OMS_STATUS_CAPTURE_PENDING);
         $this->paymentEntity->save();
 
         if ($isPartialProcessing) {
-            $this->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonPayCallTransfer);
+            $this->paymentProcessor->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonPayCallTransfer);
         }
     }
 }

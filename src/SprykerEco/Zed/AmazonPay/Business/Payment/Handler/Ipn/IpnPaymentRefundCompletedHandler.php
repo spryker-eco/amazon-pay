@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
 
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
+use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderInterface;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
@@ -48,15 +48,15 @@ class IpnPaymentRefundCompletedHandler extends IpnAbstractPaymentRefundHandler
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayIpnRequestTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer
      *
      * @return void
      */
-    public function handle(AbstractTransfer $amazonpayIpnRequestTransfer)
+    public function handle(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {
-        parent::handle($amazonpayIpnRequestTransfer);
+        parent::handle($paymentRequestTransfer);
 
-        $paymentEntity = $this->retrievePaymentEntity($amazonpayIpnRequestTransfer);
+        $paymentEntity = $this->retrievePaymentEntity($paymentRequestTransfer);
 
         if ($paymentEntity !== null) {
             $this->refundOrderModel->refundPayment($paymentEntity);

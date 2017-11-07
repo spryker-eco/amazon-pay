@@ -7,16 +7,16 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
 
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
+use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 
 class IpnEmptyHandler implements IpnRequestHandlerInterface
 {
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $amazonpayIpnRequestTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer
      *
      * @return void
      */
-    public function handle(AbstractTransfer $amazonpayIpnRequestTransfer)
+    public function handle(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {
         // do nothing. but probably logging has to be added. and for others transactions as well
     }

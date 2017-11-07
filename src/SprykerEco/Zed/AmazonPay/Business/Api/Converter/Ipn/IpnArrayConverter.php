@@ -7,9 +7,7 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn;
 
-use SprykerEco\Zed\AmazonPay\Business\Api\Converter\AbstractArrayConverter;
-
-class IpnArrayConverter extends AbstractArrayConverter
+class IpnArrayConverter implements IpnConverterInterface
 {
     /**
      * @var \SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn\IpnConverterFactoryInterface

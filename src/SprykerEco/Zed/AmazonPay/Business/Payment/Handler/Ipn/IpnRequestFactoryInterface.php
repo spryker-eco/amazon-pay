@@ -7,14 +7,14 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
 
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
+use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 
 interface IpnRequestFactoryInterface
 {
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $ipnRequest
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
-    public function createConcreteIpnRequestHandler(AbstractTransfer $ipnRequest);
+    public function createConcreteIpnRequestHandler(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer);
 }

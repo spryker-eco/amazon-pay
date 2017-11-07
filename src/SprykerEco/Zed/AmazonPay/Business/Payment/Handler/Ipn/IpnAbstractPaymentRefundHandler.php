@@ -7,21 +7,21 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
 
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
+use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 abstract class IpnAbstractPaymentRefundHandler extends IpnAbstractTransferRequestHandler
 {
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\AmazonpayResponseTransfer $amazonpayIpnPaymentRefundRequestTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer
      *
      * @return \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay
      */
-    protected function retrievePaymentEntity(AbstractTransfer $amazonpayIpnPaymentRefundRequestTransfer)
+    protected function retrievePaymentEntity(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {
         return $this->amazonPayQueryContainer
             ->queryPaymentByRefundReferenceId(
-                $amazonpayIpnPaymentRefundRequestTransfer->getRefundDetails()->getRefundReferenceId()
+                $paymentRequestTransfer->getRefundDetails()->getRefundReferenceId()
             )
             ->findOne();
     }

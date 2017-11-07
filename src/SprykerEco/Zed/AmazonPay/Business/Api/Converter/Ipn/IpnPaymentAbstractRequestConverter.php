@@ -8,9 +8,9 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn;
 
 use Generated\Shared\Transfer\AmazonpayIpnRequestMessageTransfer;
-use SprykerEco\Zed\AmazonPay\Business\Api\Converter\AbstractArrayConverter;
+use SprykerEco\Zed\AmazonPay\Business\Api\Converter\AbstractConverter;
 
-abstract class IpnPaymentAbstractRequestConverter extends AbstractArrayConverter
+abstract class IpnPaymentAbstractRequestConverter extends AbstractConverter implements IpnConverterInterface
 {
     /**
      * @param array $request

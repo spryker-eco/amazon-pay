@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
 
+use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderInterface;
@@ -55,22 +56,22 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentAuthorizeRequestTransfer $ipnRequest
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer
      *
      * @throws \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
-    public function createConcreteIpnRequestHandler(AbstractTransfer $ipnRequest)
+    public function createConcreteIpnRequestHandler(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {
         $map = $this->getNotificationTypeToHandlerMap();
 
-        if (isset($map[$ipnRequest->getMessage()->getNotificationType()])) {
-            return $map[$ipnRequest->getMessage()->getNotificationType()]($ipnRequest);
+        if (isset($map[$paymentRequestTransfer->getMessage()->getNotificationType()])) {
+            return $map[$paymentRequestTransfer->getMessage()->getNotificationType()]($paymentRequestTransfer);
         }
 
         throw new IpnHandlerNotFoundException('Unknown IPN Notification type: ' .
-            $ipnRequest->getMessage()->getNotificationType());
+            $paymentRequestTransfer->getMessage()->getNotificationType());
     }
 
     /**
@@ -95,7 +96,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentAuthorizeRequestTransfer $ipnRequest
+     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
      *
      * @throws \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
      *
@@ -172,7 +173,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentCaptureRequestTransfer $ipnRequest
+     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
      *
      * @throws \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
      *
@@ -229,7 +230,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentRefundRequestTransfer $ipnRequest
+     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
      *
      * @throws \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
      *
@@ -275,7 +276,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnOrderReferenceNotificationTransfer $ipnRequest
+     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
      *
      * @throws \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
      *

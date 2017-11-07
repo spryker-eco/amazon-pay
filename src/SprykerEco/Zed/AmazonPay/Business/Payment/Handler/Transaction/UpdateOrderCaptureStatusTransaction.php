@@ -21,27 +21,13 @@ class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
      */
     public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        if (!$amazonPayCallTransfer->getAmazonpayPayment()->getCaptureDetails()
-            || !$amazonPayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getAmazonCaptureId()) {
+        if (!$this->isAllowed($amazonPayCallTransfer)) {
             return $amazonPayCallTransfer;
         }
 
         $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
-        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
-            return $amazonPayCallTransfer;
-        }
-
-        if ($this->apiResponse->getCaptureDetails()->getAmazonCaptureId()) {
-            $this->paymentEntity->setAmazonCaptureId(
-                $this->apiResponse->getCaptureDetails()->getAmazonCaptureId()
-            );
-        }
-
-        $newStatus = $this->getPaymentStatus($this->apiResponse->getCaptureDetails()->getCaptureStatus());
-
-        $this->paymentEntity->setStatus($newStatus);
-        $this->paymentEntity->save();
+        $this->updatePayment();
 
         return $amazonPayCallTransfer;
     }
@@ -70,5 +56,36 @@ class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
         }
 
         return AmazonPayConfig::OMS_STATUS_CANCELLED;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return bool
+     */
+    protected function isAllowed(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
+        return $amazonPayCallTransfer->getAmazonpayPayment()->getCaptureDetails() !== null
+            && $amazonPayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getAmazonCaptureId() !== null;
+    }
+
+    /**
+     * @return void
+     */
+    protected function updatePayment()
+    {
+        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+            return;
+        }
+
+        if ($this->apiResponse->getCaptureDetails()->getAmazonCaptureId()) {
+            $this->paymentEntity->setAmazonCaptureId(
+                $this->apiResponse->getCaptureDetails()->getAmazonCaptureId()
+            );
+        }
+
+        $newStatus = $this->getPaymentStatus($this->apiResponse->getCaptureDetails()->getCaptureStatus());
+        $this->paymentEntity->setStatus($newStatus);
+        $this->paymentEntity->save();
     }
 }

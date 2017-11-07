@@ -7,9 +7,9 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
 
+use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay;
 use Propel\Runtime\Collection\ObjectCollection;
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
 use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToOmsInterface;
 use SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface;
@@ -47,13 +47,13 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $amazonpayIpnRequestTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer
      *
      * @return void
      */
-    public function handle(AbstractTransfer $amazonpayIpnRequestTransfer)
+    public function handle(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {
-        $paymentEntity = $this->retrievePaymentEntity($amazonpayIpnRequestTransfer);
+        $paymentEntity = $this->retrievePaymentEntity($paymentRequestTransfer);
 
         if ($paymentEntity === null) {
             return;
@@ -68,7 +68,7 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
             []
         );
 
-        $this->ipnRequestLogger->log($amazonpayIpnRequestTransfer, $paymentEntity);
+        $this->ipnRequestLogger->log($paymentRequestTransfer, $paymentEntity);
     }
 
     /**
@@ -88,11 +88,11 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $amazonpayIpnPaymentAuthorizeRequestTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer
      *
-     * @return \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay
+     * @return \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay|null
      */
-    abstract protected function retrievePaymentEntity(AbstractTransfer $amazonpayIpnPaymentAuthorizeRequestTransfer);
+    abstract protected function retrievePaymentEntity(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer);
 
     /**
      * @return string

@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn;
 
-use Generated\Shared\Transfer\AmazonpayIpnOrderReferenceNotificationTransfer;
+use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 
 class IpnOrderReferenceNotificationConverter extends IpnPaymentAbstractRequestConverter
 {
@@ -18,20 +18,19 @@ class IpnOrderReferenceNotificationConverter extends IpnPaymentAbstractRequestCo
     /**
      * @param array $request
      *
-     * @return \Generated\Shared\Transfer\AmazonpayIpnOrderReferenceNotificationTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer
      */
     public function convert(array $request)
     {
-        $ipnOrderReferenceNotificationTransfer = new AmazonpayIpnOrderReferenceNotificationTransfer();
-
-        $ipnOrderReferenceNotificationTransfer->setMessage($this->extractMessage($request));
-        $ipnOrderReferenceNotificationTransfer->setOrderReferenceStatus(
+        $ipnPaymentRequestTransfer = new AmazonpayIpnPaymentRequestTransfer();
+        $ipnPaymentRequestTransfer->setMessage($this->extractMessage($request));
+        $ipnPaymentRequestTransfer->setOrderReferenceStatus(
             $this->convertStatusToTransfer($request[static::ORDER_REFERENCE][static::ORDER_REFERENCE_STATUS])
         );
-        $ipnOrderReferenceNotificationTransfer->setAmazonOrderReferenceId(
+        $ipnPaymentRequestTransfer->setAmazonOrderReferenceId(
             $request[static::ORDER_REFERENCE][static::AMAZON_ORDER_REFERENCE_ID]
         );
 
-        return $ipnOrderReferenceNotificationTransfer;
+        return $ipnPaymentRequestTransfer;
     }
 }

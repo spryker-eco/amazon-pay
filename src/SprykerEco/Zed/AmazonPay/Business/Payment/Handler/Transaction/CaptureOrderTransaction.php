@@ -28,6 +28,8 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
 
         $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
+        $this->updatePaymentEntity($amazonPayCallTransfer);
+
         return $amazonPayCallTransfer;
     }
 
@@ -68,7 +70,7 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
         $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonPayCallTransfer);
 
         if ($isPartialProcessing) {
-            $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
+            $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
 
         $captureDetails = $this->apiResponse->getCaptureDetails();
@@ -89,7 +91,10 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
         $this->paymentEntity->save();
 
         if ($isPartialProcessing) {
-            $this->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonPayCallTransfer);
+            $this->paymentProcessor->assignAmazonpayPaymentToItems(
+                $this->paymentEntity,
+                $amazonPayCallTransfer
+            );
         }
     }
 
@@ -120,10 +125,12 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
      *
      * @return void
      */
-    protected function updateCaptureReferenceId(AmazonpayCallTransfer $amazonPayCallTransfer):void
+    protected function updateCaptureReferenceId(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        $amazonPayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->setCaptureReferenceId(
-            $this->generateOperationReferenceId($amazonPayCallTransfer)
-        );
+        $amazonPayCallTransfer->getAmazonpayPayment()
+            ->getCaptureDetails()
+            ->setCaptureReferenceId(
+                $this->generateOperationReferenceId($amazonPayCallTransfer)
+            );
     }
 }

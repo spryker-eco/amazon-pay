@@ -132,7 +132,7 @@ class ConverterFactory implements ConverterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface
+     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn\IpnConverterInterface
      */
     public function createIpnArrayConverter()
     {

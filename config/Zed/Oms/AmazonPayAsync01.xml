@@ -22,7 +22,7 @@
         </states>
 
         <events>
-            <event name="update order status" onEnter="true" command="AmazonPay/UpdateNewOrderStatus" />
+            <event name="update order status" onEnter="true" />
         </events>
 
         <transitions>

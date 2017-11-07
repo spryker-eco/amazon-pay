@@ -39,7 +39,7 @@ class RefundOrderTransaction extends AbstractAmazonpayTransaction
         $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonPayCallTransfer);
 
         if ($isPartialProcessing) {
-            $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
+            $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
 
         $this->paymentEntity->setStatus(AmazonPayConfig::OMS_STATUS_REFUND_PENDING);
@@ -48,7 +48,10 @@ class RefundOrderTransaction extends AbstractAmazonpayTransaction
         $this->paymentEntity->save();
 
         if ($isPartialProcessing) {
-            $this->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonPayCallTransfer);
+            $this->paymentProcessor->assignAmazonpayPaymentToItems(
+                $this->paymentEntity,
+                $amazonPayCallTransfer
+            );
         }
 
         return $amazonPayCallTransfer;

@@ -40,7 +40,7 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
     /**
      * @param array $request
      *
-     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface
+     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn\IpnConverterInterface
      */
     public function createIpnRequestConverter(array $request)
     {
@@ -50,7 +50,7 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface
+     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn\IpnConverterInterface
      */
     protected function createIpnOrderReferenceNotificationConverter()
     {
@@ -58,7 +58,7 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface
+     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn\IpnConverterInterface
      */
     protected function createIpnPaymentAuthorizeRequestConverter()
     {
@@ -68,7 +68,7 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface
+     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn\IpnConverterInterface
      */
     protected function createIpnPaymentCaptureRequestConverter()
     {
@@ -78,7 +78,7 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
     }
 
     /**
-     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface
+     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn\IpnConverterInterface
      */
     protected function createIpnPaymentRefundRequestConverter()
     {

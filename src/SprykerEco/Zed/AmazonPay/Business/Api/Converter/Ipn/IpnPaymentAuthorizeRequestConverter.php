@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn;
 
-use Generated\Shared\Transfer\AmazonpayIpnPaymentAuthorizeRequestTransfer;
+use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface;
 
 class IpnPaymentAuthorizeRequestConverter extends IpnPaymentAbstractRequestConverter
@@ -29,17 +29,16 @@ class IpnPaymentAuthorizeRequestConverter extends IpnPaymentAbstractRequestConve
     /**
      * @param array $request
      *
-     * @return \Generated\Shared\Transfer\AmazonpayIpnPaymentAuthorizeRequestTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer
      */
     public function convert(array $request)
     {
-        $ipnPaymentAuthorizeRequestTransfer = new AmazonpayIpnPaymentAuthorizeRequestTransfer();
-        $ipnPaymentAuthorizeRequestTransfer->setMessage($this->extractMessage($request));
-
-        $ipnPaymentAuthorizeRequestTransfer->setAuthorizationDetails(
+        $ipnPaymentRequestTransfer = new AmazonpayIpnPaymentRequestTransfer();
+        $ipnPaymentRequestTransfer->setMessage($this->extractMessage($request));
+        $ipnPaymentRequestTransfer->setAuthorizationDetails(
             $this->authDetailsConverter->convert($request[static::AUTHORIZATION_DETAILS])
         );
 
-        return $ipnPaymentAuthorizeRequestTransfer;
+        return $ipnPaymentRequestTransfer;
     }
 }

@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
 
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
+use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 class IpnPaymentCaptureCompletedHandler extends IpnAbstractPaymentCaptureHandler
@@ -21,35 +21,35 @@ class IpnPaymentCaptureCompletedHandler extends IpnAbstractPaymentCaptureHandler
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $amazonpayIpnRequestTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer
      *
      * @return void
      */
-    public function handle(AbstractTransfer $amazonpayIpnRequestTransfer)
+    public function handle(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {
-        $this->updatePaymentEntityByCaptureReferenceId($amazonpayIpnRequestTransfer);
+        $this->updatePaymentEntityByCaptureReferenceId($paymentRequestTransfer);
 
-        parent::handle($amazonpayIpnRequestTransfer);
+        parent::handle($paymentRequestTransfer);
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\AmazonpayIpnPaymentCaptureRequestTransfer $amazonpayIpnRequestTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer
      *
      * @return void
      */
-    protected function updatePaymentEntityByCaptureReferenceId(AbstractTransfer $amazonpayIpnRequestTransfer)
+    protected function updatePaymentEntityByCaptureReferenceId(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {
-        $paymentEntity = $this->retrievePaymentEntity($amazonpayIpnRequestTransfer);
+        $paymentEntity = $this->retrievePaymentEntity($paymentRequestTransfer);
 
         if (!$paymentEntity) {
             $paymentEntity = $this->amazonPayQueryContainer->queryPaymentByAuthorizationReferenceId(
-                $amazonpayIpnRequestTransfer->getCaptureDetails()->getCaptureReferenceId()
+                $paymentRequestTransfer->getCaptureDetails()->getCaptureReferenceId()
             )
                 ->findOne();
 
             if ($paymentEntity) {
-                $paymentEntity->setAmazonCaptureId($amazonpayIpnRequestTransfer->getCaptureDetails()->getAmazonCaptureId())
-                    ->setCaptureReferenceId($amazonpayIpnRequestTransfer->getCaptureDetails()->getCaptureReferenceId())
+                $paymentEntity->setAmazonCaptureId($paymentRequestTransfer->getCaptureDetails()->getAmazonCaptureId())
+                    ->setCaptureReferenceId($paymentRequestTransfer->getCaptureDetails()->getCaptureReferenceId())
                     ->save();
             }
         }

@@ -50,37 +50,13 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
      */
     public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        if (!$amazonPayCallTransfer->getAmazonpayPayment()->getRefundDetails()->getAmazonRefundId()) {
+        if (!$this->isAllowed($amazonPayCallTransfer)) {
             return $amazonPayCallTransfer;
         }
 
         $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
-        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
-            return $amazonPayCallTransfer;
-        }
-
-        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonPayCallTransfer);
-
-        if ($isPartialProcessing) {
-            $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
-        }
-
-        $status = $this->getPaymentStatus($this->apiResponse->getRefundDetails()->getRefundStatus());
-
-        $refundIsRequired = ($status === AmazonPayConfig::OMS_STATUS_REFUND_COMPLETED
-            && $this->paymentEntity->getStatus() !== $status);
-
-        $this->paymentEntity->setStatus($status);
-        $this->paymentEntity->save();
-
-        if ($isPartialProcessing) {
-            $this->paymentProcessor->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonPayCallTransfer);
-        }
-
-        if ($refundIsRequired) {
-            $this->refundOrderModel->refundPayment($this->paymentEntity);
-        }
+        $this->updatePayment($amazonPayCallTransfer);
 
         return $amazonPayCallTransfer;
     }
@@ -105,5 +81,49 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
         }
 
         return AmazonPayConfig::OMS_STATUS_CANCELLED;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return bool
+     */
+    protected function isAllowed(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
+        return !empty($amazonPayCallTransfer->getAmazonpayPayment()->getRefundDetails()->getAmazonRefundId());
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return void
+     */
+    protected function updatePayment(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
+        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+            return;
+        }
+
+        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonPayCallTransfer);
+
+        if ($isPartialProcessing) {
+            $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
+        }
+
+        $status = $this->getPaymentStatus($this->apiResponse->getRefundDetails()->getRefundStatus());
+
+        $refundIsRequired = ($status === AmazonPayConfig::OMS_STATUS_REFUND_COMPLETED
+            && $this->paymentEntity->getStatus() !== $status);
+
+        $this->paymentEntity->setStatus($status);
+        $this->paymentEntity->save();
+
+        if ($isPartialProcessing) {
+            $this->paymentProcessor->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonPayCallTransfer);
+        }
+
+        if ($refundIsRequired) {
+            $this->refundOrderModel->refundPayment($this->paymentEntity);
+        }
     }
 }

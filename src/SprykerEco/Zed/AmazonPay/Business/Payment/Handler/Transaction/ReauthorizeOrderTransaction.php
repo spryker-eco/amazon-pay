@@ -34,7 +34,7 @@ class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
         $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonPayCallTransfer);
 
         if ($isPartialProcessing && $this->paymentEntity->getStatus() !== AmazonPayConfig::OMS_STATUS_AUTH_PENDING) {
-            $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
+            $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
 
         $amazonPayCallTransfer->getAmazonpayPayment()->setAuthorizationDetails(
@@ -53,7 +53,10 @@ class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
         $this->paymentEntity->save();
 
         if ($isPartialProcessing) {
-            $this->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonPayCallTransfer);
+            $this->paymentProcessor->assignAmazonpayPaymentToItems(
+                $this->paymentEntity,
+                $amazonPayCallTransfer
+            );
         }
 
         return $amazonPayCallTransfer;

@@ -20,16 +20,26 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
      */
     public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        if (!$amazonPayCallTransfer->getAmazonpayPayment()
-            ->getAuthorizationDetails()
-            ->getAmazonAuthorizationId()) {
+        if (!$this->isAllowed($amazonPayCallTransfer)) {
             return $amazonPayCallTransfer;
         }
 
         $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
+        $this->updatePayment($amazonPayCallTransfer);
+
+        return $amazonPayCallTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return void
+     */
+    protected function updatePayment(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
         if (!$this->isPaymentSuccess($amazonPayCallTransfer)) {
-            return $amazonPayCallTransfer;
+            return;
         }
 
         $amazonPayment = $amazonPayCallTransfer->getAmazonpayPayment();
@@ -46,11 +56,11 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
                 )
                 ->save();
 
-            return $amazonPayCallTransfer;
+            return;
         }
 
         if ($status->getIsPending()) {
-            return $amazonPayCallTransfer;
+            return;
         }
 
         $paymentStatus = $this->getPaymentStatus($status);
@@ -66,8 +76,6 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
         }
 
         $this->paymentEntity->save();
-
-        return $amazonPayCallTransfer;
     }
 
     /**
@@ -102,5 +110,17 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
         }
 
         return false;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return bool
+     */
+    protected function isAllowed(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
+        return $amazonPayCallTransfer->getAmazonpayPayment()
+            ->getAuthorizationDetails()
+            ->getAmazonAuthorizationId() !== null;
     }
 }

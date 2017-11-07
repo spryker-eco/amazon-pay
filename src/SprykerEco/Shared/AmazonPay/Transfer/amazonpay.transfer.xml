@@ -134,25 +134,13 @@
         <property name="TopicArn" type="string" />
     </transfer>
 
-    <transfer name="AmazonpayIpnPaymentAuthorizeRequest">
-        <property name="message" type="AmazonpayIpnRequestMessage" />
-        <property name="authorizationDetails" type="AmazonpayAuthorizationDetails" />
-    </transfer>
-
-    <transfer name="AmazonpayIpnPaymentCaptureRequest">
-        <property name="message" type="AmazonpayIpnRequestMessage" />
-        <property name="captureDetails" type="AmazonpayCaptureDetails" />
-    </transfer>
-
-    <transfer name="AmazonpayIpnPaymentRefundRequest">
-        <property name="message" type="AmazonpayIpnRequestMessage" />
-        <property name="refundDetails" type="AmazonpayRefundDetails" />
-    </transfer>
-
-    <transfer name="AmazonpayIpnOrderReferenceNotification">
+    <transfer name="AmazonpayIpnPaymentRequest">
         <property name="message" type="AmazonpayIpnRequestMessage" />
         <property name="amazonOrderReferenceId" type="string" />
         <property name="orderReferenceStatus" type="AmazonpayStatus" />
+        <property name="authorizationDetails" type="AmazonpayAuthorizationDetails" />
+        <property name="captureDetails" type="AmazonpayCaptureDetails" />
+        <property name="refundDetails" type="AmazonpayRefundDetails" />
     </transfer>
 
     <transfer name="AmazonpayCall">

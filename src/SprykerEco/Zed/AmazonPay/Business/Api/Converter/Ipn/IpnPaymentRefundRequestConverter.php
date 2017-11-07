@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn;
 
-use Generated\Shared\Transfer\AmazonpayIpnPaymentRefundRequestTransfer;
+use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface;
 
 class IpnPaymentRefundRequestConverter extends IpnPaymentAbstractRequestConverter
@@ -29,17 +29,16 @@ class IpnPaymentRefundRequestConverter extends IpnPaymentAbstractRequestConverte
     /**
      * @param array $request
      *
-     * @return \Generated\Shared\Transfer\AmazonpayIpnPaymentRefundRequestTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer
      */
     public function convert(array $request)
     {
-        $ipnPaymentRefundRequestTransfer = new AmazonpayIpnPaymentRefundRequestTransfer();
-        $ipnPaymentRefundRequestTransfer->setMessage($this->extractMessage($request));
-
-        $ipnPaymentRefundRequestTransfer->setRefundDetails(
+        $ipnPaymentRequestTransfer = new AmazonpayIpnPaymentRequestTransfer();
+        $ipnPaymentRequestTransfer->setMessage($this->extractMessage($request));
+        $ipnPaymentRequestTransfer->setRefundDetails(
             $this->refundDetailsConverter->convert($request[static::REFUND_DETAILS])
         );
 
-        return $ipnPaymentRefundRequestTransfer;
+        return $ipnPaymentRequestTransfer;
     }
 }

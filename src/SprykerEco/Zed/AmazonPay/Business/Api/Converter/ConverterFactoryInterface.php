@@ -75,7 +75,7 @@ interface ConverterFactoryInterface
     public function createIpnConverterFactory();
 
     /**
-     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface
+     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn\IpnConverterInterface
      */
     public function createIpnArrayConverter();
 }

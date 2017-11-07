@@ -57,31 +57,26 @@
             <transition condition="AmazonPay/IsAuthOpen">
                 <source>waiting for auth status</source>
                 <target>auth open</target>
-                <event>update authorization status</event>
             </transition>
 
             <transition condition="AmazonPay/IsAuthDeclined">
                 <source>waiting for auth status</source>
                 <target>auth declined</target>
-                <event>update authorization status</event>
             </transition>
 
             <transition condition="AmazonPay/IsAuthSuspended">
                 <source>waiting for auth status</source>
                 <target>auth suspended</target>
-                <event>update authorization status</event>
             </transition>
 
             <transition condition="AmazonPay/IsAuthTransactionTimedOut">
                 <source>waiting for auth status</source>
                 <target>auth transaction timed out</target>
-                <event>update authorization status</event>
             </transition>
 
             <transition condition="AmazonPay/IsAuthClosed">
                 <source>waiting for auth status</source>
                 <target>auth closed</target>
-                <event>update authorization status</event>
             </transition>
 
             <transition condition="AmazonPay/IsAuthClosed">
