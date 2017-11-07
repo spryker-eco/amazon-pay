@@ -5,17 +5,17 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
+namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Authorize;
 
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
-class IpnPaymentCaptureDeclineHandler extends IpnAbstractPaymentCaptureHandler
+class IpnPaymentAuthorizeDeclineHandler extends IpnAbstractPaymentAuthorizeHandler
 {
     /**
      * @return string
      */
     protected function getOmsStatusName()
     {
-        return AmazonPayConfig::OMS_STATUS_CAPTURE_DECLINED;
+        return AmazonPayConfig::OMS_STATUS_AUTH_DECLINED;
     }
 }

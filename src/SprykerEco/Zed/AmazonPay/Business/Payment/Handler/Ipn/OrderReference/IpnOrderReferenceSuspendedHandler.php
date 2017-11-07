@@ -5,11 +5,11 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
+namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\OrderReference;
 
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
-class IpnOrderReferenceClosedHandler extends IpnAbstractOrderReferenceHandler
+class IpnOrderReferenceSuspendedHandler extends IpnAbstractOrderReferenceHandler
 {
     /**
      * @return string
@@ -24,6 +24,6 @@ class IpnOrderReferenceClosedHandler extends IpnAbstractOrderReferenceHandler
      */
     protected function getOmsStatusName()
     {
-        return AmazonPayConfig::OMS_STATUS_AUTH_DECLINED;
+        return AmazonPayConfig::OMS_STATUS_AUTH_SUSPENDED;
     }
 }

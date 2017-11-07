@@ -5,12 +5,13 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
+namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Refund;
 
 use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
+use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnAbstractTransferRequestHandler;
 
-abstract class IpnAbstractPaymentCaptureHandler extends IpnAbstractTransferRequestHandler
+abstract class IpnAbstractPaymentRefundHandler extends IpnAbstractTransferRequestHandler
 {
     /**
      * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer
@@ -19,9 +20,9 @@ abstract class IpnAbstractPaymentCaptureHandler extends IpnAbstractTransferReque
      */
     protected function retrievePaymentEntity(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {
-        return $this->amazonPayQueryContainer
-            ->queryPaymentByCaptureReferenceId(
-                $paymentRequestTransfer->getCaptureDetails()->getCaptureReferenceId()
+        return $this->queryContainer
+            ->queryPaymentByRefundReferenceId(
+                $paymentRequestTransfer->getRefundDetails()->getRefundReferenceId()
             )
             ->findOne();
     }
@@ -31,6 +32,6 @@ abstract class IpnAbstractPaymentCaptureHandler extends IpnAbstractTransferReque
      */
     protected function getOmsEventId()
     {
-        return AmazonPayConfig::OMS_EVENT_UPDATE_CAPTURE_STATUS;
+        return AmazonPayConfig::OMS_EVENT_UPDATE_REFUND_STATUS;
     }
 }

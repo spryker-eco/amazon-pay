@@ -5,17 +5,17 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
+namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Refund;
 
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
-class IpnPaymentAuthorizeSuspendedHandler extends IpnAbstractPaymentAuthorizeHandler
+class IpnPaymentRefundDeclineHandler extends IpnAbstractPaymentRefundHandler
 {
     /**
      * @return string
      */
     protected function getOmsStatusName()
     {
-        return AmazonPayConfig::OMS_STATUS_AUTH_SUSPENDED;
+        return AmazonPayConfig::OMS_STATUS_REFUND_DECLINED;
     }
 }

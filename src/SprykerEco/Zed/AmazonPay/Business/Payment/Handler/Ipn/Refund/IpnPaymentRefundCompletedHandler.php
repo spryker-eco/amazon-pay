@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
+namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Refund;
 
 use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
@@ -23,18 +23,18 @@ class IpnPaymentRefundCompletedHandler extends IpnAbstractPaymentRefundHandler
 
     /**
      * @param \SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToOmsInterface $omsFacade
-     * @param \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface $amazonPayQueryContainer
+     * @param \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface $queryContainer
      * @param \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
      * @param \SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderInterface $refundOrderModel
      */
     public function __construct(
         AmazonPayToOmsInterface $omsFacade,
-        AmazonPayQueryContainerInterface $amazonPayQueryContainer,
+        AmazonPayQueryContainerInterface $queryContainer,
         IpnRequestLoggerInterface $ipnRequestLogger,
         RefundOrderInterface $refundOrderModel
     ) {
 
-        parent::__construct($omsFacade, $amazonPayQueryContainer, $ipnRequestLogger);
+        parent::__construct($omsFacade, $queryContainer, $ipnRequestLogger);
 
         $this->refundOrderModel = $refundOrderModel;
     }

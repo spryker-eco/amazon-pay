@@ -5,9 +5,10 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
+namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\OrderReference;
 
 use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
+use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnAbstractTransferRequestHandler;
 
 abstract class IpnAbstractOrderReferenceHandler extends IpnAbstractTransferRequestHandler
 {
@@ -18,7 +19,7 @@ abstract class IpnAbstractOrderReferenceHandler extends IpnAbstractTransferReque
      */
     protected function retrievePaymentEntity(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {
-        return $this->amazonPayQueryContainer
+        return $this->queryContainer
             ->queryPaymentByOrderReferenceId(
                 $paymentRequestTransfer->getAmazonOrderReferenceId()
             )

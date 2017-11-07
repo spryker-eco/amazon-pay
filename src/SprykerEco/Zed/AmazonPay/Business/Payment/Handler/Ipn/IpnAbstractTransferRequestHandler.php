@@ -22,9 +22,9 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
     protected $omsFacade;
 
     /**
-     * @var \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface $amazonPayQueryContainer
+     * @var \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface $queryContainer
      */
-    protected $amazonPayQueryContainer;
+    protected $queryContainer;
 
     /**
      * @var \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
@@ -33,16 +33,16 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
 
     /**
      * @param \SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToOmsInterface $omsFacade
-     * @param \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface $amazonPayQueryContainer
+     * @param \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface $queryContainer
      * @param \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
      */
     public function __construct(
         AmazonPayToOmsInterface $omsFacade,
-        AmazonPayQueryContainerInterface $amazonPayQueryContainer,
+        AmazonPayQueryContainerInterface $queryContainer,
         IpnRequestLoggerInterface $ipnRequestLogger
     ) {
         $this->omsFacade = $omsFacade;
-        $this->amazonPayQueryContainer = $amazonPayQueryContainer;
+        $this->queryContainer = $queryContainer;
         $this->ipnRequestLogger = $ipnRequestLogger;
     }
 

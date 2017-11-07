@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
+namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Capture;
 
 use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
@@ -42,7 +42,7 @@ class IpnPaymentCaptureCompletedHandler extends IpnAbstractPaymentCaptureHandler
         $paymentEntity = $this->retrievePaymentEntity($paymentRequestTransfer);
 
         if (!$paymentEntity) {
-            $paymentEntity = $this->amazonPayQueryContainer->queryPaymentByAuthorizationReferenceId(
+            $paymentEntity = $this->queryContainer->queryPaymentByAuthorizationReferenceId(
                 $paymentRequestTransfer->getCaptureDetails()->getCaptureReferenceId()
             )
                 ->findOne();
