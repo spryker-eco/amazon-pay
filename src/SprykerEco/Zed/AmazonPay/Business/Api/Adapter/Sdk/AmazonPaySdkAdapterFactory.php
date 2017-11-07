@@ -11,7 +11,7 @@ use PayWithAmazon\Client;
 use PayWithAmazon\IpnHandler;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface;
 
-class AmazonpaySdkAdapterFactory implements AmazonpaySdkAdapterFactoryInterface
+class AmazonPaySdkAdapterFactory implements AmazonPaySdkAdapterFactoryInterface
 {
     const MERCHANT_ID = 'merchant_id';
     const PLATFORM_ID = 'platform_id';
@@ -27,7 +27,7 @@ class AmazonpaySdkAdapterFactory implements AmazonpaySdkAdapterFactoryInterface
      *
      * @return \PayWithAmazon\ClientInterface
      */
-    public function createAmazonpayClient(AmazonPayConfigInterface $config)
+    public function createAmazonPayClient(AmazonPayConfigInterface $config)
     {
         $aConfig = [
             static::MERCHANT_ID => $config->getSellerId(),
@@ -49,7 +49,7 @@ class AmazonpaySdkAdapterFactory implements AmazonpaySdkAdapterFactoryInterface
      *
      * @return \PayWithAmazon\IpnHandlerInterface
      */
-    public function createAmazonpayIpnHandler(array $headers, $body)
+    public function createAmazonPayIpnHandler(array $headers, $body)
     {
         return new IpnHandler($headers, $body);
     }

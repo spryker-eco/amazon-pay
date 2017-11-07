@@ -63,22 +63,35 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      */
     public function createConcreteIpnRequestHandler(AbstractTransfer $ipnRequest)
     {
-        switch ($ipnRequest->getMessage()->getNotificationType()) {
-            case AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE:
-                return $this->createIpnPaymentAuthorizeHandler($ipnRequest);
+        $map = $this->getNotificationTypeToHandlerMap();
 
-            case AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_CAPTURE:
-                return $this->createIpnPaymentCaptureHandler($ipnRequest);
-
-            case AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_REFUND:
-                return $this->createIpnPaymentRefundHandler($ipnRequest);
-
-            case AmazonPayConfig::IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION:
-                return $this->createIpnOrderReferenceHandler($ipnRequest);
+        if (isset($map[$ipnRequest->getMessage()->getNotificationType()])) {
+            return $map[$ipnRequest->getMessage()->getNotificationType()]($ipnRequest);
         }
 
         throw new IpnHandlerNotFoundException('Unknown IPN Notification type: ' .
             $ipnRequest->getMessage()->getNotificationType());
+    }
+
+    /**
+     * @return array
+     */
+    protected function getNotificationTypeToHandlerMap()
+    {
+        return [
+            AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE => function (AbstractTransfer $ipnRequest) {
+                return $this->createIpnPaymentAuthorizeHandler($ipnRequest);
+            },
+            AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_CAPTURE => function (AbstractTransfer $ipnRequest) {
+                return $this->createIpnPaymentCaptureHandler($ipnRequest);
+            },
+            AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_REFUND => function (AbstractTransfer $ipnRequest) {
+                return $this->createIpnPaymentRefundHandler($ipnRequest);
+            },
+            AmazonPayConfig::IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION => function (AbstractTransfer $ipnRequest) {
+                return $this->createIpnOrderReferenceHandler($ipnRequest);
+            },
+        ];
     }
 
     /**

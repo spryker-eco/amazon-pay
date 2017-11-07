@@ -12,36 +12,53 @@ use SprykerEco\Zed\AmazonPay\Business\Api\Converter\AbstractArrayConverter;
 
 class RefundDetailsConverter extends AbstractArrayConverter
 {
-    const AMAZON_REFUND_ID = 'AmazonRefundId';
-    const REFUND_REFERENCE_ID = 'RefundReferenceId';
     const REFUND_AMOUNT = 'RefundAmount';
     const REFUND_STATUS = 'RefundStatus';
-    const SELLER_REFUND_NOTE = 'SellerRefundNote';
 
     /**
      * @param array $refundDetailsData
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayRefundDetailsTransfer
      */
     public function convert(array $refundDetailsData)
     {
         $refundDetails = new AmazonpayRefundDetailsTransfer();
-        $refundDetails->setAmazonRefundId($refundDetailsData[static::AMAZON_REFUND_ID]);
-        $refundDetails->setRefundReferenceId($refundDetailsData[static::REFUND_REFERENCE_ID]);
-        $refundDetails->setRefundAmount($this->convertPriceToTransfer(
-            $refundDetailsData[static::REFUND_AMOUNT]
-        ));
+        $refundDetails->fromArray($refundDetailsData, true);
 
+        $this->hydrateRefundAmount($refundDetailsData, $refundDetails);
+
+        $this->hydrateStatus($refundDetailsData, $refundDetails);
+
+        return $refundDetails;
+    }
+
+    /**
+     * @param array $refundDetailsData
+     * @param \Generated\Shared\Transfer\AmazonpayRefundDetailsTransfer $refundDetails
+     *
+     * @return void
+     */
+    protected function hydrateRefundAmount(array $refundDetailsData, AmazonpayRefundDetailsTransfer $refundDetails)
+    {
+        $refundDetails->setRefundAmount(
+            $this->convertPriceToTransfer(
+                $refundDetailsData[static::REFUND_AMOUNT]
+            )
+        );
+    }
+
+    /**
+     * @param array $refundDetailsData
+     * @param \Generated\Shared\Transfer\AmazonpayRefundDetailsTransfer $refundDetails
+     *
+     * @return void
+     */
+    protected function hydrateStatus(array $refundDetailsData, AmazonpayRefundDetailsTransfer $refundDetails)
+    {
         if (!empty($refundDetailsData[static::REFUND_STATUS])) {
             $refundDetails->setRefundStatus(
                 $this->convertStatusToTransfer($refundDetailsData[static::REFUND_STATUS])
             );
         }
-
-        if (!empty($refundDetailsData[static::SELLER_REFUND_NOTE])) {
-            $refundDetails->setRefundReferenceId($refundDetailsData[static::SELLER_REFUND_NOTE]);
-        }
-
-        return $refundDetails;
     }
 }

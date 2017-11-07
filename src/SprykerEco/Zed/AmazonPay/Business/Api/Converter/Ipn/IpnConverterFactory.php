@@ -11,36 +11,42 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Zed\AmazonPay\Business\Api\Converter\Details\AuthorizationDetailsConverter;
 use SprykerEco\Zed\AmazonPay\Business\Api\Converter\Details\CaptureDetailsConverter;
 use SprykerEco\Zed\AmazonPay\Business\Api\Converter\Details\RefundDetailsConverter;
-use SprykerEco\Zed\AmazonPay\Business\Exception\InvalidIpnCallException;
 
 class IpnConverterFactory implements IpnConverterFactoryInterface
 {
     const NOTIFICATION_TYPE = 'NotificationType';
 
     /**
+     * @return array
+     */
+    protected function getTypeToConverterMap()
+    {
+        return [
+            AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE => function () {
+                return $this->createIpnPaymentAuthorizeRequestConverter();
+            },
+            AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_CAPTURE => function () {
+                return $this->createIpnPaymentCaptureRequestConverter();
+            },
+            AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_REFUND => function () {
+                return $this->createIpnPaymentRefundRequestConverter();
+            },
+            AmazonPayConfig::IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION => function () {
+                return $this->createIpnOrderReferenceNotificationConverter();
+            },
+        ];
+    }
+
+    /**
      * @param array $request
-     *
-     * @throws \SprykerEco\Zed\AmazonPay\Business\Exception\InvalidIpnCallException
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface
      */
     public function createIpnRequestConverter(array $request)
     {
-        switch ($request[static::NOTIFICATION_TYPE]) {
-            case AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE:
-                return $this->createIpnPaymentAuthorizeRequestConverter();
+        $map = $this->getTypeToConverterMap();
 
-            case AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_CAPTURE:
-                return $this->createIpnPaymentCaptureRequestConverter();
-
-            case AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_REFUND:
-                return $this->createIpnPaymentRefundRequestConverter();
-
-            case AmazonPayConfig::IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION:
-                return $this->createIpnOrderReferenceNotificationConverter();
-        }
-
-        throw new InvalidIpnCallException('Unknown notification type: ' . $request[static::NOTIFICATION_TYPE]);
+        return $map[$request[static::NOTIFICATION_TYPE]]();
     }
 
     /**

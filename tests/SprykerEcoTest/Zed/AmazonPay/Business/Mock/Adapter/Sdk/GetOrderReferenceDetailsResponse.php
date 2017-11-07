@@ -42,8 +42,8 @@ class GetOrderReferenceDetailsResponse extends AbstractResponse
         <Amount>105.89</Amount>
       </OrderTotal>
       <Buyer>
-        <Name>John Doe</Name>
-        <Email>john@doe.xxx</Email>
+        <Name>' . ClientMock::FIRST_NAME . ' ' . ClientMock::LAST_NAME . '</Name>
+        <Email>' . ClientMock::EMAIL . '</Email>
       </Buyer>
       <ReleaseEnvironment>Sandbox</ReleaseEnvironment>
       <AmazonOrderReferenceId>S02-9733147-1514483</AmazonOrderReferenceId>

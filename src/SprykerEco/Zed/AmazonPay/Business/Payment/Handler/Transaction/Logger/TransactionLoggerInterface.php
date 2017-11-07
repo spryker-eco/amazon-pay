@@ -7,15 +7,14 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger;
 
-use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
+use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 
 interface TransactionLoggerInterface
 {
     /**
-     * @param string $orderReferenceId
-     * @param \Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer $headerTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayPaymentTransfer $amazonpayPaymentTransfer
      *
      * @return void
      */
-    public function log($orderReferenceId, AmazonpayResponseHeaderTransfer $headerTransfer);
+    public function log(AmazonpayPaymentTransfer $amazonpayPaymentTransfer);
 }

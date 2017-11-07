@@ -19,9 +19,11 @@ abstract class IpnAbstractPaymentAuthorizeHandler extends IpnAbstractTransferReq
      */
     protected function retrievePaymentEntity(AbstractTransfer $amazonpayIpnPaymentAuthorizeRequestTransfer)
     {
-        return $this->amazonPayQueryContainer->queryPaymentByAuthorizationReferenceId(
-            $amazonpayIpnPaymentAuthorizeRequestTransfer->getAuthorizationDetails()->getAuthorizationReferenceId()
-        )->findOne();
+        return $this->amazonPayQueryContainer
+            ->queryPaymentByAuthorizationReferenceId(
+                $amazonpayIpnPaymentAuthorizeRequestTransfer->getAuthorizationDetails()->getAuthorizationReferenceId()
+            )
+            ->findOne();
     }
 
     /**

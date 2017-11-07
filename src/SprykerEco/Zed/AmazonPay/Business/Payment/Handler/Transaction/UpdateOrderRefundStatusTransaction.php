@@ -12,10 +12,9 @@ use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface;
 use SprykerEco\Zed\AmazonPay\Business\Api\Adapter\CallAdapterInterface;
-use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayTransferToEntityConverterInterface;
+use SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorInterface;
 use SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderInterface;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface;
-use SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface;
 
 class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
 {
@@ -28,45 +27,43 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
      * @param \SprykerEco\Zed\AmazonPay\Business\Api\Adapter\CallAdapterInterface $executionAdapter
      * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface $config
      * @param \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface $transactionLogger
-     * @param \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface $amazonpayQueryContainer
-     * @param \SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayTransferToEntityConverterInterface $converter
+     * @param \SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorInterface $paymentProcessor
      * @param \SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderInterface $refundOrderModel
      */
     public function __construct(
         CallAdapterInterface $executionAdapter,
         AmazonPayConfigInterface $config,
         TransactionLoggerInterface $transactionLogger,
-        AmazonPayQueryContainerInterface $amazonpayQueryContainer,
-        AmazonPayTransferToEntityConverterInterface $converter,
+        PaymentProcessorInterface $paymentProcessor,
         RefundOrderInterface $refundOrderModel
     ) {
 
-        parent::__construct($executionAdapter, $config, $transactionLogger, $amazonpayQueryContainer, $converter);
+        parent::__construct($executionAdapter, $config, $transactionLogger, $paymentProcessor);
 
         $this->refundOrderModel = $refundOrderModel;
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getRefundDetails()->getAmazonRefundId()) {
-            return $amazonpayCallTransfer;
+        if (!$amazonPayCallTransfer->getAmazonpayPayment()->getRefundDetails()->getAmazonRefundId()) {
+            return $amazonPayCallTransfer;
         }
 
-        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+        $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
         if (!$this->apiResponse->getHeader()->getIsSuccess()) {
-            return $amazonpayCallTransfer;
+            return $amazonPayCallTransfer;
         }
 
-        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
+        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonPayCallTransfer);
 
         if ($isPartialProcessing) {
-            $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
+            $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
 
         $status = $this->getPaymentStatus($this->apiResponse->getRefundDetails()->getRefundStatus());
@@ -78,14 +75,14 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
         $this->paymentEntity->save();
 
         if ($isPartialProcessing) {
-            $this->assignAmazonpayPaymentToItemsIfNew($this->paymentEntity, $amazonpayCallTransfer);
+            $this->paymentProcessor->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonPayCallTransfer);
         }
 
         if ($refundIsRequired) {
             $this->refundOrderModel->refundPayment($this->paymentEntity);
         }
 
-        return $amazonpayCallTransfer;
+        return $amazonPayCallTransfer;
     }
 
     /**

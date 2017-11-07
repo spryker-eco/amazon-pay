@@ -14,25 +14,25 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransaction
 {
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        if (!$amazonpayCallTransfer->getAmazonpayPayment()
+        if (!$amazonPayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->getAmazonAuthorizationId()) {
-            return $amazonpayCallTransfer;
+            return $amazonPayCallTransfer;
         }
 
-        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+        $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
-        if (!$this->isPaymentSuccess($amazonpayCallTransfer)) {
-            return $amazonpayCallTransfer;
+        if (!$this->isPaymentSuccess($amazonPayCallTransfer)) {
+            return $amazonPayCallTransfer;
         }
 
-        $amazonPayment = $amazonpayCallTransfer->getAmazonpayPayment();
+        $amazonPayment = $amazonPayCallTransfer->getAmazonpayPayment();
         $status = $amazonPayment->getAuthorizationDetails()->getAuthorizationStatus();
 
         if ($amazonPayment->getAuthorizationDetails()->getIdList()) {
@@ -46,11 +46,11 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
                 )
                 ->save();
 
-            return $amazonpayCallTransfer;
+            return $amazonPayCallTransfer;
         }
 
         if ($status->getIsPending()) {
-            return $amazonpayCallTransfer;
+            return $amazonPayCallTransfer;
         }
 
         $paymentStatus = $this->getPaymentStatus($status);
@@ -67,7 +67,7 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
 
         $this->paymentEntity->save();
 
-        return $amazonpayCallTransfer;
+        return $amazonPayCallTransfer;
     }
 
     /**

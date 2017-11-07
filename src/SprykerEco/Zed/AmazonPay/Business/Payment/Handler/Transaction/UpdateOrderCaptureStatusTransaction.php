@@ -15,21 +15,21 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
 {
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        if (!$amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()
-            || !$amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getAmazonCaptureId()) {
-            return $amazonpayCallTransfer;
+        if (!$amazonPayCallTransfer->getAmazonpayPayment()->getCaptureDetails()
+            || !$amazonPayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getAmazonCaptureId()) {
+            return $amazonPayCallTransfer;
         }
 
-        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+        $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
         if (!$this->apiResponse->getHeader()->getIsSuccess()) {
-            return $amazonpayCallTransfer;
+            return $amazonPayCallTransfer;
         }
 
         if ($this->apiResponse->getCaptureDetails()->getAmazonCaptureId()) {
@@ -43,7 +43,7 @@ class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
         $this->paymentEntity->setStatus($newStatus);
         $this->paymentEntity->save();
 
-        return $amazonpayCallTransfer;
+        return $amazonPayCallTransfer;
     }
 
     /**

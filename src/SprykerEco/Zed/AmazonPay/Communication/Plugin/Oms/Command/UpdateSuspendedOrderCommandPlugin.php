@@ -26,7 +26,8 @@ class UpdateSuspendedOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
             );
 
             if ($amazonpayCallTransfer->getAmazonpayPayment()->getStatus()
-                === AmazonPayConfig::OMS_STATUS_PAYMENT_METHOD_CHANGED) {
+                === AmazonPayConfig::OMS_STATUS_PAYMENT_METHOD_CHANGED
+            ) {
                 $this->getFacade()->reauthorizeSuspendedOrder($amazonpayCallTransfer);
             }
 

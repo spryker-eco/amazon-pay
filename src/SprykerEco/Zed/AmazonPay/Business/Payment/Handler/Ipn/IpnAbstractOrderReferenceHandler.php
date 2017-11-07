@@ -18,8 +18,10 @@ abstract class IpnAbstractOrderReferenceHandler extends IpnAbstractTransferReque
      */
     protected function retrievePaymentEntity(AbstractTransfer $amazonpayIpnOrderReferenceOpenTransfer)
     {
-        return $this->amazonPayQueryContainer->queryPaymentByOrderReferenceId(
-            $amazonpayIpnOrderReferenceOpenTransfer->getAmazonOrderReferenceId()
-        )->findOne();
+        return $this->amazonPayQueryContainer
+            ->queryPaymentByOrderReferenceId(
+                $amazonpayIpnOrderReferenceOpenTransfer->getAmazonOrderReferenceId()
+            )
+            ->findOne();
     }
 }

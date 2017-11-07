@@ -35,9 +35,11 @@ class AuthorizationDetailsConverter extends AbstractArrayConverter
     {
         $authorizationDetails = new AmazonpayAuthorizationDetailsTransfer();
 
-        $this->convertGenericDetails($authDetailsData, $authorizationDetails);
-        $this->convertAuthorizationDetails($authDetailsData, $authorizationDetails);
-        $this->convertCaptureDetails($authDetailsData, $authorizationDetails);
+        $authorizationDetails->fromArray($authDetailsData, true);
+        $this->hydrateIdList($authDetailsData, $authorizationDetails);
+        $this->hydrateAuthorizationStatus($authDetailsData, $authorizationDetails);
+        $this->hydrateCapturedAmount($authDetailsData, $authorizationDetails);
+        $this->hydrateReasonCode($authorizationDetails);
 
         return $authorizationDetails;
     }
@@ -48,23 +50,21 @@ class AuthorizationDetailsConverter extends AbstractArrayConverter
      *
      * @return void
      */
-    protected function convertGenericDetails(array $authDetailsData, AmazonpayAuthorizationDetailsTransfer $authorizationDetails)
+    protected function hydrateIdList(array $authDetailsData, AmazonpayAuthorizationDetailsTransfer $authorizationDetails)
     {
-        if (!empty($authDetailsData[static::EXPIRATION_TIMESTAMP])) {
-            $authorizationDetails->setExpirationTimestamp($authDetailsData[static::EXPIRATION_TIMESTAMP]);
-        }
-
         if (!empty($authDetailsData[static::ID_LIST])) {
-            $authorizationDetails->setIdList(array_values($authDetailsData[static::ID_LIST])[0]);
+            $authorizationDetails->setIdList($this->getIdList($authDetailsData));
         }
+    }
 
-        if (!empty($authDetailsData[static::SOFT_DECLINE])) {
-            $authorizationDetails->setSoftDecline($authDetailsData[static::SOFT_DECLINE]);
-        }
-
-        if (!empty($authDetailsData[static::CREATION_TIMESTAMP])) {
-            $authorizationDetails->setCreationTimestamp($authDetailsData[static::CREATION_TIMESTAMP]);
-        }
+    /**
+     * @param array $authDetailsData
+     *
+     * @return string
+     */
+    protected function getIdList(array $authDetailsData)
+    {
+        return array_values($authDetailsData[static::ID_LIST])[0];
     }
 
     /**
@@ -73,28 +73,13 @@ class AuthorizationDetailsConverter extends AbstractArrayConverter
      *
      * @return void
      */
-    protected function convertAuthorizationDetails(array $authDetailsData, AmazonpayAuthorizationDetailsTransfer $authorizationDetails)
+    protected function hydrateAuthorizationStatus(array $authDetailsData, AmazonpayAuthorizationDetailsTransfer $authorizationDetails)
     {
-        $authorizationDetails->setAmazonAuthorizationId($authDetailsData[static::AMAZON_AUTHORIZATION_ID]);
-        $authorizationDetails->setAuthorizationReferenceId($authDetailsData[static::AUTHORIZATION_REFERENCE_ID]);
-
-        if (!empty($authDetailsData[static::AUTHORIZATION_AMOUNT])) {
-            $authorizationDetails->setAuthorizationAmount($this->convertPriceToTransfer($authDetailsData[static::AUTHORIZATION_AMOUNT]));
-        }
-
-        if (!empty($authDetailsData[static::AUTHORIZATION_FEE])) {
-            $authorizationDetails->setAuthorizationAmount($this->convertPriceToTransfer($authDetailsData[static::AUTHORIZATION_FEE]));
-        }
-
         if (!empty($authDetailsData[static::AUTHORIZATION_STATUS])) {
             $authorizationDetails->setAuthorizationStatus(
                 $this->convertStatusToTransfer($authDetailsData[static::AUTHORIZATION_STATUS])
             );
         }
-
-        if (!empty($authDetailsData[static::SELLER_AUTHORIZATION_NOTE])) {
-            $authorizationDetails->setSellerAuthorizationNote($authDetailsData[static::SELLER_AUTHORIZATION_NOTE]);
-        }
     }
 
     /**
@@ -103,14 +88,22 @@ class AuthorizationDetailsConverter extends AbstractArrayConverter
      *
      * @return void
      */
-    protected function convertCaptureDetails(array $authDetailsData, AmazonpayAuthorizationDetailsTransfer $authorizationDetails)
+    protected function hydrateCapturedAmount(array $authDetailsData, AmazonpayAuthorizationDetailsTransfer $authorizationDetails)
     {
         if (!empty($authDetailsData[static::CAPTURED_AMOUNT])) {
             $authorizationDetails->setAuthorizationAmount($this->convertPriceToTransfer($authDetailsData[static::CAPTURED_AMOUNT]));
         }
+    }
 
-        if (!empty($authDetailsData[static::CAPTURE_NOW])) {
-            $authorizationDetails->setCaptureNow($authDetailsData[static::CAPTURE_NOW]);
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayAuthorizationDetailsTransfer $authorizationDetails
+     *
+     * @return void
+     */
+    protected function hydrateReasonCode(AmazonpayAuthorizationDetailsTransfer $authorizationDetails)
+    {
+        if (empty($authorizationDetails->getAuthorizationStatus()->getReasonCode())) {
+            $authorizationDetails->getAuthorizationStatus()->setReasonCode('');
         }
     }
 }

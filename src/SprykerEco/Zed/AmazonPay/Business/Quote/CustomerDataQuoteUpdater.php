@@ -20,10 +20,10 @@ class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
     public function update(QuoteTransfer $quoteTransfer)
     {
         $amazonCallTransfer = $this->convertQuoteTransferToAmazonPayTransfer($quoteTransfer);
-        /** @var \Generated\Shared\Transfer\CustomerTransfer $customer */
-        $customer = $this->executionAdapter->call($amazonCallTransfer);
 
-        $this->updateCustomer($quoteTransfer, $customer);
+        $responseTransfer = $this->executionAdapter->call($amazonCallTransfer);
+
+        $this->updateCustomer($quoteTransfer, $responseTransfer->getCustomer());
 
         return $quoteTransfer;
     }
@@ -37,9 +37,7 @@ class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
     protected function updateCustomer(QuoteTransfer $quoteTransfer, CustomerTransfer $customer)
     {
         if (!$quoteTransfer->getCustomer()) {
-            $quoteTransfer->setCustomer($customer);
-
-            return;
+            $quoteTransfer->setCustomer(new CustomerTransfer());
         }
 
         $quoteTransfer->getCustomer()->fromArray($customer->modifiedToArray());

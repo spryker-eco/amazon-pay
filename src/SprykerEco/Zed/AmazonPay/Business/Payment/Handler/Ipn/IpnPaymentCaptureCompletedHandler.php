@@ -21,11 +21,23 @@ class IpnPaymentCaptureCompletedHandler extends IpnAbstractPaymentCaptureHandler
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\AmazonpayIpnPaymentCaptureRequestTransfer $amazonpayIpnRequestTransfer
+     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $amazonpayIpnRequestTransfer
      *
      * @return void
      */
     public function handle(AbstractTransfer $amazonpayIpnRequestTransfer)
+    {
+        $this->updatePaymentEntityByCaptureReferenceId($amazonpayIpnRequestTransfer);
+
+        parent::handle($amazonpayIpnRequestTransfer);
+    }
+
+    /**
+     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\AmazonpayIpnPaymentCaptureRequestTransfer $amazonpayIpnRequestTransfer
+     *
+     * @return void
+     */
+    protected function updatePaymentEntityByCaptureReferenceId(AbstractTransfer $amazonpayIpnRequestTransfer)
     {
         $paymentEntity = $this->retrievePaymentEntity($amazonpayIpnRequestTransfer);
 
@@ -41,7 +53,5 @@ class IpnPaymentCaptureCompletedHandler extends IpnAbstractPaymentCaptureHandler
                     ->save();
             }
         }
-
-        parent::handle($amazonpayIpnRequestTransfer);
     }
 }

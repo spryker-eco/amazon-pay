@@ -35,6 +35,7 @@ class WidgetController extends AbstractController
     protected function isLogout()
     {
         $quote = $this->getFactory()->getQuoteClient()->getQuote();
+
         return $quote->getAmazonpayPayment()
             && $quote->getAmazonpayPayment()->getResponseHeader()
             && !$quote->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();

@@ -61,27 +61,27 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayResponseTransfer $responseTransfer
-     * @param \PayWithAmazon\ResponseInterface $responseParser
+     * @param array $response
      *
      * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    protected function setBody(AmazonpayResponseTransfer $responseTransfer, ResponseInterface $responseParser)
+    protected function setBody(AmazonpayResponseTransfer $responseTransfer, array $response)
     {
         return $responseTransfer;
     }
 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayResponseTransfer $responseTransfer
-     * @param \PayWithAmazon\ResponseInterface $responseParser
+     * @param array $response
      *
      * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    protected function mapResponseDataToTransfer(AmazonpayResponseTransfer $responseTransfer, ResponseInterface $responseParser)
+    protected function mapResponseDataToTransfer(AmazonpayResponseTransfer $responseTransfer, array $response)
     {
-        $responseTransfer->setHeader($this->extractHeader($responseParser));
+        $responseTransfer->setHeader($this->extractHeader($response));
 
         if ($responseTransfer->getHeader()->getIsSuccess()) {
-            return $this->setBody($responseTransfer, $responseParser);
+            return $this->setBody($responseTransfer, $response);
         }
 
         return $responseTransfer;
@@ -94,53 +94,45 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
      */
     public function convert(ResponseInterface $responseParser)
     {
-        return $this->mapResponseDataToTransfer($this->createTransferObject(), $responseParser);
+        return $this->mapResponseDataToTransfer($this->createTransferObject(), $responseParser->toArray());
     }
 
     /**
-     * @param \PayWithAmazon\ResponseInterface $responseParser
+     * @param array $response
      *
      * @return array
      */
-    protected function extractMetadata(ResponseInterface $responseParser)
+    protected function extractMetadata(array $response)
     {
-        return $responseParser->toArray()[static::RESPONSE_METADATA] ?? [];
+        return $response[static::RESPONSE_METADATA] ?? [];
     }
 
     /**
-     * @param \PayWithAmazon\ResponseInterface $responseParser
+     * @param array $response
      *
      * @return int
      */
-    protected function extractStatusCode(ResponseInterface $responseParser)
+    protected function extractStatusCode(array $response)
     {
-        return (int)$responseParser->toArray()[static::RESPONSE_STATUS];
+        return (int)$response[static::RESPONSE_STATUS];
     }
 
     /**
-     * @param \PayWithAmazon\ResponseInterface $responseParser
+     * @param array $response
      *
      * @return \Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer
      */
-    protected function extractHeader(ResponseInterface $responseParser)
+    protected function extractHeader(array $response)
     {
-        $statusCode = $this->extractStatusCode($responseParser);
-        $metadata = $this->extractMetadata($responseParser);
-        $constraints = $this->extractConstraints($responseParser);
-
         $header = new AmazonpayResponseHeaderTransfer();
-        $header->setIsSuccess($this->isSuccess($responseParser));
+        $header->setIsSuccess($this->isSuccess($response));
+
+        $statusCode = $this->extractStatusCode($response);
         $header->setStatusCode($statusCode);
 
-        if (isset($metadata[static::REQUEST_ID])) {
-            $header->setRequestId($metadata[static::REQUEST_ID]);
-            $responseArray = $responseParser->toArray();
+        $this->extractRequest($header, $response);
 
-            if (!empty($responseArray[static::ERROR])) {
-                return $this->updateHeaderWithError($header, $responseArray);
-            }
-        }
-
+        $constraints = $this->extractConstraints($response);
         $header->setConstraints($constraints);
         $this->extractErrorFromConstraints($header);
 
@@ -148,18 +140,31 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer $header
-     * @param array $responseArray
-     *
-     * @return \Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer
+     * @return void
      */
-    protected function updateHeaderWithError(AmazonpayResponseHeaderTransfer $header, array $responseArray)
+    protected function extractRequest(AmazonpayResponseHeaderTransfer $header, array $response)
     {
-        $header->setErrorMessage($responseArray[static::ERROR][static::MESSAGE]);
-        $header->setErrorCode($responseArray[static::ERROR][static::CODE]);
-        $header->setRequestId($responseArray[static::REQUEST_ID]);
+        $metadata = $this->extractMetadata($response);
+        if (isset($metadata[static::REQUEST_ID])) {
+            $header->setRequestId($metadata[static::REQUEST_ID]);
 
-        return $header;
+            if (!empty($response[static::ERROR])) {
+                $this->updateHeaderWithError($header, $response);
+            }
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer $header
+     * @param array $response
+     *
+     * @return void
+     */
+    protected function updateHeaderWithError(AmazonpayResponseHeaderTransfer $header, array $response)
+    {
+        $header->setErrorMessage($response[static::ERROR][static::MESSAGE]);
+        $header->setErrorCode($response[static::ERROR][static::CODE]);
+        $header->setRequestId($response[static::REQUEST_ID]);
     }
 
     /**
@@ -178,53 +183,73 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     }
 
     /**
-     * @param \PayWithAmazon\ResponseInterface $responseParser
+     * @param array $response
      *
      * @return bool
      */
-    protected function isSuccess(ResponseInterface $responseParser)
+    protected function isSuccess(array $response)
     {
         return
-            $this->extractStatusCode($responseParser) === static::STATUS_CODE_SUCCESS
-            && $this->extractConstraints($responseParser)->count() === 0;
+            $this->extractStatusCode($response) === static::STATUS_CODE_SUCCESS
+            && $this->extractConstraints($response)->count() === 0;
     }
 
     /**
-     * @param \PayWithAmazon\ResponseInterface $responseParser
+     * @param array $response
      *
      * @return array
      */
-    protected function extractResult(ResponseInterface $responseParser)
+    protected function extractResult(array $response)
     {
         $responseType = $this->getResponseType();
 
-        return $responseParser->toArray()[$responseType] ?? [];
+        return $response[$responseType] ?? [];
     }
 
     /**
-     * @param \PayWithAmazon\ResponseInterface $responseParser
+     * @param array $response
      *
-     * @return \ArrayObject | \Generated\Shared\Transfer\AmazonpayResponseConstraintTransfer[]
+     * @return \ArrayObject|\Generated\Shared\Transfer\AmazonpayResponseConstraintTransfer[]
      */
-    protected function extractConstraints(ResponseInterface $responseParser)
+    protected function extractConstraints(array $response)
     {
-        $result = $this->extractResult($responseParser);
-
-        $constraintTransfers = new ArrayObject();
+        $result = $this->extractResult($response);
 
         if (empty($result[static::ORDER_REFERENCE_DETAILS][static::CONSTRAINTS])) {
-            return $constraintTransfers;
+            return new ArrayObject();
         }
 
         $constraints = $this->getConstraints($result);
 
+        return $this->buildConstraintTransfers($constraints);
+    }
+
+    /**
+     * @param array $constraints
+     *
+     * @return \ArrayObject|\Generated\Shared\Transfer\AmazonpayResponseConstraintTransfer[]
+     */
+    protected function buildConstraintTransfers(array $constraints)
+    {
+        $constraintTransfers = new ArrayObject();
+
         foreach ($constraints as $constraint) {
-            if (!empty($constraint[static::CONSTRAINT_ID]) && !empty($constraint[static::DESCRIPTION])) {
+            if ($this->isValidConstraint($constraint)) {
                 $constraintTransfers[] = $this->buildConstraintTransfer($constraint);
             }
         }
 
         return $constraintTransfers;
+    }
+
+    /**
+     * @param array $constraint
+     *
+     * @return bool
+     */
+    protected function isValidConstraint(array $constraint)
+    {
+        return !empty($constraint[static::CONSTRAINT_ID]) && !empty($constraint[static::DESCRIPTION]);
     }
 
     /**
@@ -256,20 +281,20 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     }
 
     /**
-     * @param \PayWithAmazon\ResponseInterface $responseParser
+     * @param array $response
      *
      * @return \Generated\Shared\Transfer\AddressTransfer
      */
-    protected function extractShippingAddress(ResponseInterface $responseParser)
+    protected function extractShippingAddress(array $response)
     {
         $address = new AddressTransfer();
 
-        if (!$this->isSuccess($responseParser)) {
+        if (!$this->isSuccess($response)) {
             return $address;
         }
 
         $aResponseAddress =
-            $this->extractResult($responseParser)[static::ORDER_REFERENCE_DETAILS][static::DESTINATION][static::PHYSICAL_DESTINATION] ?? null;
+            $this->extractResult($response)[static::ORDER_REFERENCE_DETAILS][static::DESTINATION][static::PHYSICAL_DESTINATION] ?? null;
 
         if ($aResponseAddress !== null) {
             $address = $this->convertAddressToTransfer($aResponseAddress);

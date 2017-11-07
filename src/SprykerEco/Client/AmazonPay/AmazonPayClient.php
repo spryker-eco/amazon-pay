@@ -64,7 +64,7 @@ class AmazonPayClient extends AbstractClient implements AmazonPayClientInterface
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
+     * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function confirmPurchase(QuoteTransfer $quoteTransfer)
     {

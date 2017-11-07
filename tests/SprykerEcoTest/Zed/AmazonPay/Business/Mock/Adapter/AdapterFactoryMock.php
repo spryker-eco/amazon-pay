@@ -8,15 +8,15 @@
 namespace SprykerEcoTest\Zed\AmazonPay\Business\Mock\Adapter;
 
 use SprykerEco\Zed\AmazonPay\Business\Api\Adapter\AdapterFactory;
-use SprykerEcoTest\Zed\AmazonPay\Business\Mock\Adapter\Sdk\AmazonpaySdkAdapterFactoryMock;
+use SprykerEcoTest\Zed\AmazonPay\Business\Mock\Adapter\Sdk\AmazonPaySdkAdapterFactoryMock;
 
 class AdapterFactoryMock extends AdapterFactory
 {
     /**
-     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Adapter\Sdk\AmazonpaySdkAdapterFactoryInterface
+     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Adapter\Sdk\AmazonPaySdkAdapterFactoryInterface
      */
     protected function createSdkAdapterFactory()
     {
-        return new AmazonpaySdkAdapterFactoryMock();
+        return new AmazonPaySdkAdapterFactoryMock();
     }
 }

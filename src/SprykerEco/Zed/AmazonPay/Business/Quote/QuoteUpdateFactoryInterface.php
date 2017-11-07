@@ -17,7 +17,7 @@ interface QuoteUpdateFactoryInterface
     /**
      * @return \SprykerEco\Zed\AmazonPay\Business\Quote\QuoteUpdaterInterface
      */
-    public function createQuoteDataInitializer();
+    public function createQuoteUpdaterCollection();
 
     /**
      * @return \SprykerEco\Zed\AmazonPay\Business\Quote\QuoteUpdaterInterface

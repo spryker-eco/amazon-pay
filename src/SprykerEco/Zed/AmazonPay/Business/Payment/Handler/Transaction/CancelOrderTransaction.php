@@ -13,34 +13,46 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 class CancelOrderTransaction extends AbstractAmazonpayTransaction
 {
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+        $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
-        if ($this->paymentEntity) {
-            $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
+        $this->updatePaymentEntity($amazonPayCallTransfer);
 
-            if (!$this->apiResponse->getHeader()->getIsSuccess()) {
-                return $amazonpayCallTransfer;
-            }
+        return $amazonPayCallTransfer;
+    }
 
-            if ($isPartialProcessing) {
-                $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
-            }
-
-            $this->paymentEntity->setStatus(AmazonPayConfig::OMS_STATUS_CANCELLED);
-            $this->paymentEntity->save();
-
-            if ($isPartialProcessing) {
-                $this->assignAmazonpayPaymentToItemsIfNew($this->paymentEntity, $amazonpayCallTransfer);
-            }
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return void
+     */
+    protected function updatePaymentEntity(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
+        if (!$this->paymentEntity) {
+            return;
         }
 
-        return $amazonpayCallTransfer;
+        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonPayCallTransfer);
+
+        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+            return;
+        }
+
+        if ($isPartialProcessing) {
+            $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
+        }
+
+        $this->paymentEntity->setStatus(AmazonPayConfig::OMS_STATUS_CANCELLED);
+        $this->paymentEntity->save();
+
+        if ($isPartialProcessing) {
+            $this->paymentProcessor->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonPayCallTransfer);
+        }
     }
 
     /**

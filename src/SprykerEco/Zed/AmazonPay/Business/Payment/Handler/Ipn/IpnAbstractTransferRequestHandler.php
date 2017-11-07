@@ -92,9 +92,7 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
      *
      * @return \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay
      */
-    abstract protected function retrievePaymentEntity(
-        AbstractTransfer $amazonpayIpnPaymentAuthorizeRequestTransfer
-    );
+    abstract protected function retrievePaymentEntity(AbstractTransfer $amazonpayIpnPaymentAuthorizeRequestTransfer);
 
     /**
      * @return string

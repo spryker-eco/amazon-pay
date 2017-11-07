@@ -12,6 +12,7 @@ use SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface;
 
 class IpnPaymentCaptureRequestConverter extends IpnPaymentAbstractRequestConverter
 {
+    const CAPTURE_DETAILS = 'CaptureDetails';
     /**
      * @var \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface $captureDetailsConverter
      */
@@ -36,7 +37,7 @@ class IpnPaymentCaptureRequestConverter extends IpnPaymentAbstractRequestConvert
         $ipnPaymentCaptureRequestTransfer->setMessage($this->extractMessage($request));
 
         $ipnPaymentCaptureRequestTransfer->setCaptureDetails(
-            $this->captureDetailsConverter->convert($request['CaptureDetails'])
+            $this->captureDetailsConverter->convert($request[static::CAPTURE_DETAILS])
         );
 
         return $ipnPaymentCaptureRequestTransfer;

@@ -47,7 +47,7 @@ class AuthorizeAdapter extends AbstractAdapter
     ) {
         parent::__construct($client, $converter, $moneyFacade);
 
-        $this->setCaptureNow($config, $captureNow);
+        $this->captureNow = $this->getCaptureNow($config, $captureNow);
         $this->transactionTimeout = $config->getAuthTransactionTimeout();
     }
 
@@ -59,7 +59,7 @@ class AuthorizeAdapter extends AbstractAdapter
     public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         $result = $this->client->authorize(
-            $this->buildRequestArray($amazonpayCallTransfer->getAmazonpayPayment(), $this->getAmount($amazonpayCallTransfer))
+            $this->getRequestArray($amazonpayCallTransfer->getAmazonpayPayment(), $this->getAmount($amazonpayCallTransfer))
         );
 
         return $this->converter->convert($result);
@@ -69,15 +69,11 @@ class AuthorizeAdapter extends AbstractAdapter
      * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface $config
      * @param bool|null $captureNow
      *
-     * @return void
+     * @return bool
      */
-    protected function setCaptureNow(AmazonPayConfigInterface $config, $captureNow = null)
+    protected function getCaptureNow(AmazonPayConfigInterface $config, $captureNow = null)
     {
-        if ($captureNow === null) {
-            $this->captureNow = $config->getCaptureNow();
-        } else {
-            $this->captureNow = $captureNow;
-        }
+        return $captureNow ?? $config->getCaptureNow();
     }
 
     /**
@@ -86,7 +82,7 @@ class AuthorizeAdapter extends AbstractAdapter
      *
      * @return array
      */
-    protected function buildRequestArray(AmazonpayPaymentTransfer $amazonpayPaymentTransfer, $amount)
+    protected function getRequestArray(AmazonpayPaymentTransfer $amazonpayPaymentTransfer, $amount)
     {
         return [
             static::AMAZON_ORDER_REFERENCE_ID => $amazonpayPaymentTransfer->getOrderReferenceId(),

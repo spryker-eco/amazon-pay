@@ -12,29 +12,29 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 class SetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
 {
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        if ($amazonpayCallTransfer->getAmazonpayPayment()
-            && $amazonpayCallTransfer->getAmazonpayPayment()
+        if ($amazonPayCallTransfer->getAmazonpayPayment()
+            && $amazonPayCallTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()
-            && $amazonpayCallTransfer->getAmazonpayPayment()
+            && $amazonPayCallTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()
                 ->getAuthorizationStatus()
                 ->getIsPaymentMethodInvalid()
         ) {
-            return $amazonpayCallTransfer;
+            return $amazonPayCallTransfer;
         }
 
-        if ($amazonpayCallTransfer->getAmazonpayPayment()) {
-            $amazonpayCallTransfer->getAmazonpayPayment()->setSellerOrderId(
-                $this->generateOperationReferenceId($amazonpayCallTransfer)
+        if ($amazonPayCallTransfer->getAmazonpayPayment()) {
+            $amazonPayCallTransfer->getAmazonpayPayment()->setSellerOrderId(
+                $this->generateOperationReferenceId($amazonPayCallTransfer)
             );
         }
 
-        return parent::execute($amazonpayCallTransfer);
+        return parent::execute($amazonPayCallTransfer);
     }
 }

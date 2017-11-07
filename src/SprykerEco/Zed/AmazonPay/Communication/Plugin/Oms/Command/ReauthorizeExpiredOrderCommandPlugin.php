@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\AmazonPay\Communication\Plugin\Oms\Command;
 
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
@@ -22,15 +23,28 @@ class ReauthorizeExpiredOrderCommandPlugin extends AbstractAmazonpayCommandPlugi
         $customerEmail = $orderEntity->getEmail() ?? $orderEntity->getCustomer()->getEmail();
 
         foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
-            $amazonpayCallTransfer->setShippingAddress($this->buildAddressTransfer($orderEntity->getShippingAddress()))
-                ->setBillingAddress($this->buildAddressTransfer($orderEntity->getBillingAddress()));
-            $amazonpayCallTransfer->setEmail($customerEmail);
-            $amazonpayCallTransfer->setRequestedAmount(
-                $this->getRequestedAmountByOrderAndItems($orderEntity, $amazonpayCallTransfer->getItems())
-            );
-            $this->getFacade()->reauthorizeExpiredOrder($amazonpayCallTransfer);
+            $this->processOrder($amazonpayCallTransfer, $orderEntity, $customerEmail);
         }
+
         return [];
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param string $customerEmail
+     *
+     * @return void
+     */
+    protected function processOrder(AmazonpayCallTransfer $amazonpayCallTransfer, SpySalesOrder $orderEntity, $customerEmail)
+    {
+        $amazonpayCallTransfer->setShippingAddress($this->buildAddressTransfer($orderEntity->getShippingAddress()))
+            ->setBillingAddress($this->buildAddressTransfer($orderEntity->getBillingAddress()));
+        $amazonpayCallTransfer->setEmail($customerEmail);
+        $amazonpayCallTransfer->setRequestedAmount(
+            $this->getRequestedAmountByOrderAndItems($orderEntity, $amazonpayCallTransfer->getItems())
+        );
+        $this->getFacade()->reauthorizeExpiredOrder($amazonpayCallTransfer);
     }
 
     /**

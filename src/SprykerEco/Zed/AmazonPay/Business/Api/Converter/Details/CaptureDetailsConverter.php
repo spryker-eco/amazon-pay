@@ -12,13 +12,9 @@ use SprykerEco\Zed\AmazonPay\Business\Api\Converter\AbstractArrayConverter;
 
 class CaptureDetailsConverter extends AbstractArrayConverter
 {
-    const SELLER_CAPTURE_NOTE = 'SellerCaptureNote';
-    const CREATION_TIMESTAMP = 'CreationTimestamp';
     const CAPTURE_STATUS = 'CaptureStatus';
     const CAPTURE_FEE = 'CaptureFee';
     const CAPTURE_AMOUNT = 'CaptureAmount';
-    const CAPTURE_REFERENCE_ID = 'CaptureReferenceId';
-    const AMAZON_CAPTURE_ID = 'AmazonCaptureId';
     const ID_LIST = 'IdList';
 
     /**
@@ -28,32 +24,50 @@ class CaptureDetailsConverter extends AbstractArrayConverter
      */
     public function convert(array $captureDetailsData)
     {
-        $captureDetails = new AmazonpayCaptureDetailsTransfer();
+        $captureDetailsTransfer = new AmazonpayCaptureDetailsTransfer();
+        $captureDetailsTransfer->fromArray($captureDetailsData, true);
 
-        $this->convertCaptureDetails($captureDetailsData, $captureDetails);
-        $this->convertGenericDetails($captureDetailsData, $captureDetails);
+        $this->hydrateIdList($captureDetailsData, $captureDetailsTransfer);
+        $this->hydrateCaptureStatus($captureDetailsData, $captureDetailsTransfer);
+        $this->hydrateCaptureAmount($captureDetailsData, $captureDetailsTransfer);
+        $this->hydrateCaptureFee($captureDetailsData, $captureDetailsTransfer);
 
-        return $captureDetails;
+        return $captureDetailsTransfer;
     }
 
     /**
      * @param array $captureDetailsData
-     * @param \Generated\Shared\Transfer\AmazonpayCaptureDetailsTransfer $captureDetails
+     * @param \Generated\Shared\Transfer\AmazonpayCaptureDetailsTransfer $captureDetailsTransfer
      *
      * @return void
      */
-    protected function convertGenericDetails(array $captureDetailsData, AmazonpayCaptureDetailsTransfer $captureDetails)
+    protected function hydrateIdList(array $captureDetailsData, AmazonpayCaptureDetailsTransfer $captureDetailsTransfer)
     {
         if (!empty($captureDetailsData[static::ID_LIST])) {
-            $captureDetails->setIdList(array_values($captureDetailsData[static::ID_LIST])[0]);
+            $captureDetailsTransfer->setIdList($this->getIdList($captureDetailsData));
         }
+    }
 
-        if (!empty($captureDetailsData[static::SELLER_CAPTURE_NOTE])) {
-            $captureDetails->setSellerCaptureNote($captureDetailsData[static::SELLER_CAPTURE_NOTE]);
-        }
+    /**
+     * @param array $captureDetailsData
+     *
+     * @return string
+     */
+    protected function getIdList(array $captureDetailsData)
+    {
+        return array_values($captureDetailsData[static::ID_LIST])[0];
+    }
 
-        if (!empty($captureDetailsData[static::CREATION_TIMESTAMP])) {
-            $captureDetails->setCreationTimestamp($captureDetailsData[static::CREATION_TIMESTAMP]);
+    /**
+     * @param array $captureDetailsData
+     * @param \Generated\Shared\Transfer\AmazonpayCaptureDetailsTransfer $captureDetails
+     *
+     * @return void
+     */
+    protected function hydrateCaptureStatus(array $captureDetailsData, AmazonpayCaptureDetailsTransfer $captureDetails)
+    {
+        if (!empty($captureDetailsData[static::CAPTURE_STATUS])) {
+            $captureDetails->setCaptureStatus($this->convertStatusToTransfer($captureDetailsData[static::CAPTURE_STATUS]));
         }
     }
 
@@ -63,21 +77,23 @@ class CaptureDetailsConverter extends AbstractArrayConverter
      *
      * @return void
      */
-    protected function convertCaptureDetails(array $captureDetailsData, AmazonpayCaptureDetailsTransfer $captureDetails)
+    protected function hydrateCaptureAmount(array $captureDetailsData, AmazonpayCaptureDetailsTransfer $captureDetails)
     {
-        $captureDetails->setAmazonCaptureId($captureDetailsData[static::AMAZON_CAPTURE_ID]);
-        $captureDetails->setCaptureReferenceId($captureDetailsData[static::CAPTURE_REFERENCE_ID]);
-
         if (!empty($captureDetailsData[static::CAPTURE_AMOUNT])) {
             $captureDetails->setCaptureAmount($this->convertPriceToTransfer($captureDetailsData[static::CAPTURE_AMOUNT]));
         }
+    }
 
+    /**
+     * @param array $captureDetailsData
+     * @param \Generated\Shared\Transfer\AmazonpayCaptureDetailsTransfer $captureDetails
+     *
+     * @return void
+     */
+    protected function hydrateCaptureFee(array $captureDetailsData, AmazonpayCaptureDetailsTransfer $captureDetails)
+    {
         if (!empty($captureDetailsData[static::CAPTURE_FEE])) {
             $captureDetails->setCaptureFee($this->convertPriceToTransfer($captureDetailsData[static::CAPTURE_FEE]));
-        }
-
-        if (!empty($captureDetailsData[static::CAPTURE_STATUS])) {
-            $captureDetails->setCaptureStatus($this->convertStatusToTransfer($captureDetailsData[static::CAPTURE_STATUS]));
         }
     }
 }

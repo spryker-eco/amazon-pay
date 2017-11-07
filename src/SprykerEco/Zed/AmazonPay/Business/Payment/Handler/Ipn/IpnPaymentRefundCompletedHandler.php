@@ -58,10 +58,8 @@ class IpnPaymentRefundCompletedHandler extends IpnAbstractPaymentRefundHandler
 
         $paymentEntity = $this->retrievePaymentEntity($amazonpayIpnRequestTransfer);
 
-        if ($paymentEntity === null) {
-            return;
+        if ($paymentEntity !== null) {
+            $this->refundOrderModel->refundPayment($paymentEntity);
         }
-
-        $this->refundOrderModel->refundPayment($paymentEntity);
     }
 }

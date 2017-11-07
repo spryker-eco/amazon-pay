@@ -7,8 +7,10 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger;
 
+use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpayApiLog;
+use SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface;
 
 class TransactionLogger implements TransactionLoggerInterface
 {
@@ -22,11 +24,29 @@ class TransactionLogger implements TransactionLoggerInterface
     protected $reportLevel;
 
     /**
-     * @param string $reportLevel
+     * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface $config
      */
-    public function __construct($reportLevel)
+    public function __construct(AmazonPayConfigInterface $config)
     {
-        $this->reportLevel = $reportLevel;
+        $this->reportLevel = $config->getErrorReportLevel();
+    }
+
+    /**
+     * @return array
+     */
+    protected function loggingEnabledMap()
+    {
+        return [
+            static::REPORT_LEVEL_ALL => function () {
+                return true;
+            },
+            static::REPORT_LEVEL_DISABLED => function () {
+                return false;
+            },
+            static::REPORT_LEVEL_ERRORS_ONLY => function (AmazonpayResponseHeaderTransfer $headerTransfer) {
+                return !$headerTransfer->getIsSuccess();
+            },
+        ];
     }
 
     /**
@@ -36,19 +56,21 @@ class TransactionLogger implements TransactionLoggerInterface
      */
     protected function isLoggingEnabled(AmazonpayResponseHeaderTransfer $headerTransfer)
     {
-        if ($this->reportLevel === static::REPORT_LEVEL_ALL) {
-            return true;
-        };
+        return $this->loggingEnabledMap()[$this->reportLevel]($headerTransfer);
+    }
 
-        if ($this->reportLevel === static::REPORT_LEVEL_DISABLED) {
-            return false;
-        };
-
-        if ($this->reportLevel === static::REPORT_LEVEL_ERRORS_ONLY) {
-            return !$headerTransfer->getIsSuccess();
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayPaymentTransfer $amazonpayPaymentTransfer
+     *
+     * @return void
+     */
+    public function log(AmazonpayPaymentTransfer $amazonpayPaymentTransfer)
+    {
+        if (!$this->isLoggingEnabled($amazonpayPaymentTransfer->getResponseHeader())) {
+            return;
         }
 
-        return false;
+        $this->storeLogEntry($amazonpayPaymentTransfer->getOrderReferenceId(), $amazonpayPaymentTransfer->getResponseHeader());
     }
 
     /**
@@ -57,12 +79,8 @@ class TransactionLogger implements TransactionLoggerInterface
      *
      * @return void
      */
-    public function log($orderReferenceId, AmazonpayResponseHeaderTransfer $headerTransfer)
+    protected function storeLogEntry($orderReferenceId, AmazonpayResponseHeaderTransfer $headerTransfer)
     {
-        if (!$this->isLoggingEnabled($headerTransfer)) {
-            return;
-        }
-
         $logEntity = new SpyPaymentAmazonpayApiLog();
         $logEntity->setOrderReferenceId($orderReferenceId);
         $logEntity->setStatusCode($headerTransfer->getStatusCode());

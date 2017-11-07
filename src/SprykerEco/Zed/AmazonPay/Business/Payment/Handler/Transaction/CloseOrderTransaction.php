@@ -8,46 +8,29 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Propel\Runtime\ActiveQuery\Criteria;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 class CloseOrderTransaction extends AbstractAmazonpayTransaction
 {
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+        $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
         if (!$this->apiResponse->getHeader()->getIsSuccess()) {
-            return $amazonpayCallTransfer;
+            return $amazonPayCallTransfer;
         }
-        $this->paymentEntity->setStatus(AmazonPayConfig::OMS_STATUS_CLOSED);
-        $this->paymentEntity->save();
 
-        $this->closeAllPaymentsForThisOrder($this->paymentEntity->getOrderReferenceId());
+        $this->paymentProcessor->updateStatus(
+            $amazonPayCallTransfer->getAmazonpayPayment()->getOrderReferenceId(),
+            AmazonPayConfig::OMS_STATUS_CLOSED
+        );
 
-        return $amazonpayCallTransfer;
-    }
-
-    /**
-     * @param string $orderReferenceId
-     *
-     * @return void
-     */
-    protected function closeAllPaymentsForThisOrder($orderReferenceId)
-    {
-        $payments = $this->amazonpayQueryContainer->queryPaymentByOrderReferenceId($orderReferenceId)
-            ->filterByStatus(AmazonPayConfig::OMS_STATUS_CLOSED, Criteria::NOT_EQUAL)
-            ->find();
-
-        foreach ($payments as $payment) {
-            $payment->setStatus(AmazonPayConfig::OMS_STATUS_CLOSED);
-            $payment->save();
-        }
+        return $amazonPayCallTransfer;
     }
 
     /**

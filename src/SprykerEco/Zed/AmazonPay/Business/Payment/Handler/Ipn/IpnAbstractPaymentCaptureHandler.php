@@ -19,9 +19,10 @@ abstract class IpnAbstractPaymentCaptureHandler extends IpnAbstractTransferReque
      */
     protected function retrievePaymentEntity(AbstractTransfer $amazonpayIpnPaymentAuthorizeRequestTransfer)
     {
-        return $this->amazonPayQueryContainer->queryPaymentByCaptureReferenceId(
-            $amazonpayIpnPaymentAuthorizeRequestTransfer->getCaptureDetails()->getCaptureReferenceId()
-        )
+        return $this->amazonPayQueryContainer
+            ->queryPaymentByCaptureReferenceId(
+                $amazonpayIpnPaymentAuthorizeRequestTransfer->getCaptureDetails()->getCaptureReferenceId()
+            )
             ->findOne();
     }
 

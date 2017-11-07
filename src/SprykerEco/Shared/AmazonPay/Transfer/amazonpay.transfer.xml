@@ -41,6 +41,7 @@
         <property name="captureDetails" type="AmazonpayCaptureDetails" />
         <property name="refundDetails" type="AmazonpayRefundDetails"/>
         <property name="header" type="AmazonpayResponseHeader"/>
+        <property name="customer" type="Customer"/>
     </transfer>
 
     <transfer name="AmazonpayResponseConstraint">

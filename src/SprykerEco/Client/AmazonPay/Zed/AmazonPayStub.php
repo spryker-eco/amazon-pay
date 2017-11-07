@@ -42,7 +42,10 @@ class AmazonPayStub implements AmazonPayStubInterface
      */
     public function addSelectedAddressToQuote(QuoteTransfer $quoteTransfer)
     {
-        return $this->zedStub->call('/amazon-pay/gateway/add-selected-address-to-quote', $quoteTransfer);
+        return $this->zedStub->call(
+            '/amazon-pay/gateway/add-selected-address-to-quote',
+            $quoteTransfer
+        );
     }
 
     /**
@@ -61,7 +64,7 @@ class AmazonPayStub implements AmazonPayStubInterface
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
+     * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function confirmPurchase(QuoteTransfer $quoteTransfer)
     {

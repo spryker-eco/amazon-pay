@@ -22,6 +22,23 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
     {
         $amazonpayCallTransfers = $this->groupSalesOrderItemsByAuthId($salesOrderItems);
 
+        $wasSuccessful = $this->captureGroupedOrderItems($amazonpayCallTransfers, $orderEntity);
+
+        if ($wasSuccessful) {
+            $this->updateOrdersStatus($orderEntity);
+        }
+
+        return [];
+    }
+
+    /**
+     * @param array $amazonpayCallTransfers
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     *
+     * @return bool
+     */
+    protected function captureGroupedOrderItems(array $amazonpayCallTransfers, SpySalesOrder $orderEntity)
+    {
         $wasSuccessful = false;
 
         foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
@@ -35,19 +52,25 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
             }
         }
 
-        if ($wasSuccessful) {
-            $items = new ArrayObject();
+        return $wasSuccessful;
+    }
 
-            foreach ($orderEntity->getItems() as $salesOrderItem) {
-                if ($salesOrderItem->getState()->getName() === AmazonPayConfig::OMS_STATUS_AUTH_OPEN) {
-                    $items[] = $salesOrderItem;
-                }
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     *
+     * @return void
+     */
+    protected function updateOrdersStatus(SpySalesOrder $orderEntity)
+    {
+        $items = new ArrayObject();
+
+        foreach ($orderEntity->getItems() as $salesOrderItem) {
+            if ($salesOrderItem->getState()->getName() === AmazonPayConfig::OMS_STATUS_AUTH_OPEN) {
+                $items[] = $salesOrderItem;
             }
-
-            $this->setOrderItemsStatus($items, AmazonPayConfig::OMS_STATUS_AUTH_OPEN_WITHOUT_CANCEL);
         }
 
-        return [];
+        $this->setOrderItemsStatus($items, AmazonPayConfig::OMS_STATUS_AUTH_OPEN_WITHOUT_CANCEL);
     }
 
     /**
@@ -66,7 +89,7 @@ class CaptureCommandPlugin extends AbstractAmazonpayCommandPlugin
     protected function isPaymentSuccess(AmazonpayCallTransfer $payment)
     {
         return $payment->getAmazonpayPayment() &&
-        $payment->getAmazonpayPayment()->getResponseHeader() &&
-        $payment->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();
+            $payment->getAmazonpayPayment()->getResponseHeader() &&
+            $payment->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();
     }
 }

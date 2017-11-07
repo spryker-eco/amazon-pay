@@ -14,29 +14,29 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 class GetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
 {
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+        $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
-        if ($this->isPaymentSuccess($amazonpayCallTransfer)) {
-            $amazonpayCallTransfer->setShippingAddress($this->apiResponse->getShippingAddress());
+        if ($this->isPaymentSuccess($amazonPayCallTransfer)) {
+            $amazonPayCallTransfer->setShippingAddress($this->apiResponse->getShippingAddress());
 
             if ($this->apiResponse->getBillingAddress()) {
-                $amazonpayCallTransfer->setBillingAddress($this->apiResponse->getBillingAddress());
+                $amazonPayCallTransfer->setBillingAddress($this->apiResponse->getBillingAddress());
             } else {
-                $amazonpayCallTransfer->setBillingAddress($this->apiResponse->getShippingAddress());
-                $amazonpayCallTransfer->setBillingSameAsShipping(true);
+                $amazonPayCallTransfer->setBillingAddress($this->apiResponse->getShippingAddress());
+                $amazonPayCallTransfer->setBillingSameAsShipping(true);
             }
 
-            $amazonpayCallTransfer->getAmazonpayPayment()->setIsSandbox(
+            $amazonPayCallTransfer->getAmazonpayPayment()->setIsSandbox(
                 $this->apiResponse->getIsSandbox()
             );
-            $amazonpayCallTransfer->setOrderReference(
-                $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId()
+            $amazonPayCallTransfer->setOrderReference(
+                $amazonPayCallTransfer->getAmazonpayPayment()->getOrderReferenceId()
             );
 
             $state = $this->apiResponse->getOrderReferenceStatus()->getState();
@@ -47,9 +47,9 @@ class GetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
                 $state === AmazonPayConfig::ORDER_REFERENCE_STATUS_OPEN
             );
 
-            $amazonpayCallTransfer->getAmazonpayPayment()->setOrderReferenceStatus($orderReferenceStatus);
+            $amazonPayCallTransfer->getAmazonpayPayment()->setOrderReferenceStatus($orderReferenceStatus);
         }
 
-        return $amazonpayCallTransfer;
+        return $amazonPayCallTransfer;
     }
 }

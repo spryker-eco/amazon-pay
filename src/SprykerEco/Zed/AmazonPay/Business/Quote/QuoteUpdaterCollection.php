@@ -7,11 +7,9 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Quote;
 
-use Generated\Shared\Transfer\MessageTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToMessengerInterface;
 
-class PrepareQuoteCollection implements QuoteUpdaterInterface
+class QuoteUpdaterCollection implements QuoteUpdaterInterface
 {
     /**
      * @var \SprykerEco\Zed\AmazonPay\Business\Quote\QuoteUpdaterInterface[]
@@ -19,17 +17,10 @@ class PrepareQuoteCollection implements QuoteUpdaterInterface
     protected $quoteUpdaters;
 
     /**
-     * @var \SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToMessengerInterface
-     */
-    protected $messengerFacade;
-
-    /**
-     * @param \SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToMessengerInterface $messengerFacade
      * @param \SprykerEco\Zed\AmazonPay\Business\Quote\QuoteUpdaterInterface[] $quoteUpdaters
      */
-    public function __construct(AmazonPayToMessengerInterface $messengerFacade, array $quoteUpdaters)
+    public function __construct(array $quoteUpdaters)
     {
-        $this->messengerFacade = $messengerFacade;
         $this->quoteUpdaters = $quoteUpdaters;
     }
 
@@ -45,16 +36,5 @@ class PrepareQuoteCollection implements QuoteUpdaterInterface
         }
 
         return $quoteTransfer;
-    }
-
-    /**
-     * @param string $message
-     *
-     * @return \Generated\Shared\Transfer\MessageTransfer
-     */
-    protected function createMessage($message)
-    {
-        return (new MessageTransfer())
-            ->setValue($message);
     }
 }

@@ -12,7 +12,7 @@ interface ArrayConverterInterface
     /**
      * @param array $data
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
     public function convert(array $data);
 }

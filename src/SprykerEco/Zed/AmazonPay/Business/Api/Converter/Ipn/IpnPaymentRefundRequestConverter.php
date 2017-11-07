@@ -12,6 +12,7 @@ use SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface;
 
 class IpnPaymentRefundRequestConverter extends IpnPaymentAbstractRequestConverter
 {
+    const REFUND_DETAILS = 'RefundDetails';
     /**
      * @var \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface $refundDetailsConverter
      */
@@ -36,7 +37,7 @@ class IpnPaymentRefundRequestConverter extends IpnPaymentAbstractRequestConverte
         $ipnPaymentRefundRequestTransfer->setMessage($this->extractMessage($request));
 
         $ipnPaymentRefundRequestTransfer->setRefundDetails(
-            $this->refundDetailsConverter->convert($request['RefundDetails'])
+            $this->refundDetailsConverter->convert($request[static::REFUND_DETAILS])
         );
 
         return $ipnPaymentRefundRequestTransfer;

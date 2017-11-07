@@ -13,30 +13,56 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 class AuthorizeOrderIfRequiredTransaction extends ReauthorizeOrderTransaction
 {
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        if ($amazonpayCallTransfer->getAmazonpayPayment()
+        if (!$this->isAllowed($amazonPayCallTransfer)) {
+            return $amazonPayCallTransfer;
+        }
+
+        $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
+
+        $this->updatePaymentEntity($amazonPayCallTransfer);
+
+        return $amazonPayCallTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return bool
+     */
+    protected function isAllowed(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
+        if ($amazonPayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->getAmazonAuthorizationId()) {
-            return $amazonpayCallTransfer;
+            return false;
         }
 
-        if ($amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()
-            && $amazonpayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getAmazonCaptureId()) {
-            return $amazonpayCallTransfer;
+        if ($amazonPayCallTransfer->getAmazonpayPayment()->getCaptureDetails()
+            && $amazonPayCallTransfer->getAmazonpayPayment()->getCaptureDetails()->getAmazonCaptureId()) {
+            return false;
         }
 
-        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+        return true;
+    }
 
-        if (!$this->isPaymentSuccess($amazonpayCallTransfer)) {
-            return $amazonpayCallTransfer;
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return void
+     */
+    protected function updatePaymentEntity(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
+        if (!$this->isPaymentSuccess($amazonPayCallTransfer)) {
+            return;
         }
 
-        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
+        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonPayCallTransfer);
 
         if ($isPartialProcessing) {
             $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
@@ -46,9 +72,7 @@ class AuthorizeOrderIfRequiredTransaction extends ReauthorizeOrderTransaction
         $this->paymentEntity->save();
 
         if ($isPartialProcessing) {
-            $this->assignAmazonpayPaymentToItemsIfNew($this->paymentEntity, $amazonpayCallTransfer);
+            $this->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonPayCallTransfer);
         }
-
-        return $amazonpayCallTransfer;
     }
 }

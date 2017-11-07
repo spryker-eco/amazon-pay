@@ -13,30 +13,30 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 class RefundOrderTransaction extends AbstractAmazonpayTransaction
 {
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        if (!$amazonpayCallTransfer->getAmazonpayPayment()
+        if (!$amazonPayCallTransfer->getAmazonpayPayment()
                 ->getCaptureDetails()
                 ->getAmazonCaptureId()
         ) {
-            return $amazonpayCallTransfer;
+            return $amazonPayCallTransfer;
         }
 
-        $amazonpayCallTransfer->getAmazonpayPayment()->getRefundDetails()->setRefundReferenceId(
-            $this->generateOperationReferenceId($amazonpayCallTransfer)
+        $amazonPayCallTransfer->getAmazonpayPayment()->getRefundDetails()->setRefundReferenceId(
+            $this->generateOperationReferenceId($amazonPayCallTransfer)
         );
 
-        $amazonpayCallTransfer = parent::execute($amazonpayCallTransfer);
+        $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
         if (!$this->apiResponse->getHeader()->getIsSuccess()) {
-            return $amazonpayCallTransfer;
+            return $amazonPayCallTransfer;
         }
 
-        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonpayCallTransfer);
+        $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonPayCallTransfer);
 
         if ($isPartialProcessing) {
             $this->paymentEntity = $this->duplicatePaymentEntity($this->paymentEntity);
@@ -48,9 +48,9 @@ class RefundOrderTransaction extends AbstractAmazonpayTransaction
         $this->paymentEntity->save();
 
         if ($isPartialProcessing) {
-            $this->assignAmazonpayPaymentToItemsIfNew($this->paymentEntity, $amazonpayCallTransfer);
+            $this->assignAmazonpayPaymentToItems($this->paymentEntity, $amazonPayCallTransfer);
         }
 
-        return $amazonpayCallTransfer;
+        return $amazonPayCallTransfer;
     }
 }

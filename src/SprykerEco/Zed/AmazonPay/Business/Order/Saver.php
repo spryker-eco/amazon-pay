@@ -83,10 +83,6 @@ class Saver implements SaverInterface
             $paymentTransfer->getAuthorizationDetails()->getAmazonAuthorizationId()
         );
 
-        $paymentEntity->setAmazonCaptureId(
-            $paymentTransfer->getAuthorizationDetails()->getIdList()
-        );
-
         $paymentEntity->setRequestId(
             $paymentTransfer->getResponseHeader()->getRequestId()
         );

@@ -35,15 +35,15 @@ class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        $message = $this->orderMessageFactory->getFailedAuthMessage($amazonpayCallTransfer);
+        $message = $this->orderMessageFactory->getFailedAuthMessage($amazonPayCallTransfer);
 
-        if ($amazonpayCallTransfer->getAmazonpayPayment()
+        if ($amazonPayCallTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()
                 ->getAuthorizationStatus()
                 ->getIsDeclined()
@@ -51,6 +51,6 @@ class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
             $this->orderFailedAuthNotificationSender->notify($message);
         }
 
-        return $amazonpayCallTransfer;
+        return $amazonPayCallTransfer;
     }
 }

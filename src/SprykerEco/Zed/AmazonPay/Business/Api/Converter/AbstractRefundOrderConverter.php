@@ -8,10 +8,11 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AmazonpayResponseTransfer;
-use PayWithAmazon\ResponseInterface;
 
 abstract class AbstractRefundOrderConverter extends AbstractResponseParserConverter
 {
+    const REFUND_DETAILS = 'RefundDetails';
+
     /**
      * @var \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface $refundDetailsConverter
      */
@@ -27,16 +28,16 @@ abstract class AbstractRefundOrderConverter extends AbstractResponseParserConver
 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayResponseTransfer $responseTransfer
-     * @param \PayWithAmazon\ResponseInterface $responseParser
+     * @param array $response
      *
      * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    protected function setBody(AmazonpayResponseTransfer $responseTransfer, ResponseInterface $responseParser)
+    protected function setBody(AmazonpayResponseTransfer $responseTransfer, array $response)
     {
         $responseTransfer->setRefundDetails(
-            $this->refundDetailsConverter->convert($this->extractResult($responseParser)['RefundDetails'])
+            $this->refundDetailsConverter->convert($this->extractResult($response)[static::REFUND_DETAILS])
         );
 
-        return parent::setBody($responseTransfer, $responseParser);
+        return parent::setBody($responseTransfer, $response);
     }
 }

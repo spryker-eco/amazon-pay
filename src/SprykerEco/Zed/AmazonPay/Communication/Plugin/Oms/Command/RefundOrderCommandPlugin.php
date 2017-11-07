@@ -24,19 +24,10 @@ class RefundOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
         $amazonpayCallTransfers = $this->groupSalesOrderItemsByCaptureId($salesOrderItems);
+        $this->buildSalesOrderItemsMap($salesOrderItems);
 
         foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
-            $currentGroupSalesOrderItems = $this->getSalesOrderItemsForGroup($amazonpayCallTransfer, $salesOrderItems);
-
-            $refundTransfer = $this->getFactory()
-                ->getRefundFacade()
-                ->calculateRefund($currentGroupSalesOrderItems, $orderEntity);
-
-            $amazonpayCallTransfer->setRequestedAmount(
-                $refundTransfer->getAmount()
-            );
-
-            $this->getFacade()->refundOrder($amazonpayCallTransfer);
+            $this->processOrder($amazonpayCallTransfer, $orderEntity);
         }
 
         return [];
@@ -44,16 +35,32 @@ class RefundOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
-     * @param \Orm\Zed\Sales\Persistence\Base\SpySalesOrderItem[] $salesOrderItems
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     *
+     * @return void
+     */
+    protected function processOrder(AmazonpayCallTransfer $amazonpayCallTransfer, SpySalesOrder $orderEntity)
+    {
+        $currentGroupSalesOrderItems = $this->getSalesOrderItemsForGroup($amazonpayCallTransfer);
+
+        $refundTransfer = $this->getFactory()
+            ->getRefundFacade()
+            ->calculateRefund($currentGroupSalesOrderItems, $orderEntity);
+
+        $amazonpayCallTransfer->setRequestedAmount(
+            $refundTransfer->getAmount()
+        );
+
+        $this->getFacade()->refundOrder($amazonpayCallTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
      * @return \Orm\Zed\Sales\Persistence\Base\SpySalesOrderItem[]
      */
-    protected function getSalesOrderItemsForGroup(AmazonpayCallTransfer $amazonpayCallTransfer, array $salesOrderItems)
+    protected function getSalesOrderItemsForGroup(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        if (empty($this->salesOrderItemsMap)) {
-            $this->buildSalesOrderItemsMap($salesOrderItems);
-        }
-
         $result = [];
 
         foreach ($amazonpayCallTransfer->getItems() as $itemTransfer) {

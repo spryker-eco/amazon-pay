@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AmazonpayResponseTransfer;
-use PayWithAmazon\ResponseInterface;
 
 class SetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
 {
@@ -22,14 +21,14 @@ class SetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayResponseTransfer $responseTransfer
-     * @param \PayWithAmazon\ResponseInterface $responseParser
+     * @param array $response
      *
      * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */
-    protected function setBody(AmazonpayResponseTransfer $responseTransfer, ResponseInterface $responseParser)
+    protected function setBody(AmazonpayResponseTransfer $responseTransfer, array $response)
     {
-        $responseTransfer->setShippingAddress($this->extractShippingAddress($responseParser));
+        $responseTransfer->setShippingAddress($this->extractShippingAddress($response));
 
-        return parent::setBody($responseTransfer, $responseParser);
+        return parent::setBody($responseTransfer, $response);
     }
 }

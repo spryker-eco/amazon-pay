@@ -8,16 +8,16 @@
 namespace SprykerEcoTest\Zed\AmazonPay\Business\Mock\Adapter\Sdk;
 
 use SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface;
-use SprykerEco\Zed\AmazonPay\Business\Api\Adapter\Sdk\AmazonpaySdkAdapterFactory;
+use SprykerEco\Zed\AmazonPay\Business\Api\Adapter\Sdk\AmazonPaySdkAdapterFactory;
 
-class AmazonpaySdkAdapterFactoryMock extends AmazonpaySdkAdapterFactory
+class AmazonPaySdkAdapterFactoryMock extends AmazonPaySdkAdapterFactory
 {
     /**
      * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface $config
      *
      * @return \PayWithAmazon\ClientInterface
      */
-    public function createAmazonpayClient(AmazonPayConfigInterface $config)
+    public function createAmazonPayClient(AmazonPayConfigInterface $config)
     {
         $aConfig = [
             static::MERCHANT_ID => $config->getSellerId(),

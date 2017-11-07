@@ -12,6 +12,7 @@ use SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface;
 
 class IpnPaymentAuthorizeRequestConverter extends IpnPaymentAbstractRequestConverter
 {
+    const AUTHORIZATION_DETAILS = 'AuthorizationDetails';
     /**
      * @var \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface $authDetailsConverter
      */
@@ -36,7 +37,7 @@ class IpnPaymentAuthorizeRequestConverter extends IpnPaymentAbstractRequestConve
         $ipnPaymentAuthorizeRequestTransfer->setMessage($this->extractMessage($request));
 
         $ipnPaymentAuthorizeRequestTransfer->setAuthorizationDetails(
-            $this->authDetailsConverter->convert($request['AuthorizationDetails'])
+            $this->authDetailsConverter->convert($request[static::AUTHORIZATION_DETAILS])
         );
 
         return $ipnPaymentAuthorizeRequestTransfer;

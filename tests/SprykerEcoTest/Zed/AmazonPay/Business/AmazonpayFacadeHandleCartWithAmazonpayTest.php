@@ -12,22 +12,29 @@ use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
+use SprykerEcoTest\Zed\AmazonPay\Business\Mock\Adapter\Sdk\ClientMock;
 
 class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstractTest
 {
+    const ID_CUSTOMER = 12;
+    const GRAND_TOTAL = 1000;
+
     /**
-     * @param int $total
+     * @param bool $loggedIn
      *
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
-    protected function createQuote($total = 0)
+    protected function createQuote($loggedIn)
     {
         $quote = new QuoteTransfer();
-        $quote->setCustomer(new CustomerTransfer());
+        if ($loggedIn) {
+            $quote->setCustomer(new CustomerTransfer());
+            $quote->getCustomer()->setIdCustomer(self::ID_CUSTOMER);
+        }
         $quote->setAmazonpayPayment(new AmazonpayPaymentTransfer());
         $quote->setTotals(
             (new TotalsTransfer())
-            ->setGrandTotal($total)
+            ->setGrandTotal(self::GRAND_TOTAL)
         );
 
         return $quote;
@@ -37,13 +44,21 @@ class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstract
      * @dataProvider handleCartDataProvider
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param bool $loggedIn
      *
      * @return void
      */
-    public function testHandleCartWithAmazonpay(QuoteTransfer $quoteTransfer)
+    public function testHandleCartWithAmazonpay(QuoteTransfer $quoteTransfer, $loggedIn)
     {
         $resultTransfer = $this->createFacade()->handleCartWithAmazonPay($quoteTransfer);
 
+        $this->assertNotNull($resultTransfer->getCustomer());
+        if ($loggedIn) {
+            $this->assertEquals(self::ID_CUSTOMER, $resultTransfer->getCustomer()->getIdCustomer());
+        }
+        $this->assertEquals(ClientMock::FIRST_NAME, $resultTransfer->getCustomer()->getFirstName());
+        $this->assertEquals(ClientMock::LAST_NAME, $resultTransfer->getCustomer()->getLastName());
+        $this->assertEquals(ClientMock::EMAIL, $resultTransfer->getCustomer()->getEmail());
         $this->assertNotEmpty(
             $resultTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()
         );
@@ -53,9 +68,6 @@ class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstract
         $this->assertNotEmpty(
             $resultTransfer->getAmazonpayPayment()->getRefundDetails()->getRefundStatus()
         );
-        $this->assertEquals('john@doe.xxx', $resultTransfer->getCustomer()->getEmail());
-        $this->assertEquals('John', $resultTransfer->getCustomer()->getFirstName());
-        $this->assertEquals('Doe', $resultTransfer->getCustomer()->getLastName());
         $this->assertEquals(
             $resultTransfer->getPayment()->getPaymentMethod(),
             AmazonPayConfig::PROVIDER_NAME
@@ -76,8 +88,11 @@ class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstract
     public function handleCartDataProvider()
     {
         return [
-            [
-                $this->createQuote(),
+            'Logged in user' => [
+                $this->createQuote(true), true,
+            ],
+            'Anonymous user' => [
+                $this->createQuote(false), false,
             ],
         ];
     }

@@ -23,9 +23,9 @@ class GetUserInfoResponse
     {
         return [
             'user_id' => 'amzn1.account.AERNK6U4PBPH36GCKOQOZLVCJPOA',
-            'name' => 'John Doe',
+            'name' => ClientMock::FIRST_NAME . ' ' . ClientMock::LAST_NAME,
             'postal_code' => '08915',
-            'email' => 'john@doe.xxx',
+            'email' => ClientMock::EMAIL,
         ];
     }
 }

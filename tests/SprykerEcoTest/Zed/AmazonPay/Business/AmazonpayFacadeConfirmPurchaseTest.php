@@ -72,12 +72,10 @@ class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
             $authStatus,
             $resultQuote->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getState()
         );
-
         $this->assertEquals(
             $reasonCode,
             $resultQuote->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getReasonCode()
         );
-
         $this->assertEquals(
             $captureId,
             $resultQuote->getAmazonpayPayment()->getAuthorizationDetails()->getIdList()
@@ -90,6 +88,8 @@ class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
     public function confirmPurchaseProvider()
     {
         return [
+            'Correct order sync captureNow on logged in user' =>
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1), 0, true, 'Closed', 'MaxCapturesProcessed', 'S02-6182376-4189497-C003388'],
             'Correct order sync captureNow on' =>
                 [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1), 0, true, 'Closed', 'MaxCapturesProcessed', 'S02-6182376-4189497-C003388'],
             'AmazonRejected order sync captureNow on' =>

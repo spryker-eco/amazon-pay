@@ -19,9 +19,10 @@ abstract class IpnAbstractPaymentRefundHandler extends IpnAbstractTransferReques
      */
     protected function retrievePaymentEntity(AbstractTransfer $amazonpayIpnPaymentRefundRequestTransfer)
     {
-        return $this->amazonPayQueryContainer->queryPaymentByRefundReferenceId(
-            $amazonpayIpnPaymentRefundRequestTransfer->getRefundDetails()->getRefundReferenceId()
-        )
+        return $this->amazonPayQueryContainer
+            ->queryPaymentByRefundReferenceId(
+                $amazonpayIpnPaymentRefundRequestTransfer->getRefundDetails()->getRefundReferenceId()
+            )
             ->findOne();
     }
 

@@ -53,10 +53,9 @@ abstract class AbstractConverter
             $status->setLastUpdateTimestamp($statusData[static::LAST_UPDATE_TIMESTAMP]);
         }
 
-        $status->setState($statusData[static::STATE]);
+        $status->fromArray($statusData, true);
 
         if (!empty($statusData[static::REASON_CODE])) {
-            $status->setReasonCode($statusData[static::REASON_CODE]);
             $status->setIsReauthorizable(
                 $statusData[static::REASON_CODE] === AmazonPayConfig::REASON_CODE_SELLER_CLOSED
                 || $statusData[static::REASON_CODE] === AmazonPayConfig::REASON_CODE_EXPIRED_UNUSED

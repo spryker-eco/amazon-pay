@@ -11,22 +11,11 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface;
 use SprykerEco\Zed\AmazonPay\Business\Api\Adapter\CallAdapterInterface;
-use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayTransferToEntityConverterInterface;
+use SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorInterface;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface;
-use SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface;
 
 abstract class AbstractAmazonpayTransaction extends AbstractTransaction implements AmazonpayTransactionInterface
 {
-    /**
-     * @var \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface
-     */
-    protected $amazonpayQueryContainer;
-
-    /**
-     * @var \SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayTransferToEntityConverterInterface
-     */
-    protected $converter;
-
     /**
      * @var \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay
      */
@@ -38,138 +27,69 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
     protected $apiResponse;
 
     /**
+     * @var \SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorInterface
+     */
+    protected $paymentProcessor;
+
+    /**
      * @param \SprykerEco\Zed\AmazonPay\Business\Api\Adapter\CallAdapterInterface $executionAdapter
      * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface $config
      * @param \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface $transactionLogger
-     * @param \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface $amazonpayQueryContainer
-     * @param \SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayTransferToEntityConverterInterface $converter
+     * @param \SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorInterface $paymentProcessor
      */
     public function __construct(
         CallAdapterInterface $executionAdapter,
         AmazonPayConfigInterface $config,
         TransactionLoggerInterface $transactionLogger,
-        AmazonPayQueryContainerInterface $amazonpayQueryContainer,
-        AmazonPayTransferToEntityConverterInterface $converter
+        PaymentProcessorInterface $paymentProcessor
     ) {
         parent::__construct($executionAdapter, $config, $transactionLogger);
 
-        $this->amazonpayQueryContainer = $amazonpayQueryContainer;
-        $this->converter = $converter;
+        $this->paymentProcessor = $paymentProcessor;
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return string
      */
-    protected function generateOperationReferenceId(AmazonpayCallTransfer $amazonpayCallTransfer)
+    protected function generateOperationReferenceId(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        return uniqid($amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId(), false);
+        return uniqid($amazonPayCallTransfer->getAmazonpayPayment()->getOrderReferenceId(), false);
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        $this->apiResponse = $this->executionAdapter->call($amazonpayCallTransfer);
-        $amazonpayCallTransfer->getAmazonpayPayment()
+        $this->apiResponse = $this->executionAdapter->call($amazonPayCallTransfer);
+
+        $amazonPayCallTransfer->getAmazonpayPayment()
             ->fromArray($this->apiResponse->modifiedToArray(), true)
             ->setResponseHeader($this->apiResponse->getHeader());
 
         $this->transactionsLogger->log(
-            $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId(),
-            $this->apiResponse->getHeader()
+            $amazonPayCallTransfer->getAmazonpayPayment()
         );
-        $this->paymentEntity = $this->loadPaymentEntity($amazonpayCallTransfer);
+        $this->paymentEntity = $this->paymentProcessor->loadPaymentEntity($amazonPayCallTransfer);
 
-        return $amazonpayCallTransfer;
+        return $amazonPayCallTransfer;
     }
 
     /**
-     * @param \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay $entity
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
-     *
-     * @return void
-     */
-    protected function assignAmazonpayPaymentToItemsIfNew(SpyPaymentAmazonpay $entity, AmazonpayCallTransfer $amazonpayCallTransfer)
-    {
-        foreach ($amazonpayCallTransfer->getItems() as $itemTransfer) {
-            $paymentForItemEntity = $this->amazonpayQueryContainer->queryBySalesOrderItemId($itemTransfer->getIdSalesOrderItem())
-                ->findOneOrCreate();
-            $paymentForItemEntity->setSpyPaymentAmazonpay($entity);
-            $paymentForItemEntity->save();
-        }
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
-     *
-     * @return \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay|null
-     */
-    protected function loadPaymentEntity(AmazonpayCallTransfer $amazonpayCallTransfer)
-    {
-        $paymentEntity = null;
-
-        if ($amazonpayCallTransfer->getItems()->count()) {
-            $paymentEntity = $this->amazonpayQueryContainer->queryPaymentBySalesOrderItemId(
-                $amazonpayCallTransfer->getItems()[0]->getIdSalesOrderItem()
-            )
-                ->findOne();
-        }
-
-        if ($paymentEntity === null) {
-            $paymentEntity = $this->amazonpayQueryContainer->queryPaymentByOrderReferenceId(
-                $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId()
-            )
-                ->findOne();
-        }
-
-        return $paymentEntity;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
-     *
-     * @return \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay
-     */
-    protected function createPaymentEntity(AmazonpayCallTransfer $amazonpayCallTransfer)
-    {
-        return $this->converter->mapTransferToEntity($amazonpayCallTransfer->getAmazonpayPayment());
-    }
-
-    /**
-     * @param \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay $paymentAmazonpay
-     *
-     * @return \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay
-     */
-    protected function duplicatePaymentEntity(SpyPaymentAmazonpay $paymentAmazonpay)
-    {
-        $newPaymentAmazonpay = new SpyPaymentAmazonpay();
-
-        $paymentAmazonpay->setAuthorizationReferenceId(null);
-        $newPaymentAmazonpay->fromArray($paymentAmazonpay->toArray());
-        $paymentAmazonpay->setAmazonAuthorizationId(null);
-        $paymentAmazonpay->save();
-
-        $newPaymentAmazonpay->setIdPaymentAmazonpay(null);
-
-        return $newPaymentAmazonpay;
-    }
-
-    /**
-     * @param \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay $paymentAmazonpay
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay $paymentAmazonPayEntity
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return bool
      */
-    protected function isPartialProcessing(SpyPaymentAmazonpay $paymentAmazonpay, AmazonpayCallTransfer $amazonpayCallTransfer)
+    protected function isPartialProcessing(SpyPaymentAmazonpay $paymentAmazonPayEntity, AmazonpayCallTransfer $amazonPayCallTransfer)
     {
         return $this->allowPartialProcessing()
-            && $amazonpayCallTransfer->getItems()->count()
-                !== $paymentAmazonpay->getSpyPaymentAmazonpaySalesOrderItems()->count();
+            && $amazonPayCallTransfer->getItems()->count()
+                !== $paymentAmazonPayEntity->getSpyPaymentAmazonpaySalesOrderItems()->count();
     }
 
     /**
@@ -181,14 +101,14 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $payment
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return bool
      */
-    protected function isPaymentSuccess(AmazonpayCallTransfer $payment)
+    protected function isPaymentSuccess(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        return $payment->getAmazonpayPayment()
-            && $payment->getAmazonpayPayment()->getResponseHeader()
-            && $payment->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();
+        return $amazonPayCallTransfer->getAmazonpayPayment()
+            && $amazonPayCallTransfer->getAmazonpayPayment()->getResponseHeader()
+            && $amazonPayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();
     }
 }

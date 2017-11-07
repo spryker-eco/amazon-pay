@@ -277,4 +277,14 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
             ->fromArray($address->toArray(), true)
             ->fromArray($address->getCountry()->toArray(), true);
     }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $salesOrderItems
+     *
+     * @return \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay
+     */
+    protected function getPayment(array $salesOrderItems)
+    {
+        return $this->getPaymentDetails($salesOrderItems[0]);
+    }
 }

@@ -11,6 +11,9 @@ use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 class AmazonpayFacadeConvertAmazonpayIpnRequestTest extends AmazonpayFacadeAbstractTest
 {
+    const MESSAGE_ID = "2e809365-0774-5ed9-a2d6-c146730607b9";
+    const TOPIC_ARN = "arn:aws:sns:eu-west-1:291180941288:A1G8446IYHA4MRA36VZZYZOVN3S6";
+
     /**
      * @dataProvider updateRefundStatusDataProvider
      *
@@ -46,16 +49,16 @@ class AmazonpayFacadeConvertAmazonpayIpnRequestTest extends AmazonpayFacadeAbstr
                     'User-Agent' => 'Amazon Simple Notification Service Agent',
                     'Content-Type' => 'text/plain; charset=UTF-8',
                     'X-Amz-Sns-Subscription-Arn' => 'arn:aws:sns:eu-west-1:291180941288:A1G8446IYHA4MRA36VZZYZOVN3S6:e580adf7-36cf-4bae-a3bb-a49a51618128',
-                    'X-Amz-Sns-Topic-Arn' => 'arn:aws:sns:eu-west-1:291180941288:A1G8446IYHA4MRA36VZZYZOVN3S6',
-                    'X-Amz-Sns-Message-Id' => '2e809365-0774-5ed9-a2d6-c146730607b9',
+                    'X-Amz-Sns-Topic-Arn' => self::TOPIC_ARN,
+                    'X-Amz-Sns-Message-Id' => self::MESSAGE_ID,
                     'X-Amz-Sns-Message-Type' => 'Notification',
                     'Connection' => 'close',
                     'Host' => 'amazonpay-endpoint.herokuapp.com',
                 ],
                 json_encode([
                   "Type" => "Notification",
-                  "MessageId" => "2e809365-0774-5ed9-a2d6-c146730607b9",
-                  "TopicArn" => "arn:aws:sns:eu-west-1:291180941288:A1G8446IYHA4MRA36VZZYZOVN3S6",
+                  "MessageId" => self::MESSAGE_ID,
+                  "TopicArn" => self::TOPIC_ARN,
                   "Message" => "{\"ReleaseEnvironment\":\"Sandbox\",\"MarketplaceID\":\"136311\",\"Version\":\"2013-01-01\",\"NotificationType\":\"PaymentAuthorize\",\"SellerId\":\"A36VZZYZOVN3S6\",\"NotificationReferenceId\":\"05e053ae-875a-4a77-b8d8-aa7b624b68c3\",\"Timestamp\":\"2017-09-01T14:44:02.049Z\",\"NotificationData\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?><AuthorizationNotification xmlns=\\\"https://mws.amazonservices.com/ipn/OffAmazonPayments/2013-01-01\\\">\\n    <AuthorizationDetails>\\n        <AmazonAuthorizationId>S02-3068665-9038420-A021160<\\/AmazonAuthorizationId>\\n        <AuthorizationReferenceId>S02-3068665-903842059a97211412a9<\\/AuthorizationReferenceId>\\n        <AuthorizationAmount>\\n            <Amount>272.62<\\/Amount>\\n            <CurrencyCode>EUR<\\/CurrencyCode>\\n        <\\/AuthorizationAmount>\\n        <CapturedAmount>\\n            <Amount>0.0<\\/Amount>\\n            <CurrencyCode>EUR<\\/CurrencyCode>\\n        <\\/CapturedAmount>\\n        <AuthorizationFee>\\n            <Amount>0.0<\\/Amount>\\n            <CurrencyCode>EUR<\\/CurrencyCode>\\n        <\\/AuthorizationFee>\\n        <IdList/>\\n        <CreationTimestamp>2017-09-01T14:43:29.536Z<\\/CreationTimestamp>\\n        <ExpirationTimestamp>2017-10-01T14:43:29.536Z<\\/ExpirationTimestamp>\\n        <AuthorizationStatus>\\n            <State>Open<\\/State>\\n            <LastUpdateTimestamp>2017-09-01T14:44:01.575Z<\\/LastUpdateTimestamp>\\n        <\\/AuthorizationStatus>\\n        <SoftDecline>false<\\/SoftDecline>\\n        <OrderItemCategories/>\\n        <CaptureNow>false<\\/CaptureNow>\\n        <SoftDescriptor/>\\n    <\\/AuthorizationDetails>\\n<\\/AuthorizationNotification>\"}",
                   "Timestamp" => "2017-09-01T14:44:02.109Z",
                   "SignatureVersion" => "1",

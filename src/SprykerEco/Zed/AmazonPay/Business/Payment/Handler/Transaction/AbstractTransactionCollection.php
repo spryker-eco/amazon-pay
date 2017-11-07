@@ -26,23 +26,23 @@ abstract class AbstractTransactionCollection
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    protected function executeHandlers(AmazonpayCallTransfer $amazonpayCallTransfer)
+    protected function executeHandlers(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        $amazonpayCallTransfer->getAmazonpayPayment()->setResponseHeader(null);
+        $amazonPayCallTransfer->getAmazonpayPayment()->setResponseHeader(null);
 
         foreach ($this->transactionHandlers as $transactionHandler) {
-            $amazonpayCallTransfer = $transactionHandler->execute($amazonpayCallTransfer);
+            $amazonPayCallTransfer = $transactionHandler->execute($amazonPayCallTransfer);
 
-            if ($amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader() &&
-                !$amazonpayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
+            if ($amazonPayCallTransfer->getAmazonpayPayment()->getResponseHeader() &&
+                !$amazonPayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
                 break;
             }
         }
 
-        return $amazonpayCallTransfer;
+        return $amazonPayCallTransfer;
     }
 }

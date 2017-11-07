@@ -12,12 +12,12 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 class TransactionSequence extends AbstractTransactionCollection implements AmazonpayTransactionInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        return $this->executeHandlers($amazonpayCallTransfer);
+        return $this->executeHandlers($amazonPayCallTransfer);
     }
 }

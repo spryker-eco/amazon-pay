@@ -34,7 +34,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     {
         return $this->getFactory()
             ->createQuoteUpdateFactory()
-            ->createQuoteDataInitializer()
+            ->createQuoteUpdaterCollection()
             ->update($quoteTransfer);
     }
 
@@ -320,5 +320,32 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
         return $this->getFactory()
             ->createAmazonpayOrderInfoHydrator()
             ->hydrateOrderInfo($orderTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param int[] $alreadyAffectedItems
+     * @param string $eventName
+     *
+     * @return void
+     */
+    public function triggerEventForRelatedItems(AmazonpayCallTransfer $amazonpayCallTransfer, array $alreadyAffectedItems, $eventName)
+    {
+        $this->getFactory()
+            ->createRelatedItemsUpdateModel()
+            ->triggerEvent($amazonpayCallTransfer, $alreadyAffectedItems, $eventName);
+    }
+
+    /**
+     * @param string $orderReferenceId
+     * @param string $status
+     *
+     * @return void
+     */
+    public function updateStatus($orderReferenceId, $status)
+    {
+        $this->getFactory()
+            ->createPaymentProcessorModel()
+            ->updateStatus($orderReferenceId, $status);
     }
 }

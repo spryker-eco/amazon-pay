@@ -34,38 +34,38 @@ class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
-    public function execute(AmazonpayCallTransfer $amazonpayCallTransfer)
+    public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        if (!$amazonpayCallTransfer
+        if (!$amazonPayCallTransfer
                 ->getAmazonpayPayment()
                 ->getAuthorizationDetails()
                 ->getAuthorizationStatus()
                 ->getIsDeclined()
         ) {
-            return $amazonpayCallTransfer;
+            return $amazonPayCallTransfer;
         }
 
-        if ($amazonpayCallTransfer->getAmazonpayPayment()
+        if ($amazonPayCallTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()
                 ->getAuthorizationStatus()
                 ->getIsPaymentMethodInvalid()
         ) {
-            return $amazonpayCallTransfer;
+            return $amazonPayCallTransfer;
         }
 
-        $checkOrderStatus = $this->getOrderReferenceDetailsTransaction->execute($amazonpayCallTransfer);
+        $checkOrderStatus = $this->getOrderReferenceDetailsTransaction->execute($amazonPayCallTransfer);
 
         if ($checkOrderStatus->getAmazonpayPayment()
                 ->getOrderReferenceStatus()
                 ->getIsOpen()
         ) {
-            $this->cancelOrderTransaction->execute($amazonpayCallTransfer);
+            $this->cancelOrderTransaction->execute($amazonPayCallTransfer);
         }
 
-        return $amazonpayCallTransfer;
+        return $amazonPayCallTransfer;
     }
 }

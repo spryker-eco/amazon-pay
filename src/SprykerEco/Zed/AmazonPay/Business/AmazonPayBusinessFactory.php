@@ -15,7 +15,9 @@ use SprykerEco\Zed\AmazonPay\Business\Api\Converter\ConverterFactory;
 use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayConverter;
 use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayTransferToEntityConverter;
 use SprykerEco\Zed\AmazonPay\Business\Order\AmazonpayOrderInfoHydrator;
+use SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorModel;
 use SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderModel;
+use SprykerEco\Zed\AmazonPay\Business\Order\RelatedItemsUpdateModel;
 use SprykerEco\Zed\AmazonPay\Business\Order\Saver;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnFactory;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\TransactionLogger;
@@ -36,10 +38,10 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
             $this->createAdapterFactory(),
             $this->createAmazonpayConfig(),
             $this->createTransactionLogger(),
-            $this->getQueryContainer(),
             $this->createAmazonpayConverter(),
             $this->createAmazonpayTransferToEntityConverter(),
-            $this->createRefundOrderModel()
+            $this->createRefundOrderModel(),
+            $this->createPaymentProcessorModel()
         );
     }
 
@@ -58,8 +60,7 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
     {
         return new QuoteUpdateFactory(
             $this->createAdapterFactory(),
-            $this->getShipmentFacade(),
-            $this->getMessengerFacade()
+            $this->getShipmentFacade()
         );
     }
 
@@ -149,7 +150,7 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
      */
     public function createTransactionLogger()
     {
-        return new TransactionLogger($this->createAmazonpayConfig()->getErrorReportLevel());
+        return new TransactionLogger($this->createAmazonpayConfig());
     }
 
     /**
@@ -159,16 +160,6 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
     {
         return $this->getProvidedDependency(
             AmazonPayDependencyProvider::FACADE_SALES
-        );
-    }
-
-    /**
-     * @return \SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToMessengerInterface
-     */
-    protected function getMessengerFacade()
-    {
-        return $this->getProvidedDependency(
-            AmazonPayDependencyProvider::FACADE_MESSENGER
         );
     }
 
@@ -203,6 +194,28 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
     {
         return new AmazonpayOrderInfoHydrator(
             $this->getQueryContainer()
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AmazonPay\Business\Order\RelatedItemsUpdateInterface
+     */
+    public function createRelatedItemsUpdateModel()
+    {
+        return new RelatedItemsUpdateModel(
+            $this->getQueryContainer(),
+            $this->getOmsFacade()
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorInterface
+     */
+    public function createPaymentProcessorModel()
+    {
+        return new PaymentProcessorModel(
+            $this->getQueryContainer(),
+            $this->createAmazonpayTransferToEntityConverter()
         );
     }
 }
