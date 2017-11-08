@@ -48,26 +48,18 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
         if ($amazonPayment->getAuthorizationDetails()->getIdList()) {
             $this->paymentEntity->setAmazonCaptureId(
                 $amazonPayment->getAuthorizationDetails()->getIdList()
-            )
-                ->setStatus(
-                    $status->getIsClosed()
-                        ? AmazonPayConfig::OMS_STATUS_CLOSED
-                        : AmazonPayConfig::OMS_STATUS_CAPTURE_COMPLETED
                 )
+                ->setStatus($status->getState())
                 ->save();
 
             return;
         }
 
-        if ($status->getIsPending()) {
+        if ($status->getState() === AmazonPayConfig::STATUS_PENDING) {
             return;
         }
 
-        $paymentStatus = $this->getPaymentStatus($status);
-
-        if ($paymentStatus !== false) {
-            $this->paymentEntity->setStatus($paymentStatus);
-        }
+        $this->paymentEntity->setStatus($status->getState());
         if ($this->apiResponse->getCaptureDetails() &&
             $this->apiResponse->getCaptureDetails()->getAmazonCaptureId()) {
             $this->paymentEntity->setAmazonCaptureId(
@@ -76,40 +68,6 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
         }
 
         $this->paymentEntity->save();
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $status
-     *
-     * @return bool|string
-     */
-    protected function getPaymentStatus(AmazonpayStatusTransfer $status)
-    {
-        if ($status->getIsDeclined()) {
-            if ($status->getIsSuspended()) {
-                return AmazonPayConfig::OMS_STATUS_AUTH_SUSPENDED;
-            }
-
-            if ($status->getIsTransactionTimedOut()) {
-                return AmazonPayConfig::OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT;
-            }
-
-            return AmazonPayConfig::OMS_STATUS_AUTH_DECLINED;
-        }
-
-        if ($status->getIsOpen()) {
-            return AmazonPayConfig::OMS_STATUS_AUTH_OPEN;
-        }
-
-        if ($status->getIsClosed()) {
-            if ($status->getIsReauthorizable()) {
-                return AmazonPayConfig::OMS_STATUS_AUTH_EXPIRED;
-            }
-
-            return AmazonPayConfig::OMS_STATUS_AUTH_CLOSED;
-        }
-
-        return false;
     }
 
     /**

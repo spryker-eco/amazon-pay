@@ -14,7 +14,7 @@ class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
 {
     const ORDER_REFERENCE_DETAILS = 'OrderReferenceDetails';
     const ORDER_REFERENCE_STATUS = 'OrderReferenceStatus';
-    const STATE = 'State';
+    const FIELD_STATE = 'State';
     const RELEASE_ENVIRONMENT = 'ReleaseEnvironment';
     const SANDBOX = 'Sandbox';
     const BILLING_ADDRESS = 'BillingAddress';
@@ -35,7 +35,7 @@ class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
      */
     protected function extractOrderReferenceStatus(array $response)
     {
-        return $this->extractResult($response)[static::ORDER_REFERENCE_DETAILS][static::ORDER_REFERENCE_STATUS][static::STATE];
+        return $this->extractResult($response)[static::ORDER_REFERENCE_DETAILS][static::ORDER_REFERENCE_STATUS][static::FIELD_STATE];
     }
 
     /**

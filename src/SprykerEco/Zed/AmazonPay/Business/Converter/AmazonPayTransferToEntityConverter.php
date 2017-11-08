@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Converter;
 
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
-use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay;
 
 class AmazonPayTransferToEntityConverter implements AmazonPayTransferToEntityConverterInterface
@@ -20,9 +19,6 @@ class AmazonPayTransferToEntityConverter implements AmazonPayTransferToEntityCon
      */
     public function mapTransferToEntity(AmazonpayPaymentTransfer $amazonpayPaymentTransfer)
     {
-        $responseHeader = new AmazonpayResponseHeaderTransfer();
-        $responseHeader->setIsSuccess(true);
-
         $paymentEntity = new SpyPaymentAmazonpay();
         $paymentEntity->fromArray($amazonpayPaymentTransfer->toArray());
 

@@ -72,10 +72,10 @@ class AmazonpayFacadeAbstractTest extends Test
     protected function getOrderStatusMap()
     {
         return [
-            AbstractResponse::ORDER_REFERENCE_ID_1 => AmazonPayConfig::OMS_STATUS_AUTH_OPEN,
-            AbstractResponse::ORDER_REFERENCE_ID_2 => AmazonPayConfig::OMS_STATUS_AUTH_OPEN,
-            AbstractResponse::ORDER_REFERENCE_ID_3 => AmazonPayConfig::OMS_STATUS_AUTH_OPEN,
-            AbstractResponse::ORDER_REFERENCE_ID_4 => AmazonPayConfig::OMS_STATUS_AUTH_CLOSED,
+            AbstractResponse::ORDER_REFERENCE_ID_1 => AmazonPayConfig::STATUS_OPEN,
+            AbstractResponse::ORDER_REFERENCE_ID_2 => AmazonPayConfig::STATUS_OPEN,
+            AbstractResponse::ORDER_REFERENCE_ID_3 => AmazonPayConfig::STATUS_OPEN,
+            AbstractResponse::ORDER_REFERENCE_ID_4 => AmazonPayConfig::STATUS_CLOSED,
         ];
     }
 

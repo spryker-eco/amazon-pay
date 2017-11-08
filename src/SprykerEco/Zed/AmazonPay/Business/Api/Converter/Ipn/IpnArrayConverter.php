@@ -29,6 +29,8 @@ class IpnArrayConverter implements IpnConverterInterface
      */
     public function convert(array $ipnRequest)
     {
-        return $this->ipnConverterFactory->createIpnRequestConverter($ipnRequest)->convert($ipnRequest);
+        return $this->ipnConverterFactory
+            ->createIpnRequestConverter($ipnRequest)
+            ->convert($ipnRequest);
     }
 }

@@ -23,7 +23,7 @@ class AmazonpayFacadeCancelOrderTest extends AmazonpayFacadeAbstractTest
     public function testCancelOrder(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         $result = $this->createFacade()->cancelOrder($amazonpayCallTransfer);
-        $this->validateResult($result, AmazonPayConfig::OMS_STATUS_CANCELLED);
+        $this->validateResult($result, AmazonPayConfig::STATUS_CANCELLED);
     }
 
     /**

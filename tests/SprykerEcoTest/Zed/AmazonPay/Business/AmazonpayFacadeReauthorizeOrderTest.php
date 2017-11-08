@@ -23,7 +23,7 @@ class AmazonpayFacadeReauthorizeOrderTest extends AmazonpayFacadeAbstractTest
     public function testAuthorizeOrder(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         $result = $this->createFacade()->reauthorizeSuspendedOrder($amazonpayCallTransfer);
-        $this->validateResult($result, AmazonPayConfig::OMS_STATUS_AUTH_PENDING);
+        $this->validateResult($result, AmazonPayConfig::STATUS_PENDING);
     }
 
     /**

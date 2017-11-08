@@ -32,7 +32,7 @@ class RefundOrderTransaction extends AbstractAmazonpayTransaction
 
         $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
-        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+        if (!$this->apiResponse->getResponseHeader()->getIsSuccess()) {
             return $amazonPayCallTransfer;
         }
 
@@ -42,7 +42,7 @@ class RefundOrderTransaction extends AbstractAmazonpayTransaction
             $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
 
-        $this->paymentEntity->setStatus(AmazonPayConfig::OMS_STATUS_REFUND_PENDING);
+        $this->paymentEntity->setStatus(AmazonPayConfig::STATUS_PENDING);
         $this->paymentEntity->setAmazonRefundId($this->apiResponse->getRefundDetails()->getAmazonRefundId());
         $this->paymentEntity->setRefundReferenceId($this->apiResponse->getRefundDetails()->getRefundReferenceId());
         $this->paymentEntity->save();

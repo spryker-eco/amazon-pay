@@ -62,28 +62,6 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $status
-     *
-     * @return string
-     */
-    protected function getPaymentStatus(AmazonpayStatusTransfer $status)
-    {
-        if ($status->getIsPending()) {
-            return AmazonPayConfig::OMS_STATUS_REFUND_PENDING;
-        }
-
-        if ($status->getIsDeclined()) {
-            return AmazonPayConfig::OMS_STATUS_REFUND_DECLINED;
-        }
-
-        if ($status->getIsCompleted()) {
-            return AmazonPayConfig::OMS_STATUS_REFUND_COMPLETED;
-        }
-
-        return AmazonPayConfig::OMS_STATUS_CANCELLED;
-    }
-
-    /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return bool
@@ -100,7 +78,7 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
      */
     protected function updatePayment(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+        if (!$this->apiResponse->getResponseHeader()->getIsSuccess()) {
             return;
         }
 
@@ -110,9 +88,9 @@ class UpdateOrderRefundStatusTransaction extends AbstractAmazonpayTransaction
             $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
 
-        $status = $this->getPaymentStatus($this->apiResponse->getRefundDetails()->getRefundStatus());
+        $status = $this->apiResponse->getRefundDetails()->getRefundStatus()->getState();
 
-        $refundIsRequired = ($status === AmazonPayConfig::OMS_STATUS_REFUND_COMPLETED
+        $refundIsRequired = ($status === AmazonPayConfig::STATUS_COMPLETED
             && $this->paymentEntity->getStatus() !== $status);
 
         $this->paymentEntity->setStatus($status);

@@ -15,7 +15,7 @@ abstract class AbstractByOrderItemConditionPlugin implements ConditionInterface
     /**
      * @return string
      */
-    abstract protected function getConditionalStatus();
+    abstract protected function getPaymentStatus();
 
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
@@ -30,7 +30,7 @@ abstract class AbstractByOrderItemConditionPlugin implements ConditionInterface
             return true;
         }
 
-        return $payment->getStatus() === $this->getConditionalStatus();
+        return $payment->getStatus() === $this->getPaymentStatus();
     }
 
     /**

@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
+use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Shared\AmazonPay\AmazonPayConstants;
 use SprykerEcoTest\Zed\AmazonPay\Business\Mock\Adapter\Sdk\AbstractResponse;
 use SprykerEcoTest\Zed\AmazonPay\Business\Mock\AmazonPayFacadeMock;
@@ -52,13 +53,13 @@ class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param int $transactionTimeout
      * @param bool $captureNow
-     * @param string $authStatus
+     * @param string $expectedStatus
      * @param string $reasonCode
      * @param string $captureId
      *
      * @return void
      */
-    public function testConfirmPurchase(QuoteTransfer $quoteTransfer, $transactionTimeout, $captureNow, $authStatus, $reasonCode, $captureId)
+    public function testConfirmPurchase(QuoteTransfer $quoteTransfer, $transactionTimeout, $captureNow, $expectedStatus, $reasonCode, $captureId)
     {
         $additionalConfig = [
             AmazonPayConstants::AUTH_TRANSACTION_TIMEOUT => $transactionTimeout,
@@ -69,7 +70,7 @@ class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
         $resultQuote = $facade->confirmPurchase($quoteTransfer);
 
         $this->assertEquals(
-            $authStatus,
+            $expectedStatus,
             $resultQuote->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getState()
         );
         $this->assertEquals(
@@ -89,34 +90,34 @@ class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
     {
         return [
             'Correct order sync captureNow on logged in user' =>
-                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1), 0, true, 'Closed', 'MaxCapturesProcessed', 'S02-6182376-4189497-C003388'],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1), 0, true, AmazonPayConfig::STATUS_CLOSED, 'MaxCapturesProcessed', 'S02-6182376-4189497-C003388'],
             'Correct order sync captureNow on' =>
-                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1), 0, true, 'Closed', 'MaxCapturesProcessed', 'S02-6182376-4189497-C003388'],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1), 0, true, AmazonPayConfig::STATUS_CLOSED, 'MaxCapturesProcessed', 'S02-6182376-4189497-C003388'],
             'AmazonRejected order sync captureNow on' =>
-                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_2), 0, true, 'Declined', 'AmazonRejected', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_2), 0, true, AmazonPayConfig::STATUS_DECLINED, 'AmazonRejected', ''],
             'InvalidPaymentMethod order sync captureNow on' =>
-                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_3), 0, true, 'Declined', 'InvalidPaymentMethod', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_3), 0, true, AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID, 'InvalidPaymentMethod', ''],
 
             'Correct order async captureNow on' =>
-                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1), 1000, true, 'Pending', '', 'S02-6182376-4189497-C003388'],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1), 1000, true, AmazonPayConfig::STATUS_PENDING, '', 'S02-6182376-4189497-C003388'],
             'AmazonRejected order async captureNow on ' =>
-                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_2), 1000, true, 'Pending', '', 'S02-6182376-4189497-C003388'],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_2), 1000, true, AmazonPayConfig::STATUS_PENDING, '', 'S02-6182376-4189497-C003388'],
             'InvalidPaymentMethod order async captureNow on' =>
-                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_3), 1000, true, 'Pending', '', 'S02-6182376-4189497-C003388'],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_3), 1000, true, AmazonPayConfig::STATUS_PENDING, '', 'S02-6182376-4189497-C003388'],
 
             'Correct order sync captureNow off' =>
-                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1), 0, false, 'Open', '', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1), 0, false, AmazonPayConfig::STATUS_OPEN, '', ''],
             'AmazonRejected order sync captureNow off' =>
-                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_2), 0, false, 'Declined', 'AmazonRejected', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_2), 0, false, AmazonPayConfig::STATUS_DECLINED, 'AmazonRejected', ''],
             'InvalidPaymentMethod order sync captureNow off' =>
-                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_3), 0, false, 'Declined', 'InvalidPaymentMethod', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_3), 0, false, AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID, 'InvalidPaymentMethod', ''],
 
             'Correct order async captureNow off' =>
-                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1), 1000, false, 'Pending', '', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_1), 1000, false, AmazonPayConfig::STATUS_PENDING, '', ''],
             'AmazonRejected order async captureNow off' =>
-                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_2), 1000, false, 'Pending', '', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_2), 1000, false, AmazonPayConfig::STATUS_PENDING, '', ''],
             'InvalidPaymentMethod order async captureNow off' =>
-                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_3), 1000, false, 'Pending', '', ''],
+                [$this->createQuote(AbstractResponse::ORDER_REFERENCE_ID_3), 1000, false, AmazonPayConfig::STATUS_PENDING, '', ''],
         ];
     }
 }

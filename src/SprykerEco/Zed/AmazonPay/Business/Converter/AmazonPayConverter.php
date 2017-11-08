@@ -21,7 +21,6 @@ class AmazonPayConverter implements AmazonPayConverterInterface
     {
         $amazonpayCallTransfer = new AmazonpayCallTransfer();
         $amazonpayCallTransfer->fromArray($quoteTransfer->toArray(), true);
-
         $amazonpayCallTransfer->setRequestedAmount($quoteTransfer->getTotals()->getGrandTotal());
         $amazonpayCallTransfer->setItems($quoteTransfer->getItems());
 

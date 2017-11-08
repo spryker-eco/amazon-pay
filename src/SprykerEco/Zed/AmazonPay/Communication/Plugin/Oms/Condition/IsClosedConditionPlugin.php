@@ -14,8 +14,8 @@ class IsClosedConditionPlugin extends AbstractByOrderItemConditionPlugin
     /**
      * @return string
      */
-    public function getConditionalStatus()
+    protected function getPaymentStatus()
     {
-        return AmazonPayConfig::OMS_STATUS_CLOSED;
+        return AmazonPayConfig::STATUS_CLOSED;
     }
 }

@@ -42,9 +42,9 @@ class IpnPaymentRefundCompletedHandler extends IpnAbstractPaymentRefundHandler
     /**
      * @return string
      */
-    protected function getOmsStatusName()
+    protected function getStatusName()
     {
-        return AmazonPayConfig::OMS_STATUS_REFUND_COMPLETED;
+        return AmazonPayConfig::STATUS_COMPLETED;
     }
 
     /**

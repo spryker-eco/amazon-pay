@@ -14,7 +14,6 @@ use Generated\Shared\Transfer\AmazonpayRefundDetailsTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay;
-use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 class AmazonPayEntityToTransferConverter implements AmazonPayEntityToTransferConverterInterface
 {
@@ -25,12 +24,12 @@ class AmazonPayEntityToTransferConverter implements AmazonPayEntityToTransferCon
      */
     public function mapEntityToTransfer(SpyPaymentAmazonpay $entity)
     {
-        $responseHeader = new AmazonpayResponseHeaderTransfer();
-        $responseHeader->setIsSuccess(true);
+        $responseHeaderTransfer = new AmazonpayResponseHeaderTransfer();
+        $responseHeaderTransfer->setIsSuccess(true);
 
         $paymentTransfer = new AmazonpayPaymentTransfer();
         $paymentTransfer->fromArray($entity->toArray(), true);
-        $paymentTransfer->setResponseHeader($responseHeader);
+        $paymentTransfer->setResponseHeader($responseHeaderTransfer);
         $paymentTransfer->setOrderReferenceStatus(new AmazonpayStatusTransfer());
         $paymentTransfer->setAuthorizationDetails($this->getAuthorizationDetailsTransfer($entity));
         $paymentTransfer->setCaptureDetails($this->getCaptureDetailsTransfer($entity));
@@ -49,7 +48,7 @@ class AmazonPayEntityToTransferConverter implements AmazonPayEntityToTransferCon
         $authDetailsTransfer = new AmazonpayAuthorizationDetailsTransfer();
         $authDetailsTransfer->fromArray($entity->toArray(), true);
         $authDetailsTransfer->setAuthorizationStatus(
-            $this->getAuthStatusTransfer($entity->getStatus())
+            $this->getStatusTransfer($entity->getStatus())
         );
 
         return $authDetailsTransfer;
@@ -65,7 +64,7 @@ class AmazonPayEntityToTransferConverter implements AmazonPayEntityToTransferCon
         $refundDetailsTransfer = new AmazonpayRefundDetailsTransfer();
         $refundDetailsTransfer->fromArray($entity->toArray(), true);
         $refundDetailsTransfer->setRefundStatus(
-            $this->getRefundStatusTransfer($entity->getStatus())
+            $this->getStatusTransfer($entity->getStatus())
         );
 
         return $refundDetailsTransfer;
@@ -81,7 +80,7 @@ class AmazonPayEntityToTransferConverter implements AmazonPayEntityToTransferCon
         $captureDetailsTransfer = new AmazonpayCaptureDetailsTransfer();
         $captureDetailsTransfer->fromArray($entity->toArray(), true);
         $captureDetailsTransfer->setCaptureStatus(
-            $this->getCaptureStatusTransfer($entity->getStatus())
+            $this->getStatusTransfer($entity->getStatus())
         );
 
         return $captureDetailsTransfer;
@@ -92,86 +91,10 @@ class AmazonPayEntityToTransferConverter implements AmazonPayEntityToTransferCon
      *
      * @return \Generated\Shared\Transfer\AmazonpayStatusTransfer
      */
-    protected function getAuthStatusTransfer($statusName)
+    protected function getStatusTransfer($statusName)
     {
         $amazonpayStatusTransfer = new AmazonpayStatusTransfer();
-
-        $amazonpayStatusTransfer->setIsPending(
-            $statusName === AmazonPayConfig::OMS_STATUS_AUTH_PENDING
-        );
-
-        $amazonpayStatusTransfer->setIsDeclined(
-            $statusName === AmazonPayConfig::OMS_STATUS_AUTH_DECLINED ||
-            $statusName === AmazonPayConfig::OMS_STATUS_AUTH_SUSPENDED
-        );
-
-        $amazonpayStatusTransfer->setIsSuspended(
-            $statusName === AmazonPayConfig::OMS_STATUS_AUTH_SUSPENDED
-        );
-
-        $amazonpayStatusTransfer->setIsTransactionTimedOut(
-            $statusName === AmazonPayConfig::OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT
-        );
-
-        $amazonpayStatusTransfer->setIsOpen(
-            $statusName === AmazonPayConfig::OMS_STATUS_AUTH_OPEN
-        );
-
-        $amazonpayStatusTransfer->setIsClosed(
-            $statusName === AmazonPayConfig::OMS_STATUS_AUTH_CLOSED
-        );
-
-        return $amazonpayStatusTransfer;
-    }
-
-    /**
-     * @param string $statusName
-     *
-     * @return \Generated\Shared\Transfer\AmazonpayStatusTransfer
-     */
-    protected function getCaptureStatusTransfer($statusName)
-    {
-        $amazonpayStatusTransfer = new AmazonpayStatusTransfer();
-
-        $amazonpayStatusTransfer->setIsPending(
-            $statusName === AmazonPayConfig::OMS_STATUS_CAPTURE_PENDING
-        );
-
-        $amazonpayStatusTransfer->setIsDeclined(
-            $statusName === AmazonPayConfig::OMS_STATUS_CAPTURE_DECLINED
-        );
-
-        $amazonpayStatusTransfer->setIsCompleted(
-            $statusName === AmazonPayConfig::OMS_STATUS_CAPTURE_COMPLETED
-        );
-
-        $amazonpayStatusTransfer->setIsClosed(
-            $statusName === AmazonPayConfig::OMS_STATUS_CAPTURE_CLOSED
-        );
-
-        return $amazonpayStatusTransfer;
-    }
-
-    /**
-     * @param string $statusName
-     *
-     * @return \Generated\Shared\Transfer\AmazonpayStatusTransfer
-     */
-    protected function getRefundStatusTransfer($statusName)
-    {
-        $amazonpayStatusTransfer = new AmazonpayStatusTransfer();
-
-        $amazonpayStatusTransfer->setIsPending(
-            $statusName === AmazonPayConfig::OMS_STATUS_REFUND_PENDING
-        );
-
-        $amazonpayStatusTransfer->setIsDeclined(
-            $statusName === AmazonPayConfig::OMS_STATUS_REFUND_DECLINED
-        );
-
-        $amazonpayStatusTransfer->setIsCompleted(
-            $statusName === AmazonPayConfig::OMS_STATUS_CAPTURE_COMPLETED
-        );
+        $amazonpayStatusTransfer->setState($statusName);
 
         return $amazonpayStatusTransfer;
     }

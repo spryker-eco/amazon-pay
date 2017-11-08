@@ -46,14 +46,23 @@ class PaymentProcessorModel implements PaymentProcessorInterface
      */
     public function updateStatus($orderReferenceId, $status)
     {
-        $payments = $this->queryContainer->queryPaymentByOrderReferenceId($orderReferenceId)
-            ->filterByStatus(AmazonPayConfig::OMS_STATUS_CLOSED, Criteria::NOT_EQUAL)
-            ->find();
-
+        $payments = $this->getPayments($orderReferenceId);
         foreach ($payments as $payment) {
             $payment->setStatus($status);
             $payment->save();
         }
+    }
+
+    /**
+     * @param string $orderReferenceId
+     *
+     * @return \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay[]|\Propel\Runtime\Collection\ObjectCollection
+     */
+    protected function getPayments($orderReferenceId)
+    {
+        return $this->queryContainer->queryPaymentByOrderReferenceId($orderReferenceId)
+            ->filterByStatus(AmazonPayConfig::STATUS_CLOSED, Criteria::NOT_EQUAL)
+            ->find();
     }
 
     /**

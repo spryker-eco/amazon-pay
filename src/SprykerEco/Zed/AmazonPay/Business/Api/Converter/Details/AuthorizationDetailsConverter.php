@@ -12,7 +12,6 @@ use SprykerEco\Zed\AmazonPay\Business\Api\Converter\AbstractArrayConverter;
 
 class AuthorizationDetailsConverter extends AbstractArrayConverter
 {
-    const PAYMENT_METHOD_INVALID = 'InvalidPaymentMethod';
     const CAPTURE_NOW = 'CaptureNow';
     const CAPTURED_AMOUNT = 'CapturedAmount';
     const SELLER_AUTHORIZATION_NOTE = 'SellerAuthorizationNote';
@@ -25,6 +24,25 @@ class AuthorizationDetailsConverter extends AbstractArrayConverter
     const EXPIRATION_TIMESTAMP = 'ExpirationTimestamp';
     const AMAZON_AUTHORIZATION_ID = 'AmazonAuthorizationId';
     const AUTHORIZATION_REFERENCE_ID = 'AuthorizationReferenceId';
+    const AUTHORIZATION_BILLING_ADDRESS = 'AuthorizationBillingAddress';
+    const SOFT_DESCRIPTOR = 'SoftDescriptor';
+
+    protected $detailsMapToTransferFields = [
+        self::CAPTURE_NOW => AmazonpayAuthorizationDetailsTransfer::CAPTURE_NOW,
+        self::CAPTURED_AMOUNT => AmazonpayAuthorizationDetailsTransfer::CAPTURED_AMOUNT,
+        self::SELLER_AUTHORIZATION_NOTE => AmazonpayAuthorizationDetailsTransfer::SELLER_AUTHORIZATION_NOTE,
+        self::AUTHORIZATION_FEE => AmazonpayAuthorizationDetailsTransfer::AUTHORIZATION_FEE,
+        self::AUTHORIZATION_AMOUNT => AmazonpayAuthorizationDetailsTransfer::AUTHORIZATION_AMOUNT,
+        self::SOFT_DECLINE => AmazonpayAuthorizationDetailsTransfer::SOFT_DECLINE,
+        self::CREATION_TIMESTAMP => AmazonpayAuthorizationDetailsTransfer::CREATION_TIMESTAMP,
+        self::EXPIRATION_TIMESTAMP => AmazonpayAuthorizationDetailsTransfer::EXPIRATION_TIMESTAMP,
+        self::AMAZON_AUTHORIZATION_ID => AmazonpayAuthorizationDetailsTransfer::AMAZON_AUTHORIZATION_ID,
+        self::AUTHORIZATION_REFERENCE_ID => AmazonpayAuthorizationDetailsTransfer::AUTHORIZATION_REFERENCE_ID,
+        self::CAPTURE_NOW => AmazonpayAuthorizationDetailsTransfer::CAPTURE_NOW,
+        self::AUTHORIZATION_STATUS => AmazonpayAuthorizationDetailsTransfer::AUTHORIZATION_STATUS,
+        self::AUTHORIZATION_BILLING_ADDRESS => AmazonpayAuthorizationDetailsTransfer::AUTHORIZATION_BILLING_ADDRESS,
+        self::SOFT_DESCRIPTOR => AmazonpayAuthorizationDetailsTransfer::SOFT_DESCRIPTOR,
+    ];
 
     /**
      * @param array $authDetailsData
@@ -35,13 +53,30 @@ class AuthorizationDetailsConverter extends AbstractArrayConverter
     {
         $authorizationDetails = new AmazonpayAuthorizationDetailsTransfer();
 
-        $authorizationDetails->fromArray($authDetailsData, true);
+        $mappedData = $this->mapDetailsToTransferFields($authDetailsData);
+        $authorizationDetails->fromArray($mappedData, true);
+
         $this->hydrateIdList($authDetailsData, $authorizationDetails);
         $this->hydrateAuthorizationStatus($authDetailsData, $authorizationDetails);
         $this->hydrateCapturedAmount($authDetailsData, $authorizationDetails);
         $this->hydrateReasonCode($authorizationDetails);
 
         return $authorizationDetails;
+    }
+
+    /**
+     * @param array $authDetailsData
+     *
+     * @return array
+     */
+    protected function mapDetailsToTransferFields(array $authDetailsData)
+    {
+        $result = [];
+        foreach ($this->detailsMapToTransferFields as $detailField => $transferField) {
+            $result[$transferField] = $authDetailsData[$detailField] ?? null;
+        }
+
+        return $result;
     }
 
     /**
@@ -76,9 +111,8 @@ class AuthorizationDetailsConverter extends AbstractArrayConverter
     protected function hydrateAuthorizationStatus(array $authDetailsData, AmazonpayAuthorizationDetailsTransfer $authorizationDetails)
     {
         if (!empty($authDetailsData[static::AUTHORIZATION_STATUS])) {
-            $authorizationDetails->setAuthorizationStatus(
-                $this->convertStatusToTransfer($authDetailsData[static::AUTHORIZATION_STATUS])
-            );
+            $statusTransfer = $this->convertStatusToTransfer($authDetailsData[static::AUTHORIZATION_STATUS]);
+            $authorizationDetails->setAuthorizationStatus($statusTransfer);
         }
     }
 

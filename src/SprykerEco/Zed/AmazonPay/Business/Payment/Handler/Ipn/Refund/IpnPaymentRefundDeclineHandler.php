@@ -14,8 +14,8 @@ class IpnPaymentRefundDeclineHandler extends IpnAbstractPaymentRefundHandler
     /**
      * @return string
      */
-    protected function getOmsStatusName()
+    protected function getStatusName()
     {
-        return AmazonPayConfig::OMS_STATUS_REFUND_DECLINED;
+        return AmazonPayConfig::STATUS_DECLINED;
     }
 }

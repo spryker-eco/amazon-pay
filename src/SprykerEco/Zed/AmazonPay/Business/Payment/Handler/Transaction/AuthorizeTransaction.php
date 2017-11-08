@@ -44,28 +44,6 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $statusDetails
-     *
-     * @return string
-     */
-    protected function getStatus(AmazonpayStatusTransfer $statusDetails)
-    {
-        if ($statusDetails->getIsOpen()) {
-            return AmazonPayConfig::OMS_STATUS_AUTH_OPEN;
-        }
-
-        if ($statusDetails->getIsPending()) {
-            return AmazonPayConfig::OMS_STATUS_AUTH_PENDING;
-        }
-
-        if ($statusDetails->getIsSuspended()) {
-            return AmazonPayConfig::OMS_STATUS_AUTH_SUSPENDED;
-        }
-
-        return AmazonPayConfig::OMS_STATUS_AUTH_DECLINED;
-    }
-
-    /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return void
@@ -95,22 +73,18 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
             $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
 
-        $amazonPayCallTransfer->getAmazonpayPayment()->setAuthorizationDetails(
-            $this->apiResponse->getAuthorizationDetails()
-        );
-
         $statusDetails = $amazonPayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->getAuthorizationStatus();
 
-        if ($statusDetails->getIsDeclined()) {
+        if ($statusDetails->getState() === AmazonPayConfig::STATUS_DECLINED) {
             $amazonPayCallTransfer->getAmazonpayPayment()->getResponseHeader()
                 ->setIsSuccess(false)
                 ->setErrorCode($this->buildErrorCode($amazonPayCallTransfer));
         }
 
         if ($this->paymentEntity) {
-            $this->paymentEntity->setStatus($this->getStatus($statusDetails));
+            $this->paymentEntity->setStatus($statusDetails->getState());
             $this->paymentEntity->save();
         }
 

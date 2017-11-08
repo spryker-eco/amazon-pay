@@ -14,8 +14,8 @@ class IsAuthTransactionTimedOutConditionPlugin extends AbstractByOrderItemCondit
     /**
      * @return string
      */
-    protected function getConditionalStatus()
+    protected function getPaymentStatus()
     {
-        return AmazonPayConfig::OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT;
+        return AmazonPayConfig::STATUS_TRANSACTION_TIMED_OUT;
     }
 }

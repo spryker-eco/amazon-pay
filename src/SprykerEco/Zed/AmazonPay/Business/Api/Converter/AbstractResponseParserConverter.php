@@ -78,9 +78,9 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
      */
     protected function mapResponseDataToTransfer(AmazonpayResponseTransfer $responseTransfer, array $response)
     {
-        $responseTransfer->setHeader($this->extractHeader($response));
+        $responseTransfer->setResponseHeader($this->extractHeader($response));
 
-        if ($responseTransfer->getHeader()->getIsSuccess()) {
+        if ($responseTransfer->getResponseHeader()->getIsSuccess()) {
             return $this->setBody($responseTransfer, $response);
         }
 

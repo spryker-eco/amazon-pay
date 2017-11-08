@@ -15,9 +15,9 @@ class IpnPaymentCaptureCompletedHandler extends IpnAbstractPaymentCaptureHandler
     /**
      * @return string
      */
-    protected function getOmsStatusName()
+    protected function getStatusName()
     {
-        return AmazonPayConfig::OMS_STATUS_CAPTURE_COMPLETED;
+        return AmazonPayConfig::STATUS_COMPLETED;
     }
 
     /**

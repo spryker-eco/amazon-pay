@@ -14,8 +14,8 @@ class IsAuthExpiredConditionPlugin extends AbstractByOrderItemConditionPlugin
     /**
      * @return string
      */
-    protected function getConditionalStatus()
+    protected function getPaymentStatus()
     {
-        return AmazonPayConfig::OMS_STATUS_AUTH_EXPIRED;
+        return AmazonPayConfig::STATUS_EXPIRED;
     }
 }

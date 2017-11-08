@@ -22,8 +22,8 @@ class IpnOrderReferenceClosedHandler extends IpnAbstractOrderReferenceHandler
     /**
      * @return string
      */
-    protected function getOmsStatusName()
+    protected function getStatusName()
     {
-        return AmazonPayConfig::OMS_STATUS_AUTH_DECLINED;
+        return AmazonPayConfig::STATUS_DECLINED;
     }
 }

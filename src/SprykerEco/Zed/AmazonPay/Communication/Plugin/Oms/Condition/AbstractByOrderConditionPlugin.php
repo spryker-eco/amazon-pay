@@ -15,7 +15,7 @@ abstract class AbstractByOrderConditionPlugin implements ConditionInterface
     /**
      * @return array
      */
-    abstract protected function getStatuses();
+    abstract protected function getOmsStatuses();
 
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
@@ -25,7 +25,7 @@ abstract class AbstractByOrderConditionPlugin implements ConditionInterface
     public function check(SpySalesOrderItem $orderItem)
     {
         foreach ($orderItem->getOrder()->getItems() as $salesOrderItem) {
-            if (in_array($salesOrderItem->getState()->getName(), $this->getStatuses(), true)) {
+            if (in_array($salesOrderItem->getState()->getName(), $this->getOmsStatuses(), true)) {
                 return true;
             }
         }

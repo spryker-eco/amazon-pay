@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\AmazonPay\Business;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -278,7 +279,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
      * @param array $headers
      * @param string $body
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return AmazonpayIpnPaymentRequestTransfer
      */
     public function convertAmazonPayIpnRequest(array $headers, $body)
     {
@@ -293,11 +294,11 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
      *
      * @api
      *
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $ipnRequestTransfer
+     * @param AmazonpayIpnPaymentRequestTransfer $ipnRequestTransfer
      *
      * @return void
      */
-    public function handleAmazonPayIpnRequest(AbstractTransfer $ipnRequestTransfer)
+    public function handleAmazonPayIpnRequest(AmazonpayIpnPaymentRequestTransfer $ipnRequestTransfer)
     {
         $this->getFactory()
             ->createIpnFactory()

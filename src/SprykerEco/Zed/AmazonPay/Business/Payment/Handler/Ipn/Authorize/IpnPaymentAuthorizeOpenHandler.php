@@ -14,8 +14,8 @@ class IpnPaymentAuthorizeOpenHandler extends IpnAbstractPaymentAuthorizeHandler
     /**
      * @return string
      */
-    protected function getOmsStatusName()
+    protected function getStatusName()
     {
-        return AmazonPayConfig::OMS_STATUS_AUTH_OPEN;
+        return AmazonPayConfig::STATUS_OPEN;
     }
 }

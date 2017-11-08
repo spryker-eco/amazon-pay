@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
 
 use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderInterface;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Authorize\IpnPaymentAuthorizeClosedHandler;
@@ -70,20 +69,14 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     /**
      * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer
      *
-     * @throws \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
-     *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
     public function createConcreteIpnRequestHandler(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {
-        $map = $this->getNotificationTypeToHandlerMap();
+        $handlerMap = $this->getNotificationTypeToHandlerMap();
+        $notificationType = $paymentRequestTransfer->getMessage()->getNotificationType();
 
-        if (isset($map[$paymentRequestTransfer->getMessage()->getNotificationType()])) {
-            return $map[$paymentRequestTransfer->getMessage()->getNotificationType()]($paymentRequestTransfer);
-        }
-
-        throw new IpnHandlerNotFoundException('Unknown IPN Notification type: ' .
-            $paymentRequestTransfer->getMessage()->getNotificationType());
+        return $handlerMap[$notificationType]($paymentRequestTransfer);
     }
 
     /**
@@ -92,48 +85,57 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     protected function getNotificationTypeToHandlerMap()
     {
         return [
-            AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE => function (AbstractTransfer $ipnRequest) {
+            AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE => function (AmazonpayIpnPaymentRequestTransfer $ipnRequest) {
                 return $this->createIpnPaymentAuthorizeHandler($ipnRequest);
             },
-            AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_CAPTURE => function (AbstractTransfer $ipnRequest) {
+            AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_CAPTURE => function (AmazonpayIpnPaymentRequestTransfer $ipnRequest) {
                 return $this->createIpnPaymentCaptureHandler($ipnRequest);
             },
-            AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_REFUND => function (AbstractTransfer $ipnRequest) {
+            AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_REFUND => function (AmazonpayIpnPaymentRequestTransfer $ipnRequest) {
                 return $this->createIpnPaymentRefundHandler($ipnRequest);
             },
-            AmazonPayConfig::IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION => function (AbstractTransfer $ipnRequest) {
+            AmazonPayConfig::IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION => function (AmazonpayIpnPaymentRequestTransfer $ipnRequest) {
                 return $this->createIpnOrderReferenceHandler($ipnRequest);
             },
         ];
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
-     *
-     * @throws \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
+     * @return array
+     */
+    protected function getAuthorizeHandlerMap()
+    {
+        return [
+            AmazonPayConfig::STATUS_SUSPENDED => function(){
+                return $this->createIpnPaymentAuthorizeSuspendedHandler();
+            },
+            AmazonPayConfig::STATUS_DECLINED => function(){
+                return $this->createIpnPaymentAuthorizeDeclineHandler();
+            },
+            AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID => function(){
+                return $this->createIpnPaymentAuthorizeDeclineHandler();
+            },
+            AmazonPayConfig::STATUS_OPEN => function(){
+                return $this->createIpnPaymentAuthorizeOpenHandler();
+            },
+            AmazonPayConfig::STATUS_CLOSED => function(){
+                return $this->createIpnPaymentAuthorizeClosedHandler();
+            },
+            AmazonPayConfig::STATUS_EXPIRED => function(){
+                return $this->createIpnPaymentAuthorizeClosedHandler();
+            },
+        ];
+    }
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
-    protected function createIpnPaymentAuthorizeHandler(AbstractTransfer $ipnRequest)
+    protected function createIpnPaymentAuthorizeHandler(AmazonpayIpnPaymentRequestTransfer $ipnRequest)
     {
-        if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsSuspended()) {
-            return $this->createIpnPaymentAuthorizeSuspendedHandler();
-        }
+        $authStatus = $ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getState();
 
-        if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsDeclined()) {
-            return $this->createIpnPaymentAuthorizeDeclineHandler();
-        }
-
-        if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsOpen()) {
-            return $this->createIpnPaymentAuthorizeOpenHandler();
-        }
-
-        if ($ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getIsClosed()) {
-            return $this->createIpnPaymentAuthorizeClosedHandler();
-        }
-
-        throw new IpnHandlerNotFoundException('No IPN handler for auth payment and status ' .
-            $ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getState());
+        return $this->getAuthorizeHandlerMap()[$authStatus]();
     }
 
     /**
@@ -185,28 +187,33 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
-     *
-     * @throws \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
+     * @return array
+     */
+    protected function getCaptureHandlerMap()
+    {
+        return [
+            AmazonPayConfig::STATUS_DECLINED => function(){
+                return $this->createIpnPaymentCaptureDeclineHandler();
+            },
+            AmazonPayConfig::STATUS_COMPLETED => function(){
+                return $this->createIpnPaymentCaptureCompletedHandler();
+            },
+            AmazonPayConfig::STATUS_CLOSED => function(){
+                return $this->createIpnEmptyHandler();
+            },
+        ];
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
-    protected function createIpnPaymentCaptureHandler(AbstractTransfer $ipnRequest)
+    protected function createIpnPaymentCaptureHandler(AmazonpayIpnPaymentRequestTransfer $ipnRequest)
     {
-        if ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsDeclined()) {
-            return $this->createIpnPaymentCaptureDeclineHandler();
-        }
+        $captureStatus = $ipnRequest->getCaptureDetails()->getCaptureStatus()->getState();
 
-        if ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsCompleted()) {
-            return $this->createIpnPaymentCaptureCompletedHandler();
-        }
-
-        if ($ipnRequest->getCaptureDetails()->getCaptureStatus()->getIsClosed()) {
-            return $this->createIpnEmptyHandler();
-        }
-
-        throw new IpnHandlerNotFoundException('No IPN handler for capture and status ' .
-            $ipnRequest->getCaptureDetails()->getCaptureStatus()->getState());
+        return $this->getCaptureHandlerMap()[$captureStatus]();
     }
 
     /**
@@ -242,24 +249,29 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
-     *
-     * @throws \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
+     * @return array
+     */
+    protected function getRefundHandlerMap()
+    {
+        return [
+            AmazonPayConfig::STATUS_DECLINED => function(){
+                return $this->createIpnPaymentRefundDeclineHandler();
+            },
+            AmazonPayConfig::STATUS_COMPLETED => function(){
+                return $this->createIpnPaymentRefundCompletedHandler();
+            },
+        ];
+    }
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
-    protected function createIpnPaymentRefundHandler(AbstractTransfer $ipnRequest)
+    protected function createIpnPaymentRefundHandler(AmazonpayIpnPaymentRequestTransfer $ipnRequest)
     {
-        if ($ipnRequest->getRefundDetails()->getRefundStatus()->getIsDeclined()) {
-            return $this->createIpnPaymentRefundDeclineHandler();
-        }
+        $refundStatus = $ipnRequest->getRefundDetails()->getRefundStatus()->getState();
 
-        if ($ipnRequest->getRefundDetails()->getRefundStatus()->getIsCompleted()) {
-            return $this->createIpnPaymentRefundCompletedHandler();
-        }
-
-        throw new IpnHandlerNotFoundException('No IPN handler for payment refund and status ' .
-            $ipnRequest->getRefundDetails()->getRefundStatus()->getState());
+        return $this->getRefundHandlerMap()[$refundStatus]();
     }
 
     /**
@@ -287,37 +299,49 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
         );
     }
 
+
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer | \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
+     * @return array
+     */
+    protected function getOrderReferenceHandlerMap()
+    {
+        return [
+            AmazonPayConfig::STATUS_OPEN => function () {
+                return $this->createIpnOrderReferenceOpenHandler();
+            },
+            AmazonPayConfig::STATUS_AMAZON_CLOSED => function () {
+                return $this->createIpnOrderReferenceClosedHandler();
+            },
+            AmazonPayConfig::STATUS_EXPIRED => function () {
+                return $this->createIpnEmptyHandler();
+            },
+            AmazonPayConfig::STATUS_CLOSED => function () {
+                return $this->createIpnEmptyHandler();
+            },
+            AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID => function () {
+                return $this->createIpnOrderReferenceSuspendedHandler();
+            },
+            AmazonPayConfig::STATUS_SUSPENDED => function () {
+                return $this->createIpnOrderReferenceSuspendedHandler();
+            },
+            AmazonPayConfig::STATUS_CANCELLED => function () {
+                return $this->createIpnOrderReferenceCancelledHandler();
+            },
+        ];
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
      *
      * @throws \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
-    protected function createIpnOrderReferenceHandler(AbstractTransfer $ipnRequest)
+    protected function createIpnOrderReferenceHandler(AmazonpayIpnPaymentRequestTransfer $ipnRequest)
     {
-        if ($ipnRequest->getOrderReferenceStatus()->getIsOpen()) {
-            return $this->createIpnOrderReferenceOpenHandler();
-        }
+        $orderReferenceStatus = $ipnRequest->getOrderReferenceStatus()->getState();
 
-        if ($ipnRequest->getOrderReferenceStatus()->getIsClosed()) {
-            if ($ipnRequest->getOrderReferenceStatus()->getIsClosedByAmazon()) {
-                return $this->createIpnOrderReferenceClosedHandler();
-            }
-
-            return $this->createIpnEmptyHandler();
-        }
-
-        if ($ipnRequest->getOrderReferenceStatus()->getIsSuspended()) {
-            return $this->createIpnOrderReferenceSuspendedHandler();
-        }
-
-        if ($ipnRequest->getOrderReferenceStatus()->getIsCancelled()) {
-            return $this->createIpnOrderReferenceCancelledHandler();
-        }
-
-        throw new IpnHandlerNotFoundException('No IPN handler for order reference and status ' .
-            $ipnRequest->getOrderReferenceStatus()->getState());
+        return $this->getOrderReferenceHandlerMap()[$orderReferenceStatus]();
     }
 
     /**

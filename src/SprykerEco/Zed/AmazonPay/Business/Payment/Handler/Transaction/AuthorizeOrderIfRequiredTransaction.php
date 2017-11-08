@@ -68,7 +68,7 @@ class AuthorizeOrderIfRequiredTransaction extends ReauthorizeOrderTransaction
             $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
 
-        $this->paymentEntity->setStatus(AmazonPayConfig::OMS_STATUS_CAPTURE_PENDING);
+        $this->paymentEntity->setStatus(AmazonPayConfig::STATUS_PENDING);
         $this->paymentEntity->save();
 
         if ($isPartialProcessing) {

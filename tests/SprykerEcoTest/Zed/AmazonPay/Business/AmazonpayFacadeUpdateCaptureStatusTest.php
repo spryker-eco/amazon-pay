@@ -37,19 +37,19 @@ class AmazonpayFacadeUpdateCaptureStatusTest extends AmazonpayFacadeAbstractTest
         return [
             [
                 $this->getAmazonPayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                AmazonPayConfig::OMS_STATUS_CAPTURE_COMPLETED,
+                AmazonPayConfig::STATUS_COMPLETED,
             ],
             [
                 $this->getAmazonPayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                AmazonPayConfig::OMS_STATUS_CAPTURE_DECLINED,
+                AmazonPayConfig::STATUS_DECLINED,
             ],
             [
                 $this->getAmazonPayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                AmazonPayConfig::OMS_STATUS_CAPTURE_PENDING,
+                AmazonPayConfig::STATUS_PENDING,
             ],
             [
                 $this->getAmazonPayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_4),
-                AmazonPayConfig::OMS_STATUS_CAPTURE_CLOSED,
+                AmazonPayConfig::STATUS_CLOSED,
             ],
         ];
     }

@@ -14,8 +14,8 @@ class IpnPaymentCaptureDeclineHandler extends IpnAbstractPaymentCaptureHandler
     /**
      * @return string
      */
-    protected function getOmsStatusName()
+    protected function getStatusName()
     {
-        return AmazonPayConfig::OMS_STATUS_CAPTURE_DECLINED;
+        return AmazonPayConfig::STATUS_DECLINED;
     }
 }

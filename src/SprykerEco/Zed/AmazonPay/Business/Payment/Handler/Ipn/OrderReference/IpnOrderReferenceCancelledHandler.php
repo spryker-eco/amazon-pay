@@ -22,8 +22,8 @@ class IpnOrderReferenceCancelledHandler extends IpnAbstractOrderReferenceHandler
     /**
      * @return string
      */
-    protected function getOmsStatusName()
+    protected function getStatusName()
     {
-        return AmazonPayConfig::OMS_STATUS_CANCELLED;
+        return AmazonPayConfig::STATUS_CANCELLED;
     }
 }

@@ -78,28 +78,46 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
 
         return [
             [
-                AbstractResponse::ORDER_REFERENCE_ID_1 . 'save', '', (new AmazonpayStatusTransfer())->setIsDeclined(1), $omsState,
-                AmazonPayConfig::OMS_STATUS_AUTH_DECLINED,
+                AbstractResponse::ORDER_REFERENCE_ID_1 . 'save',
+                '',
+                (new AmazonpayStatusTransfer())->setState(AmazonPayConfig::STATUS_DECLINED),
+                $omsState,
+                AmazonPayConfig::STATUS_DECLINED,
             ],
             [
-                AbstractResponse::ORDER_REFERENCE_ID_2 . 'save', '', (new AmazonpayStatusTransfer())->setIsPending(1), $omsState,
-                AmazonPayConfig::OMS_STATUS_AUTH_PENDING,
+                AbstractResponse::ORDER_REFERENCE_ID_2 . 'save',
+                '',
+                (new AmazonpayStatusTransfer())->setState(AmazonPayConfig::STATUS_PENDING),
+                $omsState,
+                AmazonPayConfig::STATUS_PENDING,
             ],
             [
-                AbstractResponse::ORDER_REFERENCE_ID_3 . 'save', '', (new AmazonpayStatusTransfer())->setIsOpen(1), $omsState,
-                AmazonPayConfig::OMS_STATUS_AUTH_OPEN,
+                AbstractResponse::ORDER_REFERENCE_ID_3 . 'save',
+                '',
+                (new AmazonpayStatusTransfer())->setState(AmazonPayConfig::STATUS_OPEN),
+                $omsState,
+                AmazonPayConfig::STATUS_OPEN,
             ],
             [
-                AbstractResponse::ORDER_REFERENCE_ID_4 . 'save', '1,', (new AmazonpayStatusTransfer())->setIsDeclined(1), $omsState,
-                AmazonPayConfig::OMS_STATUS_CAPTURE_COMPLETED,
+                AbstractResponse::ORDER_REFERENCE_ID_4 . 'save',
+                '1,',
+                (new AmazonpayStatusTransfer())->setState(AmazonPayConfig::STATUS_DECLINED),
+                $omsState,
+                AmazonPayConfig::STATUS_COMPLETED,
             ],
             [
-                AbstractResponse::ORDER_REFERENCE_ID_5 . 'save', '1,', (new AmazonpayStatusTransfer())->setIsPending(1), $omsState,
-                AmazonPayConfig::OMS_STATUS_CAPTURE_COMPLETED,
+                AbstractResponse::ORDER_REFERENCE_ID_5 . 'save',
+                '1,',
+                (new AmazonpayStatusTransfer())->setState(AmazonPayConfig::STATUS_PENDING),
+                $omsState,
+                AmazonPayConfig::STATUS_COMPLETED,
             ],
             [
-                AbstractResponse::ORDER_REFERENCE_ID_6 . 'save', '1,', (new AmazonpayStatusTransfer())->setIsOpen(1), $omsState,
-                AmazonPayConfig::OMS_STATUS_CAPTURE_COMPLETED,
+                AbstractResponse::ORDER_REFERENCE_ID_6 . 'save',
+                '1,',
+                (new AmazonpayStatusTransfer())->setState(AmazonPayConfig::STATUS_OPEN),
+                $omsState,
+                AmazonPayConfig::STATUS_COMPLETED,
             ],
         ];
     }
@@ -143,7 +161,7 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
                 ->setAuthorizationDetails(
                     (new AmazonpayAuthorizationDetailsTransfer())
                         ->setAuthorizationStatus($status)
-                    ->setIdList($idsList)
+                        ->setIdList($idsList)
                 )
         );
 

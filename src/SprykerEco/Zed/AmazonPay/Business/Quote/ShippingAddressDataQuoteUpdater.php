@@ -21,7 +21,7 @@ class ShippingAddressDataQuoteUpdater extends QuoteUpdaterAbstract
         $amazonCallTransfer = $this->convertQuoteTransferToAmazonPayTransfer($quoteTransfer);
         $apiResponse = $this->executionAdapter->call($amazonCallTransfer);
 
-        if ($apiResponse->getHeader()->getIsSuccess()) {
+        if ($apiResponse->getResponseHeader()->getIsSuccess()) {
             $quoteTransfer->setShippingAddress($apiResponse->getShippingAddress());
         }
 

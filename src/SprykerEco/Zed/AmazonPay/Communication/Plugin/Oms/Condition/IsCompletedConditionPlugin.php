@@ -9,13 +9,13 @@ namespace SprykerEco\Zed\AmazonPay\Communication\Plugin\Oms\Condition;
 
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
-class IsRefundCompletedConditionPlugin extends AbstractByOrderItemConditionPlugin
+class IsCompletedConditionPlugin extends AbstractByOrderItemConditionPlugin
 {
     /**
      * @return string
      */
-    protected function getConditionalStatus()
+    protected function getPaymentStatus()
     {
-        return AmazonPayConfig::OMS_STATUS_REFUND_COMPLETED;
+        return AmazonPayConfig::STATUS_COMPLETED;
     }
 }

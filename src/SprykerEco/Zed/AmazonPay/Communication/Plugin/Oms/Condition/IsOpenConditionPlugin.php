@@ -9,13 +9,13 @@ namespace SprykerEco\Zed\AmazonPay\Communication\Plugin\Oms\Condition;
 
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
-class IsCapturePendingConditionPlugin extends AbstractByOrderItemConditionPlugin
+class IsOpenConditionPlugin extends AbstractByOrderItemConditionPlugin
 {
     /**
      * @return string
      */
-    protected function getConditionalStatus()
+    protected function getPaymentStatus()
     {
-        return AmazonPayConfig::OMS_STATUS_CAPTURE_PENDING;
+        return AmazonPayConfig::STATUS_OPEN;
     }
 }

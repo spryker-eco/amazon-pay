@@ -21,13 +21,13 @@ class CloseOrderTransaction extends AbstractAmazonpayTransaction
     {
         $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
-        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+        if (!$this->apiResponse->getResponseHeader()->getIsSuccess()) {
             return $amazonPayCallTransfer;
         }
 
         $this->paymentProcessor->updateStatus(
             $amazonPayCallTransfer->getAmazonpayPayment()->getOrderReferenceId(),
-            AmazonPayConfig::OMS_STATUS_CLOSED
+            AmazonPayConfig::STATUS_CLOSED
         );
 
         return $amazonPayCallTransfer;

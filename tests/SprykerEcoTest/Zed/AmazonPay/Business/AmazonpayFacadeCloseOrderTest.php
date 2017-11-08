@@ -23,7 +23,7 @@ class AmazonpayFacadeCloseOrderTest extends AmazonpayFacadeAbstractTest
     public function testCloseOrder(AmazonpayCallTransfer $orderTransfer)
     {
         $result = $this->createFacade()->closeOrder($orderTransfer);
-        $this->validateResult($result, AmazonPayConfig::OMS_STATUS_CLOSED);
+        $this->validateResult($result, AmazonPayConfig::STATUS_CLOSED);
     }
 
     /**

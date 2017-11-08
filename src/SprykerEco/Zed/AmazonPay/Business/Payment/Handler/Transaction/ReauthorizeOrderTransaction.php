@@ -19,27 +19,45 @@ class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
      */
     public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
+        $this->updateAuthorizeReferenceId($amazonPayCallTransfer);
+
+        $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
+
+        $this->updatePaymentEntity($amazonPayCallTransfer);
+
+        return $amazonPayCallTransfer;
+    }
+
+    /**
+     * @param AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return void
+     */
+    protected function updateAuthorizeReferenceId(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
         $amazonPayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->setAuthorizationReferenceId(
                 $this->generateOperationReferenceId($amazonPayCallTransfer)
             );
+    }
 
-        $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
-
-        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
-            return $amazonPayCallTransfer;
+    /**
+     * @param AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return void
+     */
+    protected function updatePaymentEntity(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
+        if (!$this->apiResponse->getResponseHeader()->getIsSuccess()) {
+            return;
         }
 
         $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonPayCallTransfer);
 
-        if ($isPartialProcessing && $this->paymentEntity->getStatus() !== AmazonPayConfig::OMS_STATUS_AUTH_PENDING) {
+        if ($isPartialProcessing && $this->paymentEntity->getStatus() !== AmazonPayConfig::STATUS_PENDING) {
             $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
-
-        $amazonPayCallTransfer->getAmazonpayPayment()->setAuthorizationDetails(
-            $this->apiResponse->getAuthorizationDetails()
-        );
 
         $this->paymentEntity->setAmazonAuthorizationId(
             $this->apiResponse->getAuthorizationDetails()->getAmazonAuthorizationId()
@@ -49,7 +67,7 @@ class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
             $this->apiResponse->getAuthorizationDetails()->getAuthorizationReferenceId()
         );
 
-        $this->paymentEntity->setStatus(AmazonPayConfig::OMS_STATUS_AUTH_PENDING);
+        $this->paymentEntity->setStatus(AmazonPayConfig::STATUS_PENDING);
         $this->paymentEntity->save();
 
         if ($isPartialProcessing) {
@@ -58,7 +76,5 @@ class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
                 $amazonPayCallTransfer
             );
         }
-
-        return $amazonPayCallTransfer;
     }
 }

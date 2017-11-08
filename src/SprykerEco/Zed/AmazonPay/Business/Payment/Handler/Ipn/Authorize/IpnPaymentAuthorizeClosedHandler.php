@@ -14,16 +14,16 @@ class IpnPaymentAuthorizeClosedHandler extends IpnAbstractPaymentAuthorizeHandle
     /**
      * @return string
      */
-    protected function getOmsStatusName()
+    protected function getOmsEventId()
     {
-        return AmazonPayConfig::OMS_STATUS_AUTH_CLOSED;
+        return AmazonPayConfig::OMS_EVENT_CAPTURE;
     }
 
     /**
      * @return string
      */
-    protected function getOmsEventId()
+    protected function getStatusName()
     {
-        return AmazonPayConfig::OMS_EVENT_CAPTURE;
+        return AmazonPayConfig::STATUS_CLOSED;
     }
 }

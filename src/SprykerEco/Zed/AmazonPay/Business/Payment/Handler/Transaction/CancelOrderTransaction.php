@@ -39,7 +39,7 @@ class CancelOrderTransaction extends AbstractAmazonpayTransaction
 
         $isPartialProcessing = $this->isPartialProcessing($this->paymentEntity, $amazonPayCallTransfer);
 
-        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+        if (!$this->apiResponse->getResponseHeader()->getIsSuccess()) {
             return;
         }
 
@@ -47,7 +47,7 @@ class CancelOrderTransaction extends AbstractAmazonpayTransaction
             $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
 
-        $this->paymentEntity->setStatus(AmazonPayConfig::OMS_STATUS_CANCELLED);
+        $this->paymentEntity->setStatus(AmazonPayConfig::STATUS_CANCELLED);
         $this->paymentEntity->save();
 
         if ($isPartialProcessing) {

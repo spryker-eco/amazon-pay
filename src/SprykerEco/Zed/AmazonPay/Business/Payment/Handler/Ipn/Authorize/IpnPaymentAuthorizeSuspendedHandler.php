@@ -14,8 +14,8 @@ class IpnPaymentAuthorizeSuspendedHandler extends IpnAbstractPaymentAuthorizeHan
     /**
      * @return string
      */
-    protected function getOmsStatusName()
+    protected function getStatusName()
     {
-        return AmazonPayConfig::OMS_STATUS_AUTH_SUSPENDED;
+        return AmazonPayConfig::STATUS_SUSPENDED;
     }
 }

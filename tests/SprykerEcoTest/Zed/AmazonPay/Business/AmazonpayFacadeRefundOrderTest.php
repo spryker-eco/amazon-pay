@@ -29,7 +29,7 @@ class AmazonpayFacadeRefundOrderTest extends AmazonpayFacadeAbstractTest
         $updatedTransfer = $this->getAmazonPayCallTransferByOrderReferenceId($transfer->getAmazonpayPayment()->getOrderReferenceId());
 
         $this->assertEquals(
-            AmazonPayConfig::OMS_STATUS_REFUND_PENDING,
+            AmazonPayConfig::STATUS_PENDING,
             $updatedTransfer->getAmazonpayPayment()->getStatus()
         );
 

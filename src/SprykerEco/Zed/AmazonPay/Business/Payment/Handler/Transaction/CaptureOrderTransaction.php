@@ -41,9 +41,9 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
     protected function isAllowed(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
         if (!in_array($amazonPayCallTransfer->getAmazonpayPayment()->getStatus(), [
-            AmazonPayConfig::OMS_STATUS_CAPTURE_PENDING,
-            AmazonPayConfig::OMS_STATUS_AUTH_OPEN,
-            AmazonPayConfig::OMS_STATUS_PAYMENT_METHOD_CHANGED,
+            AmazonPayConfig::STATUS_PENDING,
+            AmazonPayConfig::STATUS_OPEN,
+            AmazonPayConfig::STATUS_PAYMENT_METHOD_CHANGED,
         ], true)) {
             return false;
         }
@@ -82,11 +82,8 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
         $this->paymentEntity->setCaptureReferenceId(
             $captureDetails->getCaptureReferenceId()
         );
-        $newStatus = $this->getPaymentStatus($captureDetails->getCaptureStatus());
 
-        if ($newStatus !== '') {
-            $this->paymentEntity->setStatus($newStatus);
-        }
+        $this->paymentEntity->setStatus($captureDetails->getCaptureStatus()->getState());
 
         $this->paymentEntity->save();
 
@@ -96,28 +93,6 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
                 $amazonPayCallTransfer
             );
         }
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $captureStatus
-     *
-     * @return string
-     */
-    protected function getPaymentStatus(AmazonpayStatusTransfer $captureStatus)
-    {
-        if ($captureStatus->getIsDeclined()) {
-            return AmazonPayConfig::OMS_STATUS_CAPTURE_DECLINED;
-        }
-
-        if ($captureStatus->getIsPending()) {
-            return AmazonPayConfig::OMS_STATUS_CAPTURE_PENDING;
-        }
-
-        if ($captureStatus->getIsCompleted()) {
-            return AmazonPayConfig::OMS_STATUS_CAPTURE_COMPLETED;
-        }
-
-        return '';
     }
 
     /**

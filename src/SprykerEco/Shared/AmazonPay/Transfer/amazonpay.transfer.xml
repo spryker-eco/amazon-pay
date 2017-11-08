@@ -23,25 +23,27 @@
         <property name="sellerOrderId" type="string"/>
         <property name="addressConsentToken" type="string"/>
         <property name="status" type="string"/>
-        <property name="orderReferenceStatus" type="AmazonpayStatus"/>
+
         <property name="isSandbox" type="int"/>
+        <property name="responseHeader" type="AmazonpayResponseHeader"/>
+        <property name="orderReferenceStatus" type="AmazonpayStatus"/>
         <property name="authorizationDetails" type="AmazonpayAuthorizationDetails"/>
         <property name="captureDetails" type="AmazonpayCaptureDetails"/>
         <property name="refundDetails" type="AmazonpayRefundDetails"/>
-        <property name="responseHeader" type="AmazonpayResponseHeader"/>
     </transfer>
 
     <transfer name="AmazonpayResponse">
         <property name="shippingAddress" type="Address"/>
-        <property name="orderReferenceStatus" type="AmazonpayStatus"/>
-        <property name="isSandbox" type="int"/>
         <property name="shippingAddress" type="Address"/>
         <property name="billingAddress" type="Address"/>
+        <property name="customer" type="Customer"/>
+
+        <property name="isSandbox" type="int"/>
+        <property name="responseHeader" type="AmazonpayResponseHeader"/>
+        <property name="orderReferenceStatus" type="AmazonpayStatus"/>
         <property name="authorizationDetails" type="AmazonpayAuthorizationDetails"/>
         <property name="captureDetails" type="AmazonpayCaptureDetails" />
         <property name="refundDetails" type="AmazonpayRefundDetails"/>
-        <property name="header" type="AmazonpayResponseHeader"/>
-        <property name="customer" type="Customer"/>
     </transfer>
 
     <transfer name="AmazonpayResponseConstraint">

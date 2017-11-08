@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\AmazonPay\Business;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -161,28 +162,28 @@ interface AmazonPayFacadeInterface
     /**
      * Specification:
      * - Converts amazon-specific income data into Transfer Object
-     * Concrete transfer object depends on income data
+     * - Concrete transfer object depends on incoming data
      *
      * @api
      *
      * @param array $headers
      * @param string $body
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return AmazonpayIpnPaymentRequestTransfer
      */
     public function convertAmazonPayIpnRequest(array $headers, $body);
 
     /**
      * Specification:
-     * - Handles $ipnRequestTransfer object
+     * - Handles IPN request call
      *
      * @api
      *
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $ipnRequestTransfer
+     * @param AmazonpayIpnPaymentRequestTransfer $ipnRequestTransfer
      *
      * @return void
      */
-    public function handleAmazonPayIpnRequest(AbstractTransfer $ipnRequestTransfer);
+    public function handleAmazonPayIpnRequest(AmazonpayIpnPaymentRequestTransfer $ipnRequestTransfer);
 
     /**
      * Specification:

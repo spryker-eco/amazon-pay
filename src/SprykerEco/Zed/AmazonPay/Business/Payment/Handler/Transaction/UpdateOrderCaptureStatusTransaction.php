@@ -9,8 +9,6 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Generated\Shared\Transfer\AmazonpayStatusTransfer;
-use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
 {
@@ -33,32 +31,6 @@ class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $status
-     *
-     * @return string
-     */
-    protected function getPaymentStatus(AmazonpayStatusTransfer $status)
-    {
-        if ($status->getIsDeclined()) {
-            return AmazonPayConfig::OMS_STATUS_CAPTURE_DECLINED;
-        }
-
-        if ($status->getIsCompleted()) {
-            return AmazonPayConfig::OMS_STATUS_CAPTURE_COMPLETED;
-        }
-
-        if ($status->getIsClosed()) {
-            return AmazonPayConfig::OMS_STATUS_CAPTURE_CLOSED;
-        }
-
-        if ($status->getIsPending()) {
-            return AmazonPayConfig::OMS_STATUS_CAPTURE_PENDING;
-        }
-
-        return AmazonPayConfig::OMS_STATUS_CANCELLED;
-    }
-
-    /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return bool
@@ -74,7 +46,7 @@ class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
      */
     protected function updatePayment()
     {
-        if (!$this->apiResponse->getHeader()->getIsSuccess()) {
+        if (!$this->apiResponse->getResponseHeader()->getIsSuccess()) {
             return;
         }
 
@@ -84,7 +56,7 @@ class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
             );
         }
 
-        $newStatus = $this->getPaymentStatus($this->apiResponse->getCaptureDetails()->getCaptureStatus());
+        $newStatus = $this->apiResponse->getCaptureDetails()->getCaptureStatus()->getState();
         $this->paymentEntity->setStatus($newStatus);
         $this->paymentEntity->save();
     }

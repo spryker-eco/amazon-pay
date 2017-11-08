@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
 {
@@ -61,7 +62,7 @@ class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
 
         if ($checkOrderStatus->getAmazonpayPayment()
                 ->getOrderReferenceStatus()
-                ->getIsOpen()
+                ->getState() === AmazonPayConfig::STATUS_OPEN
         ) {
             $this->cancelOrderTransaction->execute($amazonPayCallTransfer);
         }

@@ -40,15 +40,15 @@ class AmazonpayFacadeReauthorizeExpiredOrderTest extends AmazonpayFacadeAbstract
         return [
             'opened' => [
                 $this->getAmazonPayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                AmazonPayConfig::OMS_STATUS_AUTH_OPEN,
+                AmazonPayConfig::STATUS_OPEN,
             ],
             'declined' => [
                 $this->getAmazonPayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                AmazonPayConfig::OMS_STATUS_AUTH_CLOSED,
+                AmazonPayConfig::STATUS_CLOSED,
             ],
             'suspended' => [
                 $this->getAmazonPayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                AmazonPayConfig::OMS_STATUS_AUTH_SUSPENDED,
+                AmazonPayConfig::STATUS_SUSPENDED,
             ],
         ];
     }

@@ -59,7 +59,7 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
             return;
         }
 
-        $paymentEntity->setStatus($this->getOmsStatusName());
+        $paymentEntity->setStatus($this->getStatusName());
         $paymentEntity->save();
 
         $this->omsFacade->triggerEvent(
@@ -102,5 +102,5 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
     /**
      * @return string
      */
-    abstract protected function getOmsStatusName();
+    abstract protected function getStatusName();
 }

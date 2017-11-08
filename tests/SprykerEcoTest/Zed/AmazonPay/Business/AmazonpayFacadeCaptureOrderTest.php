@@ -8,6 +8,7 @@
 namespace SprykerEcoTest\Zed\AmazonPay\Business;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEcoTest\Zed\AmazonPay\Business\Mock\Adapter\Sdk\AbstractResponse;
 
 class AmazonpayFacadeCaptureOrderTest extends AmazonpayFacadeAbstractTest
@@ -16,17 +17,17 @@ class AmazonpayFacadeCaptureOrderTest extends AmazonpayFacadeAbstractTest
      * @dataProvider captureOrderDataProvider
      *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $transfer
-     * @param string $status
+     * @param string $expectedStatus
      *
      * @return void
      */
-    public function testCaptureOrder(AmazonpayCallTransfer $transfer, $status)
+    public function testCaptureOrder(AmazonpayCallTransfer $transfer, $expectedStatus)
     {
         $result = $this->createFacade()->captureOrder($transfer);
         $this->assertTrue($result->getAmazonpayPayment()->getResponseHeader()->getIsSuccess());
 
         $this->assertEquals(
-            $status,
+            $expectedStatus,
             $result->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus()->getState()
         );
     }
@@ -41,15 +42,15 @@ class AmazonpayFacadeCaptureOrderTest extends AmazonpayFacadeAbstractTest
         return [
             'Completed' => [
                 $this->getAmazonPayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_1),
-                'Completed',
+                AmazonPayConfig::STATUS_COMPLETED,
             ],
             'Declined' => [
                 $this->getAmazonPayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_2),
-                'Declined',
+                AmazonPayConfig::STATUS_DECLINED,
             ],
             'Pending' => [
                 $this->getAmazonPayCallTransferByOrderReferenceId(AbstractResponse::ORDER_REFERENCE_ID_3),
-                'Pending',
+                AmazonPayConfig::STATUS_PENDING,
             ],
         ];
     }

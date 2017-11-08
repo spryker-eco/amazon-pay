@@ -72,7 +72,8 @@ class Saver implements SaverInterface
     {
         $paymentEntity = new SpyPaymentAmazonpay();
         $paymentEntity->setOrderReferenceId($paymentTransfer->getOrderReferenceId());
-        $paymentEntity->setStatus($this->getOrderStatus($paymentTransfer));
+        $status = $this->getOrderStatus($paymentTransfer);
+        $paymentEntity->setStatus($status);
         $paymentEntity->setSellerOrderId($paymentTransfer->getSellerOrderId());
 
         $paymentEntity->setAuthorizationReferenceId(
@@ -101,21 +102,9 @@ class Saver implements SaverInterface
     protected function getOrderStatus(AmazonpayPaymentTransfer $paymentTransfer)
     {
         if ($paymentTransfer->getAuthorizationDetails()->getIdList()) {
-            return AmazonPayConfig::OMS_STATUS_CAPTURE_COMPLETED;
+            return AmazonPayConfig::STATUS_COMPLETED;
         }
 
-        if ($paymentTransfer->getAuthorizationDetails()->getAuthorizationStatus()->getIsDeclined()) {
-            return AmazonPayConfig::OMS_STATUS_AUTH_DECLINED;
-        }
-
-        if ($paymentTransfer->getAuthorizationDetails()->getAuthorizationStatus()->getIsPending()) {
-            return AmazonPayConfig::OMS_STATUS_AUTH_PENDING;
-        }
-
-        if ($paymentTransfer->getAuthorizationDetails()->getAuthorizationStatus()->getIsOpen()) {
-            return AmazonPayConfig::OMS_STATUS_AUTH_OPEN;
-        }
-
-        return AmazonPayConfig::OMS_STATUS_CANCELLED;
+        return $paymentTransfer->getAuthorizationDetails()->getAuthorizationStatus()->getState();
     }
 }

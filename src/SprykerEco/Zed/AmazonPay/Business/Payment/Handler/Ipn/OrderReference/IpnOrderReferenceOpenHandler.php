@@ -22,8 +22,8 @@ class IpnOrderReferenceOpenHandler extends IpnAbstractOrderReferenceHandler
     /**
      * @return string
      */
-    protected function getOmsStatusName()
+    protected function getStatusName()
     {
-        return AmazonPayConfig::OMS_STATUS_PAYMENT_METHOD_CHANGED;
+        return AmazonPayConfig::STATUS_PAYMENT_METHOD_CHANGED;
     }
 }
