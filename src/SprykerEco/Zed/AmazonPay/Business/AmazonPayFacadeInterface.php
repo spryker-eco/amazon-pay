@@ -12,7 +12,6 @@ use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 
 /**
  * @api
@@ -169,7 +168,7 @@ interface AmazonPayFacadeInterface
      * @param array $headers
      * @param string $body
      *
-     * @return AmazonpayIpnPaymentRequestTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer
      */
     public function convertAmazonPayIpnRequest(array $headers, $body);
 
@@ -179,7 +178,7 @@ interface AmazonPayFacadeInterface
      *
      * @api
      *
-     * @param AmazonpayIpnPaymentRequestTransfer $ipnRequestTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequestTransfer
      *
      * @return void
      */

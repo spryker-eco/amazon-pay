@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransaction
@@ -48,7 +47,7 @@ class UpdateOrderAuthorizationStatusTransaction extends AbstractAmazonpayTransac
         if ($amazonPayment->getAuthorizationDetails()->getIdList()) {
             $this->paymentEntity->setAmazonCaptureId(
                 $amazonPayment->getAuthorizationDetails()->getIdList()
-                )
+            )
                 ->setStatus($status->getState())
                 ->save();
 

@@ -24,7 +24,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      * @dataProvider updateRefundStatusAuthDataProvider
      *
      * @param string $referenceId
-     * @param AmazonpayIpnPaymentRequestTransfer $transfer
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $transfer
      * @param string $expectedStatus
      *
      * @return void
@@ -94,7 +94,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      * @dataProvider updateStatusCaptureDataProvider
      *
      * @param string $referenceId
-     * @param AmazonpayIpnPaymentRequestTransfer $transfer
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $transfer
      * @param string $expectedStatus
      *
      * @return void
@@ -137,7 +137,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      * @dataProvider updateStatusRefundDataProvider
      *
      * @param string $referenceId
-     * @param AmazonpayIpnPaymentRequestTransfer $transfer
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $transfer
      * @param string $expectedStatus
      *
      * @return void
@@ -180,7 +180,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      * @dataProvider updateStatusOrderReferenceDataProvider
      *
      * @param string $referenceId
-     * @param AmazonpayIpnPaymentRequestTransfer $transfer
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $transfer
      * @param string $expectedStatus
      *
      * @return void
@@ -241,7 +241,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      * @param string $reference
      * @param \Generated\Shared\Transfer\AmazonpayStatusTransfer $status
      *
-     * @return AmazonpayIpnPaymentRequestTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer
      */
     protected function createAmazonpayIpnAuthorizeRequestTransfer($reference, AmazonpayStatusTransfer $status)
     {

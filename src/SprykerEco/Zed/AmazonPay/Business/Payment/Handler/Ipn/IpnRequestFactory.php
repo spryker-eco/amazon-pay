@@ -14,13 +14,13 @@ use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Authorize\IpnPaymentAu
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Authorize\IpnPaymentAuthorizeDeclineHandler;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Authorize\IpnPaymentAuthorizeOpenHandler;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Authorize\IpnPaymentAuthorizeSuspendedHandler;
+use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Capture\IpnPaymentCaptureCompletedHandler;
+use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Capture\IpnPaymentCaptureDeclineHandler;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\OrderReference\IpnOrderReferenceCancelledHandler;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\OrderReference\IpnOrderReferenceClosedHandler;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\OrderReference\IpnOrderReferenceOpenHandler;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\OrderReference\IpnOrderReferenceSuspendedHandler;
-use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Capture\IpnPaymentCaptureCompletedHandler;
-use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Capture\IpnPaymentCaptureDeclineHandler;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Refund\IpnPaymentRefundCompletedHandler;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Refund\IpnPaymentRefundDeclineHandler;
 use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToOmsInterface;
@@ -106,26 +106,27 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     protected function getAuthorizeHandlerMap()
     {
         return [
-            AmazonPayConfig::STATUS_SUSPENDED => function(){
+            AmazonPayConfig::STATUS_SUSPENDED => function () {
                 return $this->createIpnPaymentAuthorizeSuspendedHandler();
             },
-            AmazonPayConfig::STATUS_DECLINED => function(){
+            AmazonPayConfig::STATUS_DECLINED => function () {
                 return $this->createIpnPaymentAuthorizeDeclineHandler();
             },
-            AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID => function(){
+            AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID => function () {
                 return $this->createIpnPaymentAuthorizeDeclineHandler();
             },
-            AmazonPayConfig::STATUS_OPEN => function(){
+            AmazonPayConfig::STATUS_OPEN => function () {
                 return $this->createIpnPaymentAuthorizeOpenHandler();
             },
-            AmazonPayConfig::STATUS_CLOSED => function(){
+            AmazonPayConfig::STATUS_CLOSED => function () {
                 return $this->createIpnPaymentAuthorizeClosedHandler();
             },
-            AmazonPayConfig::STATUS_EXPIRED => function(){
+            AmazonPayConfig::STATUS_EXPIRED => function () {
                 return $this->createIpnPaymentAuthorizeClosedHandler();
             },
         ];
     }
+
     /**
      * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
      *
@@ -192,13 +193,13 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     protected function getCaptureHandlerMap()
     {
         return [
-            AmazonPayConfig::STATUS_DECLINED => function(){
+            AmazonPayConfig::STATUS_DECLINED => function () {
                 return $this->createIpnPaymentCaptureDeclineHandler();
             },
-            AmazonPayConfig::STATUS_COMPLETED => function(){
+            AmazonPayConfig::STATUS_COMPLETED => function () {
                 return $this->createIpnPaymentCaptureCompletedHandler();
             },
-            AmazonPayConfig::STATUS_CLOSED => function(){
+            AmazonPayConfig::STATUS_CLOSED => function () {
                 return $this->createIpnEmptyHandler();
             },
         ];
@@ -254,14 +255,15 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     protected function getRefundHandlerMap()
     {
         return [
-            AmazonPayConfig::STATUS_DECLINED => function(){
+            AmazonPayConfig::STATUS_DECLINED => function () {
                 return $this->createIpnPaymentRefundDeclineHandler();
             },
-            AmazonPayConfig::STATUS_COMPLETED => function(){
+            AmazonPayConfig::STATUS_COMPLETED => function () {
                 return $this->createIpnPaymentRefundCompletedHandler();
             },
         ];
     }
+
     /**
      * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
      *
@@ -299,7 +301,6 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
         );
     }
 
-
     /**
      * @return array
      */
@@ -332,8 +333,6 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $ipnRequest
-     *
-     * @throws \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnHandlerNotFoundException
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */

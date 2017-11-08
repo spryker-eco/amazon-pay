@@ -30,7 +30,6 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
     const OMS_STATUS_CAPTURE_PENDING = 'capture pending';
     const OMS_STATUS_CANCELLED = 'cancelled';
 
-
     const OMS_STATUS_NEW = 'new';
     const OMS_STATUS_AUTHORIZED = 'authorized';
     const OMS_STATUS_DECLINED = 'declined';

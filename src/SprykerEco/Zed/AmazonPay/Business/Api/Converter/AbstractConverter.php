@@ -40,7 +40,7 @@ abstract class AbstractConverter
     protected $fieldToTransferMap = [
         self::FIELD_STATE => AmazonpayStatusTransfer::STATE,
         self::FIELD_REASON_CODE => AmazonpayStatusTransfer::REASON_CODE,
-        self::FIELD_LAST_UPDATE_TIMESTAMP => AmazonpayStatusTransfer::LAST_UPDATE_TIMESTAMP
+        self::FIELD_LAST_UPDATE_TIMESTAMP => AmazonpayStatusTransfer::LAST_UPDATE_TIMESTAMP,
     ];
 
     /**
@@ -55,6 +55,7 @@ abstract class AbstractConverter
         self::STATUS_COMPLETED => AmazonPayConfig::STATUS_COMPLETED,
         self::STATUS_CANCELLED => AmazonPayConfig::STATUS_CANCELLED,
     ];
+
     /**
      * @var array
      */
@@ -114,7 +115,7 @@ abstract class AbstractConverter
     protected function mapStatusToTransferProperties(array $statusData)
     {
         $result = [];
-        foreach ($this->fieldToTransferMap as $statusField=>$propertyName) {
+        foreach ($this->fieldToTransferMap as $statusField => $propertyName) {
             $result[$propertyName] = $statusData[$statusField] ?? null;
         }
 
@@ -146,8 +147,7 @@ abstract class AbstractConverter
     protected function getStatusNameByReasonCode(array $statusData)
     {
         if (!empty($statusData[static::FIELD_REASON_CODE])
-            && isset($this->reasonToStatusMap[$statusData[static::FIELD_REASON_CODE]]
-        )) {
+            && isset($this->reasonToStatusMap[$statusData[static::FIELD_REASON_CODE]])) {
             return $this->reasonToStatusMap[$statusData[static::FIELD_REASON_CODE]];
         }
 

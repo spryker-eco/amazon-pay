@@ -8,7 +8,6 @@
 namespace SprykerEcoTest\Zed\AmazonPay\Business;
 
 use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
-use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 class AmazonpayFacadeConvertAmazonpayIpnRequestTest extends AmazonpayFacadeAbstractTest
 {
@@ -80,7 +79,7 @@ class AmazonpayFacadeConvertAmazonpayIpnRequestTest extends AmazonpayFacadeAbstr
   "Signature" : "HuyIE+P9RghI1JYPTiOEM5NzY8IHQH88nsvzr+rmgax3mRmVUHHin/gYVOrSuC1V2crCqu8PIWkMlnVqnaJDDs9a1Gu0V2afPSbd8peQgXPxhuv6wFGNhSeusqG/W05G7rNwU1TydwxjkZ3ei0dVmVAdH7FCGiTpOfcKJ1/VktWqOD2uGGXO8R5X6uM8Hv7/sBrmBaa1doToR8uiGFl+YcWhcrZI9xM5k8PwItgdnHKYj1l49Un/qrVZZQmqUE8HDEmKRY8jP+YZom8QfxB5K6LpnbKrmsnWf24wIGdjP/Rsk5l6kUmtqp+IhNl9fTyzb+OIFyWmzXf2cS6OUwihyw==",
   "SigningCertURL" : "https://sns.eu-west-1.amazonaws.com/SimpleNotificationService-433026a4050d206028891664da859041.pem",
   "UnsubscribeURL" : "https://sns.eu-west-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-1:291180941288:A1G8446IYHA4MRA36VZZYZOVN3S6:e580adf7-36cf-4bae-a3bb-a49a51618128"
-}";'
+}";',
             ],
             [
                 [],

@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 class AuthorizeTransaction extends AbstractAmazonpayTransaction

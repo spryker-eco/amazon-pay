@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Api\Adapter;
 
-use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use PayWithAmazon\IpnHandlerInterface;
 use SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn\IpnConverterInterface;
 
@@ -36,7 +35,7 @@ class IpnRequestAdapter implements IpnRequestAdapterInterface
     }
 
     /**
-     * @return AmazonpayIpnPaymentRequestTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer
      */
     public function getIpnRequest()
     {

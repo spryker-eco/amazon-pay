@@ -29,7 +29,7 @@ class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
     }
 
     /**
-     * @param AmazonpayCallTransfer $amazonPayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return void
      */
@@ -43,7 +43,7 @@ class ReauthorizeOrderTransaction extends AbstractAmazonpayTransaction
     }
 
     /**
-     * @param AmazonpayCallTransfer $amazonPayCallTransfer
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
      *
      * @return void
      */
