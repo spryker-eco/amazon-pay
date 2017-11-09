@@ -129,14 +129,7 @@ abstract class AbstractConverter
      */
     protected function getStatusName(array $statusData)
     {
-        if (isset(
-            $statusData[static::FIELD_STATE],
-            $this->statusMap[$statusData[static::FIELD_STATE]]
-        )) {
-            return $this->statusMap[$statusData[static::FIELD_STATE]];
-        }
-
-        return null;
+        return $this->getValueByKeyFromMap($this->statusMap, $statusData, static::FIELD_STATE);
     }
 
     /**
@@ -146,9 +139,20 @@ abstract class AbstractConverter
      */
     protected function getStatusNameByReasonCode(array $statusData)
     {
-        if (!empty($statusData[static::FIELD_REASON_CODE])
-            && isset($this->reasonToStatusMap[$statusData[static::FIELD_REASON_CODE]])) {
-            return $this->reasonToStatusMap[$statusData[static::FIELD_REASON_CODE]];
+        return $this->getValueByKeyFromMap($this->reasonToStatusMap, $statusData, static::FIELD_REASON_CODE);
+    }
+
+    /**
+     * @param array $map
+     * @param array $statusData
+     * @param $key
+     *
+     * @return string|null
+     */
+    protected function getValueByKeyFromMap(array $map, array $statusData, $key)
+    {
+        if (!empty($statusData[$key])) {
+            return $map[$statusData[$key]] ?? null;
         }
 
         return null;
