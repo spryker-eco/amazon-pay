@@ -50,12 +50,6 @@ class UpdateOrderCaptureStatusTransaction extends AbstractAmazonpayTransaction
             return;
         }
 
-        if ($this->apiResponse->getCaptureDetails()->getAmazonCaptureId()) {
-            $this->paymentEntity->setAmazonCaptureId(
-                $this->apiResponse->getCaptureDetails()->getAmazonCaptureId()
-            );
-        }
-
         $newStatus = $this->apiResponse->getCaptureDetails()->getCaptureStatus()->getState();
         $this->paymentEntity->setStatus($newStatus);
         $this->paymentEntity->save();

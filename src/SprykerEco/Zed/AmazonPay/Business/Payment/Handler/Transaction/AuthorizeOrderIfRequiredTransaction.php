@@ -68,6 +68,11 @@ class AuthorizeOrderIfRequiredTransaction extends ReauthorizeOrderTransaction
             $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
 
+        $this->paymentEntity->fromArray(
+            $amazonPayCallTransfer->getAmazonpayPayment()
+                ->getAuthorizationDetails()
+                ->toArray()
+        );
         $this->paymentEntity->setStatus(AmazonPayConfig::STATUS_PENDING);
         $this->paymentEntity->save();
 

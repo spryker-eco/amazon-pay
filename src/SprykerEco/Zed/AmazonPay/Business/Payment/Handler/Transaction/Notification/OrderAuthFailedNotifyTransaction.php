@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Notification;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface;
 
 class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
@@ -46,7 +47,7 @@ class OrderAuthFailedNotifyTransaction implements AmazonpayTransactionInterface
         if ($amazonPayCallTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()
                 ->getAuthorizationStatus()
-                ->getIsDeclined()
+                ->getState() === AmazonPayConfig::STATUS_DECLINED
         ) {
             $this->orderFailedAuthNotificationSender->notify($message);
         }

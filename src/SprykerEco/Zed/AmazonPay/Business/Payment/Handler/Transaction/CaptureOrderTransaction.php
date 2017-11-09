@@ -23,7 +23,7 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
             return $amazonPayCallTransfer;
         }
 
-        $this->updateCaptureReferenceId($amazonPayCallTransfer);
+        $this->generateCaptureReferenceId($amazonPayCallTransfer);
 
         $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
@@ -99,7 +99,7 @@ class CaptureOrderTransaction extends AbstractAmazonpayTransaction
      *
      * @return void
      */
-    protected function updateCaptureReferenceId(AmazonpayCallTransfer $amazonPayCallTransfer)
+    protected function generateCaptureReferenceId(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
         $amazonPayCallTransfer->getAmazonpayPayment()
             ->getCaptureDetails()

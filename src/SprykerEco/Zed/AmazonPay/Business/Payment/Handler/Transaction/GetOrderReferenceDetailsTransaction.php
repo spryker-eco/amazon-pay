@@ -21,31 +21,50 @@ class GetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
     {
         $amazonPayCallTransfer = parent::execute($amazonPayCallTransfer);
 
-        if ($this->isPaymentSuccess($amazonPayCallTransfer)) {
-            $amazonPayCallTransfer->setShippingAddress($this->apiResponse->getShippingAddress());
-
-            if ($this->apiResponse->getBillingAddress()) {
-                $amazonPayCallTransfer->setBillingAddress($this->apiResponse->getBillingAddress());
-            } else {
-                $amazonPayCallTransfer->setBillingAddress($this->apiResponse->getShippingAddress());
-                $amazonPayCallTransfer->setBillingSameAsShipping(true);
-            }
-
-            $amazonPayCallTransfer->getAmazonpayPayment()->setIsSandbox(
-                $this->apiResponse->getIsSandbox()
-            );
-            $amazonPayCallTransfer->setOrderReference(
-                $amazonPayCallTransfer->getAmazonpayPayment()->getOrderReferenceId()
-            );
-
-            $state = $this->apiResponse->getOrderReferenceStatus()->getState();
-
-            $orderReferenceStatus = new AmazonpayStatusTransfer();
-            $orderReferenceStatus->setState($state);
-
-            $amazonPayCallTransfer->getAmazonpayPayment()->setOrderReferenceStatus($orderReferenceStatus);
+        if (!$this->isPaymentSuccess($amazonPayCallTransfer)) {
+            return $amazonPayCallTransfer;
         }
 
+        $this->saveAddresses($amazonPayCallTransfer);
+
+        $amazonPayCallTransfer->getAmazonpayPayment()->setIsSandbox(
+            $this->apiResponse->getIsSandbox()
+        );
+        $amazonPayCallTransfer->setOrderReference(
+            $amazonPayCallTransfer->getAmazonpayPayment()->getOrderReferenceId()
+        );
+
+        $this->saveOrderReferenceStatus($amazonPayCallTransfer);
+
         return $amazonPayCallTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return void
+     */
+    protected function saveOrderReferenceStatus(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
+        $orderReferenceStatus = new AmazonpayStatusTransfer();
+        $orderReferenceStatus->setState(
+            $this->apiResponse->getOrderReferenceStatus()->getState()
+        );
+
+        $amazonPayCallTransfer->getAmazonpayPayment()->setOrderReferenceStatus($orderReferenceStatus);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return void
+     */
+    protected function saveAddresses(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
+        $amazonPayCallTransfer->setShippingAddress($this->apiResponse->getShippingAddress());
+        $amazonPayCallTransfer->setBillingAddress(
+            $this->apiResponse->getBillingAddress() ?? $this->apiResponse->getShippingAddress()
+        );
+        $amazonPayCallTransfer->setBillingSameAsShipping($this->apiResponse->getBillingAddress() !== null);
     }
 }
