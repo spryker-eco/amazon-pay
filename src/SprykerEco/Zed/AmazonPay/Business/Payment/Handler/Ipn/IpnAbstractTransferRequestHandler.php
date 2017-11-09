@@ -67,6 +67,7 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
             $this->getAffectedSalesOrderItems($paymentEntity),
             []
         );
+        $this->omsFacade->checkConditions();
 
         $this->ipnRequestLogger->log($paymentRequestTransfer, $paymentEntity);
     }

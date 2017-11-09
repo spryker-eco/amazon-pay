@@ -38,6 +38,16 @@ class AmazonPayToOmsBridge implements AmazonPayToOmsInterface
     }
 
     /**
+     * @param array $logContext
+     *
+     * @return int
+     */
+    public function checkConditions(array $logContext = [])
+    {
+        return $this->omsFacade->checkConditions($logContext);
+    }
+
+    /**
      * @param int $idOrder
      * @param string $flag
      *

@@ -28,4 +28,11 @@ interface AmazonPayToOmsInterface
      * @return bool
      */
     public function isOrderFlaggedAll($idOrder, $flag);
+
+    /**
+     * @param array $logContext
+     *
+     * @return int
+     */
+    public function checkConditions(array $logContext = []);
 }
