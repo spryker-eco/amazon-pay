@@ -14,5 +14,5 @@ interface IpnConverterFactoryInterface
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface
      */
-    public function createIpnRequestConverter(array $request);
+    public function getIpnRequestConverter(array $request);
 }

@@ -16,5 +16,5 @@ interface IpnRequestFactoryInterface
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
-    public function createConcreteIpnRequestHandler(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer);
+    public function getConcreteIpnRequestHandler(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer);
 }

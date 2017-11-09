@@ -19,7 +19,11 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 class UpdateAuthorizationStatusCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
     /**
-     * @inheritdoc
+     * @param array $salesOrderItems
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
+     *
+     * @return array
      */
     public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {

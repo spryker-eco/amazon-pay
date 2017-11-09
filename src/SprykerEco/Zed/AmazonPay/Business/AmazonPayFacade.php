@@ -302,7 +302,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
         $this->getFactory()
             ->createIpnFactory()
             ->createIpnRequestFactory()
-            ->createConcreteIpnRequestHandler($ipnRequestTransfer)
+            ->getConcreteIpnRequestHandler($ipnRequestTransfer)
             ->handle($ipnRequestTransfer);
     }
 

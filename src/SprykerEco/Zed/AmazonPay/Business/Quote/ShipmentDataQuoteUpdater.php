@@ -54,9 +54,9 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
         $shipmentMethodsTransfer = $this->getAvailableShipmentMethods($quoteTransfer);
         $idShipmentMethod = (int)$quoteTransfer->getShipment()->getShipmentSelection();
 
-        foreach ($shipmentMethodsTransfer->getMethods() as $shipmentMethodsTransfer) {
-            if ($shipmentMethodsTransfer->getIdShipmentMethod() === $idShipmentMethod) {
-                return $shipmentMethodsTransfer;
+        foreach ($shipmentMethodsTransfer->getMethods() as $shipmentMethodTransfer) {
+            if ($shipmentMethodTransfer->getIdShipmentMethod() === $idShipmentMethod) {
+                return $shipmentMethodTransfer;
             }
         }
 

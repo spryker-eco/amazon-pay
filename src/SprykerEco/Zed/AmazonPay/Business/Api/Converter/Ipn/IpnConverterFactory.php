@@ -42,7 +42,7 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn\IpnConverterInterface
      */
-    public function createIpnRequestConverter(array $request)
+    public function getIpnRequestConverter(array $request)
     {
         $map = $this->getTypeToConverterMap();
 

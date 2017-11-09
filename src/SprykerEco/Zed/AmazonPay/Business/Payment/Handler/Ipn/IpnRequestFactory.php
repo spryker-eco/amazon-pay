@@ -71,7 +71,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
-    public function createConcreteIpnRequestHandler(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
+    public function getConcreteIpnRequestHandler(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {
         $handlerMap = $this->getNotificationTypeToHandlerMap();
         $notificationType = $paymentRequestTransfer->getMessage()->getNotificationType();
@@ -86,16 +86,16 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     {
         return [
             AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE => function (AmazonpayIpnPaymentRequestTransfer $ipnRequest) {
-                return $this->createIpnPaymentAuthorizeHandler($ipnRequest);
+                return $this->getIpnPaymentAuthorizeHandler($ipnRequest);
             },
             AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_CAPTURE => function (AmazonpayIpnPaymentRequestTransfer $ipnRequest) {
-                return $this->createIpnPaymentCaptureHandler($ipnRequest);
+                return $this->getIpnPaymentCaptureHandler($ipnRequest);
             },
             AmazonPayConfig::IPN_REQUEST_TYPE_PAYMENT_REFUND => function (AmazonpayIpnPaymentRequestTransfer $ipnRequest) {
-                return $this->createIpnPaymentRefundHandler($ipnRequest);
+                return $this->getIpnPaymentRefundHandler($ipnRequest);
             },
             AmazonPayConfig::IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION => function (AmazonpayIpnPaymentRequestTransfer $ipnRequest) {
-                return $this->createIpnOrderReferenceHandler($ipnRequest);
+                return $this->getIpnOrderReferenceHandler($ipnRequest);
             },
         ];
     }
@@ -135,7 +135,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
-    protected function createIpnPaymentAuthorizeHandler(AmazonpayIpnPaymentRequestTransfer $ipnRequest)
+    protected function getIpnPaymentAuthorizeHandler(AmazonpayIpnPaymentRequestTransfer $ipnRequest)
     {
         $authStatus = $ipnRequest->getAuthorizationDetails()->getAuthorizationStatus()->getState();
 
@@ -213,7 +213,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
-    protected function createIpnPaymentCaptureHandler(AmazonpayIpnPaymentRequestTransfer $ipnRequest)
+    protected function getIpnPaymentCaptureHandler(AmazonpayIpnPaymentRequestTransfer $ipnRequest)
     {
         $captureStatus = $ipnRequest->getCaptureDetails()->getCaptureStatus()->getState();
 
@@ -272,7 +272,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
-    protected function createIpnPaymentRefundHandler(AmazonpayIpnPaymentRequestTransfer $ipnRequest)
+    protected function getIpnPaymentRefundHandler(AmazonpayIpnPaymentRequestTransfer $ipnRequest)
     {
         $refundStatus = $ipnRequest->getRefundDetails()->getRefundStatus()->getState();
 
@@ -339,7 +339,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      *
      * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface
      */
-    protected function createIpnOrderReferenceHandler(AmazonpayIpnPaymentRequestTransfer $ipnRequest)
+    protected function getIpnOrderReferenceHandler(AmazonpayIpnPaymentRequestTransfer $ipnRequest)
     {
         $orderReferenceStatus = $ipnRequest->getOrderReferenceStatus()->getState();
 

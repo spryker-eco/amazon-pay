@@ -18,7 +18,7 @@ class IpnRequestAdapter implements IpnRequestAdapterInterface
     protected $ipnHandler;
 
     /**
-     * @var \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface
+     * @var \SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn\IpnConverterInterface
      */
     protected $ipnArrayConverter;
 
