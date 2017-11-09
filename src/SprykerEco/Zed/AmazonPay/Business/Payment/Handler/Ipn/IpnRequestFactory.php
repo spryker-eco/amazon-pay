@@ -113,7 +113,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
                 return $this->createIpnPaymentAuthorizeDeclineHandler();
             },
             AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID => function () {
-                return $this->createIpnPaymentAuthorizeDeclineHandler();
+                return $this->createIpnPaymentAuthorizeSuspendedHandler();
             },
             AmazonPayConfig::STATUS_OPEN => function () {
                 return $this->createIpnPaymentAuthorizeOpenHandler();
