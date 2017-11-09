@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 class SetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
 {
@@ -24,7 +25,7 @@ class SetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
             && $amazonPayCallTransfer->getAmazonpayPayment()
                 ->getAuthorizationDetails()
                 ->getAuthorizationStatus()
-                ->getIsPaymentMethodInvalid()
+                ->getState() === AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID
         ) {
             return $amazonPayCallTransfer;
         }

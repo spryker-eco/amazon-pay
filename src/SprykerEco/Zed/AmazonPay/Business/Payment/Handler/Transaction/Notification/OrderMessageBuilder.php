@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Notification;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 class OrderMessageBuilder implements OrderMessageBuilderInterface
 {
@@ -21,7 +22,7 @@ class OrderMessageBuilder implements OrderMessageBuilderInterface
         if ($amazonpayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->getAuthorizationStatus()
-            ->getIsSuspended()
+            ->getState() === AmazonPayConfig::STATUS_SUSPENDED
         ) {
             return $this->createOrderAuthFailedSoftDeclineMessage($amazonpayCallTransfer);
         }
@@ -29,7 +30,7 @@ class OrderMessageBuilder implements OrderMessageBuilderInterface
         if ($amazonpayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->getAuthorizationStatus()
-            ->getIsDeclined()
+            ->getState() === AmazonPayConfig::STATUS_DECLINED
         ) {
             return $this->createOrderAuthFailedHardDeclineMessage($amazonpayCallTransfer);
         }

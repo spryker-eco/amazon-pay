@@ -53,7 +53,7 @@ class UpdateAuthorizationStatusCommandPlugin extends AbstractAmazonpayCommandPlu
         return $updatedStatus->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->getAuthorizationStatus()
-            ->getIsClosed();
+            ->getState() === AmazonPayConfig::STATUS_CLOSED;
     }
 
     /**

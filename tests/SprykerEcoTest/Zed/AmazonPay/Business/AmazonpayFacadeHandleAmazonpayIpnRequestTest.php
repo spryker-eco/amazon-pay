@@ -19,6 +19,7 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstractTest
 {
     const REFERENCE_1 = 'asdasd-asdasd-asdasd';
+    const STATUS_NEW = 'STATUS_NEW';
 
     /**
      * @dataProvider updateRefundStatusAuthDataProvider
@@ -31,7 +32,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      */
     public function testFacadeHandleAmazonpayIpnRequestAuth($referenceId, AmazonpayIpnPaymentRequestTransfer $transfer, $expectedStatus)
     {
-        $this->createPaymentEntityWithAuthIdAndStatus($referenceId, AmazonPayConfig::STATUS_NEW);
+        $this->createPaymentEntityWithAuthIdAndStatus($referenceId, static::STATUS_NEW);
         $this->createFacade()->handleAmazonPayIpnRequest($transfer);
         $this->assertEquals($expectedStatus, $this->getPaymentEntityByAuthId($referenceId)->getStatus());
     }
@@ -101,7 +102,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      */
     public function testFacadeHandleAmazonpayIpnRequestCapture($referenceId, AmazonpayIpnPaymentRequestTransfer $transfer, $expectedStatus)
     {
-        $this->createPaymentEntityWithCaptureIdAndStatus($referenceId, AmazonPayConfig::STATUS_NEW);
+        $this->createPaymentEntityWithCaptureIdAndStatus($referenceId, static::STATUS_NEW);
         $this->createFacade()->handleAmazonPayIpnRequest($transfer);
         $this->assertEquals($expectedStatus, $this->getPaymentEntityByCaptureId($referenceId)->getStatus());
     }
@@ -144,7 +145,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      */
     public function testFacadeHandleAmazonpayIpnRequestRefund($referenceId, AmazonpayIpnPaymentRequestTransfer $transfer, $expectedStatus)
     {
-        $this->createPaymentEntityWithRefundIdAndStatus($referenceId, AmazonPayConfig::STATUS_NEW);
+        $this->createPaymentEntityWithRefundIdAndStatus($referenceId, static::STATUS_NEW);
         $this->createFacade()->handleAmazonPayIpnRequest($transfer);
         $this->assertEquals($expectedStatus, $this->getPaymentEntityByRefundId($referenceId)->getStatus());
     }
@@ -187,7 +188,7 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      */
     public function testFacadeHandleAmazonpayIpnRequestOrderReference($referenceId, AmazonpayIpnPaymentRequestTransfer $transfer, $expectedStatus)
     {
-        $this->createPaymentEntityWithRefundIdAndStatus($referenceId, AmazonPayConfig::STATUS_NEW);
+        $this->createPaymentEntityWithRefundIdAndStatus($referenceId, static::STATUS_NEW);
         $this->createFacade()->handleAmazonPayIpnRequest($transfer);
         $this->assertEquals($expectedStatus, $this->getPaymentEntityByRefundId($referenceId)->getStatus());
     }

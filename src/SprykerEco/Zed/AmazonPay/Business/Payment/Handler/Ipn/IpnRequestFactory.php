@@ -106,14 +106,17 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     protected function getAuthorizeHandlerMap()
     {
         return [
+            AmazonPayConfig::STATUS_TRANSACTION_TIMED_OUT => function () {
+                return $this->createIpnPaymentAuthorizeSuspendedHandler();
+            },
             AmazonPayConfig::STATUS_SUSPENDED => function () {
+                return $this->createIpnPaymentAuthorizeSuspendedHandler();
+            },
+            AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID => function () {
                 return $this->createIpnPaymentAuthorizeSuspendedHandler();
             },
             AmazonPayConfig::STATUS_DECLINED => function () {
                 return $this->createIpnPaymentAuthorizeDeclineHandler();
-            },
-            AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID => function () {
-                return $this->createIpnPaymentAuthorizeSuspendedHandler();
             },
             AmazonPayConfig::STATUS_OPEN => function () {
                 return $this->createIpnPaymentAuthorizeOpenHandler();

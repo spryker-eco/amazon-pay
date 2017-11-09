@@ -16,9 +16,6 @@
             <state name="new" reserved="true">
                 <flag>not auth</flag>
             </state>
-            <state name="waiting for order status" reserved="true">
-                <flag>not auth</flag>
-            </state>
         </states>
 
         <events>
@@ -29,7 +26,7 @@
             <!-- from new -->
             <transition happy="true">
                 <source>new</source>
-                <target>waiting for order status</target>
+                <target>auth pending</target>
                 <event>update order status</event>
             </transition>
         </transitions>

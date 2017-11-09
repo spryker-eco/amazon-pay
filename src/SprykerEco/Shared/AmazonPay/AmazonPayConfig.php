@@ -30,42 +30,15 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
     const OMS_STATUS_CAPTURE_PENDING = 'capture pending';
     const OMS_STATUS_CANCELLED = 'cancelled';
 
-    const OMS_STATUS_NEW = 'new';
-    const OMS_STATUS_AUTHORIZED = 'authorized';
-    const OMS_STATUS_DECLINED = 'declined';
-    const OMS_STATUS_CAPTURED = 'captured';
-    const OMS_STATUS_CLOSED = 'closed';
-
-    const OMS_STATUS_AUTH_PENDING = 'auth pending';
-    const OMS_STATUS_AUTH_DECLINED = 'auth declined';
-    const OMS_STATUS_AUTH_SUSPENDED = 'auth suspended';
-    const OMS_STATUS_MANUAL_AUTH_REQUIRED = 'manual auth requried';
-    const OMS_STATUS_AUTH_TRANSACTION_TIMED_OUT = 'auth transaction timed out';
-    const OMS_STATUS_AUTH_EXPIRED = 'auth expired';
-    const OMS_STATUS_AUTH_CLOSED = 'auth closed';
-    const OMS_STATUS_PAYMENT_METHOD_CHANGED = 'payment method changed';
-    const OMS_STATUS_STATUS_CHANGED = 'status changed';
-
-    const OMS_STATUS_CAPTURE_DECLINED = 'capture declined';
-    const OMS_STATUS_CAPTURE_CLOSED = 'capture closed';
-
-    const OMS_STATUS_REFUND_PENDING = 'refund pending';
-    const OMS_STATUS_REFUND_DECLINED = 'refund declined';
-    const OMS_STATUS_REFUND_COMPLETED = 'refund completed';
-
-    const OMS_EVENT_UPDATE_ORDER_STATUS = 'update order status';
     const OMS_EVENT_UPDATE_AUTH_STATUS = 'update authorization status';
     const OMS_EVENT_UPDATE_CAPTURE_STATUS = 'update capture status';
     const OMS_EVENT_UPDATE_REFUND_STATUS = 'update refund status';
     const OMS_EVENT_CAPTURE = 'capture';
     const OMS_EVENT_UPDATE_SUSPENDED_ORDER = 'update suspended order';
-    const OMS_EVENT_CLOSE = 'close';
-    const OMS_EVENT_REFUND = 'refund';
 
     const OMS_FLAG_NOT_AUTH = 'not auth';
     const OMS_FLAG_NOT_CAPTURED = 'not captured';
 
-    const STATUS_NEW = 'STATUS_NEW';
     const STATUS_DECLINED = 'STATUS_DECLINED';//setIsDeclined
     const STATUS_CANCELLED = 'STATUS_CANCELLED';//setIsCancelled
     const STATUS_CLOSED = 'STATUS_CLOSED';//setIsClosed

@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Shared\Config\Config;
 use Spryker\Yves\Kernel\Controller\AbstractController;
+use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Shared\AmazonPay\AmazonPayConstants;
 use SprykerEco\Yves\AmazonPay\Plugin\Provider\AmazonPayControllerProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -161,7 +162,7 @@ class PaymentController extends AbstractController
         if ($quoteTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->getAuthorizationStatus()
-            ->getIsPaymentMethodInvalid()
+            ->getState() === AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID
         ) {
             return $this->redirectResponseInternal(AmazonPayControllerProvider::CHECKOUT);
         }

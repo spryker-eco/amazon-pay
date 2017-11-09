@@ -37,21 +37,16 @@
         </events>
 
         <transitions>
-            <transition condition="AmazonPay/IsAuthPending">
-                <source>waiting for order status</source>
-                <target>auth pending</target>
-            </transition>
-
-            <transition condition="AmazonPay/IsAuthOpen" happy="true">
-                <source>waiting for order status</source>
-                <target>auth open</target>
-            </transition>
-
             <!-- from auth pending -->
-            <transition>
+            <transition happy="true">
                 <source>auth pending</source>
                 <target>waiting for auth status</target>
                 <event>update authorization status</event>
+            </transition>
+
+            <transition condition="AmazonPay/IsAuthPending">
+                <source>waiting for auth status</source>
+                <target>auth pending</target>
             </transition>
 
             <transition condition="AmazonPay/IsAuthOpen">
@@ -109,7 +104,7 @@
             <!-- from auth expired -->
             <transition>
                 <source>auth expired</source>
-                <target>waiting for capture status</target>
+                <target>waiting for auth status</target>
                 <event>reauthorize expired order</event>
             </transition>
 

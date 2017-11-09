@@ -179,7 +179,7 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
         }
 
         $constraint = $header->getConstraints()[0];
-        $header->setErrorMessage(AmazonPayConfig::PREFIX_AMAZONPAY_PAYMENT_ERROR . $constraint->getConstraintId());
+        $header->setErrorMessage($this->buildErrorMessage($constraint));
     }
 
     /**
@@ -339,5 +339,15 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     protected function getStringValue($value)
     {
         return empty($value) ? null : (string)$value;
+    }
+
+    /**
+     * @param $constraint
+     *
+     * @return string
+     */
+    protected function buildErrorMessage($constraint):string
+    {
+        return AmazonPayConfig::PREFIX_AMAZONPAY_PAYMENT_ERROR . $constraint->getConstraintId();
     }
 }
