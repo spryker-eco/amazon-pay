@@ -25,6 +25,10 @@
                 <event>update capture status</event>
             </transition>
 
+            <transition condition="AmazonPay/IsCaptureCompleted">
+                <source>auth closed</source>
+                <target>capture completed</target>
+            </transition>
             <transition condition="AmazonPay/IsCaptureCompleted" happy="true">
                 <source>waiting for capture status</source>
                 <target>capture completed</target>
