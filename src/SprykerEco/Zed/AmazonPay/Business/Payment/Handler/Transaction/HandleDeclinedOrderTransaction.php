@@ -47,10 +47,13 @@ class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
             ->getAuthorizationStatus()
             ->getState();
 
-        if ($this->isStateDeclined($stateName)) {
+        if ($stateName !== AmazonPayConfig::STATUS_DECLINED) {
             return $amazonPayCallTransfer;
         }
 
+        if ($stateName === AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID) {
+            return $amazonPayCallTransfer;
+        }
         $checkOrderStatus = $this->getOrderReferenceDetailsTransaction->execute($amazonPayCallTransfer);
 
         if ($checkOrderStatus->getAmazonpayPayment()
@@ -61,18 +64,5 @@ class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
         }
 
         return $amazonPayCallTransfer;
-    }
-
-    /**
-     * @param string $stateName
-     *
-     * @return bool
-     */
-    protected function isStateDeclined($stateName)
-    {
-        return in_array($stateName, [
-            AmazonPayConfig::STATUS_DECLINED,
-            AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID,
-        ], true);
     }
 }
