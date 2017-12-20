@@ -24,6 +24,16 @@
                 <target>waiting for refund status</target>
                 <event>refund</event>
             </transition>
+            <transition>
+                <source>close allowed</source>
+                <target>waiting for refund status</target>
+                <event>refund</event>
+            </transition>
+            <transition>
+                <source>capture completed</source>
+                <target>waiting for refund status</target>
+                <event>refund</event>
+            </transition>
             <transition condition="AmazonPay/IsRefundPending">
                 <source>waiting for refund status</source>
                 <target>refund pending</target>

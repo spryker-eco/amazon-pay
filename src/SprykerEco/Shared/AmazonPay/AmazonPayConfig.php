@@ -30,6 +30,11 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
     const OMS_STATUS_CAPTURE_PENDING = 'capture pending';
     const OMS_STATUS_CANCELLED = 'cancelled';
 
+    const OMS_STATUS_REFUND_PENDING = 'refund pending';
+    const OMS_STATUS_REFUND_COMPLETED = 'refund completed';
+    const OMS_STATUS_REFUND_DECLINED = 'refund declined';
+    const OMS_STATUS_REFUND_WAITING_FOR_STATUS = 'waiting for refund status';
+
     const OMS_EVENT_UPDATE_AUTH_STATUS = 'update authorization status';
     const OMS_EVENT_UPDATE_CAPTURE_STATUS = 'update capture status';
     const OMS_EVENT_UPDATE_REFUND_STATUS = 'update refund status';

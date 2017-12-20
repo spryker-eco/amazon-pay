@@ -11,7 +11,7 @@
             <state name="completed"/>
         </states>
         <events>
-            <event name="close" onEnter="true" command="AmazonPay/CloseOrder" />
+            <event name="close" manual="true" command="AmazonPay/CloseOrder" />
             <event name="refund allowed time exceeded" timeout="30days" />
         </events>
         <transitions>
