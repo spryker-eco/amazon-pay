@@ -27,6 +27,9 @@ class AuthorizationDetailsConverter extends AbstractArrayConverter
     const AUTHORIZATION_BILLING_ADDRESS = 'AuthorizationBillingAddress';
     const SOFT_DESCRIPTOR = 'SoftDescriptor';
 
+    /**
+     * @var array
+     */
     protected $detailsMapToTransferFields = [
         self::CAPTURE_NOW => AmazonpayAuthorizationDetailsTransfer::CAPTURE_NOW,
         self::CAPTURED_AMOUNT => AmazonpayAuthorizationDetailsTransfer::CAPTURED_AMOUNT,

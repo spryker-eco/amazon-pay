@@ -145,7 +145,7 @@ abstract class AbstractConverter
     /**
      * @param array $map
      * @param array $statusData
-     * @param $key
+     * @param string $key
      *
      * @return string|null
      */
