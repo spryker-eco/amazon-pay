@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<statemachine
+    xmlns="spryker:oms-01"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="AmazonPaySubprocessRefund01">
+        <states>
+            <state name="refund pending"/>
+            <state name="refund completed"/>
+            <state name="refund declined"/>
+            <state name="waiting for refund status"/>
+        </states>
+
+        <events>
+            <event name="update refund status" manual="true" command="AmazonPay/UpdateRefundStatus" />
+            <event name="refund" manual="true" command="AmazonPay/RefundOrder" />
+        </events>
+
+        <transitions>
+            <!-- from closed to refund -->
+            <transition>
+                <source>closed</source>
+                <target>waiting for refund status</target>
+                <event>refund</event>
+            </transition>
+            <transition condition="AmazonPay/IsRefundPending">
+                <source>waiting for refund status</source>
+                <target>refund pending</target>
+            </transition>
+            <transition condition="AmazonPay/IsRefundCompleted">
+                <source>waiting for refund status</source>
+                <target>refund completed</target>
+            </transition>
+            <transition condition="AmazonPay/IsRefundDeclined">
+                <source>waiting for refund status</source>
+                <target>refund declined</target>
+            </transition>
+            <transition>
+                <source>refund pending</source>
+                <target>waiting for refund status</target>
+                <event>update refund status</event>
+            </transition>
+        </transitions>
+    </process>
+
+</statemachine>

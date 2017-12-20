@@ -43,11 +43,11 @@ function runTests {
 function checkArchRules {
     echo "Running Architecture sniffer..."
     errors=`vendor/bin/phpmd "vendor/spryker-eco/$MODULE_NAME/src" text vendor/spryker/architecture-sniffer/src/ruleset.xml --minimumpriority=2`
-    errorsCount=`echo "$errors" | wc -l`
 
-    if [[ "$errorsCount" = "0" ]]; then
+    if [[ "$errors" = "" ]]; then
         buildMessage="$buildMessage\n${GREEN}Architecture sniffer reports no errors"
     else
+        errorsCount=`echo "$errors" | wc -l`
         echo -e "$errors"
         buildMessage="$buildMessage\n${RED}Architecture sniffer reports $errorsCount error(s)"
     fi
@@ -62,9 +62,9 @@ function checkCodeSniffRules {
 
     echo "Running code sniffer..."
     errors=`vendor/bin/console code:sniff "vendor/spryker-eco/$MODULE_NAME/src"`
-    errorsCount=$?
+    errorsPresent=$?
 
-    if [[ "$errorsCount" = "0" ]]; then
+    if [[ "$errorsPresent" = "0" ]]; then
         buildMessage="$buildMessage\n${GREEN}Code sniffer reports no errors"
     else
         echo -e "$errors"

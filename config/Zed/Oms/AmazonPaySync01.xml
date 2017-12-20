@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<statemachine
+    xmlns="spryker:oms-01"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="AmazonpayPaymentSync01" main="true">
+        <subprocesses>
+            <process>AmazonPaySubprocessRefund01</process>
+            <process>AmazonPaySubprocessClose01</process>
+        </subprocesses>
+
+        <states>
+            <state name="new" reserved="true"/>
+            <state name="capture completed" reserved="true"/>
+        </states>
+
+        <events>
+            <event name="update order status" onEnter="true" />
+        </events>
+
+        <transitions>
+            <transition condition="AmazonPay/IsCaptureCompleted" happy="true">
+                <source>new</source>
+                <target>capture completed</target>
+                <event>update order status</event>
+            </transition>
+
+        </transitions>
+    </process>
+
+    <process file="AmazonPaySubprocessRefund01.xml" />
+    <process file="AmazonPaySubprocessClose01.xml" />
+
+</statemachine>

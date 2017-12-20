@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="Quote">
+        <property name="amazonpayPayment" type="AmazonpayPayment"/>
+    </transfer>
+
+    <transfer name="Order">
+        <property name="idSalesOrder" type="int" />
+        <property name="AmazonpayOrderInfo" type="AmazonpayOrderInfo" />
+    </transfer>
+
+    <transfer name="AmazonpayOrderInfo">
+        <property name="orderReferenceId" type="string"/>
+        <property name="isSandbox" type="int"/>
+    </transfer>
+
+    <transfer name="AmazonpayPayment">
+        <property name="fkSalesOrder" type="int" />
+        <property name="orderReferenceId" type="string"/>
+        <property name="sellerOrderId" type="string"/>
+        <property name="addressConsentToken" type="string"/>
+        <property name="status" type="string"/>
+
+        <property name="isSandbox" type="int"/>
+        <property name="responseHeader" type="AmazonpayResponseHeader"/>
+        <property name="orderReferenceStatus" type="AmazonpayStatus"/>
+        <property name="authorizationDetails" type="AmazonpayAuthorizationDetails"/>
+        <property name="captureDetails" type="AmazonpayCaptureDetails"/>
+        <property name="refundDetails" type="AmazonpayRefundDetails"/>
+    </transfer>
+
+    <transfer name="AmazonpayResponse">
+        <property name="shippingAddress" type="Address"/>
+        <property name="shippingAddress" type="Address"/>
+        <property name="billingAddress" type="Address"/>
+        <property name="customer" type="Customer"/>
+
+        <property name="isSandbox" type="int"/>
+        <property name="responseHeader" type="AmazonpayResponseHeader"/>
+        <property name="orderReferenceStatus" type="AmazonpayStatus"/>
+        <property name="authorizationDetails" type="AmazonpayAuthorizationDetails"/>
+        <property name="captureDetails" type="AmazonpayCaptureDetails" />
+        <property name="refundDetails" type="AmazonpayRefundDetails"/>
+    </transfer>
+
+    <transfer name="AmazonpayResponseConstraint">
+        <property name="constraintId" type="string"/>
+        <property name="constraintDescription" type="string"/>
+    </transfer>
+
+    <transfer name="AmazonpayResponseHeader">
+        <property name="statusCode" type="int" />
+        <property name="isSuccess" type="bool" />
+        <property name="requestId" type="string" />
+        <property name="constraints" type="AmazonpayResponseConstraint[]" singular="constraint" />
+        <property name="errorCode" type="string" />
+        <property name="errorMessage" type="string" />
+    </transfer>
+
+    <transfer name="AmazonpayPrice">
+        <property name="currencyCode" type="string"/>
+        <property name="amount" type="string"/>
+    </transfer>
+
+    <transfer name="AmazonpayStatus">
+        <property name="state" type="string"/>
+        <property name="reasonCode" type="string"/>
+        <property name="lastUpdateTimestamp" type="string"/>
+        <property name="isDeclined" type="bool"/>
+        <property name="isSuspended" type="bool"/>
+        <property name="isPending" type="bool"/>
+        <property name="isOpen" type="bool"/>
+        <property name="isClosed" type="bool"/>
+        <property name="isCompleted" type="bool"/>
+        <property name="isPaymentMethodInvalid" type="bool"/>
+        <property name="isClosedByAmazon" type="bool"/>
+        <property name="isReauthorizable" type="bool"/>
+        <property name="isCancelled" type="bool"/>
+        <property name="isTransactionTimedOut" type="bool"/>
+    </transfer>
+
+    <transfer name="AmazonpayOrderReferenceNotification">
+        <property name="amazonOrderReferenceId" type="string"/>
+        <property name="orderReferenceStatus" type="AmazonpayStatus"/>
+    </transfer>
+
+    <transfer name="AmazonpayAuthorizationDetails">
+        <property name="authorizationBillingAddress" type="Address" />
+        <property name="amazonAuthorizationId" type="string" />
+        <property name="authorizationReferenceId" type="string" />
+        <property name="sellerAuthorizationNote" type="string" />
+        <property name="authorizationAmount" type="AmazonpayPrice" />
+        <property name="capturedAmount" type="AmazonpayPrice" />
+        <property name="authorizationFee" type="AmazonpayPrice" />
+        <property name="idList" type="string" />
+        <property name="creationTimestamp" type="string"/>
+        <property name="expirationTimestamp" type="string"/>
+        <property name="authorizationStatus" type="AmazonpayStatus" />
+        <property name="softDecline" type="bool" />
+        <property name="captureNow" type="bool" />
+        <property name="softDescriptor" type="string" />
+        <property name="releaseEnvironment" type="string" />
+    </transfer>
+
+    <transfer name="AmazonpayCaptureDetails">
+        <property name="amazonCaptureId" type="string" />
+        <property name="captureReferenceId" type="string" />
+        <property name="sellerCaptureNote" type="string" />
+        <property name="captureAmount" type="AmazonpayPrice" />
+        <property name="refundedAmount" type="AmazonpayPrice" />
+        <property name="captureFee" type="AmazonpayPrice" />
+        <property name="idList" type="string" />
+        <property name="creationTimestamp" type="string"/>
+        <property name="captureStatus" type="AmazonpayStatus" />
+        <property name="softDescriptor" type="string" />
+    </transfer>
+
+    <transfer name="AmazonpayRefundDetails">
+        <property name="AmazonRefundId" type="string"/>
+        <property name="RefundReferenceId" type="string"/>
+        <property name="RefundAmount" type="AmazonpayPrice"/>
+        <property name="SellerRefundNote" type="string"/>
+        <property name="refundStatus" type="AmazonpayStatus" />
+    </transfer>
+
+    <transfer name="AmazonpayIpnRequestMessage">
+        <property name="NotificationReferenceId" type="string"/>
+        <property name="NotificationType" type="string"/>
+        <property name="SellerId" type="string" />
+        <property name="ReleaseEnvironment" type="string" />
+        <property name="Type" type="string" />
+        <property name="MessageId" type="string" />
+        <property name="TopicArn" type="string" />
+    </transfer>
+
+    <transfer name="AmazonpayIpnPaymentRequest">
+        <property name="message" type="AmazonpayIpnRequestMessage" />
+        <property name="amazonOrderReferenceId" type="string" />
+        <property name="orderReferenceStatus" type="AmazonpayStatus" />
+        <property name="authorizationDetails" type="AmazonpayAuthorizationDetails" />
+        <property name="captureDetails" type="AmazonpayCaptureDetails" />
+        <property name="refundDetails" type="AmazonpayRefundDetails" />
+    </transfer>
+
+    <transfer name="AmazonpayCall">
+        <property name="AmazonpayPayment" type="AmazonpayPayment" />
+        <property name="RequestedAmount" type="int" />
+        <property name="ShippingAddress" type="Address" />
+        <property name="BillingAddress" type="Address" />
+        <property name="BillingSameAsShipping" type="bool" />
+        <property name="OrderReference" type="string" />
+        <property name="Email" type="string" />
+        <property name="Items" type="Item[]" singular="Item"/>
+    </transfer>
+
+    <transfer name="AmazonpaySalesOrderItemGroup">
+        <property name="AmazonpayPayment" type="AmazonpayPayment" />
+        <property name="Items" type="Item[]" singular="Item"/>
+    </transfer>
+
+</transfers>
