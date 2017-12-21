@@ -80,7 +80,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return array
+     * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface[]
      */
     protected function getNotificationTypeToHandlerMap()
     {
@@ -101,7 +101,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return array
+     * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface[]
      */
     protected function getAuthorizeHandlerMap()
     {
@@ -191,7 +191,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return array
+     * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface[]
      */
     protected function getCaptureHandlerMap()
     {
@@ -253,7 +253,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return array
+     * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface[]
      */
     protected function getRefundHandlerMap()
     {
@@ -305,7 +305,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     }
 
     /**
-     * @return array
+     * @return \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnRequestHandlerInterface[]
      */
     protected function getOrderReferenceHandlerMap()
     {

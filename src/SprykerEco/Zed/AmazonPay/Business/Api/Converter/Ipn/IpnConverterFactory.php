@@ -17,7 +17,7 @@ class IpnConverterFactory implements IpnConverterFactoryInterface
     const NOTIFICATION_TYPE = 'NotificationType';
 
     /**
-     * @return array
+     * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn\IpnConverterInterface[]
      */
     protected function getTypeToConverterMap()
     {
