@@ -73,8 +73,6 @@ function checkCodeSniffRules {
 }
 
 function checkPHPStan {
-    echo "Installing PHPStan..."
-    composer require --dev phpstan/phpstan
     echo "Updating code-completition..."
     vendor/bin/console dev:ide:generate-auto-completion
     echo "Running PHPStan..."
