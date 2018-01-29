@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\AmazonPay\Communication\Controller;
 
+use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class IpnController extends AbstractController
 {
+    use LoggerTrait;
+
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -23,6 +26,13 @@ class IpnController extends AbstractController
         /** @var string[] $headers */
         $headers = getallheaders();
         $body = file_get_contents('php://input');
+
+        $this->getLogger()->info('IPN request',
+            [
+                'headers' => $headers,
+                'body' => $body,
+            ]
+        );
 
         $ipnRequestTransfer = $this->getFacade()->convertAmazonPayIpnRequest($headers, $body);
         $this->getFacade()->handleAmazonPayIpnRequest($ipnRequestTransfer);
