@@ -33,6 +33,7 @@ abstract class AbstractConverter
     const REASON_CODE_PAYMENT_METHOD_INVALID = 'InvalidPaymentMethod';
     const REASON_CODE_AMAZON_CLOSED = 'AmazonClosed';
     const REASON_CODE_TRANSACTION_TIMED_OUT = 'TransactionTimedOut';
+    const REASON_CODE_MAX_CAPTURES_PROCESSED = 'MaxCapturesProcessed';
 
     /**
      * @var array
@@ -65,6 +66,7 @@ abstract class AbstractConverter
         self::REASON_CODE_TRANSACTION_TIMED_OUT => AmazonPayConfig::STATUS_TRANSACTION_TIMED_OUT,
         self::REASON_CODE_SELLER_CLOSED => AmazonPayConfig::STATUS_EXPIRED,
         self::REASON_CODE_EXPIRED_UNUSED => AmazonPayConfig::STATUS_EXPIRED,
+        self::REASON_CODE_MAX_CAPTURES_PROCESSED => AmazonPayConfig::STATUS_COMPLETED,
     ];
 
     /**
