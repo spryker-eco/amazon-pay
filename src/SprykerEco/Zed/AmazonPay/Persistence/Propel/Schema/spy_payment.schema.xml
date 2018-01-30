@@ -59,6 +59,7 @@
         <column name="message_id" type="VARCHAR"/>
         <column name="fk_payment_amazonpay" type="INTEGER"/>
         <column name="message" type="LONGVARCHAR"/>
+        <column name="raw_message" type="LONGVARCHAR"/>
         <behavior name="timestampable"/>
 
         <id-method-parameter value="spy_payment_amazonpay_ipn_log_pk_seq"/>

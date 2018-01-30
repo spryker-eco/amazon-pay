@@ -27,13 +27,6 @@ class IpnController extends AbstractController
         $headers = getallheaders();
         $body = file_get_contents('php://input');
 
-        $this->getLogger()->info('IPN request',
-            [
-                'headers' => $headers,
-                'body' => $body,
-            ]
-        );
-
         $ipnRequestTransfer = $this->getFacade()->convertAmazonPayIpnRequest($headers, $body);
         $this->getFacade()->handleAmazonPayIpnRequest($ipnRequestTransfer);
 

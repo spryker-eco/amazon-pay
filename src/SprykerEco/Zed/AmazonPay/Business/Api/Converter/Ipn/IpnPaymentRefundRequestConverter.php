@@ -28,16 +28,18 @@ class IpnPaymentRefundRequestConverter extends IpnPaymentAbstractRequestConverte
 
     /**
      * @param array $request
+     * @param string $body
      *
      * @return \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer
      */
-    public function convert(array $request)
+    public function convert(array $request, $body)
     {
         $ipnPaymentRequestTransfer = new AmazonpayIpnPaymentRequestTransfer();
         $ipnPaymentRequestTransfer->setMessage($this->extractMessage($request));
         $ipnPaymentRequestTransfer->setRefundDetails(
             $this->refundDetailsConverter->convert($request[static::REFUND_DETAILS])
         );
+        $ipnPaymentRequestTransfer->setRawMessage($body);
 
         return $ipnPaymentRequestTransfer;
     }

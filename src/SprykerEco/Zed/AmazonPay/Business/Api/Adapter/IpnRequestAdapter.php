@@ -35,12 +35,15 @@ class IpnRequestAdapter implements IpnRequestAdapterInterface
     }
 
     /**
+     * @param string $body
+     *
      * @return \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer
      */
-    public function getIpnRequest()
+    public function getIpnRequest($body)
     {
         return $this->ipnArrayConverter->convert(
-            $this->ipnHandler->toArray()
+            $this->ipnHandler->toArray(),
+            $body
         );
     }
 }
