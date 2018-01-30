@@ -38,7 +38,6 @@ class IpnRequestLogger implements IpnRequestLoggerInterface
         $ipnLog = new SpyPaymentAmazonpayIpnLog();
 
         $ipnLog->setMessage($this->utilEncoding->encodeJson($paymentRequestTransfer->toArray()));
-        $ipnLog->setRawMessage($paymentRequestTransfer->getRawMessage());
         $ipnLog->setMessageId($paymentRequestTransfer->getMessage()->getMessageId());
         $ipnLog->setFkPaymentAmazonpay($paymentAmazonpay->getIdPaymentAmazonpay());
         $ipnLog->save();
