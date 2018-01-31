@@ -10,6 +10,7 @@ namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
 use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay;
 use Propel\Runtime\Collection\ObjectCollection;
+use Propel\Runtime\Propel;
 use Spryker\Zed\PropelOrm\Business\Transaction\DatabaseTransactionHandlerTrait;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
 use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToOmsInterface;
@@ -56,25 +57,36 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
      */
     public function handle(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {
-        $this->handleDatabaseTransaction(function() use ($paymentRequestTransfer) {
-            $paymentEntity = $this->retrievePaymentEntity($paymentRequestTransfer);
+        $repeatable = 2;
+        while ($repeatable-- > 0) {
+            try {
+                $this->handleDatabaseTransaction(function () use ($paymentRequestTransfer) {
+                    Propel::getConnection()->exec('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;');
+                    Propel::disableInstancePooling();
 
-            if ($paymentEntity === null) {
-                return;
+                    $paymentEntity = $this->retrievePaymentEntity($paymentRequestTransfer);
+
+                    if ($paymentEntity === null) {
+                        return;
+                    }
+
+                    $paymentEntity->setStatus($this->getStatusName());
+                    $paymentEntity->save();
+
+                    $this->omsFacade->triggerEvent(
+                        $this->getOmsEventId(),
+                        $this->getAffectedSalesOrderItems($paymentEntity),
+                        []
+                    );
+                    $this->omsFacade->checkConditions();
+
+                    $this->ipnRequestLogger->log($paymentRequestTransfer, $paymentEntity);
+                });
+
+                break;
+            } catch (\Exception $e) {
             }
-
-            $paymentEntity->setStatus($this->getStatusName());
-            $paymentEntity->save();
-
-            $this->omsFacade->triggerEvent(
-                $this->getOmsEventId(),
-                $this->getAffectedSalesOrderItems($paymentEntity),
-                []
-            );
-            $this->omsFacade->checkConditions();
-
-            $this->ipnRequestLogger->log($paymentRequestTransfer, $paymentEntity);
-        });
+        }
     }
 
     /**
