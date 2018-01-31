@@ -61,32 +61,42 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
         while ($repeatable-- > 0) {
             try {
                 $this->handleDatabaseTransaction(function () use ($paymentRequestTransfer) {
-                    Propel::getConnection()->exec('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;');
-                    Propel::disableInstancePooling();
-
-                    $paymentEntity = $this->retrievePaymentEntity($paymentRequestTransfer);
-
-                    if ($paymentEntity === null) {
-                        return;
-                    }
-
-                    $paymentEntity->setStatus($this->getStatusName());
-                    $paymentEntity->save();
-
-                    $this->omsFacade->triggerEvent(
-                        $this->getOmsEventId(),
-                        $this->getAffectedSalesOrderItems($paymentEntity),
-                        []
-                    );
-                    $this->omsFacade->checkConditions();
-
-                    $this->ipnRequestLogger->log($paymentRequestTransfer, $paymentEntity);
+                    $this->handleTransactional($paymentRequestTransfer);
                 });
 
                 break;
             } catch (\Exception $e) {
             }
         }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer
+     *
+     * @return void
+     */
+    protected function handleTransactional(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
+    {
+        Propel::getConnection()->exec('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;');
+        Propel::disableInstancePooling();
+
+        $paymentEntity = $this->retrievePaymentEntity($paymentRequestTransfer);
+
+        if ($paymentEntity === null) {
+            return;
+        }
+
+        $paymentEntity->setStatus($this->getStatusName());
+        $paymentEntity->save();
+
+        $this->omsFacade->triggerEvent(
+            $this->getOmsEventId(),
+            $this->getAffectedSalesOrderItems($paymentEntity),
+            []
+        );
+        $this->omsFacade->checkConditions();
+
+        $this->ipnRequestLogger->log($paymentRequestTransfer, $paymentEntity);
     }
 
     /**
