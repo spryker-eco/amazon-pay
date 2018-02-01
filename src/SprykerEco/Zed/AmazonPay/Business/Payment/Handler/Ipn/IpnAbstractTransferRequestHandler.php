@@ -61,6 +61,9 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
         while ($repeatable-- > 0) {
             try {
                 $this->handleDatabaseTransaction(function () use ($paymentRequestTransfer) {
+                    Propel::getConnection()->exec('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;');
+                    Propel::disableInstancePooling();
+
                     $this->handleTransactional($paymentRequestTransfer);
                 });
 
@@ -77,9 +80,6 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
      */
     protected function handleTransactional(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {
-        Propel::getConnection()->exec('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;');
-        Propel::disableInstancePooling();
-
         $paymentEntity = $this->retrievePaymentEntity($paymentRequestTransfer);
 
         if ($paymentEntity === null) {

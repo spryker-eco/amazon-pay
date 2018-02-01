@@ -12,7 +12,7 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 class IsPendingConditionPlugin extends AbstractByOrderItemConditionPlugin
 {
     /**
-     * @return string
+     * @return string|array
      */
     protected function getPaymentStatus()
     {
