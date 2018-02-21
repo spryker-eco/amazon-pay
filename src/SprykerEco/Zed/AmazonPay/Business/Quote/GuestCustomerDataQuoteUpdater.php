@@ -10,7 +10,7 @@ namespace SprykerEco\Zed\AmazonPay\Business\Quote;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 
-class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
+class GuestCustomerDataQuoteUpdater extends QuoteUpdaterAbstract
 {
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
@@ -19,6 +19,10 @@ class CustomerDataQuoteUpdater extends QuoteUpdaterAbstract
      */
     public function update(QuoteTransfer $quoteTransfer)
     {
+        if (!$quoteTransfer->getCustomer()->getIsGuest()) {
+            return $quoteTransfer;
+        }
+
         $amazonCallTransfer = $this->convertQuoteTransferToAmazonPayTransfer($quoteTransfer);
 
         $responseTransfer = $this->executionAdapter->call($amazonCallTransfer);
