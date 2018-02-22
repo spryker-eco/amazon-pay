@@ -20,7 +20,7 @@
     "ralouphie/getallheaders": "^2.0"
   },
   "description": "Amazon Pay Bundle",
-  "license": "Apache OSL-2",
+  "license": "Apache-2.0",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
