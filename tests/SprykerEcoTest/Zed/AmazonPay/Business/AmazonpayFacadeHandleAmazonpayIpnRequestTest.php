@@ -33,7 +33,6 @@ class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstra
      */
     public function testFacadeHandleAmazonpayIpnRequestAuth($referenceId, AmazonpayIpnPaymentRequestTransfer $transfer, $expectedStatus)
     {
-//        Propel::getConnection()->commit();
         $this->createPaymentEntityWithAuthIdAndStatus($referenceId, static::STATUS_NEW);
         $this->createFacade()->handleAmazonPayIpnRequest($transfer);
         $this->assertEquals($expectedStatus, $this->getPaymentEntityByAuthId($referenceId)->getStatus());
