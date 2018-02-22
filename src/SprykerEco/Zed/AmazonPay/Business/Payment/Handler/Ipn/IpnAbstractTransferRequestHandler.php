@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
 
+use Exception;
 use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay;
 use Propel\Runtime\Collection\ObjectCollection;
@@ -68,7 +69,7 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
                 });
 
                 break;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
     }

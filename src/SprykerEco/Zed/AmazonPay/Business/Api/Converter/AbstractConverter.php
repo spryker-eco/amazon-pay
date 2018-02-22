@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\AmazonPay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AmazonpayPriceTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
-use Spryker\Shared\Kernel\Transfer\TransferInterface;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 abstract class AbstractConverter

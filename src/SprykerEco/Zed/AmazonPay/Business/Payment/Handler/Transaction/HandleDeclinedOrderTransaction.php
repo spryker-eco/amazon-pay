@@ -63,7 +63,7 @@ class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
      *
      * @return void
      */
-    protected function checkOrderStatus(AmazonPayCallTransfer $amazonPayCallTransfer)
+    protected function checkOrderStatus(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
         $checkOrderStatus = $this->getOrderReferenceDetailsTransaction->execute($amazonPayCallTransfer);
 
