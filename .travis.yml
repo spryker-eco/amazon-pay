@@ -43,6 +43,7 @@ before_install:
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 install:
+  - phpenv config-rm xdebug.ini
   - echo "Moving module to subfolder..."
   - if [[ *$TRAVIS_EVENT_TYPE* = 'cron' ]]; then git checkout $(git tag | tail -n 1); fi
   - mkdir $MODULE_DIR && ls -1 | grep -v ^$MODULE_DIR | xargs -I{} mv {} $MODULE_DIR
