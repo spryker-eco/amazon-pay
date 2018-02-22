@@ -207,4 +207,12 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
     {
         return $this->get(AmazonPayConstants::PAYMENT_REJECT_ROUTE);
     }
+
+    /**
+     * @return bool
+     */
+    public function getEnableIsolateLevelRead()
+    {
+        return (bool) $this->get(AmazonPayConstants::ENABLE_ISOLATE_LEVEL_READ);
+    }
 }

@@ -73,7 +73,8 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
             $this->getOmsFacade(),
             $this->getQueryContainer(),
             $this->getUtilEncodingService(),
-            $this->createRefundOrderModel()
+            $this->createRefundOrderModel(),
+            $this->createAmazonpayConfig()
         );
     }
 

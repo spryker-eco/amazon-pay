@@ -26,15 +26,17 @@ class IpnPaymentRefundCompletedHandler extends IpnAbstractPaymentRefundHandler
      * @param \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface $queryContainer
      * @param \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
      * @param \SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderInterface $refundOrderModel
+     * @param AmazonPayConfig $config
      */
     public function __construct(
         AmazonPayToOmsInterface $omsFacade,
         AmazonPayQueryContainerInterface $queryContainer,
         IpnRequestLoggerInterface $ipnRequestLogger,
+        AmazonPayConfig $config,
         RefundOrderInterface $refundOrderModel
     ) {
 
-        parent::__construct($omsFacade, $queryContainer, $ipnRequestLogger);
+        parent::__construct($omsFacade, $queryContainer, $ipnRequestLogger, $config);
 
         $this->refundOrderModel = $refundOrderModel;
     }

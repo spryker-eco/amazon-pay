@@ -19,7 +19,7 @@ class GuestCustomerDataQuoteUpdater extends QuoteUpdaterAbstract
      */
     public function update(QuoteTransfer $quoteTransfer)
     {
-        if (!$quoteTransfer->getCustomer()->getIsGuest()) {
+        if ($quoteTransfer->getCustomer() !== null) {
             return $quoteTransfer;
         }
 
