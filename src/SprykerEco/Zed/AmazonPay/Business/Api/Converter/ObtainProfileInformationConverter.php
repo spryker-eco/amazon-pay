@@ -47,6 +47,22 @@ class ObtainProfileInformationConverter extends AbstractArrayConverter
     }
 
     /**
+     * @param \Generated\Shared\Transfer\CustomerTransfer $transfer
+     * @param string $name
+     *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
+     */
+    protected function updateNameData(CustomerTransfer $transfer, $name)
+    {
+        $names = $this->getNameData($name);
+
+        $transfer->setFirstName($names[0]);
+        $transfer->setLastName($names[1]);
+
+        return $transfer;
+    }
+
+    /**
      * @param array $response
      * @param \Generated\Shared\Transfer\CustomerTransfer $responseTransfer
      *

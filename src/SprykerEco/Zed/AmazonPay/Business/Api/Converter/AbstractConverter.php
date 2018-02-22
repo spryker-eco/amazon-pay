@@ -159,23 +159,18 @@ abstract class AbstractConverter
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\TransferInterface|\Generated\Shared\Transfer\CustomerTransfer|\Generated\Shared\Transfer\AddressTransfer $transfer
      * @param string $name
      *
-     * @return \Generated\Shared\Transfer\CustomerTransfer|\Generated\Shared\Transfer\AddressTransfer
+     * @return array
      */
-    protected function updateNameData(TransferInterface $transfer, $name)
+    protected function getNameData($name)
     {
         $names = explode(' ', $name, 2);
 
         if (count($names) === 2) {
-            $transfer->setFirstName($names[0]);
-            $transfer->setLastName($names[1]);
-        } else {
-            $transfer->setFirstName($name);
-            $transfer->setLastName($name);
+            return $names;
         }
 
-        return $transfer;
+        return [$name, $name];
     }
 }
