@@ -13,7 +13,6 @@ use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Propel;
 use Spryker\Zed\PropelOrm\Business\Transaction\DatabaseTransactionHandlerTrait;
-use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface;
 use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToOmsInterface;
@@ -39,7 +38,7 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
     protected $ipnRequestLogger;
 
     /**
-     * @var AmazonPayConfigInterface
+     * @var \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface
      */
     protected $config;
 
@@ -47,7 +46,7 @@ abstract class IpnAbstractTransferRequestHandler implements IpnRequestHandlerInt
      * @param \SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToOmsInterface $omsFacade
      * @param \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface $queryContainer
      * @param \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
-     * @param AmazonPayConfigInterface $config
+     * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface $config
      */
     public function __construct(
         AmazonPayToOmsInterface $omsFacade,

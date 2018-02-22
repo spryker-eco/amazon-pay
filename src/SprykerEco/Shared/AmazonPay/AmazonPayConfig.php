@@ -125,7 +125,7 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
      */
     public function isSandbox()
     {
-        return (bool)$this->get(AmazonPayConstants::SANDBOX);
+        return (bool)$this->get(AmazonPayConstants::SANDBOX, true);
     }
 
     /**
@@ -141,7 +141,7 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
      */
     public function getCaptureNow()
     {
-        return (bool)$this->get(AmazonPayConstants::CAPTURE_NOW);
+        return (bool)$this->get(AmazonPayConstants::CAPTURE_NOW, false);
     }
 
     /**
@@ -149,7 +149,7 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
      */
     public function getAuthTransactionTimeout()
     {
-        return (int)$this->get(AmazonPayConstants::AUTH_TRANSACTION_TIMEOUT);
+        return (int)$this->get(AmazonPayConstants::AUTH_TRANSACTION_TIMEOUT, 0);
     }
 
     /**
@@ -173,7 +173,7 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
      */
     public function getPopupLogin()
     {
-        return (bool)$this->get(AmazonPayConstants::WIDGET_POPUP_LOGIN);
+        return (bool)$this->get(AmazonPayConstants::WIDGET_POPUP_LOGIN, false);
     }
 
     /**
@@ -213,6 +213,6 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
      */
     public function getEnableIsolateLevelRead()
     {
-        return (bool) $this->get(AmazonPayConstants::ENABLE_ISOLATE_LEVEL_READ);
+        return (bool)$this->get(AmazonPayConstants::ENABLE_ISOLATE_LEVEL_READ, false);
     }
 }

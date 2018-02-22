@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn;
 
-use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface;
 use SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderInterface;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Logger\IpnRequestLogger;
@@ -38,7 +37,7 @@ class IpnFactory implements IpnFactoryInterface
     protected $refundOrderModel;
 
     /**
-     * @var AmazonPayConfigInterface
+     * @var \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface
      */
     protected $config;
 
@@ -47,7 +46,7 @@ class IpnFactory implements IpnFactoryInterface
      * @param \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface $amazonpayQueryContainer
      * @param \SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToUtilEncodingInterface $amazonpayToUtilEncoding
      * @param \SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderInterface $refundOrderModel
-     * @param AmazonPayConfigInterface $config
+     * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface $config
      */
     public function __construct(
         AmazonPayToOmsInterface $omsFacade,

@@ -50,7 +50,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
     protected $refundOrderModel;
 
     /**
-     * @var AmazonPayConfigInterface
+     * @var \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface
      */
     protected $config;
 
@@ -59,7 +59,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
      * @param \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface $amazonpayQueryContainer
      * @param \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\Logger\IpnRequestLoggerInterface $ipnRequestLogger
      * @param \SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderInterface $refundOrderModel
-     * @param AmazonPayConfigInterface $config
+     * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface $config
      */
     public function __construct(
         AmazonPayToOmsInterface $omsFacade,

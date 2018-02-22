@@ -14,7 +14,6 @@ use Generated\Shared\Transfer\AmazonpayIpnRequestMessageTransfer;
 use Generated\Shared\Transfer\AmazonpayRefundDetailsTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpayQuery;
-use Propel\Runtime\Propel;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstractTest
