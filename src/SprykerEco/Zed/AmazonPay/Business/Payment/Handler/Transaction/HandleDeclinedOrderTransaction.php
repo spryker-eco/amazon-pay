@@ -55,6 +55,8 @@ class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
             return $amazonPayCallTransfer;
         }
 
+        $this->checkOrderStatus($amazonPayCallTransfer);
+
         return $amazonPayCallTransfer;
     }
 

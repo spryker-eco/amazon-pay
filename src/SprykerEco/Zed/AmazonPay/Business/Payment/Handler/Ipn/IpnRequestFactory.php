@@ -334,7 +334,7 @@ class IpnRequestFactory implements IpnRequestFactoryInterface
                 return $this->createIpnOrderReferenceClosedHandler();
             },
             AmazonPayConfig::STATUS_EXPIRED => function () {
-                return $this->createIpnPaymentAuthorizeClosedHandler();
+                return $this->createIpnOrderReferenceClosedHandler();
             },
             AmazonPayConfig::STATUS_CLOSED => function () {
                 return $this->createIpnEmptyHandler();

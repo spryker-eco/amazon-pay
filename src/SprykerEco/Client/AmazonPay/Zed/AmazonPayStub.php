@@ -68,6 +68,9 @@ class AmazonPayStub implements AmazonPayStubInterface
      */
     public function confirmPurchase(QuoteTransfer $quoteTransfer)
     {
-        return $this->zedStub->call('/amazon-pay/gateway/confirm-purchase', $quoteTransfer);
+        return $this->zedStub->call(
+            '/amazon-pay/gateway/confirm-purchase',
+            $quoteTransfer
+        );
     }
 }
