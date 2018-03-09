@@ -42,5 +42,5 @@ before_install:
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 install:
-  - git clone -b dev https://github.com/spryker-eco/eco-ci.git
-  - ./eco-ci/build/travis.sh
+  - git clone -b dev https://github.com/spryker-eco/eco-ci.git ecoci
+  - ./ecoci/build/travis.sh
