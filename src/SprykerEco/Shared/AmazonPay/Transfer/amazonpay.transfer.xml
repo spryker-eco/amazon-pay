@@ -138,6 +138,7 @@
 
     <transfer name="AmazonpayIpnPaymentRequest">
         <property name="message" type="AmazonpayIpnRequestMessage" />
+        <property name="rawMessage" type="string" />
         <property name="amazonOrderReferenceId" type="string" />
         <property name="orderReferenceStatus" type="AmazonpayStatus" />
         <property name="authorizationDetails" type="AmazonpayAuthorizationDetails" />

@@ -28,16 +28,18 @@ class IpnPaymentCaptureRequestConverter extends IpnPaymentAbstractRequestConvert
 
     /**
      * @param array $request
+     * @param string $body
      *
      * @return \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer
      */
-    public function convert(array $request)
+    public function convert(array $request, $body)
     {
         $ipnPaymentRequestTransfer = new AmazonpayIpnPaymentRequestTransfer();
         $ipnPaymentRequestTransfer->setMessage($this->extractMessage($request));
         $ipnPaymentRequestTransfer->setCaptureDetails(
             $this->captureDetailsConverter->convert($request[static::CAPTURE_DETAILS])
         );
+        $ipnPaymentRequestTransfer->setRawMessage($body);
 
         return $ipnPaymentRequestTransfer;
     }

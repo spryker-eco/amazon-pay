@@ -60,6 +60,7 @@ class AmazonpayFacadeAbstractTest extends Test
         $config[AmazonPayConstants::WIDGET_BUTTON_TYPE] = AmazonPayConfig::WIDGET_BUTTON_TYPE_FULL;
         $config[AmazonPayConstants::WIDGET_BUTTON_SIZE] = AmazonPayConfig::WIDGET_BUTTON_SIZE_MEDIUM;
         $config[AmazonPayConstants::WIDGET_BUTTON_COLOR] = AmazonPayConfig::WIDGET_BUTTON_COLOR_DARK_GRAY;
+        $config[AmazonPayConstants::ENABLE_ISOLATE_LEVEL_READ] = false;
 
         foreach ($config as $key => $value) {
             $configHelper->setConfig($key, $value);

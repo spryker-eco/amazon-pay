@@ -13,6 +13,7 @@ matrix:
 services:
   - postgresql
   - redis
+  - rabbitmq
 
 addons:
   postgresql: 9.4

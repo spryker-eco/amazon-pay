@@ -335,6 +335,22 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     }
 
     /**
+     * @param \Generated\Shared\Transfer\AddressTransfer $transfer
+     * @param string $name
+     *
+     * @return \Generated\Shared\Transfer\AddressTransfer
+     */
+    protected function updateNameData(AddressTransfer $transfer, $name)
+    {
+        $names = $this->getNameData($name);
+
+        $transfer->setFirstName($names[0]);
+        $transfer->setLastName($names[1]);
+
+        return $transfer;
+    }
+
+    /**
      * @param string|array $value
      *
      * @return string|null

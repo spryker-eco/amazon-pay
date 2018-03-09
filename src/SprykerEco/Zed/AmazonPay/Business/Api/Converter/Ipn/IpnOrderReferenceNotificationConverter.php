@@ -17,10 +17,11 @@ class IpnOrderReferenceNotificationConverter extends IpnPaymentAbstractRequestCo
 
     /**
      * @param array $request
+     * @param string $body
      *
      * @return \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer
      */
-    public function convert(array $request)
+    public function convert(array $request, $body)
     {
         $ipnPaymentRequestTransfer = new AmazonpayIpnPaymentRequestTransfer();
         $ipnPaymentRequestTransfer->setMessage($this->extractMessage($request));
@@ -30,6 +31,7 @@ class IpnOrderReferenceNotificationConverter extends IpnPaymentAbstractRequestCo
         $ipnPaymentRequestTransfer->setAmazonOrderReferenceId(
             $request[static::ORDER_REFERENCE][static::AMAZON_ORDER_REFERENCE_ID]
         );
+        $ipnPaymentRequestTransfer->setRawMessage($body);
 
         return $ipnPaymentRequestTransfer;
     }

@@ -255,6 +255,10 @@ class PaymentController extends AbstractController
      */
     protected function buildRedirectExternalResponse(Request $request)
     {
+        if ($request->headers->get('Referer') === null) {
+            return $this->buildRedirectInternalResponse();
+        }
+
         return $this->redirectResponseExternal($request->headers->get('Referer'));
     }
 

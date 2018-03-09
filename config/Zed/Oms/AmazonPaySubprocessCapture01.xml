@@ -15,7 +15,7 @@
         </states>
 
         <events>
-            <event name="update capture status" manual="true" command="AmazonPay/UpdateCaptureStatus" />
+            <event name="update capture status" timeout="1 minute" command="AmazonPay/UpdateCaptureStatus" />
         </events>
 
         <transitions>

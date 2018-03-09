@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\AmazonPay\Communication\Controller;
 
+use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class IpnController extends AbstractController
 {
+    use LoggerTrait;
+
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      */

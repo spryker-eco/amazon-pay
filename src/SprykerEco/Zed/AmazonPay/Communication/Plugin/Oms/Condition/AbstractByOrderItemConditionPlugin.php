@@ -13,7 +13,7 @@ use Spryker\Zed\Oms\Dependency\Plugin\Condition\ConditionInterface;
 abstract class AbstractByOrderItemConditionPlugin implements ConditionInterface
 {
     /**
-     * @return string
+     * @return string|array
      */
     abstract protected function getPaymentStatus();
 
@@ -30,7 +30,23 @@ abstract class AbstractByOrderItemConditionPlugin implements ConditionInterface
             return true;
         }
 
-        return $payment->getStatus() === $this->getPaymentStatus();
+        return $this->isMatchingStatus($payment->getStatus());
+    }
+
+    /**
+     * @param string $status
+     *
+     * @return bool
+     */
+    protected function isMatchingStatus($status)
+    {
+        $expectedStatus = $this->getPaymentStatus();
+
+        if (is_array($expectedStatus)) {
+            return in_array($status, $expectedStatus, true);
+        }
+
+        return $status === $expectedStatus;
     }
 
     /**

@@ -24,6 +24,7 @@ $config[AmazonPayConstants::WIDGET_POPUP_LOGIN] = true;
 $config[AmazonPayConstants::WIDGET_BUTTON_TYPE] = AmazonPayConfig::WIDGET_BUTTON_TYPE_FULL;
 $config[AmazonPayConstants::WIDGET_BUTTON_SIZE] = AmazonPayConfig::WIDGET_BUTTON_SIZE_MEDIUM;
 $config[AmazonPayConstants::WIDGET_BUTTON_COLOR] = AmazonPayConfig::WIDGET_BUTTON_COLOR_DARK_GRAY;
+$config[AmazonPayConstants::ENABLE_ISOLATE_LEVEL_READ] = true; /* make sure to put `false` for test environment */
 
 $config[SalesConstants::PAYMENT_METHOD_STATEMACHINE_MAPPING][AmazonPayConfig::PROVIDER_NAME] =
     $config[AmazonPayConstants::CAPTURE_NOW] ? 'AmazonpayPaymentSync01' : 'AmazonpayPaymentAsync01';
