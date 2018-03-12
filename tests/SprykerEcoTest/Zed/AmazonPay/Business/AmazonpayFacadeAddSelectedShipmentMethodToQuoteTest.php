@@ -15,11 +15,9 @@ use Spryker\Shared\Shipment\ShipmentConstants;
 class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacadeAbstractTest
 {
     /**
-     * @param int $shipmentSelection
-     *
      * @return \Generated\Shared\Transfer\QuoteTransfer $shipmentSelection
      */
-    protected function createQuote($shipmentSelection)
+    protected function createQuote()
     {
         $quote = new QuoteTransfer();
         $quote->setCurrency(
@@ -29,7 +27,6 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
             ->setPriceMode(ShipmentConstants::PRICE_MODE_GROSS);
 
         $shipment = new ShipmentTransfer();
-        $shipment->setShipmentSelection($shipmentSelection);
         $quote->setShipment($shipment);
 
         return $quote;
@@ -39,13 +36,17 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
      * @dataProvider addSelectedShipmentMethodToQuoteProvider
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param int $shipmentMethodIndex
      * @param string $shipmentMethodName
      * @param int $shipmentPrice
      *
      * @return void
      */
-    public function testAddSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer, $shipmentMethodName, $shipmentPrice)
+    public function testAddSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer, $shipmentMethodIndex, $shipmentMethodName, $shipmentPrice)
     {
+        $shipmentMethodIds = $this->createShipmentMethods(2);
+        $quoteTransfer->getShipment()->setShipmentSelection($shipmentMethodIds[$shipmentMethodIndex]);
+
         $resultQuote = $this->createFacade()->addSelectedShipmentMethodToQuote($quoteTransfer);
 
         /** @var \Generated\Shared\Transfer\ExpenseTransfer $expensesTransfer */
@@ -60,11 +61,9 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
      */
     public function addSelectedShipmentMethodToQuoteProvider()
     {
-        $shipmentMethodIds = $this->createShipmentMethods(2);
-
         return [
-            'Standard delivery' => [$this->createQuote($shipmentMethodIds[0]), 'Standard', 490],
-            'Express delivery' => [$this->createQuote($shipmentMethodIds[1]), 'Express', 590],
+            'Standard delivery' => [$this->createQuote(), 0, 'Standard', 490],
+            'Express delivery' => [$this->createQuote(), 1, 'Express', 590],
         ];
     }
 }

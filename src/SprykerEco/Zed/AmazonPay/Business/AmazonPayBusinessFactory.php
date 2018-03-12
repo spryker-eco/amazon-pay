@@ -25,7 +25,7 @@ use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\TransactionFac
 use SprykerEco\Zed\AmazonPay\Business\Quote\QuoteUpdateFactory;
 
 /**
- * @method \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainer getQueryContainer()
+ * @method \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface getQueryContainer()
  */
 class AmazonPayBusinessFactory extends AbstractBusinessFactory
 {
@@ -212,7 +212,7 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorInterface
      */
-    public function createPaymentProcessorModel()
+    protected function createPaymentProcessorModel()
     {
         return new PaymentProcessorModel(
             $this->getQueryContainer(),

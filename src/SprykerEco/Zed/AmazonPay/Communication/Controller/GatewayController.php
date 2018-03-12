@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractGatewayController;
 
 /**
- * @method \SprykerEco\Zed\AmazonPay\Business\AmazonPayFacade getFacade()
+ * @method \SprykerEco\Zed\AmazonPay\Business\AmazonPayFacadeInterface getFacade()
  */
 class GatewayController extends AbstractGatewayController
 {

@@ -14,7 +14,7 @@ use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 
 /**
  * @method \SprykerEco\Shared\AmazonPay\AmazonPayConfig getConfig()
- * @method \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainer getQueryContainer()
+ * @method \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface getQueryContainer()
  */
 class AmazonPayPersistenceFactory extends AbstractPersistenceFactory
 {

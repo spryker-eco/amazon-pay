@@ -231,4 +231,13 @@ interface AmazonPayFacadeInterface
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
     public function hydrateOrderInfo(OrderTransfer $orderTransfer);
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     * @param int[] $alreadyAffectedItems
+     * @param string $eventName
+     *
+     * @return void
+     */
+    public function triggerEventForRelatedItems(AmazonpayCallTransfer $amazonpayCallTransfer, array $alreadyAffectedItems, $eventName);
 }

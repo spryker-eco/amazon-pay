@@ -13,7 +13,8 @@ use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 /**
- * @method \SprykerEco\Zed\AmazonPay\Business\AmazonPayFacade getFacade()
+ * @method \SprykerEco\Zed\AmazonPay\Business\AmazonPayFacadeInterface getFacade()
+ * @method \SprykerEco\Zed\AmazonPay\Business\AmazonPayBusinessFactory getFactory()
  */
 class CancelOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
 {

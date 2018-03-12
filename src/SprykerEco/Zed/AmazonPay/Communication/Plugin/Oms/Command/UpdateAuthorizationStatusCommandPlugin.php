@@ -14,7 +14,7 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 /**
  * @method \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface getQueryContainer()
- * @method \SprykerEco\Zed\AmazonPay\Business\AmazonPayFacade getFacade()
+ * @method \SprykerEco\Zed\AmazonPay\Business\AmazonPayFacadeInterface getFacade()
  */
 class UpdateAuthorizationStatusCommandPlugin extends AbstractAmazonpayCommandPlugin
 {

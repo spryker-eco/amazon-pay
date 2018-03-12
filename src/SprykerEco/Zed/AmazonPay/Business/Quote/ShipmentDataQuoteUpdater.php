@@ -63,7 +63,7 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
             }
         }
 
-        throw new Exception(sprintf('%s, %s', $idShipmentMethod, json_encode($shipmentMethodsTransfer->toArray())));
+        throw new Exception(sprintf('Shipment method #%s was not found , %s', $idShipmentMethod, json_encode($shipmentMethodsTransfer->toArray())));
     }
 
     /**

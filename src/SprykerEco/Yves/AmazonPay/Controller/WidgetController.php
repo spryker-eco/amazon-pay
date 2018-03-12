@@ -11,7 +11,6 @@ use Spryker\Yves\Kernel\Controller\AbstractController;
 
 /**
  * @method \SprykerEco\Yves\AmazonPay\AmazonPayFactory getFactory()
- * @method \SprykerEco\Client\AmazonPay\AmazonPayClient getClient()
  */
 class WidgetController extends AbstractController
 {
