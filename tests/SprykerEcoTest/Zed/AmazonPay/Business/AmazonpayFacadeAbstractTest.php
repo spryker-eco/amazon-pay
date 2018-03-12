@@ -119,6 +119,12 @@ class AmazonpayFacadeAbstractTest extends Test
             }
         }
 
+        $shipmentMethods = SpyShipmentMethodQuery::create()
+            ->limit($count)
+            ->find();
+
+        throw new \Exception(var_export($shipmentMethods->toArray(), true));
+
         return $ids;
     }
 
