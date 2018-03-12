@@ -9,8 +9,11 @@ namespace SprykerEcoTest\Zed\AmazonPay\Business;
 
 use Generated\Shared\Transfer\CurrencyTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\ShipmentMethodTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
 use Spryker\Shared\Shipment\ShipmentConstants;
+use Spryker\Zed\Shipment\Business\ShipmentFacade;
+use Spryker\Zed\Shipment\Business\ShipmentFacadeInterface;
 
 class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacadeAbstractTest
 {
@@ -44,7 +47,7 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
      */
     public function testAddSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer, $shipmentMethodIndex, $shipmentMethodName, $shipmentPrice)
     {
-        $shipmentMethodIds = $this->createShipmentMethods(2);
+        $shipmentMethodIds = $this->getAvailableMethods($quoteTransfer);
         $quoteTransfer->getShipment()->setShipmentSelection($shipmentMethodIds[$shipmentMethodIndex]);
 
         $resultQuote = $this->createFacade()->addSelectedShipmentMethodToQuote($quoteTransfer);
@@ -65,5 +68,30 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
             'Standard delivery' => [$this->createQuote(), 0, 'Standard', 490],
             'Express delivery' => [$this->createQuote(), 1, 'Express', 590],
         ];
+    }
+
+    /**
+     * @param QuoteTransfer $quoteTransfer
+     *
+     * @return int[]
+     */
+    protected function getAvailableMethods(QuoteTransfer $quoteTransfer)
+    {
+        $shipmentMethods = $this->createShipmentFacade()->getAvailableMethods($quoteTransfer);
+
+        return array_map(
+            function(ShipmentMethodTransfer $method) {
+                return $method->getIdShipmentMethod();
+            },
+            $shipmentMethods->getMethods()->getArrayCopy()
+        );
+    }
+
+    /**
+     * @return ShipmentFacadeInterface
+     */
+    protected function createShipmentFacade()
+    {
+        return new ShipmentFacade();
     }
 }
