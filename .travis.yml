@@ -47,6 +47,6 @@ before_install:
   - php -r "echo ini_get('memory_limit').PHP_EOL;"
   - echo "------"
 
-#script:
-#  - git clone -b dev https://github.com/spryker-eco/eco-ci.git ecoci
-#  - ./ecoci/build/travis.sh
+script:
+  - git clone -b dev https://github.com/spryker-eco/eco-ci.git ecoci
+  - ./ecoci/build/travis.sh
