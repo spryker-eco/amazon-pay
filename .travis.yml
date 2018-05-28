@@ -40,6 +40,7 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
+  - phpenv config-add travis.php.ini
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - phpenv config-rm xdebug.ini
   - echo "allowed memory"
