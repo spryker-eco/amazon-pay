@@ -39,16 +39,15 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
      * @dataProvider addSelectedShipmentMethodToQuoteProvider
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param int $shipmentMethodIndex
      * @param string $shipmentMethodName
      * @param int $shipmentPrice
      *
      * @return void
      */
-    public function testAddSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer, $shipmentMethodIndex, $shipmentMethodName, $shipmentPrice)
+    public function testAddSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer, $shipmentMethodName, $shipmentPrice)
     {
-        $shipmentMethodIds = $this->createShipmentMethods(2);
-        $quoteTransfer->getShipment()->setShipmentSelection($shipmentMethodIds[$shipmentMethodIndex]);
+        $shipmentMethodId = $this->createShipmentMethod($shipmentMethodName, $shipmentPrice);
+        $quoteTransfer->getShipment()->setShipmentSelection($shipmentMethodId);
 
         $resultQuote = $this->createFacade()->addSelectedShipmentMethodToQuote($quoteTransfer);
 
@@ -65,8 +64,8 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
     public function addSelectedShipmentMethodToQuoteProvider()
     {
         return [
-            'Standard delivery' => [$this->createQuote(), 0, 'Standard', 490],
-            'Express delivery' => [$this->createQuote(), 1, 'Express', 590],
+            'Standard delivery' => [$this->createQuote(), 'Standard', 490],
+            'Express delivery' => [$this->createQuote(), 'Express', 590],
         ];
     }
 

@@ -43,9 +43,6 @@ before_install:
   - phpenv config-add travis.php.ini
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - phpenv config-rm xdebug.ini
-  - echo "allowed memory"
-  - php -r "echo ini_get('memory_limit').PHP_EOL;"
-  - echo "------"
 
 script:
   - git clone -b dev https://github.com/spryker-eco/eco-ci.git ecoci
