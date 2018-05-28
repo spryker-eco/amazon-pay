@@ -13,7 +13,7 @@
         </states>
 
         <events>
-            <event name="update refund status" manual="true" command="AmazonPay/UpdateRefundStatus" />
+            <event name="update refund status" timeout="1 minute" command="AmazonPay/UpdateRefundStatus" />
             <event name="refund" manual="true" command="AmazonPay/RefundOrder" />
         </events>
 
@@ -21,6 +21,16 @@
             <!-- from closed to refund -->
             <transition>
                 <source>closed</source>
+                <target>waiting for refund status</target>
+                <event>refund</event>
+            </transition>
+            <transition>
+                <source>close allowed</source>
+                <target>waiting for refund status</target>
+                <event>refund</event>
+            </transition>
+            <transition>
+                <source>capture completed</source>
                 <target>waiting for refund status</target>
                 <event>refund</event>
             </transition>

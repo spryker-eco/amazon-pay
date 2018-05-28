@@ -20,6 +20,7 @@ use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddressQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
+use Orm\Zed\Shipment\Persistence\SpyShipmentCarrier;
 use Orm\Zed\Shipment\Persistence\SpyShipmentMethod;
 use Orm\Zed\Shipment\Persistence\SpyShipmentMethodQuery;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
@@ -60,6 +61,7 @@ class AmazonpayFacadeAbstractTest extends Test
         $config[AmazonPayConstants::WIDGET_BUTTON_TYPE] = AmazonPayConfig::WIDGET_BUTTON_TYPE_FULL;
         $config[AmazonPayConstants::WIDGET_BUTTON_SIZE] = AmazonPayConfig::WIDGET_BUTTON_SIZE_MEDIUM;
         $config[AmazonPayConstants::WIDGET_BUTTON_COLOR] = AmazonPayConfig::WIDGET_BUTTON_COLOR_DARK_GRAY;
+        $config[AmazonPayConstants::ENABLE_ISOLATE_LEVEL_READ] = false;
 
         foreach ($config as $key => $value) {
             $configHelper->setConfig($key, $value);
@@ -110,10 +112,17 @@ class AmazonpayFacadeAbstractTest extends Test
             $ids[] = $shipmentMethod->getIdShipmentMethod();
         }
 
+        $carrier = new SpyShipmentCarrier();
+        $carrier->setName('test-carrier');
+        $carrier->save();
+
         if (count($ids) < $count) {
-            for ($i = count($ids); $i < $count; $i++) {
+            for ($i = 0; $i < $count; $i++) {
                 $shipmentMethod = new SpyShipmentMethod();
-                $shipmentMethod->save();
+                $shipmentMethod
+                    ->setName($i)
+                    ->setFkShipmentCarrier($carrier->getIdShipmentCarrier())
+                    ->save();
                 $ids[] = $shipmentMethod->getIdShipmentMethod();
             }
         }

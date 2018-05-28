@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\AmazonPay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AmazonpayPriceTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
-use Spryker\Shared\Kernel\Transfer\TransferInterface;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 abstract class AbstractConverter
@@ -129,14 +128,7 @@ abstract class AbstractConverter
      */
     protected function getStatusName(array $statusData)
     {
-        if (isset(
-            $statusData[static::FIELD_STATE],
-            $this->statusMap[$statusData[static::FIELD_STATE]]
-        )) {
-            return $this->statusMap[$statusData[static::FIELD_STATE]];
-        }
-
-        return null;
+        return $this->getValueByKeyFromMap($this->statusMap, $statusData, static::FIELD_STATE);
     }
 
     /**
@@ -146,32 +138,38 @@ abstract class AbstractConverter
      */
     protected function getStatusNameByReasonCode(array $statusData)
     {
-        if (!empty($statusData[static::FIELD_REASON_CODE])
-            && isset($this->reasonToStatusMap[$statusData[static::FIELD_REASON_CODE]])) {
-            return $this->reasonToStatusMap[$statusData[static::FIELD_REASON_CODE]];
+        return $this->getValueByKeyFromMap($this->reasonToStatusMap, $statusData, static::FIELD_REASON_CODE);
+    }
+
+    /**
+     * @param array $map
+     * @param array $statusData
+     * @param string $key
+     *
+     * @return string|null
+     */
+    protected function getValueByKeyFromMap(array $map, array $statusData, $key)
+    {
+        if (!empty($statusData[$key])) {
+            return $map[$statusData[$key]] ?? null;
         }
 
         return null;
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\TransferInterface|\Generated\Shared\Transfer\CustomerTransfer|\Generated\Shared\Transfer\AddressTransfer $transfer
      * @param string $name
      *
-     * @return \Generated\Shared\Transfer\CustomerTransfer|\Generated\Shared\Transfer\AddressTransfer
+     * @return array
      */
-    protected function updateNameData(TransferInterface $transfer, $name)
+    protected function getNameData($name)
     {
         $names = explode(' ', $name, 2);
 
         if (count($names) === 2) {
-            $transfer->setFirstName($names[0]);
-            $transfer->setLastName($names[1]);
-        } else {
-            $transfer->setFirstName($name);
-            $transfer->setLastName($name);
+            return $names;
         }
 
-        return $transfer;
+        return [$name, $name];
     }
 }

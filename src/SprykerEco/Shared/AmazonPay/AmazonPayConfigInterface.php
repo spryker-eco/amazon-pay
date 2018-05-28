@@ -72,4 +72,9 @@ interface AmazonPayConfigInterface
      * @return string
      */
     public function getWidgetScriptPathSandbox();
+
+    /**
+     * @return bool
+     */
+    public function getEnableIsolateLevelRead();
 }

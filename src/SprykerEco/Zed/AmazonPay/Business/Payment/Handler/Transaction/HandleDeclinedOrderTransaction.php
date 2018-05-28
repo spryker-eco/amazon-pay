@@ -41,23 +41,32 @@ class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
      */
     public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        if ($amazonPayCallTransfer
-                ->getAmazonpayPayment()
-                ->getAuthorizationDetails()
-                ->getAuthorizationStatus()
-                ->getState() !== AmazonPayConfig::STATUS_DECLINED
-        ) {
+        $stateName = $amazonPayCallTransfer
+            ->getAmazonpayPayment()
+            ->getAuthorizationDetails()
+            ->getAuthorizationStatus()
+            ->getState();
+
+        if ($stateName !== AmazonPayConfig::STATUS_DECLINED) {
             return $amazonPayCallTransfer;
         }
 
-        if ($amazonPayCallTransfer->getAmazonpayPayment()
-                ->getAuthorizationDetails()
-                ->getAuthorizationStatus()
-                ->getState() === AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID
-        ) {
+        if ($stateName === AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID) {
             return $amazonPayCallTransfer;
         }
 
+        $this->checkOrderStatus($amazonPayCallTransfer);
+
+        return $amazonPayCallTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return void
+     */
+    protected function checkOrderStatus(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
         $checkOrderStatus = $this->getOrderReferenceDetailsTransaction->execute($amazonPayCallTransfer);
 
         if ($checkOrderStatus->getAmazonpayPayment()
@@ -66,7 +75,5 @@ class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
         ) {
             $this->cancelOrderTransaction->execute($amazonPayCallTransfer);
         }
-
-        return $amazonPayCallTransfer;
     }
 }

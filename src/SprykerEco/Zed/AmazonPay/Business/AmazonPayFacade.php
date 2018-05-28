@@ -285,7 +285,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
         return $this->getFactory()
             ->createAdapterFactory()
             ->createIpnRequestAdapter($headers, $body)
-            ->getIpnRequest();
+            ->getIpnRequest($body);
     }
 
     /**
@@ -334,18 +334,5 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
         $this->getFactory()
             ->createRelatedItemsUpdateModel()
             ->triggerEvent($amazonpayCallTransfer, $alreadyAffectedItems, $eventName);
-    }
-
-    /**
-     * @param string $orderReferenceId
-     * @param string $status
-     *
-     * @return void
-     */
-    public function updateStatus($orderReferenceId, $status)
-    {
-        $this->getFactory()
-            ->createPaymentProcessorModel()
-            ->updateStatus($orderReferenceId, $status);
     }
 }

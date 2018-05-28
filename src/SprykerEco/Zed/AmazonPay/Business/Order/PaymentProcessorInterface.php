@@ -15,6 +15,8 @@ interface PaymentProcessorInterface
     /**
      * @param string $orderReferenceId
      * @param string $status
+     *
+     * @return void
      */
     public function updateStatus($orderReferenceId, $status);
 

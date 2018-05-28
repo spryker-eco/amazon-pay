@@ -30,7 +30,13 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
     const OMS_STATUS_CAPTURE_PENDING = 'capture pending';
     const OMS_STATUS_CANCELLED = 'cancelled';
 
+    const OMS_STATUS_REFUND_PENDING = 'refund pending';
+    const OMS_STATUS_REFUND_COMPLETED = 'refund completed';
+    const OMS_STATUS_REFUND_DECLINED = 'refund declined';
+    const OMS_STATUS_REFUND_WAITING_FOR_STATUS = 'waiting for refund status';
+
     const OMS_EVENT_UPDATE_AUTH_STATUS = 'update authorization status';
+    const OMS_EVENT_CANCEL = 'cancel';
     const OMS_EVENT_UPDATE_CAPTURE_STATUS = 'update capture status';
     const OMS_EVENT_UPDATE_REFUND_STATUS = 'update refund status';
     const OMS_EVENT_CAPTURE = 'capture';
@@ -120,7 +126,7 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
      */
     public function isSandbox()
     {
-        return (bool)$this->get(AmazonPayConstants::SANDBOX);
+        return (bool)$this->get(AmazonPayConstants::SANDBOX, true);
     }
 
     /**
@@ -136,7 +142,7 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
      */
     public function getCaptureNow()
     {
-        return (bool)$this->get(AmazonPayConstants::CAPTURE_NOW);
+        return (bool)$this->get(AmazonPayConstants::CAPTURE_NOW, false);
     }
 
     /**
@@ -144,7 +150,7 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
      */
     public function getAuthTransactionTimeout()
     {
-        return (int)$this->get(AmazonPayConstants::AUTH_TRANSACTION_TIMEOUT);
+        return (int)$this->get(AmazonPayConstants::AUTH_TRANSACTION_TIMEOUT, 0);
     }
 
     /**
@@ -168,7 +174,7 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
      */
     public function getPopupLogin()
     {
-        return (bool)$this->get(AmazonPayConstants::WIDGET_POPUP_LOGIN);
+        return (bool)$this->get(AmazonPayConstants::WIDGET_POPUP_LOGIN, false);
     }
 
     /**
@@ -201,5 +207,13 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
     public function getPaymentRejectRoute()
     {
         return $this->get(AmazonPayConstants::PAYMENT_REJECT_ROUTE);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getEnableIsolateLevelRead()
+    {
+        return (bool)$this->get(AmazonPayConstants::ENABLE_ISOLATE_LEVEL_READ, false);
     }
 }

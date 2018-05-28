@@ -12,10 +12,13 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 class IsPendingConditionPlugin extends AbstractByOrderItemConditionPlugin
 {
     /**
-     * @return string
+     * @return string|array
      */
     protected function getPaymentStatus()
     {
-        return AmazonPayConfig::STATUS_PENDING;
+        return [
+            AmazonPayConfig::STATUS_PENDING,
+            AmazonPayConfig::STATUS_OPEN,
+        ];
     }
 }

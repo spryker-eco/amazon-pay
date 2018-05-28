@@ -21,11 +21,27 @@ class IsCloseAllowedConditionPlugin implements ConditionInterface
     public function check(SpySalesOrderItem $orderItem)
     {
         foreach ($orderItem->getOrder()->getItems() as $salesOrderItem) {
-            if ($salesOrderItem->getState()->getName() !== AmazonPayConfig::OMS_STATUS_CAPTURE_COMPLETED) {
+            if (!$this->isInCloseAllowedState($salesOrderItem->getState()->getName())) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    /**
+     * @param string $state
+     *
+     * @return bool
+     */
+    protected function isInCloseAllowedState($state)
+    {
+        return in_array($state, [
+            AmazonPayConfig::OMS_STATUS_CAPTURE_COMPLETED,
+            AmazonPayConfig::OMS_STATUS_REFUND_COMPLETED,
+            AmazonPayConfig::OMS_STATUS_REFUND_PENDING,
+            AmazonPayConfig::OMS_STATUS_REFUND_DECLINED,
+            AmazonPayConfig::OMS_STATUS_REFUND_WAITING_FOR_STATUS,
+        ], true);
     }
 }

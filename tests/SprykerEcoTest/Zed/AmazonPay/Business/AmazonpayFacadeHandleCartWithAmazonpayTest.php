@@ -55,10 +55,14 @@ class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstract
         $this->assertNotNull($resultTransfer->getCustomer());
         if ($loggedIn) {
             $this->assertEquals(self::ID_CUSTOMER, $resultTransfer->getCustomer()->getIdCustomer());
+            $this->assertEquals($quoteTransfer->getCustomer()->getFirstName(), $resultTransfer->getCustomer()->getFirstName());
+            $this->assertEquals($quoteTransfer->getCustomer()->getLastName(), $resultTransfer->getCustomer()->getLastName());
+            $this->assertEquals($quoteTransfer->getCustomer()->getEmail(), $resultTransfer->getCustomer()->getEmail());
+        } else {
+            $this->assertEquals(ClientMock::FIRST_NAME, $resultTransfer->getCustomer()->getFirstName());
+            $this->assertEquals(ClientMock::LAST_NAME, $resultTransfer->getCustomer()->getLastName());
+            $this->assertEquals(ClientMock::EMAIL, $resultTransfer->getCustomer()->getEmail());
         }
-        $this->assertEquals(ClientMock::FIRST_NAME, $resultTransfer->getCustomer()->getFirstName());
-        $this->assertEquals(ClientMock::LAST_NAME, $resultTransfer->getCustomer()->getLastName());
-        $this->assertEquals(ClientMock::EMAIL, $resultTransfer->getCustomer()->getEmail());
         $this->assertNotEmpty(
             $resultTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()
         );

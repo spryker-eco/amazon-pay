@@ -33,13 +33,13 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
      *
      * @return string
      */
-    protected function buildErrorCode(AmazonpayCallTransfer $amazonpayCallTransfer)
+    protected function buildErrorMessage(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
         return AmazonPayConfig::PREFIX_AMAZONPAY_PAYMENT_ERROR .
-        $amazonpayCallTransfer->getAmazonpayPayment()
-            ->getAuthorizationDetails()
-            ->getAuthorizationStatus()
-            ->getReasonCode();
+            $amazonpayCallTransfer->getAmazonpayPayment()
+                ->getAuthorizationDetails()
+                ->getAuthorizationStatus()
+                ->getReasonCode();
     }
 
     /**
@@ -76,10 +76,10 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
             ->getAuthorizationDetails()
             ->getAuthorizationStatus();
 
-        if ($statusDetails->getState() === AmazonPayConfig::STATUS_DECLINED) {
+        if ($this->isStateDeclined($statusDetails->getState())) {
             $amazonPayCallTransfer->getAmazonpayPayment()->getResponseHeader()
                 ->setIsSuccess(false)
-                ->setErrorCode($this->buildErrorCode($amazonPayCallTransfer));
+                ->setErrorMessage($this->buildErrorMessage($amazonPayCallTransfer));
         }
 
         if ($this->paymentEntity) {
@@ -93,5 +93,22 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
                 $amazonPayCallTransfer
             );
         }
+    }
+
+    /**
+     * @param string $stateName
+     *
+     * @return bool
+     */
+    protected function isStateDeclined($stateName)
+    {
+        return in_array($stateName, [
+            AmazonPayConfig::STATUS_DECLINED,
+            AmazonPayConfig::STATUS_TRANSACTION_TIMED_OUT,
+            AmazonPayConfig::STATUS_CANCELLED,
+            AmazonPayConfig::STATUS_SUSPENDED,
+            AmazonPayConfig::STATUS_EXPIRED,
+            AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID,
+        ], true);
     }
 }

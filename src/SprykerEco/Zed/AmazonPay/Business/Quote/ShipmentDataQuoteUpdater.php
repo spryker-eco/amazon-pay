@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Quote;
 
 use ArrayObject;
+use Exception;
 use Generated\Shared\Transfer\ExpenseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
@@ -47,6 +48,8 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
+     * @throws \Exception
+     *
      * @return \Generated\Shared\Transfer\ShipmentMethodTransfer|null
      */
     protected function getShipmentMethodByQuote(QuoteTransfer $quoteTransfer)
@@ -60,7 +63,7 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
             }
         }
 
-        return null;
+        throw new Exception(sprintf('Shipment method #%s was not found , %s', $idShipmentMethod, json_encode($shipmentMethodsTransfer->toArray())));
     }
 
     /**

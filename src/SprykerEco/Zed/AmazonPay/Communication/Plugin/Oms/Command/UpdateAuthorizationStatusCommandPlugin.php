@@ -14,7 +14,7 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 /**
  * @method \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface getQueryContainer()
- * @method \SprykerEco\Zed\AmazonPay\Business\AmazonPayFacade getFacade
+ * @method \SprykerEco\Zed\AmazonPay\Business\AmazonPayFacadeInterface getFacade()
  */
 class UpdateAuthorizationStatusCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
@@ -31,9 +31,9 @@ class UpdateAuthorizationStatusCommandPlugin extends AbstractAmazonpayCommandPlu
 
         foreach ($amazonpayCallTransfers as $amazonpayCallTransfer) {
             $this->addAddresses($amazonpayCallTransfer, $orderEntity);
-            $updatedStatus = $this->getFacade()->updateAuthorizationStatus($amazonpayCallTransfer);
+            $updatedAmazonpayTransfer = $this->getFacade()->updateAuthorizationStatus($amazonpayCallTransfer);
 
-            if ($this->isOrderClosed($updatedStatus)) {
+            if ($this->isOrderClosed($updatedAmazonpayTransfer)) {
                 $this->getFacade()->authorizeOrderItems($amazonpayCallTransfer);
             }
 
@@ -48,16 +48,20 @@ class UpdateAuthorizationStatusCommandPlugin extends AbstractAmazonpayCommandPlu
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $updatedStatus
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
      * @return bool
      */
-    protected function isOrderClosed(AmazonpayCallTransfer $updatedStatus)
+    protected function isOrderClosed(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        return $updatedStatus->getAmazonpayPayment()
+        return $amazonpayCallTransfer->getAmazonpayPayment()
             ->getAuthorizationDetails()
             ->getAuthorizationStatus()
-            ->getState() === AmazonPayConfig::STATUS_CLOSED;
+            ->getState() === AmazonPayConfig::STATUS_CLOSED
+            &&
+            !$amazonpayCallTransfer->getAmazonpayPayment()
+            ->getAuthorizationDetails()
+            ->getCaptureNow();
     }
 
     /**

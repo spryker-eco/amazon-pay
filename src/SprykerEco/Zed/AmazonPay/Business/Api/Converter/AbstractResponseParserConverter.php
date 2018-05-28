@@ -140,6 +140,9 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     }
 
     /**
+     * @param \Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer $header
+     * @param array $response
+     *
      * @return void
      */
     protected function extractRequest(AmazonpayResponseHeaderTransfer $header, array $response)
@@ -332,6 +335,22 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     }
 
     /**
+     * @param \Generated\Shared\Transfer\AddressTransfer $transfer
+     * @param string $name
+     *
+     * @return \Generated\Shared\Transfer\AddressTransfer
+     */
+    protected function updateNameData(AddressTransfer $transfer, $name)
+    {
+        $names = $this->getNameData($name);
+
+        $transfer->setFirstName($names[0]);
+        $transfer->setLastName($names[1]);
+
+        return $transfer;
+    }
+
+    /**
      * @param string|array $value
      *
      * @return string|null
@@ -342,11 +361,11 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     }
 
     /**
-     * @param $constraint
+     * @param \Generated\Shared\Transfer\AmazonpayResponseConstraintTransfer $constraint
      *
      * @return string
      */
-    protected function buildErrorMessage($constraint):string
+    protected function buildErrorMessage(AmazonpayResponseConstraintTransfer $constraint)
     {
         return AmazonPayConfig::PREFIX_AMAZONPAY_PAYMENT_ERROR . $constraint->getConstraintId();
     }

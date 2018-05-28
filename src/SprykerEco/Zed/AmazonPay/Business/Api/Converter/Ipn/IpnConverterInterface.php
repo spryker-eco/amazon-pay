@@ -11,8 +11,9 @@ interface IpnConverterInterface
 {
     /**
      * @param array $request
+     * @param string $body
      *
      * @return \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer
      */
-    public function convert(array $request);
+    public function convert(array $request, $body);
 }

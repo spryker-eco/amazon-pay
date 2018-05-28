@@ -23,14 +23,15 @@ class IpnArrayConverter implements IpnConverterInterface
     }
 
     /**
-     * @param array $ipnRequest
+     * @param array $request
+     * @param string $body
      *
      * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
      */
-    public function convert(array $ipnRequest)
+    public function convert(array $request, $body)
     {
         return $this->ipnConverterFactory
-            ->getIpnRequestConverter($ipnRequest)
-            ->convert($ipnRequest);
+            ->getIpnRequestConverter($request)
+            ->convert($request, $body);
     }
 }
