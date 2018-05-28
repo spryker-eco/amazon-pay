@@ -80,7 +80,6 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
         );
 
         $this->createFacade()->saveOrderPayment($quote, $checkoutResponseTransfer);
-        $this->assertTrue(true);
     }
 
     /**
