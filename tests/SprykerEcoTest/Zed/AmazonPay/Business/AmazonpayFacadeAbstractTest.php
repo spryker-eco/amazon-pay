@@ -22,7 +22,10 @@ use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use Orm\Zed\Shipment\Persistence\SpyShipmentCarrier;
 use Orm\Zed\Shipment\Persistence\SpyShipmentMethod;
+use Orm\Zed\Shipment\Persistence\SpyShipmentMethodPrice;
 use Orm\Zed\Shipment\Persistence\SpyShipmentMethodQuery;
+use Spryker\Zed\Currency\Business\CurrencyFacade;
+use Spryker\Zed\Store\Business\StoreFacade;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Shared\AmazonPay\AmazonPayConstants;
 use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayEntityToTransferConverter;
@@ -117,6 +120,8 @@ class AmazonpayFacadeAbstractTest extends Test
         $carrier->save();
 
         if (count($ids) < $count) {
+            $storeCurrency = $this->getCurrentCurrencyStore();
+
             for ($i = 0; $i < $count; $i++) {
                 $shipmentMethod = new SpyShipmentMethod();
                 $shipmentMethod
@@ -124,10 +129,24 @@ class AmazonpayFacadeAbstractTest extends Test
                     ->setFkShipmentCarrier($carrier->getIdShipmentCarrier())
                     ->save();
                 $ids[] = $shipmentMethod->getIdShipmentMethod();
+                $storePrice = new SpyShipmentMethodPrice();
+                $storePrice->setFkStore($storeCurrency->getStore()->getIdStore())
+                    ->setFkShipmentMethod($shipmentMethod->getIdShipmentMethod())
+                    ->setFkCurrency($storeCurrency->getCurrencies()[0]->getIdCurrency())
+                    ->setDefaultGrossPrice(10)
+                    ->setDefaultNetPrice(10);
+                $storePrice->save();
             }
         }
 
         return $ids;
+    }
+
+    protected function getCurrentCurrencyStore()
+    {
+        $facade = new CurrencyFacade();
+
+        return $facade->getCurrentStoreWithCurrencies();
     }
 
     /**
