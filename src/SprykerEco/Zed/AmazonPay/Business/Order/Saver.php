@@ -25,6 +25,10 @@ class Saver implements SaverInterface
      */
     public function saveOrderPayment(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer)
     {
+        if ($quoteTransfer->getAmazonpayPayment() === null) {
+            return;
+        }
+
         $paymentAmazonpayEntity = $this->createPaymentAmazonpay($quoteTransfer->getAmazonpayPayment());
 
         $this->assignPaymentEntityToItems(

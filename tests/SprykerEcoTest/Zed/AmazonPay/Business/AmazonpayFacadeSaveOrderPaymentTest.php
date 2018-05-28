@@ -67,6 +67,23 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
     }
 
     /**
+     * @return void
+     */
+    public function testSaveOrderPaymentNonAmazon()
+    {
+        $quote = new QuoteTransfer();
+
+        $checkoutResponseTransfer = new CheckoutResponseTransfer();
+        $checkoutResponseTransfer->setSaveOrder(
+            (new SaveOrderTransfer())
+            ->setOrderItems($quote->getItems())
+        );
+
+        $this->createFacade()->saveOrderPayment($quote, $checkoutResponseTransfer);
+        $this->assertTrue(true);
+    }
+
+    /**
      * @return array
      */
     public function providerQuotes()
