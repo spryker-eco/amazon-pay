@@ -21,8 +21,14 @@ use Orm\Zed\Sales\Persistence\SpySalesOrderAddressQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use Orm\Zed\Shipment\Persistence\SpyShipmentCarrier;
+use Orm\Zed\Shipment\Persistence\SpyShipmentCarrierQuery;
 use Orm\Zed\Shipment\Persistence\SpyShipmentMethod;
+use Orm\Zed\Shipment\Persistence\SpyShipmentMethodPrice;
+use Orm\Zed\Shipment\Persistence\SpyShipmentMethodPriceQuery;
 use Orm\Zed\Shipment\Persistence\SpyShipmentMethodQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
+use Spryker\Zed\Currency\Business\CurrencyFacade;
+use Spryker\Zed\Store\Business\StoreFacade;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Shared\AmazonPay\AmazonPayConstants;
 use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayEntityToTransferConverter;
@@ -97,37 +103,51 @@ class AmazonpayFacadeAbstractTest extends Test
     }
 
     /**
-     * @param int $count
+     * @param string $name
+     * @param int $price
      *
-     * @return array
+     * @return int
      */
-    protected function createShipmentMethods($count)
+    protected function createShipmentMethod($name, $price)
     {
-        $shipmentMethods = SpyShipmentMethodQuery::create()
-            ->limit($count)
-            ->find();
+        $currencyStore = $this->getCurrentCurrencyStore();
 
-        $ids = [];
-        foreach ($shipmentMethods as $shipmentMethod) {
-            $ids[] = $shipmentMethod->getIdShipmentMethod();
-        }
+        $shipmentCarrier = SpyShipmentCarrierQuery::create()
+            ->filterByName($name)
+            ->findOneOrCreate();
 
-        $carrier = new SpyShipmentCarrier();
-        $carrier->setName('test-carrier');
-        $carrier->save();
+        $shipmentCarrier->save();
 
-        if (count($ids) < $count) {
-            for ($i = 0; $i < $count; $i++) {
-                $shipmentMethod = new SpyShipmentMethod();
-                $shipmentMethod
-                    ->setName($i)
-                    ->setFkShipmentCarrier($carrier->getIdShipmentCarrier())
-                    ->save();
-                $ids[] = $shipmentMethod->getIdShipmentMethod();
-            }
-        }
+        $shipmentMethod = SpyShipmentMethodQuery::create()
+            ->filterByShipmentMethodKey($name)
+            ->findOneOrCreate();
 
-        return $ids;
+        $shipmentMethod
+            ->setFkShipmentCarrier($shipmentCarrier->getIdShipmentCarrier())
+            ->setName($name)
+            ->save();
+
+        $shipmentMethodPriceEntity = SpyShipmentMethodPriceQuery::create()
+            ->filterByFkShipmentMethod($shipmentMethod->getIdShipmentMethod())
+            ->filterByFkCurrency($currencyStore->getCurrencies()[0]->getIdCurrency())
+            ->filterByFkStore($currencyStore->getStore()->getIdStore())
+            ->findOneOrCreate();
+
+        $shipmentMethodPriceEntity->setDefaultNetPrice($price);
+        $shipmentMethodPriceEntity->setDefaultGrossPrice($price);
+        $shipmentMethodPriceEntity->save();
+
+        return $shipmentMethod->getIdShipmentMethod();
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\StoreWithCurrencyTransfer
+     */
+    protected function getCurrentCurrencyStore()
+    {
+        $facade = new CurrencyFacade();
+
+        return $facade->getCurrentStoreWithCurrencies();
     }
 
     /**
