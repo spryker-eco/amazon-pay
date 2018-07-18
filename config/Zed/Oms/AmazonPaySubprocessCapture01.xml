@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="AmazonPaySubprocessCapture01">
+        <states>
+            <state name="capture completed" reserved="true"/>
+            <state name="capture pending" reserved="true"/>
+            <state name="capture declined">
+                <flag>not auth</flag>
+            </state>
+            <state name="waiting for capture status" reserved="true"/>
+        </states>
+
+        <events>
+            <event name="update capture status" timeout="1 minute" command="AmazonPay/UpdateCaptureStatus" />
+        </events>
+
+        <transitions>
+            <transition>
+                <source>capture pending</source>
+                <target>waiting for capture status</target>
+                <event>update capture status</event>
+            </transition>
+
+            <transition condition="AmazonPay/IsCaptureCompleted">
+                <source>auth closed</source>
+                <target>capture completed</target>
+            </transition>
+            <transition condition="AmazonPay/IsCaptureCompleted" happy="true">
+                <source>waiting for capture status</source>
+                <target>capture completed</target>
+            </transition>
+            <transition condition="AmazonPay/IsCapturePending">
+                <source>waiting for capture status</source>
+                <target>capture pending</target>
+            </transition>
+            <transition condition="AmazonPay/IsCaptureDeclined">
+                <source>waiting for capture status</source>
+                <target>capture declined</target>
+            </transition>
+
+        </transitions>
+    </process>
+
+</statemachine>
