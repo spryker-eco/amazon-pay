@@ -44,7 +44,7 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
      *
      * @return void
      */
-    public function xtestAddSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer, $shipmentMethodName, $shipmentPrice)
+    public function testAddSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer, $shipmentMethodName, $shipmentPrice)
     {
         $shipmentMethodId = $this->createShipmentMethod($shipmentMethodName, $shipmentPrice);
         $quoteTransfer->getShipment()->setShipmentSelection($shipmentMethodId);
