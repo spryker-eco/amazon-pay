@@ -18,15 +18,27 @@
                 amazonpayConfig.updateShipmentMethodUrl,
                 {'shipment_method_id': $(this).val()},
                 function() {
-                    $('#amazonpayPlaceOrderLink').attr('disabled', false);
+                    activatePlaceOrderButton();
                 }
             );
         });
 
-        if ($('input[name=amazonpayShipmentMethod]:checked').length === 0) {
-            $('input[name=amazonpayShipmentMethod]:first').click();
-        } else {
-            $('#amazonpayPlaceOrderLink').attr('disabled', false);
+        if (!selectDefaultShipmentMethod()) {
+            activatePlaceOrderButton();
         }
     });
+
+    function selectDefaultShipmentMethod() {
+        if ($('input[name=amazonpayShipmentMethod]:checked').length === 0) {
+            $('input[name=amazonpayShipmentMethod]:first').click();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    function activatePlaceOrderButton() {
+        $('#amazonpayPlaceOrderLink').attr('disabled', false);
+    }
 </script>
