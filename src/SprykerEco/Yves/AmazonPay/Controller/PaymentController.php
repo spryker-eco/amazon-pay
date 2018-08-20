@@ -223,12 +223,12 @@ class PaymentController extends AbstractController
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return int
+     * @return int|null
      */
     protected function getCurrentShipmentMethodId(QuoteTransfer $quoteTransfer)
     {
         if ($quoteTransfer->getShipment() === null || $quoteTransfer->getShipment()->getMethod() === null) {
-            return 0;
+            return null;
         }
 
         return $quoteTransfer->getShipment()->getMethod()->getIdShipmentMethod();
