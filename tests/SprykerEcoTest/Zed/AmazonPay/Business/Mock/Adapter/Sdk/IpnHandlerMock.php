@@ -17,12 +17,12 @@ class IpnHandlerMock extends IpnHandler
     private $headers = null;
 
     /**
-     * @var null
+     * @var string|null
      */
     private $body = null;
 
     /**
-     * @var mixed|null
+     * @var array|null
      */
     private $snsMessage = null;
 
@@ -39,7 +39,7 @@ class IpnHandlerMock extends IpnHandler
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public function returnMessage()
     {
