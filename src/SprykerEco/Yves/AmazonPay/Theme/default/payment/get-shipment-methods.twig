@@ -1,6 +1,9 @@
 {% for shipmentMethod in shipmentMethods %}
     <ul>
-        <input type="radio" id="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}" name="amazonpayShipmentMethod" value="{{ shipmentMethod.idShipmentMethod }}" />
+        <input type="radio" id="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}" name="amazonpayShipmentMethod"
+               value="{{ shipmentMethod.idShipmentMethod }}" {% if selectedShipmentMethodId == shipmentMethod.idShipmentMethod %} checked="checked"{% endif %}
+               {% if isAmazonPaymentInvalid %} disabled="disabled"{% endif %}
+        />
         <label for="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}">{{ shipmentMethod.name }}</label>
     </ul>
 {% endfor %}
@@ -15,11 +18,27 @@
                 amazonpayConfig.updateShipmentMethodUrl,
                 {'shipment_method_id': $(this).val()},
                 function() {
-                    $('#amazonpayPlaceOrderLink').attr('disabled', false);
+                    activatePlaceOrderButton();
                 }
             );
         });
 
-        $('input[name=amazonpayShipmentMethod]:first').click();
+        if (!selectDefaultShipmentMethod()) {
+            activatePlaceOrderButton();
+        }
     });
+
+    function selectDefaultShipmentMethod() {
+        if ($('input[name=amazonpayShipmentMethod]:checked').length === 0) {
+            $('input[name=amazonpayShipmentMethod]:first').click();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    function activatePlaceOrderButton() {
+        $('#amazonpayPlaceOrderLink').attr('disabled', false);
+    }
 </script>
