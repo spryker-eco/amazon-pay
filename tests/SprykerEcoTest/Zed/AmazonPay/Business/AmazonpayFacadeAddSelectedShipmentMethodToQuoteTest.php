@@ -11,28 +11,30 @@ use Generated\Shared\Transfer\CurrencyTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
+use Pyz\Zed\Shipment\ShipmentDependencyProvider;
 use Spryker\Shared\Shipment\ShipmentConstants;
 use Spryker\Zed\Shipment\Business\ShipmentFacade;
 use Spryker\Zed\Shipment\Business\ShipmentFacadeInterface;
+use SprykerTest\Shared\Testify\Helper\DependencyHelperTrait;
 
+/**
+ * @group AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest
+ */
 class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacadeAbstractTest
 {
+    use DependencyHelperTrait;
+
     /**
-     * @return \Generated\Shared\Transfer\QuoteTransfer $shipmentSelection
+     * @return void
      */
-    protected function createQuote()
+    public function setUp()
     {
-        $quote = new QuoteTransfer();
-        $quote->setCurrency(
-            (new CurrencyTransfer())
-                ->setCode('EUR')
-        )
-            ->setPriceMode(ShipmentConstants::PRICE_MODE_GROSS);
-
-        $shipment = new ShipmentTransfer();
-        $quote->setShipment($shipment);
-
-        return $quote;
+        $this->setDependency(
+            ShipmentDependencyProvider::SHIPMENT_METHOD_FILTER_PLUGINS,
+            function () {
+                return [];
+            }
+        );
     }
 
     /**
@@ -56,6 +58,24 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
 
         $this->assertEquals($shipmentMethodName, $expensesTransfer->getName());
         $this->assertEquals($shipmentPrice, $expensesTransfer->getUnitGrossPrice());
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\QuoteTransfer $shipmentSelection
+     */
+    protected function createQuote()
+    {
+        $quote = new QuoteTransfer();
+        $quote->setCurrency(
+            (new CurrencyTransfer())
+                ->setCode('EUR')
+        )
+            ->setPriceMode(ShipmentConstants::PRICE_MODE_GROSS);
+
+        $shipment = new ShipmentTransfer();
+        $quote->setShipment($shipment);
+
+        return $quote;
     }
 
     /**
