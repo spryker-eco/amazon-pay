@@ -10,6 +10,7 @@ namespace SprykerEcoTest\Zed\AmazonPay\Business;
 use ArrayObject;
 use Codeception\TestCase\Test;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use Generated\Shared\Transfer\StoreWithCurrencyTransfer;
 use Orm\Zed\AmazonPay\Persistence\Base\SpyPaymentAmazonpaySalesOrderItemQuery;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpayQuery;
@@ -20,10 +21,15 @@ use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddressQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
+use Orm\Zed\Shipment\Persistence\SpyShipmentCarrier;
 use Orm\Zed\Shipment\Persistence\SpyShipmentCarrierQuery;
+use Orm\Zed\Shipment\Persistence\SpyShipmentMethod;
+use Orm\Zed\Shipment\Persistence\SpyShipmentMethodPrice;
 use Orm\Zed\Shipment\Persistence\SpyShipmentMethodPriceQuery;
 use Orm\Zed\Shipment\Persistence\SpyShipmentMethodQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\Currency\Business\CurrencyFacade;
+use Spryker\Zed\Store\Business\StoreFacade;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Shared\AmazonPay\AmazonPayConstants;
 use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayEntityToTransferConverter;
@@ -124,7 +130,7 @@ class AmazonpayFacadeAbstractTest extends Test
 
         $shipmentMethodPriceEntity = SpyShipmentMethodPriceQuery::create()
             ->filterByFkShipmentMethod($shipmentMethod->getIdShipmentMethod())
-            ->filterByFkCurrency($currencyStore->getCurrencies()[0]->getIdCurrency())
+            ->filterByFkCurrency($this->getIdCurrency($currencyStore, $currencyStore->getStore()->getDefaultCurrencyIsoCode()))
             ->filterByFkStore($currencyStore->getStore()->getIdStore())
             ->findOneOrCreate();
 
@@ -133,6 +139,23 @@ class AmazonpayFacadeAbstractTest extends Test
         $shipmentMethodPriceEntity->save();
 
         return $shipmentMethod->getIdShipmentMethod();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\StoreWithCurrencyTransfer $storeWithCurrencyTransfer
+     * @param string $currencyCode
+     *
+     * @return int|null
+     */
+    protected function getIdCurrency(StoreWithCurrencyTransfer $storeWithCurrencyTransfer, string $currencyCode)
+    {
+        foreach ($storeWithCurrencyTransfer->getCurrencies() as $currencyTransfer) {
+            if ($currencyTransfer->getCode() === $currencyCode) {
+                return $currencyTransfer->getIdCurrency();
+            }
+        }
+
+        return null;
     }
 
     /**

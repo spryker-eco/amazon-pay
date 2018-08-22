@@ -1,12 +1,12 @@
+<script>
+    amazonpayConfig.updateShipmentMethodUrl = "{{ path('amazonpay_update_shipment_method') }}";
+</script>
 {% for shipmentMethod in shipmentMethods %}
     <ul>
         <input type="radio" id="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}" name="amazonpayShipmentMethod" value="{{ shipmentMethod.idShipmentMethod }}" />
         <label for="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}">{{ shipmentMethod.name }}</label>
     </ul>
 {% endfor %}
-<script>
-    amazonpayConfig.updateShipmentMethodUrl = "{{ path('amazonpay_update_shipment_method') }}";
-</script>
 <script>
     $(function() {
         $('input[name=amazonpayShipmentMethod]').change(function () {

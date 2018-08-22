@@ -24,6 +24,8 @@ class AmazonpayFacadeConvertAmazonpayIpnRequestTest extends AmazonpayFacadeAbstr
      */
     public function testConvertAmazonpayIpnRequest(array $headers, $body)
     {
+        $this->markTestSkipped('Should be rewritten to test converter, and not include the call to Amazon');
+
         $result = $this->createFacade()->convertAmazonPayIpnRequest($headers, $body);
         $this->assertInstanceOf(AmazonpayIpnPaymentRequestTransfer::class, $result);
     }
