@@ -90,7 +90,7 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param QuoteTransfer $quoteTransfer
      *
      * @return int[]
      */
@@ -99,7 +99,7 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
         $shipmentMethods = $this->createShipmentFacade()->getAvailableMethods($quoteTransfer);
 
         return array_map(
-            function (ShipmentMethodTransfer $method) {
+            function(ShipmentMethodTransfer $method) {
                 return $method->getIdShipmentMethod();
             },
             $shipmentMethods->getMethods()->getArrayCopy()
@@ -107,7 +107,7 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
     }
 
     /**
-     * @return \Spryker\Zed\Shipment\Business\ShipmentFacadeInterface
+     * @return ShipmentFacadeInterface
      */
     protected function createShipmentFacade()
     {

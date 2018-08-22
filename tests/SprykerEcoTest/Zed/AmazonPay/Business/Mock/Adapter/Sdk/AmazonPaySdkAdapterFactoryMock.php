@@ -32,15 +32,4 @@ class AmazonPaySdkAdapterFactoryMock extends AmazonPaySdkAdapterFactory
 
         return new ClientMock($aConfig);
     }
-
-    /**
-     * @param array $headers
-     * @param string $body
-     *
-     * @return \PayWithAmazon\IpnHandlerInterface
-     */
-    public function createAmazonPayIpnHandler(array $headers, $body)
-    {
-        return new IpnHandlerMock($headers, $body);
-    }
 }
