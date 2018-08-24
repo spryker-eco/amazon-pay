@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay;
+use Spryker\Shared\Log\LoggerTrait;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface;
 use SprykerEco\Zed\AmazonPay\Business\Api\Adapter\CallAdapterInterface;
 use SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorInterface;
@@ -16,6 +17,8 @@ use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\Transac
 
 abstract class AbstractAmazonpayTransaction extends AbstractTransaction implements AmazonpayTransactionInterface
 {
+    use LoggerTrait;
+
     /**
      * @var \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay
      */
@@ -65,6 +68,7 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
      */
     public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
+        $this->getLogger()->info(sprintf('Calling API: %s', json_encode($amazonPayCallTransfer)));
         $this->apiResponse = $this->executionAdapter->call($amazonPayCallTransfer);
 
         $amazonPayCallTransfer->getAmazonpayPayment()
