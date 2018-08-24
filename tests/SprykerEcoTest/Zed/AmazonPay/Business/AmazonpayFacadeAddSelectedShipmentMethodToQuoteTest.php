@@ -14,7 +14,6 @@ use Generated\Shared\Transfer\ShipmentTransfer;
 use Pyz\Zed\Shipment\ShipmentDependencyProvider;
 use Spryker\Shared\Shipment\ShipmentConstants;
 use Spryker\Zed\Shipment\Business\ShipmentFacade;
-use Spryker\Zed\Shipment\Business\ShipmentFacadeInterface;
 use SprykerTest\Shared\Testify\Helper\DependencyHelperTrait;
 
 /**
@@ -90,7 +89,7 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return int[]
      */
@@ -99,7 +98,7 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
         $shipmentMethods = $this->createShipmentFacade()->getAvailableMethods($quoteTransfer);
 
         return array_map(
-            function(ShipmentMethodTransfer $method) {
+            function (ShipmentMethodTransfer $method) {
                 return $method->getIdShipmentMethod();
             },
             $shipmentMethods->getMethods()->getArrayCopy()
@@ -107,7 +106,7 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
     }
 
     /**
-     * @return ShipmentFacadeInterface
+     * @return \Spryker\Zed\Shipment\Business\ShipmentFacadeInterface
      */
     protected function createShipmentFacade()
     {

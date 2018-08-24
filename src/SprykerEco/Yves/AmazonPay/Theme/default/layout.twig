@@ -1,28 +1,10 @@
 {% extends "@application/layout/layout.twig" %}
 
 {% block stylesheets %}
-    <style>
-        #amazonpayAddressBookWidgetDiv {
-            min-width: 300px;
-            width: 100%;
-            max-width: 900px;
-            min-height: 228px;
-            height: 240px;
-            max-height: 400px;
-        }
-
-        #amazonpayWalletWidgetDiv {
-            min-width: 300px;
-            width: 100%;
-            max-width: 900px;
-            min-height: 228px;
-            height: 240px;
-            max-height: 400px;
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/default/css/spryker-yves-amazon-pay-checkout-widgets.css" />
 {% endblock %}
 
 {% block javascript %}
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script async="async" src="{{ amazonpayConfig.isSandbox ? amazonpayConfig.widgetScriptPathSandbox : amazonpayConfig.widgetPathScript }}"></script>
+    {# <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>#}
+    {% include "@amazon-pay/partials/scripts.twig" %}
 {% endblock %}

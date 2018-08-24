@@ -1,5 +1,10 @@
 {% extends "@checkout/layout.twig" %}
 
+{% block javascript %}
+<script src="/assets/default/js/spryker-yves-amazon-pay-force-logout.js"></script>
+{% include "@amazon-pay/partials/scripts.twig" %}
+{% endblock %}
+
 {% block content %}
     <div class="row" data-component="amazon-pay-force-logout">
         <div class="small-12 columns">
@@ -14,9 +19,5 @@
         </div>
     </div>
 
-    <script async="async" src="{{ amazonpayConfig.isSandbox ? amazonpayConfig.widgetScriptPathSandbox : amazonpayConfig.widgetScriptPath }}"></script>
 {% endblock %}
 
-{% block javascript %}
-<script src="/assets/default/js/spryker-yves-amazon-pay-force-logout.js"></script>
-{% endblock %}

@@ -13,5 +13,5 @@
 
 <div id="AmazonPayButton" align="center"></div>
 
-<script async="async" src="{{ amazonpayConfig.isSandbox ? amazonpayConfig.widgetScriptPathSandbox : amazonpayConfig.widgetPathScript }}"></script>
 <script src="/assets/default/js/spryker-yves-amazon-pay-pay-button.js"></script>
+{% include "@amazon-pay/partials/scripts.twig" %}

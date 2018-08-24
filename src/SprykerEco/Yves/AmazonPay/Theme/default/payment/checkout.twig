@@ -15,7 +15,7 @@
         <div class="small-12 xlarge-3 columns">
             <div class="row">
                 <div class="small-12 medium-6 xlarge-12 columns">
-                    {% if quoteTransfer.payment.paymentMethod %}
+                    {% if quoteTransfer.payment and quoteTransfer.payment.paymentMethod %}
                     <div class="callout">
                         <h5>{{ 'checkout.step.summary.payment' | trans }}</h5>
                         <ul class="no-bullet">

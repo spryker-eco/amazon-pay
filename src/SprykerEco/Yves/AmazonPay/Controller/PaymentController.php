@@ -27,11 +27,13 @@ class PaymentController extends AbstractController
     const URL_PARAM_SHIPMENT_METHOD_ID = 'shipment_method_id';
     const QUOTE_TRANSFER = 'quoteTransfer';
     const SHIPMENT_METHODS = 'shipmentMethods';
+    const SELECTED_SHIPMENT_METHOD_ID = 'selectedShipmentMethodId';
     const AMAZONPAY_CONFIG = 'amazonpayConfig';
     const IS_ASYNCHRONOUS = 'isAsynchronous';
     const CART_ITEMS = 'cartItems';
     const SUCCESS = 'success';
     const ERROR_AMAZONPAY_PAYMENT_FAILED = 'amazonpay.payment.failed';
+    const IS_AMAZON_PAYMENT_INVALID = 'isAmazonPaymentInvalid';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -50,14 +52,7 @@ class PaymentController extends AbstractController
             return $this->buildRedirectInternalResponse();
         }
 
-        $amazonPaymentTransfer = $this->buildAmazonPaymentTransfer($request);
-
-        $quoteTransfer->setAmazonpayPayment($amazonPaymentTransfer);
-        $quoteTransfer = $this->getClient()
-            ->handleCartWithAmazonPay($quoteTransfer);
-        $this->getFactory()
-            ->getQuoteClient()
-            ->setQuote($quoteTransfer);
+        $this->storeAmazonPaymentIntoQuote($request, $quoteTransfer);
 
         return [
             static::QUOTE_TRANSFER => $quoteTransfer,
@@ -114,7 +109,9 @@ class PaymentController extends AbstractController
             ->getAvailableMethods($quoteTransfer);
 
         return [
+            static::SELECTED_SHIPMENT_METHOD_ID => $this->getCurrentShipmentMethodId($quoteTransfer),
             static::SHIPMENT_METHODS => $shipmentMethods->getMethods(),
+            static::IS_AMAZON_PAYMENT_INVALID => $this->isAmazonPaymentInvalid($quoteTransfer),
         ];
     }
 
@@ -199,6 +196,42 @@ class PaymentController extends AbstractController
             static::IS_ASYNCHRONOUS => $this->isAsynchronous(),
             static::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
         ];
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
+     */
+    protected function storeAmazonPaymentIntoQuote(Request $request, QuoteTransfer $quoteTransfer)
+    {
+        if ($quoteTransfer->getAmazonpayPayment() !== null) {
+            return;
+        }
+
+        $amazonPaymentTransfer = $this->buildAmazonPaymentTransfer($request);
+
+        $quoteTransfer->setAmazonpayPayment($amazonPaymentTransfer);
+        $quoteTransfer = $this->getClient()
+            ->handleCartWithAmazonPay($quoteTransfer);
+        $this->getFactory()
+            ->getQuoteClient()
+            ->setQuote($quoteTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return int|null
+     */
+    protected function getCurrentShipmentMethodId(QuoteTransfer $quoteTransfer)
+    {
+        if ($quoteTransfer->getShipment() === null || $quoteTransfer->getShipment()->getMethod() === null) {
+            return null;
+        }
+
+        return $quoteTransfer->getShipment()->getMethod()->getIdShipmentMethod();
     }
 
     /**
@@ -331,5 +364,16 @@ class PaymentController extends AbstractController
     protected function getAmazonPayConfig()
     {
         return $this->getFactory()->createAmazonPayConfig();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return bool
+     */
+    protected function isAmazonPaymentInvalid(QuoteTransfer $quoteTransfer)
+    {
+        return $quoteTransfer->getAmazonpayPayment()->getResponseHeader() !== null
+            && false === $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();
     }
 }
