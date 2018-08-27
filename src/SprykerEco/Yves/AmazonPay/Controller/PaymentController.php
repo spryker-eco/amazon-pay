@@ -158,7 +158,6 @@ class PaymentController extends AbstractController
         }
 
         $quoteTransfer = $this->getClient()->confirmPurchase($quoteTransfer);
-        var_dump($quoteTransfer->toArray()); die;
 
         if (!$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
             $this->addErrorFromQuote($quoteTransfer);
@@ -171,6 +170,7 @@ class PaymentController extends AbstractController
         $this->saveQuoteIntoSession($quoteTransfer);
 
         $checkoutResponseTransfer = $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
+        var_dump($checkoutResponseTransfer->toArray()); die;
 
         if ($checkoutResponseTransfer->getIsSuccess()) {
             return $this->redirectResponseInternal(AmazonPayControllerProvider::SUCCESS);
