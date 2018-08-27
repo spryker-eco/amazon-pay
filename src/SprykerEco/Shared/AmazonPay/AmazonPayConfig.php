@@ -65,6 +65,8 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
 
     const PREFIX_AMAZONPAY_PAYMENT_ERROR = 'amazonpay.payment.error.';
 
+    const DISPLAY_MODE_READONLY = 'Read';
+
     /**
      * @return string
      */

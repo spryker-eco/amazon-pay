@@ -2,6 +2,8 @@ new OffAmazonPayments.Widgets.AddressBook({
     sellerId: amazonpayConfig.sellerId,
     scope: 'profile payments:widget payments:shipping_address payments:billing_address',
     language: amazonpayConfig.locale,
+    amazonOrderReferenceId: amazonpayConfig.amazonOrderReferenceId,
+    displayMode: amazonpayConfig.addressBookMode,
     onOrderReferenceCreate: function(orderReference) {
         // Here is where you can grab the Order Reference ID.
         var aoid = orderReference.getAmazonOrderReferenceId();

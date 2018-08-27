@@ -7,15 +7,19 @@
 
 namespace SprykerEco\Yves\AmazonPay\Controller;
 
+use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Yves\Kernel\Controller\AbstractController;
+use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 /**
  * @method \SprykerEco\Yves\AmazonPay\AmazonPayFactory getFactory()
  */
 class WidgetController extends AbstractController
 {
+    const ADDRESS_BOOK_MODE = 'addressBookMode';
     const AMAZON_PAY_CONFIG = 'amazonpayConfig';
     const LOGOUT = 'logout';
+    const QUOTE_TRANSFER = 'quoteTransfer';
 
     /**
      * @return array
@@ -45,9 +49,29 @@ class WidgetController extends AbstractController
      */
     public function checkoutWidgetAction()
     {
+        $quoteTransfer = $this->getFactory()
+            ->getQuoteClient()
+            ->getQuote();
+
         return [
+            static::QUOTE_TRANSFER => $this->getAmazonPaymentOrderReferenceId($quoteTransfer),
             static::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
+            static::ADDRESS_BOOK_MODE => $this->isAmazonPaymentInvalid($quoteTransfer) ? AmazonPayConfig::DISPLAY_MODE_READONLY : null,
         ];
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return null|string
+     */
+    protected function getAmazonPaymentOrderReferenceId(QuoteTransfer $quoteTransfer)
+    {
+        if ($quoteTransfer->getAmazonpayPayment() !== null && $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId() !== null) {
+            return $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId();
+        }
+
+        return null;
     }
 
     /**
@@ -66,5 +90,16 @@ class WidgetController extends AbstractController
     protected function getAmazonPayConfig()
     {
         return $this->getFactory()->createAmazonPayConfig();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return bool
+     */
+    protected function isAmazonPaymentInvalid(QuoteTransfer $quoteTransfer)
+    {
+        return $quoteTransfer->getAmazonpayPayment()->getResponseHeader() !== null
+            && false === $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();
     }
 }

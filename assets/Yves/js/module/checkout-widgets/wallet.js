@@ -1,6 +1,7 @@
 new OffAmazonPayments.Widgets.Wallet({
     sellerId: amazonpayConfig.sellerId,
     scope: 'profile postal_code payments:widget payments:shipping_address',
+    amazonOrderReferenceId: amazonpayConfig.amazonOrderReferenceId,
     onPaymentSelect: function(orderReference) {
         // Replace this code with the action that you want to perform
         // after the payment method is selected.
