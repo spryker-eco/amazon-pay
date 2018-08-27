@@ -38,4 +38,4 @@ new OffAmazonPayments.Widgets.AddressBook({
     },
     onError: function(error) {
     }
-}).bind("amazonpayAddressBookWidgetDiv");
+}).bind("amazonpayAddressBookWidgetContainer");

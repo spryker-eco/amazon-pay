@@ -14,5 +14,5 @@ window.onAmazonPaymentsReady = function() {
         },
         onError: function(error) {
         }
-    }).bind("amazonpayWalletWidgetDiv");
+    }).bind("amazonpayWalletWidgetContainer");
 };

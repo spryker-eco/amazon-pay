@@ -1,4 +1,4 @@
-#amazonpayAddressBookWidgetDiv {
+#amazonpayAddressBookWidgetContainer {
     min-width: 300px;
     width: 100%;
     max-width: 900px;
@@ -7,7 +7,7 @@
     max-height: 400px;
 }
 
-#amazonpayWalletWidgetDiv {
+#amazonpayWalletWidgetContainer {
     min-width: 300px;
     width: 100%;
     max-width: 900px;

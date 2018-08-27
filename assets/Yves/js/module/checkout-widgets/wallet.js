@@ -13,4 +13,4 @@ new OffAmazonPayments.Widgets.Wallet({
     },
     onError: function(error) {
     }
-}).bind("amazonpayWalletWidgetDiv");
+}).bind("amazonpayWalletWidgetContainer");
