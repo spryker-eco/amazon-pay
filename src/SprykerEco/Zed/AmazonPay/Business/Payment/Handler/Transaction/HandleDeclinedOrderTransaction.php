@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
-use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface;
 
 class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
 {
@@ -24,23 +23,15 @@ class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
     protected $cancelOrderTransaction;
 
     /**
-     * @var \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface
-     */
-    protected $transactionLogger;
-
-    /**
      * @param \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface $getOrderReferenceDetailsTransaction
      * @param \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface $cancelOrderTransaction
-     * @param \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface $transactionLogger
      */
     public function __construct(
         AmazonpayTransactionInterface $getOrderReferenceDetailsTransaction,
-        AmazonpayTransactionInterface $cancelOrderTransaction,
-        TransactionLoggerInterface $transactionLogger
+        AmazonpayTransactionInterface $cancelOrderTransaction
     ) {
         $this->getOrderReferenceDetailsTransaction = $getOrderReferenceDetailsTransaction;
         $this->cancelOrderTransaction = $cancelOrderTransaction;
-        $this->transactionLogger = $transactionLogger;
     }
 
     /**

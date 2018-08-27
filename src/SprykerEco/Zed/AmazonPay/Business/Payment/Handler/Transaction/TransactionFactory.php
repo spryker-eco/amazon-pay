@@ -322,8 +322,7 @@ class TransactionFactory implements TransactionFactoryInterface
     {
         return new HandleDeclinedOrderTransaction(
             $this->createGetOrderReferenceDetailsTransaction(),
-            $this->createCancelOrderTransaction(),
-            $this->transactionLogger
+            $this->createCancelOrderTransaction()
         );
     }
 
