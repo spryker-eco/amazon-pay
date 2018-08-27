@@ -11,9 +11,9 @@ use Generated\Shared\Transfer\CurrencyTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
-use Pyz\Zed\Shipment\ShipmentDependencyProvider;
 use Spryker\Shared\Shipment\ShipmentConstants;
 use Spryker\Zed\Shipment\Business\ShipmentFacade;
+use Spryker\Zed\Shipment\ShipmentDependencyProvider;
 use SprykerTest\Shared\Testify\Helper\DependencyHelperTrait;
 
 /**
