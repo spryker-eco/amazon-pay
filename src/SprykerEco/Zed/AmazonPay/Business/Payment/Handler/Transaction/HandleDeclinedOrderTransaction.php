@@ -56,11 +56,6 @@ class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
             ->getAuthorizationStatus()
             ->getState();
 
-        $this->transactionLogger->logMessage(
-            $amazonPayCallTransfer->getAmazonpayPayment(),
-            sprintf('Status %s', $stateName)
-        );
-
         if ($stateName !== AmazonPayConfig::STATUS_DECLINED) {
             return $amazonPayCallTransfer;
         }
@@ -82,20 +77,11 @@ class HandleDeclinedOrderTransaction implements AmazonpayTransactionInterface
     protected function checkOrderStatus(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
         $checkOrderStatus = $this->getOrderReferenceDetailsTransaction->execute($amazonPayCallTransfer);
-        $this->transactionLogger->logMessage(
-            $amazonPayCallTransfer->getAmazonpayPayment(),
-            sprintf('Checking state: %s', json_encode($checkOrderStatus->toArray()))
-        );
-
 
         if ($checkOrderStatus->getAmazonpayPayment()
                 ->getOrderReferenceStatus()
                 ->getState() === AmazonPayConfig::STATUS_OPEN
         ) {
-            $this->transactionLogger->logMessage(
-                $amazonPayCallTransfer->getAmazonpayPayment(),
-                'Calling to Cancel'
-            );
             $this->cancelOrderTransaction->execute($amazonPayCallTransfer);
         }
     }

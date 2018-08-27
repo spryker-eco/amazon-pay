@@ -17,11 +17,4 @@ interface TransactionLoggerInterface
      * @return void
      */
     public function log(AmazonpayPaymentTransfer $amazonpayPaymentTransfer);
-    /**
-     * @param \Generated\Shared\Transfer\AmazonpayPaymentTransfer $amazonpayPaymentTransfer
-     * @param string $message
-     *
-     * @return void
-     */
-    public function logMessage(AmazonpayPaymentTransfer $amazonpayPaymentTransfer, string $message);
 }
