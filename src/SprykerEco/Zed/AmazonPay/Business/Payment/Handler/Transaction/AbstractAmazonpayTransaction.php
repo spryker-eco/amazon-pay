@@ -85,6 +85,10 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
             $amazonPayCallTransfer->getAmazonpayPayment()
         );
         $this->paymentEntity = $this->paymentProcessor->loadPaymentEntity($amazonPayCallTransfer);
+        $this->transactionsLogger->logMessage(
+            $amazonPayCallTransfer->getAmazonpayPayment(),
+            sprintf('Payment Entity: %s', json_encode($this->paymentEntity->toArray()))
+        );
 
         return $amazonPayCallTransfer;
     }
