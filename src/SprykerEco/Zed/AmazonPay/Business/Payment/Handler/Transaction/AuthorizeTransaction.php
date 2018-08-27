@@ -79,6 +79,7 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
         if ($this->isStateDeclined($statusDetails->getState())) {
             $amazonPayCallTransfer->getAmazonpayPayment()->getResponseHeader()
                 ->setIsSuccess(false)
+                ->setIsInvalidPaymentMethod($this->isInvalidPaymentMethod($amazonPayCallTransfer))
                 ->setErrorMessage($this->buildErrorMessage($amazonPayCallTransfer));
         }
 
@@ -110,5 +111,18 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
             AmazonPayConfig::STATUS_EXPIRED,
             AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID,
         ], true);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return bool
+     */
+    protected function isInvalidPaymentMethod(AmazonpayCallTransfer $amazonPayCallTransfer)
+    {
+        return ($amazonPayCallTransfer->getAmazonpayPayment()
+                ->getAuthorizationDetails()
+                ->getAuthorizationStatus()
+                ->getReasonCode() === AmazonPayConfig::REASON_CODE_PAYMENT_METHOD_INVALID);
     }
 }

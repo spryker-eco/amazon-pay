@@ -54,6 +54,7 @@
     <transfer name="AmazonpayResponseHeader">
         <property name="statusCode" type="int" />
         <property name="isSuccess" type="bool" />
+        <property name="isInvalidPaymentMethod" type="bool" />
         <property name="requestId" type="string" />
         <property name="constraints" type="AmazonpayResponseConstraint[]" singular="constraint" />
         <property name="errorCode" type="string" />

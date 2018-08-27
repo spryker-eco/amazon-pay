@@ -380,7 +380,11 @@ class PaymentController extends AbstractController
      */
     protected function isAmazonPaymentInvalid(QuoteTransfer $quoteTransfer)
     {
-        return $quoteTransfer->getAmazonpayPayment()->getResponseHeader() !== null
-            && false === $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();
+        if ($quoteTransfer->getAmazonpayPayment()->getResponseHeader() !== null
+            && $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsInvalidPaymentMethod()) {
+            return true;
+        }
+
+        return false;
     }
 }
