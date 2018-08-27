@@ -62,13 +62,13 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
      */
     protected function updatePaymentEntity(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        $this->transactionsLogger->logMessage(
+        $this->transactionLogger->logMessage(
             $amazonPayCallTransfer->getAmazonpayPayment(),
             'updatePaymentEntity'
         );
 
         if (!$this->isPaymentSuccess($amazonPayCallTransfer)) {
-            $this->transactionsLogger->logMessage(
+            $this->transactionLogger->logMessage(
                 $amazonPayCallTransfer->getAmazonpayPayment(),
                 'payment unsuccessful'
             );
@@ -96,7 +96,7 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
             $this->paymentEntity->setStatus($statusDetails->getState());
             $this->paymentEntity->save();
 
-            $this->transactionsLogger->logMessage(
+            $this->transactionLogger->logMessage(
                 $amazonPayCallTransfer->getAmazonpayPayment(),
                 'payment status updated'
             );

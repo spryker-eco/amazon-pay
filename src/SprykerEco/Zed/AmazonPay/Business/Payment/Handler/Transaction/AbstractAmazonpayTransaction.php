@@ -68,12 +68,12 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
      */
     public function execute(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        $this->transactionsLogger->logMessage(
+        $this->transactionLogger->logMessage(
             $amazonPayCallTransfer->getAmazonpayPayment(),
             sprintf('Calling %s', get_class($this->executionAdapter))
         );
         $this->apiResponse = $this->executionAdapter->call($amazonPayCallTransfer);
-        $this->transactionsLogger->logMessage(
+        $this->transactionLogger->logMessage(
             $amazonPayCallTransfer->getAmazonpayPayment(),
             sprintf('Response: %s', json_encode($this->apiResponse->toArray()))
         );
@@ -81,14 +81,10 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
         $amazonPayCallTransfer->getAmazonpayPayment()
             ->fromArray($this->apiResponse->modifiedToArray(), true);
 
-        $this->transactionsLogger->log(
+        $this->transactionLogger->log(
             $amazonPayCallTransfer->getAmazonpayPayment()
         );
         $this->paymentEntity = $this->paymentProcessor->loadPaymentEntity($amazonPayCallTransfer);
-        $this->transactionsLogger->logMessage(
-            $amazonPayCallTransfer->getAmazonpayPayment(),
-            sprintf('Payment Entity: %s', json_encode($this->paymentEntity->toArray()))
-        );
 
         return $amazonPayCallTransfer;
     }

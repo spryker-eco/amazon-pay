@@ -101,9 +101,7 @@ class PaymentController extends AbstractController
 
         $quoteTransfer = $this->getClient()
             ->addSelectedAddressToQuote($quoteTransfer);
-        $this->getFactory()
-            ->getQuoteClient()
-            ->setQuote($quoteTransfer);
+        $this->saveQuoteIntoSession($quoteTransfer);
         $shipmentMethods = $this->getFactory()
             ->getShipmentClient()
             ->getAvailableMethods($quoteTransfer);
@@ -137,9 +135,7 @@ class PaymentController extends AbstractController
             ->addSelectedShipmentMethodToQuote($quoteTransfer);
         $quoteTransfer = $this->getFactory()
             ->getCalculationClient()->recalculate($quoteTransfer);
-        $this->getFactory()
-            ->getQuoteClient()
-            ->setQuote($quoteTransfer);
+        $this->saveQuoteIntoSession($quoteTransfer);
 
         return [
             static::QUOTE_TRANSFER => $quoteTransfer,
@@ -165,12 +161,13 @@ class PaymentController extends AbstractController
 
         if (!$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
             $this->addErrorFromQuote($quoteTransfer);
+            $this->saveQuoteIntoSession($quoteTransfer);
 
             return $this->buildRedirectExternalResponse($request);
         }
 
         $quoteTransfer = $this->getFactory()->getCalculationClient()->recalculate($quoteTransfer);
-        $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
+        $this->saveQuoteIntoSession($quoteTransfer);
 
         $checkoutResponseTransfer = $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
 
@@ -215,6 +212,16 @@ class PaymentController extends AbstractController
         $quoteTransfer->setAmazonpayPayment($amazonPaymentTransfer);
         $quoteTransfer = $this->getClient()
             ->handleCartWithAmazonPay($quoteTransfer);
+        $this->saveQuoteIntoSession($quoteTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
+     */
+    protected function saveQuoteIntoSession(QuoteTransfer $quoteTransfer)
+    {
         $this->getFactory()
             ->getQuoteClient()
             ->setQuote($quoteTransfer);

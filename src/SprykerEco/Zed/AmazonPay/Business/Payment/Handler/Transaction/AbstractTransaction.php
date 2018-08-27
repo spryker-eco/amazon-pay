@@ -26,7 +26,7 @@ abstract class AbstractTransaction
     /**
      * @var \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface
      */
-    protected $transactionsLogger;
+    protected $transactionLogger;
 
     /**
      * @param \SprykerEco\Zed\AmazonPay\Business\Api\Adapter\CallAdapterInterface $executionAdapter
@@ -40,6 +40,6 @@ abstract class AbstractTransaction
     ) {
         $this->executionAdapter = $executionAdapter;
         $this->config = $config;
-        $this->transactionsLogger = $transactionLogger;
+        $this->transactionLogger = $transactionLogger;
     }
 }
