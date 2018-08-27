@@ -19,7 +19,7 @@ class WidgetController extends AbstractController
     const ADDRESS_BOOK_MODE = 'addressBookMode';
     const AMAZON_PAY_CONFIG = 'amazonpayConfig';
     const LOGOUT = 'logout';
-    const QUOTE_TRANSFER = 'quoteTransfer';
+    const ORDER_REFERENCE = 'orderReferenceId';
 
     /**
      * @return array
@@ -54,7 +54,7 @@ class WidgetController extends AbstractController
             ->getQuote();
 
         return [
-            static::QUOTE_TRANSFER => $this->getAmazonPaymentOrderReferenceId($quoteTransfer),
+            static::ORDER_REFERENCE => $this->getAmazonPaymentOrderReferenceId($quoteTransfer),
             static::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
             static::ADDRESS_BOOK_MODE => $this->isAmazonPaymentInvalid($quoteTransfer) ? AmazonPayConfig::DISPLAY_MODE_READONLY : null,
         ];

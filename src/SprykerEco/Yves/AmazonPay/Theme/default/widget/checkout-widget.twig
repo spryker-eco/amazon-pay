@@ -16,8 +16,8 @@
         {% if addressBookMode is not empty %}
         , addressBookMode: '{{ addressBookMode }}'
         {% endif %}
-        {% if quoteTransfer.amazonPayment is defined %}
-        , amazonOrderReferenceId: '{{ quoteTransfer.amazonPayment.orderReferenceId }}'
+        {% if orderReferenceId is defined %}
+        , amazonOrderReferenceId: '{{ orderReferenceId }}'
         {% endif %}
     };
 </script>
