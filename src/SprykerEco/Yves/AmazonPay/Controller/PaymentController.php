@@ -158,6 +158,7 @@ class PaymentController extends AbstractController
         }
 
         $quoteTransfer = $this->getClient()->confirmPurchase($quoteTransfer);
+        var_dump($quoteTransfer->toArray()); die;
 
         if (!$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
             $this->addErrorFromQuote($quoteTransfer);
