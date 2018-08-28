@@ -13,7 +13,7 @@
         setOrderReferenceUrl: "{{ path('amazonpay_set_order_reference') }}",
         getShipmentMethodsUrl: "{{ path('amazonpay_get_shipment_methods') }}",
         locale: '{{ app.locale }}'
-        {% if addressBookMode is not empty %}
+        {% if addressBookMode is defined %}
         , addressBookMode: '{{ addressBookMode }}'
         {% endif %}
         {% if orderReferenceId is defined %}

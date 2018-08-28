@@ -53,11 +53,16 @@ class WidgetController extends AbstractController
             ->getQuoteClient()
             ->getQuote();
 
-        return [
-            static::ORDER_REFERENCE => $this->getAmazonPaymentOrderReferenceId($quoteTransfer),
+        $data = [
             static::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
-            static::ADDRESS_BOOK_MODE => $this->isAmazonPaymentInvalid($quoteTransfer) ? AmazonPayConfig::DISPLAY_MODE_READONLY : null,
         ];
+
+        if ($this->isAmazonPaymentInvalid($quoteTransfer)) {
+            $data[static::ORDER_REFERENCE] = $this->getAmazonPaymentOrderReferenceId($quoteTransfer);
+            $data[static::ADDRESS_BOOK_MODE] = AmazonPayConfig::DISPLAY_MODE_READONLY;
+        }
+
+        return $data;
     }
 
     /**
