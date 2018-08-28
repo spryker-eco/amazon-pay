@@ -14,8 +14,8 @@ $config[AmazonPayConstants::SECRET_ACCESS_KEY] = '';
 $config[AmazonPayConstants::REGION] = 'DE';
 $config[AmazonPayConstants::STORE_NAME] = 'Demo shop';
 $config[AmazonPayConstants::SANDBOX] = true;
-$config[AmazonPayConstants::AUTH_TRANSACTION_TIMEOUT] = 1000;
-$config[AmazonPayConstants::CAPTURE_NOW] = true;
+$config[AmazonPayConstants::AUTH_TRANSACTION_TIMEOUT] = 1440;
+$config[AmazonPayConstants::CAPTURE_NOW] = false;
 $config[AmazonPayConstants::ERROR_REPORT_LEVEL] = 'ERRORS_ONLY';
 $config[AmazonPayConstants::PAYMENT_REJECT_ROUTE] = 'cart';
 $config[AmazonPayConstants::WIDGET_SCRIPT_PATH] = 'https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js';
@@ -26,13 +26,13 @@ $config[AmazonPayConstants::WIDGET_BUTTON_SIZE] = AmazonPayConfig::WIDGET_BUTTON
 $config[AmazonPayConstants::WIDGET_BUTTON_COLOR] = AmazonPayConfig::WIDGET_BUTTON_COLOR_DARK_GRAY;
 $config[AmazonPayConstants::ENABLE_ISOLATE_LEVEL_READ] = true; /* make sure to put `false` for test environment */
 
+$config[OmsConstants::ACTIVE_PROCESSES][] = 'AmazonPayAsync01';
+$config[OmsConstants::ACTIVE_PROCESSES][] = 'AmazonPaySync01';
+
 $config[SalesConstants::PAYMENT_METHOD_STATEMACHINE_MAPPING][AmazonPayConfig::PROVIDER_NAME] =
-    $config[AmazonPayConstants::CAPTURE_NOW] ? 'AmazonpayPaymentSync01' : 'AmazonpayPaymentAsync01';
+    $config[AmazonPayConstants::CAPTURE_NOW] ? 'AmazonPaySync01' : 'AmazonPayAsync01';
 
-$config[OmsConstants::ACTIVE_PROCESSES][] = 'AmazonpayPaymentAsync01';
-$config[OmsConstants::ACTIVE_PROCESSES][] = 'AmazonpayPaymentSync01';
-
-$config[AclConstants::ACL_USER_RULE_WHITELIST][] =
+$config[AclConstants::ACL_DEFAULT_RULES][] =
     [
         'bundle' => 'amazonpay',
         'controller' => 'ipn',

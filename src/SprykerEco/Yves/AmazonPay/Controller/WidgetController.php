@@ -10,6 +10,8 @@ namespace SprykerEco\Yves\AmazonPay\Controller;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Yves\Kernel\Controller\AbstractController;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method \SprykerEco\Yves\AmazonPay\AmazonPayFactory getFactory()
@@ -22,33 +24,52 @@ class WidgetController extends AbstractController
     const ORDER_REFERENCE = 'orderReferenceId';
 
     /**
-     * @return array
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|array
      */
-    public function payButtonAction()
+    public function payButtonAction(Request $request)
     {
+        if (!$request->isSecure()) {
+            return new Response('');
+        }
+
+        $isLogout = $this->isLogout();
+
+        if ($isLogout) {
+            $this->resetAmazonPaymentInQuote();
+        }
+
         return [
             static::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
-            static::LOGOUT => (int)$this->isLogout(),
+            static::LOGOUT => $isLogout,
         ];
     }
 
     /**
-     * @return bool
+     * @return void
      */
-    protected function isLogout()
+    protected function resetAmazonPaymentInQuote()
     {
-        $quote = $this->getFactory()->getQuoteClient()->getQuote();
+        $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
-        return $quote->getAmazonpayPayment()
-            && $quote->getAmazonpayPayment()->getResponseHeader()
-            && !$quote->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();
+        $quoteTransfer->setAmazonpayPayment(null);
+        $this->getFactory()
+            ->getQuoteClient()
+            ->setQuote($quoteTransfer);
     }
 
     /**
-     * @return array
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|array
      */
-    public function checkoutWidgetAction()
+    public function checkoutWidgetAction(Request $request)
     {
+        if (!$request->isSecure()) {
+            return new Response('');
+        }
+
         $quoteTransfer = $this->getFactory()
             ->getQuoteClient()
             ->getQuote();
@@ -66,6 +87,40 @@ class WidgetController extends AbstractController
     }
 
     /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|array
+     */
+    public function walletWidgetAction(Request $request)
+    {
+        if (!$request->isSecure()) {
+            return new Response('');
+        }
+
+        return [
+            static::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
+        ];
+    }
+
+    /**
+     * @return int
+     */
+    protected function isLogout()
+    {
+        $quote = $this->getFactory()->getQuoteClient()->getQuote();
+
+        $isLogout = $quote->getAmazonpayPayment()
+            && $quote->getAmazonpayPayment()->getResponseHeader()
+            && !$quote->getAmazonpayPayment()->getResponseHeader()->getIsSuccess();
+
+        if ($isLogout) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return null|string
@@ -77,16 +132,6 @@ class WidgetController extends AbstractController
         }
 
         return null;
-    }
-
-    /**
-     * @return array
-     */
-    public function walletWidgetAction()
-    {
-        return [
-            static::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
-        ];
     }
 
     /**

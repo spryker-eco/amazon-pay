@@ -163,6 +163,10 @@ class PaymentController extends AbstractController
             $this->addErrorFromQuote($quoteTransfer);
             $this->saveQuoteIntoSession($quoteTransfer);
 
+            if ($this->isLogoutRedirect($quoteTransfer)) {
+                return $this->buildRedirectInternalResponse();
+            }
+
             return $this->buildRedirectExternalResponse($request);
         }
 
@@ -286,6 +290,28 @@ class PaymentController extends AbstractController
     protected function isAllowedCheckout(QuoteTransfer $quoteTransfer)
     {
         return $quoteTransfer->getTotals() !== null;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return bool
+     */
+    protected function isLogoutRedirect(QuoteTransfer $quoteTransfer)
+    {
+        if ($this->isAmazonPaymentInvalid($quoteTransfer)) {
+            return false;
+        }
+
+        if ($this->getAmazonPayConfig()->getCaptureNow() &&
+            $quoteTransfer->getAmazonpayPayment() !== null
+            && $quoteTransfer->getAmazonpayPayment()->getResponseHeader() !== null
+            && !$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()
+        ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
