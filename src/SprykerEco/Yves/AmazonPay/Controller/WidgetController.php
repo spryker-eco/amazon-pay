@@ -10,8 +10,6 @@ namespace SprykerEco\Yves\AmazonPay\Controller;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Yves\Kernel\Controller\AbstractController;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method \SprykerEco\Yves\AmazonPay\AmazonPayFactory getFactory()
@@ -24,16 +22,10 @@ class WidgetController extends AbstractController
     const ORDER_REFERENCE = 'orderReferenceId';
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|array
+     * @return array
      */
-    public function payButtonAction(Request $request)
+    public function payButtonAction()
     {
-        if (!$request->isSecure()) {
-            return new Response('');
-        }
-
         $isLogout = $this->isLogout();
 
         if ($isLogout) {
@@ -60,16 +52,10 @@ class WidgetController extends AbstractController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|array
+     * @return array
      */
-    public function checkoutWidgetAction(Request $request)
+    public function checkoutWidgetAction()
     {
-        if (!$request->isSecure()) {
-            return new Response('');
-        }
-
         $quoteTransfer = $this->getFactory()
             ->getQuoteClient()
             ->getQuote();
@@ -87,16 +73,10 @@ class WidgetController extends AbstractController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|array
+     * @return array
      */
-    public function walletWidgetAction(Request $request)
+    public function walletWidgetAction()
     {
-        if (!$request->isSecure()) {
-            return new Response('');
-        }
-
         return [
             static::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
         ];
