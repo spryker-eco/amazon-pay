@@ -65,6 +65,14 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
 
     const PREFIX_AMAZONPAY_PAYMENT_ERROR = 'amazonpay.payment.error.';
 
+    const DISPLAY_MODE_READONLY = 'Read';
+
+    const REASON_CODE_EXPIRED_UNUSED = 'ExpiredUnused';
+    const REASON_CODE_SELLER_CLOSED = 'SellerClosed';
+    const REASON_CODE_PAYMENT_METHOD_INVALID = 'InvalidPaymentMethod';
+    const REASON_CODE_AMAZON_CLOSED = 'AmazonClosed';
+    const REASON_CODE_TRANSACTION_TIMED_OUT = 'TransactionTimedOut';
+
     /**
      * @return string
      */

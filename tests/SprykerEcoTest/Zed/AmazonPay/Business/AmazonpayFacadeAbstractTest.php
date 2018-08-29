@@ -10,6 +10,7 @@ namespace SprykerEcoTest\Zed\AmazonPay\Business;
 use ArrayObject;
 use Codeception\TestCase\Test;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use Generated\Shared\Transfer\StoreWithCurrencyTransfer;
 use Orm\Zed\AmazonPay\Persistence\Base\SpyPaymentAmazonpaySalesOrderItemQuery;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpayQuery;
@@ -124,7 +125,7 @@ class AmazonpayFacadeAbstractTest extends Test
 
         $shipmentMethodPriceEntity = SpyShipmentMethodPriceQuery::create()
             ->filterByFkShipmentMethod($shipmentMethod->getIdShipmentMethod())
-            ->filterByFkCurrency($currencyStore->getCurrencies()[0]->getIdCurrency())
+            ->filterByFkCurrency($this->getIdCurrency($currencyStore, $currencyStore->getStore()->getDefaultCurrencyIsoCode()))
             ->filterByFkStore($currencyStore->getStore()->getIdStore())
             ->findOneOrCreate();
 
@@ -133,6 +134,23 @@ class AmazonpayFacadeAbstractTest extends Test
         $shipmentMethodPriceEntity->save();
 
         return $shipmentMethod->getIdShipmentMethod();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\StoreWithCurrencyTransfer $storeWithCurrencyTransfer
+     * @param string $currencyCode
+     *
+     * @return int|null
+     */
+    protected function getIdCurrency(StoreWithCurrencyTransfer $storeWithCurrencyTransfer, string $currencyCode)
+    {
+        foreach ($storeWithCurrencyTransfer->getCurrencies() as $currencyTransfer) {
+            if ($currencyTransfer->getCode() === $currencyCode) {
+                return $currencyTransfer->getIdCurrency();
+            }
+        }
+
+        return null;
     }
 
     /**

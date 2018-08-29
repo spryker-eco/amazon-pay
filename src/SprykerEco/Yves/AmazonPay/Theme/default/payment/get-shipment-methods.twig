@@ -1,25 +1,14 @@
 {% for shipmentMethod in shipmentMethods %}
     <ul>
-        <input type="radio" id="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}" name="amazonpayShipmentMethod" value="{{ shipmentMethod.idShipmentMethod }}" />
+        <input type="radio" id="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}" name="amazonpayShipmentMethod"
+               value="{{ shipmentMethod.idShipmentMethod }}" {% if selectedShipmentMethodId == shipmentMethod.idShipmentMethod %} checked="checked"{% endif %}
+               {% if isAmazonPaymentInvalid %} disabled="disabled"{% endif %}
+        />
         <label for="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}">{{ shipmentMethod.name }}</label>
     </ul>
 {% endfor %}
+
 <script>
     amazonpayConfig.updateShipmentMethodUrl = "{{ path('amazonpay_update_shipment_method') }}";
 </script>
-<script>
-    $(function() {
-        $('input[name=amazonpayShipmentMethod]').change(function () {
-            $('#amazonpayPlaceOrderLink').attr('disabled', true);
-            $('#amazonpaySummeryInformation').load(
-                amazonpayConfig.updateShipmentMethodUrl,
-                {'shipment_method_id': $(this).val()},
-                function() {
-                    $('#amazonpayPlaceOrderLink').attr('disabled', false);
-                }
-            );
-        });
-
-        $('input[name=amazonpayShipmentMethod]:first').click();
-    });
-</script>
+<script src="/assets/default/js/spryker-yves-amazon-pay-shipment-methods.js"></script>
