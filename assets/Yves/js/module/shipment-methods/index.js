@@ -1,17 +1,18 @@
 $(function() {
     $('input[name=amazonpayShipmentMethod]').change(function () {
-        $('#amazonpayPlaceOrderLink').attr('disabled', true);
+        $('#amazonpayPlaceOrderLink').addClass('invisible');
+
         $('#amazonpaySummeryInformation').load(
             amazonpayConfig.updateShipmentMethodUrl,
             {'shipment_method_id': $(this).val()},
             function() {
-                activatePlaceOrderButton();
+                $('#amazonpayPlaceOrderLink').removeClass('invisible');
             }
         );
     });
 
     if (!selectDefaultShipmentMethod()) {
-        activatePlaceOrderButton();
+        $('#amazonpayPlaceOrderLink').removeClass('invisible');
     }
 });
 
@@ -23,8 +24,4 @@ function selectDefaultShipmentMethod() {
     }
 
     return false;
-}
-
-function activatePlaceOrderButton() {
-    $('#amazonpayPlaceOrderLink').attr('disabled', false);
 }

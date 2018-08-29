@@ -7,7 +7,7 @@ window.onAmazonPaymentsReady = function() {
         sellerId: amazonpayConfig.sellerId,
         scope: 'profile postal_code payments:widget payments:shipping_address',
         onPaymentSelect: function(orderReference) {
-            $('#amazonpayPlaceOrderLink').attr('disabled', false);
+            $('#amazonpayPlaceOrderLink').removeClass('invisible');
         },
         design: {
             designMode: 'responsive'

@@ -17,7 +17,8 @@ new OffAmazonPayments.Widgets.AddressBook({
     },
     onAddressSelect: function(orderReference) {
         $(function() {
-            $('#amazonpayPlaceOrderLink').attr('disabled', true);
+            $('#amazonpayPlaceOrderLink').addClass('invisible');
+
             var shipmentMethodsBlock = $('#shipmentMethods');
             shipmentMethodsBlock.html('Please wait...');
             shipmentMethodsBlock.load(
