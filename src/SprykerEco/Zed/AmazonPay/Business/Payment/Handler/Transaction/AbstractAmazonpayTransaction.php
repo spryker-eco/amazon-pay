@@ -70,7 +70,7 @@ abstract class AbstractAmazonpayTransaction extends AbstractTransaction implemen
         $amazonPayCallTransfer->getAmazonpayPayment()
             ->fromArray($this->apiResponse->modifiedToArray(), true);
 
-        $this->transactionsLogger->log(
+        $this->transactionLogger->log(
             $amazonPayCallTransfer->getAmazonpayPayment()
         );
         $this->paymentEntity = $this->paymentProcessor->loadPaymentEntity($amazonPayCallTransfer);

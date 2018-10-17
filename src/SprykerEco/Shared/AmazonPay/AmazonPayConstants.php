@@ -7,6 +7,9 @@
 
 namespace SprykerEco\Shared\AmazonPay;
 
+/**
+ * Declares global environment configuration keys. Do not use it for other class constants.
+ */
 interface AmazonPayConstants
 {
     const ACCESS_KEY_ID = 'AMAZONPAY:ACCESS_KEY_ID';

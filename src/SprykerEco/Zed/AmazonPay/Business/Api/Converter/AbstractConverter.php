@@ -27,12 +27,6 @@ abstract class AbstractConverter
     const FIELD_AMOUNT = 'Amount';
     const FIELD_CURRENCY_CODE = 'CurrencyCode';
 
-    const REASON_CODE_EXPIRED_UNUSED = 'ExpiredUnused';
-    const REASON_CODE_SELLER_CLOSED = 'SellerClosed';
-    const REASON_CODE_PAYMENT_METHOD_INVALID = 'InvalidPaymentMethod';
-    const REASON_CODE_AMAZON_CLOSED = 'AmazonClosed';
-    const REASON_CODE_TRANSACTION_TIMED_OUT = 'TransactionTimedOut';
-
     /**
      * @var array
      */
@@ -59,11 +53,11 @@ abstract class AbstractConverter
      * @var array
      */
     protected $reasonToStatusMap = [
-        self::REASON_CODE_AMAZON_CLOSED => AmazonPayConfig::STATUS_AMAZON_CLOSED,
-        self::REASON_CODE_PAYMENT_METHOD_INVALID => AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID,
-        self::REASON_CODE_TRANSACTION_TIMED_OUT => AmazonPayConfig::STATUS_TRANSACTION_TIMED_OUT,
-        self::REASON_CODE_SELLER_CLOSED => AmazonPayConfig::STATUS_EXPIRED,
-        self::REASON_CODE_EXPIRED_UNUSED => AmazonPayConfig::STATUS_EXPIRED,
+        AmazonPayConfig::REASON_CODE_AMAZON_CLOSED => AmazonPayConfig::STATUS_AMAZON_CLOSED,
+        AmazonPayConfig::REASON_CODE_PAYMENT_METHOD_INVALID => AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID,
+        AmazonPayConfig::REASON_CODE_TRANSACTION_TIMED_OUT => AmazonPayConfig::STATUS_TRANSACTION_TIMED_OUT,
+        AmazonPayConfig::REASON_CODE_SELLER_CLOSED => AmazonPayConfig::STATUS_EXPIRED,
+        AmazonPayConfig::REASON_CODE_EXPIRED_UNUSED => AmazonPayConfig::STATUS_EXPIRED,
     ];
 
     /**
