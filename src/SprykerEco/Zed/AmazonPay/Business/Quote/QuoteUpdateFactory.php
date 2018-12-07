@@ -50,19 +50,27 @@ class QuoteUpdateFactory implements QuoteUpdateFactoryInterface
     public function createQuoteUpdaterCollection()
     {
         return new QuoteUpdaterCollection(
-            [
-                $this->createAmazonpayDataQuoteInitializer(),
-                $this->createGuestCustomerDataQuoteUpdater(),
-                $this->createShipmentDataQuoteInitializer(),
-                $this->createPaymentDataQuoteUpdater(),
-            ]
+            $this->getQuoteUpdaterPlugins()
         );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AmazonPay\Business\Quote\QuoteUpdaterInterface[]
+     */
+    protected function getQuoteUpdaterPlugins()
+    {
+        return [
+            $this->createAmazonPayDataQuoteInitializer(),
+            $this->createGuestCustomerDataQuoteUpdater(),
+            $this->createShipmentDataQuoteInitializer(),
+            $this->createPaymentDataQuoteUpdater(),
+        ];
     }
 
     /**
      * @return \SprykerEco\Zed\AmazonPay\Business\Quote\QuoteUpdaterInterface
      */
-    public function createAmazonpayDataQuoteInitializer()
+    public function createAmazonPayDataQuoteInitializer()
     {
         return new AmazonpayDataQuoteInitializer();
     }

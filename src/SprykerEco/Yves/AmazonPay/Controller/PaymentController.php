@@ -191,7 +191,8 @@ class PaymentController extends AbstractController
      */
     public function successAction(Request $request)
     {
-        $this->getFactory()->getQuoteClient()->clearQuote();
+        $this->getFactory()->getCustomerClient()->markCustomerAsDirty();
+        $this->getFactory()->getCartClient()->clearQuote();
 
         return [
             static::IS_ASYNCHRONOUS => $this->isAsynchronous(),
@@ -207,10 +208,6 @@ class PaymentController extends AbstractController
      */
     protected function storeAmazonPaymentIntoQuote(Request $request, QuoteTransfer $quoteTransfer)
     {
-        if ($quoteTransfer->getAmazonpayPayment() !== null) {
-            return;
-        }
-
         $amazonPaymentTransfer = $this->buildAmazonPaymentTransfer($request);
 
         $quoteTransfer->setAmazonpayPayment($amazonPaymentTransfer);

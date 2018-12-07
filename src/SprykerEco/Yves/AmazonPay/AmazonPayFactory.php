@@ -7,6 +7,8 @@
 
 namespace SprykerEco\Yves\AmazonPay;
 
+use Spryker\Client\Cart\CartClientInterface;
+use Spryker\Client\Customer\CustomerClientInterface;
 use Spryker\Yves\Kernel\AbstractFactory;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
@@ -18,6 +20,14 @@ class AmazonPayFactory extends AbstractFactory
     public function getQuoteClient()
     {
         return $this->getProvidedDependency(AmazonPayDependencyProvider::CLIENT_QUOTE);
+    }
+
+    /**
+     * @return CartClientInterface
+     */
+    public function getCartClient()
+    {
+        return $this->getProvidedDependency(AmazonPayDependencyProvider::CLIENT_CART);
     }
 
     /**

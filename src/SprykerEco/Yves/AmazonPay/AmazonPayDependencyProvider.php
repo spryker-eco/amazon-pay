@@ -17,7 +17,8 @@ use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToShipmentBridge;
 
 class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
 {
-    const CLIENT_QUOTE = 'cart client';
+    const CLIENT_QUOTE = 'quote client';
+    const CLIENT_CART = 'cart client';
     const CLIENT_SHIPMENT = 'shipment client';
     const CLIENT_CHECKOUT = 'checkout client';
     const CLIENT_CUSTOMER = 'customer client';
@@ -32,6 +33,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
     public function provideDependencies(Container $container)
     {
         $this->addQuoteClient($container);
+        $this->addCartClient($container);
         $this->addShipmentClient($container);
         $this->addCheckoutClient($container);
         $this->addCalculationClient($container);
@@ -49,6 +51,18 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container[static::CLIENT_QUOTE] = function () use ($container) {
             return new AmazonPayToQuoteBridge($container->getLocator()->quote()->client());
+        };
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return void
+     */
+    protected function addCartClient(Container $container)
+    {
+        $container[static::CLIENT_CART] = function () use ($container) {
+            return $container->getLocator()->cart()->client();
         };
     }
 
