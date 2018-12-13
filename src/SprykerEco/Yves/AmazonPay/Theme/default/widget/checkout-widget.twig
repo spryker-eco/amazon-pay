@@ -1,10 +1,35 @@
+{#{% for message in app.session.flashbag.get('flash.messages.error') %}#}
+    {#<div class="alert alert-danger">{{ message }}</div>#}
+{#{% endfor %}#}
+
+{#<div id="amazonpayAddressBookWidgetContainer"> </div>#}
+
+{#<div id="amazonpayWalletWidgetContainer"> </div>#}
+
+{#<script>#}
+    {#var amazonpayConfig = {#}
+        {#clientId: "{{ amazonpayConfig.clientId }}",#}
+        {#sellerId: "{{ amazonpayConfig.sellerId }}",#}
+        {#setOrderReferenceUrl: "{{ path('amazonpay_set_order_reference') }}",#}
+        {#getShipmentMethodsUrl: "{{ path('amazonpay_get_shipment_methods') }}",#}
+        {#locale: '{{ app.locale }}'#}
+        {#{% if addressBookMode is defined %}#}
+        {#, addressBookMode: '{{ addressBookMode }}'#}
+        {#{% endif %}#}
+        {#{% if orderReferenceId is defined %}#}
+        {#, amazonOrderReferenceId: '{{ orderReferenceId }}'#}
+        {#{% endif %}#}
+    {#};#}
+{#</script>#}
+{#<script src="/assets/default/js/spryker-yves-amazon-pay-checkout-widgets.js"></script>#}
 {% for message in app.session.flashbag.get('flash.messages.error') %}
     <div class="alert alert-danger">{{ message }}</div>
 {% endfor %}
-
 <div id="amazonpayAddressBookWidgetContainer"> </div>
 
 <div id="amazonpayWalletWidgetContainer"> </div>
+
+<script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <script>
     var amazonpayConfig = {
@@ -21,4 +46,102 @@
         {% endif %}
     };
 </script>
-<script src="/assets/default/js/spryker-yves-amazon-pay-checkout-widgets.js"></script>
+<style>
+    #amazonpayAddressBookWidgetContainer {
+        min-width: 300px;
+        width: 100%;
+        max-width: 900px;
+        min-height: 228px;
+        height: 240px;
+        max-height: 400px;
+    }
+
+    #amazonpayWalletWidgetContainer {
+        min-width: 300px;
+        width: 100%;
+        max-width: 900px;
+        min-height: 228px;
+        height: 240px;
+        max-height: 400px;
+    }
+</style>
+<script>
+    console.log(amazonpayConfig);
+    window.onAmazonLoginReady = function() {
+        amazon.Login.setClientId(amazonpayConfig.sellerId);
+    };
+    window.onAmazonPaymentsReady = function() {
+
+        new OffAmazonPayments.Widgets.AddressBook({
+            sellerId: amazonpayConfig.sellerId,
+            scope: 'profile payments:widget payments:shipping_address payments:billing_address',
+            language: amazonpayConfig.locale,
+            amazonOrderReferenceId: amazonpayConfig.amazonOrderReferenceId,
+            // displayMode: amazonpayConfig.addressBookMode,
+            // onOrderReferenceCreate: function(orderReference) {
+            //     // Here is where you can grab the Order Reference ID.
+            //     var aoid = orderReference.getAmazonOrderReferenceId();
+            //
+            //     $(function() {
+            //         $.post(
+            //             amazonpayConfig.setOrderReferenceUrl,
+            //             {'reference_id': aoid}
+            //         );
+            //     });
+            // },
+            onAddressSelect: function(orderReference) {
+                $(function() {
+                    $('#amazonpayPlaceOrderLink').addClass('invisible');
+
+                    var shipmentMethodsBlock = $('#shipmentMethods');
+                    shipmentMethodsBlock.html('Please wait...');
+                    shipmentMethodsBlock.load(
+                        amazonpayConfig.getShipmentMethodsUrl,
+                        function( response, status, xhr ) {
+                            if ( status === "error" ) {
+                                var msg = "Sorry but there was an error: ";
+                                $( "#shipment_methods" ).html( msg + xhr.status + " " + xhr.statusText );
+                            }
+                        }
+                    );
+                });
+            },
+            design: {
+                designMode: 'responsive'
+            },
+            onReady: function(orderReference) {
+                // Enter code here you want to be executed
+                // when the address widget has been rendered.
+            },
+            // onError: function(error) {
+            // }
+        }).bind("amazonpayAddressBookWidgetContainer");
+
+        // new OffAmazonPayments.Widgets.Wallet({
+        //     sellerId: amazonpayConfig.sellerId,
+        //     scope: 'profile postal_code payments:widget payments:shipping_address',
+        //     amazonOrderReferenceId: amazonpayConfig.amazonOrderReferenceId,
+        //     onPaymentSelect: function(orderReference) {
+        //         // Replace this code with the action that you want to perform
+        //         // after the payment method is selected.
+        //
+        //         // Ideally this would enable the next action for the buyer
+        //         // including either a "Continue" or "Place Order" button.
+        //     },
+        //     design: {
+        //         designMode: 'responsive'
+        //     },
+        //     onError: function(error) {
+        //     }
+        // }).bind("amazonpayWalletWidgetContainer");
+    };
+
+</script>
+
+
+{#{% extends template('widget') %}#}
+
+{#{% block body %}#}
+
+{#{% endblock %}#}
+

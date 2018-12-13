@@ -24,35 +24,35 @@
     </ul>
 {% endfor %}
 
-<script>
-    amazonpayConfig.updateShipmentMethodUrl = "{{ path('amazonpay_update_shipment_method') }}";
-</script>
-<script>
-    $(function() {
-        $('input[name=amazonpayShipmentMethod]').change(function () {
-            $('#amazonpayPlaceOrderLink').addClass('invisible');
+{#<script>#}
+    {#amazonpayConfig.updateShipmentMethodUrl = "{{ path('amazonpay_update_shipment_method') }}";#}
+{#</script>#}
+{#<script>#}
+    {#$(function() {#}
+        {#$('input[name=amazonpayShipmentMethod]').change(function () {#}
+            {#$('#amazonpayPlaceOrderLink').addClass('invisible');#}
 
-            $('#amazonpaySummeryInformation').load(
-                amazonpayConfig.updateShipmentMethodUrl,
-                {'shipment_method_id': $(this).val()},
-                function() {
-                    $('#amazonpayPlaceOrderLink').removeClass('invisible');
-                }
-            );
-        });
+            {#$('#amazonpaySummeryInformation').load(#}
+                {#amazonpayConfig.updateShipmentMethodUrl,#}
+                {#{'shipment_method_id': $(this).val()},#}
+                {#function() {#}
+                    {#$('#amazonpayPlaceOrderLink').removeClass('invisible');#}
+                {#}#}
+            {#);#}
+        {#});#}
 
-        if (!selectDefaultShipmentMethod()) {
-            $('#amazonpayPlaceOrderLink').removeClass('invisible');
-        }
-    });
+        {#if (!selectDefaultShipmentMethod()) {#}
+            {#$('#amazonpayPlaceOrderLink').removeClass('invisible');#}
+        {#}#}
+    {#});#}
 
-    function selectDefaultShipmentMethod() {
-        if ($('input[name=amazonpayShipmentMethod]:checked').length === 0) {
-            $('input[name=amazonpayShipmentMethod]:first').click();
+    {#function selectDefaultShipmentMethod() {#}
+        {#if ($('input[name=amazonpayShipmentMethod]:checked').length === 0) {#}
+            {#$('input[name=amazonpayShipmentMethod]:first').click();#}
 
-            return true;
-        }
+            {#return true;#}
+        {#}#}
 
-        return false;
-    }
-</script>
+        {#return false;#}
+    {#}#}
+{#</script>#}

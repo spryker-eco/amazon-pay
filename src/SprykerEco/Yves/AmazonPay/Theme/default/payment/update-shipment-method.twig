@@ -1,3 +1,37 @@
+{#<h5 class="float-right __secondary">{{ app['cart.quantity'] }} {{ 'checkout.step.summary.items' | trans }}</h5>#}
+{#<h5>{{ 'checkout.step.summary.overview' | trans }}</h5>#}
+{#<ul class="no-bullet">#}
+    {#<li>#}
+        {#{{ 'checkout.step.summary.sub_total' | trans }}#}
+        {#<span class="float-right">{{ quoteTransfer.totals.subtotal | money }}</span>#}
+    {#</li>#}
+    {#<li><hr></li>#}
+
+    {#{% if quoteTransfer.shipment and quoteTransfer.shipment.method %}#}
+        {#<li><strong>{{ 'checkout.step.summary.shipping' | trans }}</strong></li>#}
+        {#<li>#}
+            {#{% if quoteTransfer.shipment.method.name is not empty %}#}
+                {#{{ quoteTransfer.shipment.method.name }}#}
+            {#{% endif %}#}
+            {#{% if quoteTransfer.shipment.method.storeCurrencyPrice is not null %}#}
+                {#{{ quoteTransfer.shipment.method.storeCurrencyPrice | money }}#}
+            {#{% endif %}#}
+        {#</li>#}
+    {#{% endif %}#}
+    {#<li><hr></li>#}
+
+    {#{% include '@checkout/checkout/partials/summary-discounts.twig' %}#}
+
+    {#<li class="clearfix">#}
+        {#<h5 class="float-left">{{ 'checkout.step.summary.grand_total' | trans }}</h5>#}
+        {#<h5 class="float-right"><strong>{{ quoteTransfer.totals.grandtotal | money }}</strong></h5>#}
+    {#</li>#}
+    {#<li>#}
+        {#{{ 'checkout.step.summary.tax' | trans }}#}
+        {#<span class="float-right">{{ quoteTransfer.totals.taxtotal.amount | money }}</span>#}
+    {#</li>#}
+{#</ul>#}
+
 <h5 class="float-right __secondary">{{ app['cart.quantity'] }} {{ 'checkout.step.summary.items' | trans }}</h5>
 <h5>{{ 'checkout.step.summary.overview' | trans }}</h5>
 <ul class="no-bullet">
@@ -20,7 +54,7 @@
     {% endif %}
     <li><hr></li>
 
-    {% include '@checkout/checkout/partials/summary-discounts.twig' %}
+    <h1>TO FIX { % include '@checkout/checkout/partials/summary-discounts.twig' % }</h1>
 
     <li class="clearfix">
         <h5 class="float-left">{{ 'checkout.step.summary.grand_total' | trans }}</h5>
@@ -31,3 +65,4 @@
         <span class="float-right">{{ quoteTransfer.totals.taxtotal.amount | money }}</span>
     </li>
 </ul>
+

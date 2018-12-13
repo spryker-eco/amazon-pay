@@ -1,0 +1,17 @@
+@mixin amazon-pay-address-book($name: '.address-book') {
+    #{$name} {
+        &__item,
+        #amazonpayAddressBookWidgetContainer {
+            min-width: 300px;
+            width: 100%;
+            max-width: 900px;
+            min-height: 228px;
+            height: 240px;
+            max-height: 400px;
+        }
+
+        @content;
+    }
+}
+
+@include amazon-pay-address-book();
