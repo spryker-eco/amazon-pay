@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Shared\Config\Config;
 use Spryker\Yves\Kernel\Controller\AbstractController;
+use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 use SprykerEco\Shared\AmazonPay\AmazonPayConstants;
 use SprykerEco\Yves\AmazonPay\Plugin\Provider\AmazonPayControllerProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,13 +35,31 @@ class PaymentController extends AbstractController
     const SUCCESS = 'success';
     const ERROR_AMAZONPAY_PAYMENT_FAILED = 'amazonpay.payment.failed';
     const IS_AMAZON_PAYMENT_INVALID = 'isAmazonPaymentInvalid';
+    const ADDRESS_BOOK_MODE = 'addressBookMode';
+    const ORDER_REFERENCE = 'orderReferenceId';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return array|\Symfony\Component\HttpFoundation\Response
+     * @return \Spryker\Yves\Kernel\View\View|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function checkoutAction(Request $request)
+    {
+        $response = $this->executeCheckoutAction($request);
+
+        if (!is_array($response)) {
+            return $response;
+        }
+
+        return $this->view($response, [], '@AmazonPay/views/checkout/checkout.twig');
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function executeCheckoutAction(Request $request)
     {
         $quoteTransfer = $this->getFactory()
             ->getQuoteClient()
@@ -54,11 +73,18 @@ class PaymentController extends AbstractController
 
         $this->storeAmazonPaymentIntoQuote($request, $quoteTransfer);
 
-        return [
+        $data = [
             static::QUOTE_TRANSFER => $quoteTransfer,
             static::CART_ITEMS => $this->getCartItems($quoteTransfer),
             static::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
         ];
+
+        if ($this->isAmazonPaymentInvalid($quoteTransfer)) {
+            $data[static::ORDER_REFERENCE] = $this->getAmazonPaymentOrderReferenceId($quoteTransfer);
+            $data[static::ADDRESS_BOOK_MODE] = AmazonPayConfig::DISPLAY_MODE_READONLY;
+        }
+
+        return $data;
     }
 
     /**
@@ -84,10 +110,29 @@ class PaymentController extends AbstractController
         return new JsonResponse([static::SUCCESS => true]);
     }
 
+
     /**
-     * @return array|\Symfony\Component\HttpFoundation\Response
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Spryker\Yves\Kernel\View\View|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function getShipmentMethodsAction()
+    public function getShipmentMethodsAction(Request $request)
+    {
+        $response = $this->executeShipmentMethodsAction($request);
+
+        if (!is_array($response)) {
+            return $response;
+        }
+
+        return $this->view($response, [], '@AmazonPay/views/get-shipment-methods/get-shipment-methods.twig');
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function executeShipmentMethodsAction(Request $request)
     {
         $quoteTransfer = $this->getFactory()
             ->getQuoteClient()
@@ -113,12 +158,29 @@ class PaymentController extends AbstractController
         ];
     }
 
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Spryker\Yves\Kernel\View\View|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function updateShipmentMethodAction(Request $request)
+    {
+        $response = $this->executeShipmentMethodAction($request);
+
+        if (!is_array($response)) {
+            return $response;
+        }
+
+        return $this->view($response, [], '@AmazonPay/views/shipment-method/shipment-method.twig');
+    }
+
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function updateShipmentMethodAction(Request $request)
+    protected function executeShipmentMethodAction(Request $request)
     {
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
@@ -184,12 +246,29 @@ class PaymentController extends AbstractController
         return $this->buildRedirectInternalResponse();
     }
 
+
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return array
+     * @return \Spryker\Yves\Kernel\View\View|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function successAction(Request $request)
+    {
+        $response = $this->executeSuccessAction($request);
+
+        if (!is_array($response)) {
+            return $response;
+        }
+
+        return $this->view($response, [], '@AmazonPay/views/success/success.twig');
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function executeSuccessAction(Request $request)
     {
         $this->getFactory()->getCustomerClient()->markCustomerAsDirty();
         $this->getFactory()->getCartClient()->clearQuote();
@@ -409,5 +488,19 @@ class PaymentController extends AbstractController
         }
 
         return false;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return null|string
+     */
+    protected function getAmazonPaymentOrderReferenceId(QuoteTransfer $quoteTransfer)
+    {
+        if ($quoteTransfer->getAmazonpayPayment() !== null && $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId() !== null) {
+            return $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId();
+        }
+
+        return null;
     }
 }

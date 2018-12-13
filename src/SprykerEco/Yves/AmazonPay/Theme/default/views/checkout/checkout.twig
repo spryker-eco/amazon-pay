@@ -15,19 +15,19 @@
         <div class="small-12 xlarge-3 columns">
             <div class="row">
                 <div class="small-12 medium-6 xlarge-12 columns">
-                    {% if quoteTransfer.payment and quoteTransfer.payment.paymentMethod %}
+                    {% if _view.quoteTransfer.payment and _view.quoteTransfer.payment.paymentMethod %}
                     <div class="callout">
                         <h5>{{ 'checkout.step.summary.payment' | trans }}</h5>
                         <ul class="no-bullet">
                             <li>
-                                <span class="__secondary">{{ 'checkout.step.summary.with_method' | trans }}</span> {{ quoteTransfer.payment.paymentMethod }}
+                                <span class="__secondary">{{ 'checkout.step.summary.with_method' | trans }}</span> {{ _view.quoteTransfer.payment.paymentMethod }}
                             </li>
                         </ul>
                     </div>
                     {% endif %}
                 </div>
 
-                {% if cartItems is defined %}
+                {% if _view.cartItems is defined %}
                 <div class="small-12 medium-6 xlarge-12 columns">
                     <div class="callout">
                         <ul class="no-bullet">
@@ -42,7 +42,7 @@
         </div>
         <div class="small-12 medium-6 columns">
             {% block amazonpay_widgets %}
-                {{ render(path('amazonpay_checkout_widget')) }}
+                {% include '@amazon-pay/widget/checkout-widget.twig' %}
             {% endblock %}
             <div class="callout">
                 <div id="shipmentMethods"></div>
@@ -51,7 +51,7 @@
 
         <div class="small-12 medium-6 columns">
             <div class="callout" id="amazonpaySummeryInformation">
-                {% include '@amazon-pay/payment/update-shipment-method.twig' with {'quoteTransfer': quoteTransfer} %}
+                {% include '@amazon-pay/payment/update-shipment-method.twig' with {'quoteTransfer': _view.quoteTransfer} %}
             </div>
         </div>
     </div>
