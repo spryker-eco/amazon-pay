@@ -7,24 +7,35 @@
 
 namespace SprykerEco\Yves\AmazonPay\Controller;
 
-use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Yves\Kernel\Controller\AbstractController;
-use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method \SprykerEco\Yves\AmazonPay\AmazonPayFactory getFactory()
  */
 class WidgetController extends AbstractController
 {
-    const ADDRESS_BOOK_MODE = 'addressBookMode';
     const AMAZON_PAY_CONFIG = 'amazonpayConfig';
     const LOGOUT = 'logout';
-    const ORDER_REFERENCE = 'orderReferenceId';
 
     /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Spryker\Yves\Kernel\View\View
+     */
+    public function payButtonAction(Request $request)
+    {
+        $response = $this->executePayButtonAction($request);
+
+        return $this->view($response, [], '@AmazonPay/views/pay-button/pay-button.twig');
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return array
      */
-    public function payButtonAction()
+    protected function executePayButtonAction(Request $request)
     {
         $isLogout = $this->isLogout();
 
@@ -52,37 +63,6 @@ class WidgetController extends AbstractController
     }
 
     /**
-     * @return array
-     */
-    public function checkoutWidgetAction()
-    {
-        $quoteTransfer = $this->getFactory()
-            ->getQuoteClient()
-            ->getQuote();
-
-        $data = [
-            static::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
-        ];
-
-        if ($this->isAmazonPaymentInvalid($quoteTransfer)) {
-            $data[static::ORDER_REFERENCE] = $this->getAmazonPaymentOrderReferenceId($quoteTransfer);
-            $data[static::ADDRESS_BOOK_MODE] = AmazonPayConfig::DISPLAY_MODE_READONLY;
-        }
-
-        return $data;
-    }
-
-    /**
-     * @return array
-     */
-    public function walletWidgetAction()
-    {
-        return [
-            static::AMAZON_PAY_CONFIG => $this->getAmazonPayConfig(),
-        ];
-    }
-
-    /**
      * @return int
      */
     protected function isLogout()
@@ -101,39 +81,10 @@ class WidgetController extends AbstractController
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return null|string
-     */
-    protected function getAmazonPaymentOrderReferenceId(QuoteTransfer $quoteTransfer)
-    {
-        if ($quoteTransfer->getAmazonpayPayment() !== null && $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId() !== null) {
-            return $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId();
-        }
-
-        return null;
-    }
-
-    /**
      * @return \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface
      */
     protected function getAmazonPayConfig()
     {
         return $this->getFactory()->createAmazonPayConfig();
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return bool
-     */
-    protected function isAmazonPaymentInvalid(QuoteTransfer $quoteTransfer)
-    {
-        if ($quoteTransfer->getAmazonpayPayment()->getResponseHeader() !== null
-            && $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsInvalidPaymentMethod()) {
-            return true;
-        }
-
-        return false;
     }
 }
