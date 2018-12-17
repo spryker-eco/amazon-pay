@@ -111,7 +111,6 @@ class PaymentController extends AbstractController
     }
 
 
-<<<<<<< Updated upstream
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -131,27 +130,6 @@ class PaymentController extends AbstractController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-=======
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Spryker\Yves\Kernel\View\View|\Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function getShipmentMethodsAction(Request $request)
-    {
-        $response = $this->executeShipmentMethodsAction($request);
-
-        if (!is_array($response)) {
-            return $response;
-        }
-
-        return $this->view($response, [], '@AmazonPay/views/get-shipment-methods/get-shipment-methods.twig');
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
->>>>>>> Stashed changes
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     protected function executeShipmentMethodsAction(Request $request)

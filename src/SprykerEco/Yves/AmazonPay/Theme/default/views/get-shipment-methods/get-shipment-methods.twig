@@ -1,58 +1,24 @@
-{#{% for shipmentMethod in shipmentMethods %}#}
-    {#<ul>#}
-        {#<input type="radio" id="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}" name="amazonpayShipmentMethod"#}
-               {#value="{{ shipmentMethod.idShipmentMethod }}" {% if selectedShipmentMethodId == shipmentMethod.idShipmentMethod %} checked="checked"{% endif %}#}
-               {#{% if isAmazonPaymentInvalid %} disabled="disabled"{% endif %}#}
-        {#/>#}
-        {#<label for="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}">{{ shipmentMethod.name }}</label>#}
-    {#</ul>#}
-{#{% endfor %}#}
+{% extends template('widget') %}
 
-{#<script>#}
-    {#amazonpayConfig.updateShipmentMethodUrl = "{{ path('amazonpay_update_shipment_method') }}";#}
-{#</script>#}
-{#<script src="/assets/default/js/spryker-yves-amazon-pay-shipment-methods.js"></script>#}
-
-<h1>shipmentMethod</h1>
-{% for shipmentMethod in shipmentMethods %}
-    <ul>
-        <input type="radio" id="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}" name="amazonpayShipmentMethod"
-               value="{{ shipmentMethod.idShipmentMethod }}" {% if selectedShipmentMethodId == shipmentMethod.idShipmentMethod %} checked="checked"{% endif %}
-            {% if isAmazonPaymentInvalid %} disabled="disabled"{% endif %}
-        />
-        <label for="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}">{{ shipmentMethod.name }}</label>
-    </ul>
-{% endfor %}
-
-{#<script>#}
-    {#amazonpayConfig.updateShipmentMethodUrl = "{{ path('amazonpay_update_shipment_method') }}";#}
-{#</script>#}
-{#<script>#}
-    {#$(function() {#}
-        {#$('input[name=amazonpayShipmentMethod]').change(function () {#}
-            {#$('#amazonpayPlaceOrderLink').addClass('invisible');#}
-
-            {#$('#amazonpaySummeryInformation').load(#}
-                {#amazonpayConfig.updateShipmentMethodUrl,#}
-                {#{'shipment_method_id': $(this).val()},#}
-                {#function() {#}
-                    {#$('#amazonpayPlaceOrderLink').removeClass('invisible');#}
-                {#}#}
-            {#);#}
-        {#});#}
-
-        {#if (!selectDefaultShipmentMethod()) {#}
-            {#$('#amazonpayPlaceOrderLink').removeClass('invisible');#}
-        {#}#}
-    {#});#}
-
-    {#function selectDefaultShipmentMethod() {#}
-        {#if ($('input[name=amazonpayShipmentMethod]:checked').length === 0) {#}
-            {#$('input[name=amazonpayShipmentMethod]:first').click();#}
-
-            {#return true;#}
-        {#}#}
-
-        {#return false;#}
-    {#}#}
-{#</script>#}
+{% block body %}
+    <div class="box">
+        <ul class="list-switches">
+            {% for shipmentMethod in _view.shipmentMethods %}
+                <li class="list-switches__item">
+                    <input type="radio"
+                           id="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}"
+                           class="radio"
+                           name="amazonpayShipmentMethod"
+                           value="{{ shipmentMethod.idShipmentMethod }}"
+                           {% if _view.selectedShipmentMethodId == shipmentMethod.idShipmentMethod %} checked="checked"{% endif %}
+                           {% if _view.isAmazonPaymentInvalid %} disabled="disabled"{% endif %}
+                    />
+                    <label class="radio__label label"
+                           for="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}">
+                        {{ shipmentMethod.name }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

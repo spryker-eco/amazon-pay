@@ -1,17 +1,17 @@
-@mixin amazon-pay-payment($name: '.payment') {
+@mixin amazon-pay-payment-step($name: '.payment-step') {
     #{$name} {
         &__address-item,
         &__wallet-item {
-            min-width: 300px;
             width: 100%;
-            max-width: 900px;
-            min-height: 228px;
-            height: 240px;
-            max-height: 400px;
+            height: 300px;
+        }
+
+        iframe {
+            border: none !important;
         }
 
         @content;
     }
 }
 
-@include amazon-pay-payment();
+@include amazon-pay-payment-step();

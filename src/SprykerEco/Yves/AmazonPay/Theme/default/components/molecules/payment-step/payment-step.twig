@@ -1,37 +1,20 @@
 {% extends model('component') %}
 
 {% define config = {
-<<<<<<< Updated upstream
-    name: 'payment',
-    tag: 'payment'
-=======
     name: 'payment-step',
     tag: 'payment-step'
->>>>>>> Stashed changes
 } %}
 
 {% define attributes = {
     sellerId: required,
     orderReferenceUrl: required,
     shipmentMethodsUrl: required,
-<<<<<<< Updated upstream
-=======
     updateShipmentMethodUrl: required,
->>>>>>> Stashed changes
     locale: required,
     orderReferenceId: null,
     addressScope: required,
     walletScope: required,
     shipmentMethodsHolder: required,
-<<<<<<< Updated upstream
-    displayMode: null
-} %}
-
-{% block body %}
-    <div class="{{ config.name }}__address-item"></div>
-
-    <div class="{{ config.name }}__wallet-item"></div>
-=======
     displayMode: null,
     nameShipmentMethod: required
 } %}
@@ -44,7 +27,6 @@
     <div class="box spacing-bottom--big">
         <div id="{{ config.jsName }}__wallet-item" class="{{ config.name }}__wallet-item"></div>
     </div>
->>>>>>> Stashed changes
 
     {% include molecule('ajax-provider') with {
         class: config.jsName ~ '__shipment-methods-ajax-provider',
@@ -61,8 +43,6 @@
             url: attributes.orderReferenceUrl
         }
     } only %}
-<<<<<<< Updated upstream
-=======
 
     {% include molecule('ajax-provider') with {
         class: config.jsName ~ '__shipment-update-ajax-provider',
@@ -71,5 +51,4 @@
             url: attributes.updateShipmentMethodUrl
         }
     } only %}
->>>>>>> Stashed changes
 {% endblock %}
