@@ -1,0 +1,36 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'get-shipment-methods',
+    tag: 'get-shipment-methods'
+} %}
+
+{% define data = {
+    shipmentMethods: required,
+    selectedShipmentMethodId: required,
+    isAmazonPaymentInvalid: required
+} %}
+
+{% block body %}
+    <div class="box">
+        <h6>{{ 'checkout.step.shipment.title' | trans }}</h6>
+        <ul class="list-switches">
+            {% for shipmentMethod in data.shipmentMethods %}
+                <li class="list-switches__item">
+                    <input type="radio"
+                           id="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}"
+                           class="radio"
+                           name="amazonpayShipmentMethod"
+                           value="{{ shipmentMethod.idShipmentMethod }}"
+                        {% if data.selectedShipmentMethodId == shipmentMethod.idShipmentMethod %} checked="checked"{% endif %}
+                        {% if data.isAmazonPaymentInvalid %} disabled="disabled"{% endif %}
+                    />
+                    <label class="label"
+                           for="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}">
+                        {{ shipmentMethod.name }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

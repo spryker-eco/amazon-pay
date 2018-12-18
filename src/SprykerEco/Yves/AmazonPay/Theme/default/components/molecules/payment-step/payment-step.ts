@@ -15,6 +15,7 @@ export default class PaymentStep extends Component {
     protected addressScopeConfig: string;
     protected walletScopeConfig: string;
     protected shipmentMethodsHolder: HTMLElement;
+    protected summaryInfoHolder: HTMLElement;
     protected shipmentMethods: Array<HTMLInputElement>;
     protected shipmentMethodsAjaxProvider: AjaxProvider;
     protected orderReferenceAjaxProvider: AjaxProvider;
@@ -25,6 +26,7 @@ export default class PaymentStep extends Component {
         this.addressScopeConfig = <string>this.addressScopeConfigAttribute;
         this.walletScopeConfig = <string>this.walletScopeConfigAttribute;
         this.shipmentMethodsHolder = <HTMLElement>document.querySelector(this.shipmentMethodsHolderAttribute);
+        this.summaryInfoHolder = <HTMLElement>document.querySelector(this.summaryInfoHolderAttribute);
         this.shipmentMethodsAjaxProvider = <AjaxProvider>this.querySelector(`.${this.jsName}__shipment-methods-ajax-provider`);
         this.orderReferenceAjaxProvider = <AjaxProvider>this.querySelector(`.${this.jsName}__order-reference-ajax-provider`);
         this.shipmentUpdateAjaxProvider = <AjaxProvider>this.querySelector(`.${this.jsName}__shipment-update-ajax-provider`);
@@ -34,20 +36,19 @@ export default class PaymentStep extends Component {
             shipmentMethodsUrl: this.shipmentMethodsUrlAttribute,
             updateShipmentMethodUrl: this.updateShipmentMethodUrlAttribute,
             locale: this.localeAttribute,
-            orderReferenceId: this.orderReferenceUrlAttribute,
-            displayMode: this.displayModeAttribute
+            orderReferenceId: (this.orderReferenceIdAttribute === "") ? undefined : this.orderReferenceIdAttribute,
+            displayMode: (this.displayModeAttribute === "") ? undefined : this.displayModeAttribute
         };
-        // this.shipmentMethodsAjaxProvider.xhr.addEventListener('error', () => console.log('error'));
         this.amazonLoginReady();
         this.amazonPaymentsReady();
     }
     
     protected mapEvents(): void {
+        this.shipmentMethods.forEach(itemMethod => itemMethod.addEventListener('change', this.updatePayment.bind(this, itemMethod.value)));
         const checkedMethods = this.shipmentMethods.find(itemMethod => itemMethod.checked === true);
         if(checkedMethods === undefined) {
-            this.shipmentMethods[0].setAttribute('checked', 'checked');
+            this.shipmentMethods[0].click();
         }
-        this.shipmentMethods.forEach(itemMethod => itemMethod.addEventListener('change', this.updatePayment.bind(itemMethod, this.shipmentUpdateAjaxProvider)));
     }
 
     protected amazonLoginReady(): void {
@@ -63,38 +64,16 @@ export default class PaymentStep extends Component {
                 sellerId: this.payConfig.sellerId,
                 scope: this.addressScopeConfig,
                 language: this.payConfig.locale,
-                // amazonOrderReferenceId: this.payConfig.orderReferenceId,
-                // displayMode: this.payConfig.displayMode,
+                amazonOrderReferenceId: this.payConfig.orderReferenceId,
+                displayMode: this.payConfig.displayMode,
                 onOrderReferenceCreate(orderReference) {
                     const referenceId = orderReference.getAmazonOrderReferenceId();
-                    // const data = {
-                    //     'reference_id': referenceId
-                    // }
-                    _this.orderReference(`reference_id=${referenceId}`);
-                    // (<any>window).jQuery(function() {
-                    //     (<any>window).jQuery.post(
-                    //         _this.payConfig.orderReferenceUrl,
-                    //         {'reference_id': referenceId}
-                    //     );
-                    // });
+                    const formData = new FormData();
+                    formData.append('reference_id', referenceId);
+                    _this.orderReference(formData);
                 },
                 onAddressSelect(orderReference) {
                     _this.getShipmentMethods(_this.shipmentMethodsHolder);
-                    // (<any>window).jQuery(function() {
-                    //     (<any>window).jQuery('#amazonpayPlaceOrderLink').addClass('invisible');
-                    //     var shipmentMethodsBlock = (<any>window).jQuery('#shipmentMethods');
-                    //     shipmentMethodsBlock.html('Please wait...');
-                    //     shipmentMethodsBlock.load(
-                    //         shipmentMethodsUrl,
-                    //         function( response, status, xhr ) {
-                    //             console.log(response);
-                    //             if ( status === "error" ) {
-                    //                 var msg = "Sorry but there was an error: ";
-                    //                 (<any>window).jQuery( "#shipment_methods" ).html( msg + xhr.status + " " + xhr.statusText );
-                    //             }
-                    //         }
-                    //     );
-                    // });
                 },
                 design: {
                     designMode: 'responsive'
@@ -104,7 +83,7 @@ export default class PaymentStep extends Component {
             new (<any>window).OffAmazonPayments.Widgets.Wallet({
                 sellerId: this.payConfig.sellerId,
                 scope: this.walletScopeConfig,
-                // amazonOrderReferenceId: this.payConfig.orderReferenceId,
+                amazonOrderReferenceId: this.payConfig.orderReferenceId,
                 design: {
                     designMode: 'responsive'
                 },
@@ -122,12 +101,11 @@ export default class PaymentStep extends Component {
         await this.orderReferenceAjaxProvider.fetch(data);
     }
     
-    protected async updatePayment(shipmentUpdateAjaxProvider: AjaxProvider): Promise<void> {
-        const shipmentId = this.getAttribute('value');
-        const data = `shipment_method_id=${shipmentId}`;
-        const hol = document.getElementById('amazonpaySummeryInformation');
-        const response = await shipmentUpdateAjaxProvider.fetch(data);
-        hol.innerHTML = response;
+    protected async updatePayment(selectedMethodValue: string): Promise<void> {
+        const formData = new FormData();
+        formData.append('shipment_method_id', selectedMethodValue);
+        const response = await this.shipmentUpdateAjaxProvider.fetch(formData);
+        this.summaryInfoHolder.innerHTML = response;
     }
 
     get sellerIdAttribute(): string {
@@ -164,6 +142,10 @@ export default class PaymentStep extends Component {
 
     get shipmentMethodsHolderAttribute(): string {
         return this.getAttribute('shipmentMethodsHolder');
+    }
+    
+    get summaryInfoHolderAttribute(): string {
+        return this.getAttribute('summaryInfoHolder');
     }
 
     get displayModeAttribute(): string {

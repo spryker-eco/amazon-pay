@@ -1,16 +1,19 @@
 {% extends template('page-layout-checkout', 'CheckoutPage') %}
 
 {% define data = {
+    amazonpayConfig: _view.amazonpayConfig,
     clientId: _view.amazonpayConfig.clientId,
     sellerId: _view.amazonpayConfig.sellerId,
     orderReferenceUrl: path('amazonpay_set_order_reference'),
     shipmentMethodsUrl: path('amazonpay_get_shipment_methods'),
     updateShipmentMethodUrl: path('amazonpay_update_shipment_method'),
-    shipmentMethodUrl: path(''),
     displayMode: _view.addressBookMode | default(''),
     orderReferenceId: _view.orderReferenceId | default(''),
     addressScope: 'profile payments:widget payments:shipping_address payments:billing_address',
     walletScope: 'profile postal_code payments:widget payments:shipping_address',
+    quoteTransfer: _view.quoteTransfer,
+    cartItems: _view.cartItems,
+    title: 'checkout.amazonpay' | trans,
 } %}
 
 {% set steps = [{
@@ -31,32 +34,22 @@
 {% endblock %}
 
 {% block content %}
-    {% include molecule('script-loader') with {
-        attributes: {
-            src: _view.amazonpayConfig.isSandbox ? _view.amazonpayConfig.widgetScriptPathSandbox : _view.amazonpayConfig.widgetPathScript
-        }
-    } only %}
-    {% include molecule('script-loader') with {
-        attributes: {
-            src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'
-        }
-    } only %}
     <div class="box">
         <div class="grid">
             <div class="col col--sm-12 spacing-bottom--big">
-                {% if _view.quoteTransfer.payment and _view.quoteTransfer.payment.paymentMethod %}
+                {% if data.quoteTransfer.payment and data.quoteTransfer.payment.paymentMethod %}
                     <h5>{{ 'checkout.step.summary.payment' | trans }}</h5>
                     <ul class="list">
                         <li class="list__item">
                             <span>{{ 'checkout.step.summary.with_method' | trans }}</span>
-                            {{ _view.quoteTransfer.payment.paymentMethod }}
+                            {{ data.quoteTransfer.payment.paymentMethod }}
                         </li>
                     </ul>
                 {% endif %}
 
-                {% if _view.cartItems is defined %}
+                {% if data.cartItems is defined %}
                     <ul class="list">
-                        {% for item in _view.cartItems %}
+                        {% for item in data.cartItems %}
                             <li class="list__item">
                                 {{ item.name }}
                             </li>
@@ -72,7 +65,6 @@
                         orderReferenceUrl: data.orderReferenceUrl,
                         shipmentMethodsUrl: data.shipmentMethodsUrl,
                         updateShipmentMethodUrl: data.updateShipmentMethodUrl,
-                        shipmentMethodUrl: '',
                         locale: app.locale,
                         addressScope: data.addressScope,
                         walletScope: data.walletScope,
@@ -80,7 +72,7 @@
                         orderReferenceId: data.orderReferenceId,
                         shipmentMethodsHolder: '.shipment-methods__holder',
                         nameShipmentMethod: 'amazonpayShipmentMethod',
-                        summaryInfoHolder: ''
+                        summaryInfoHolder: '.summary-info'
                     }
                 } only %}
 
@@ -88,23 +80,27 @@
             </div>
 
             <div class="col col--sm-12">
-                <div id="amazonpaySummeryInformation">
+                <div class="summary-info">
                     {% include molecule('shipment-method', 'AmazonPay') with {
                         data: {
-                            quoteTransfer: _view.quoteTransfer
+                            quoteTransfer: data.quoteTransfer
                         }
                     } only %}
                 </div>
             </div>
 
-            <div class="col col--sm-12">
+            <div class="col col--sm-12 text-right">
                 <a href="{{ path('amazonpay_confirm_purchase') }}"
-                   id="amazonpayPlaceOrderLink"
-                   class="button button--success"
-                   data-component="disable-on-click">
+                   class="button button--success">
                     {{ 'checkout.step.place.order' | trans }}
                 </a>
             </div>
         </div>
     </div>
+
+    {% include molecule('script-loader') with {
+        attributes: {
+            src: data.amazonpayConfig.isSandbox ? data.amazonpayConfig.widgetScriptPathSandbox : data.amazonpayConfig.widgetPathScript
+        }
+    } only %}
 {% endblock %}

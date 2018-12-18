@@ -16,10 +16,15 @@
     walletScope: required,
     shipmentMethodsHolder: required,
     displayMode: null,
-    nameShipmentMethod: required
+    nameShipmentMethod: required,
+    summaryInfoHolder: required
 } %}
 
 {% block body %}
+    {% for message in app.session.flashbag.get('flash.messages.error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
     <div class="box">
         <div id="{{ config.jsName }}__address-item" class="{{ config.name }}__address-item"></div>
     </div>

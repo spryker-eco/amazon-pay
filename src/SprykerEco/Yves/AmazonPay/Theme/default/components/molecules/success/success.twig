@@ -1,0 +1,22 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'success',
+    tag: 'success'
+} %}
+
+{% define data = {
+    isAsynchronous: required
+} %}
+
+{% block body %}
+    <div class="box">
+        <h3>{{ 'checkout.step.success.title' | trans }}</h3>
+        <p>{{ 'checkout.step.success.text' | trans }}</p>
+        <p>
+            {% if data.isAsynchronous %}
+                {{ 'amazonpay.success.asyncronous.text' | trans }}
+            {% endif %}
+        </p>
+    </div>
+{% endblock %}

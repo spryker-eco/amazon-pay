@@ -11,42 +11,66 @@
 
 {% block body %}
     <div class="box">
-        <h5>{{ app['cart.quantity'] }} {{ 'checkout.step.summary.items' | trans }}</h5>
-        <h5>{{ 'checkout.step.summary.overview' | trans }}</h5>
-        <ul class="list">
-            <li class="list__item">
-                {{ 'checkout.step.summary.sub_total' | trans }}
-                <span>{{ data.quoteTransfer.totals.subtotal | money }}</span>
+        <ul class="summary-overview">
+            <li>
+                <span class="float-right">{{ app['cart.quantity'] }} {{ 'checkout.step.summary.items' | trans }}</span>
+                <h6>{{ 'checkout.step.summary.overview' | trans }}</h6>
             </li>
 
-            {% if data.quoteTransfer.shipment and data.quoteTransfer.shipment.method %}
-                <li class="list__item">
-                    <strong>{{ 'checkout.step.summary.shipping' | trans }}</strong>
+            {% block separator %}
+                <li><hr /></li>
+            {% endblock %}
+
+            <li>
+                {{ 'checkout.step.summary.sub_total' | trans }}
+                <strong class="float-right">{{ data.quoteTransfer.totals.subtotal | money }}</strong>
+            </li>
+
+            {{block('separator')}}
+
+            {% if data.quoteTransfer.cartRuleDiscounts|length %}
+                <li>
+                    <strong>{{ 'cart.discounts' | trans }}</strong>
+                    {% for ruleDiscount in data.quoteTransfer.cartRuleDiscounts %}
+                        <div class="grid grid--justify">
+                            <span class="col col--sm-10">{{ ruleDiscount.displayName }}</span>
+                            <span class="col col--expand text-right">- {{ ruleDiscount.amount | money }}</span>
+                        </div>
+                    {% endfor %}
                 </li>
+                {{block('separator')}}
+            {% endif %}
 
-                <li class="list__item">
-                    {% if data.quoteTransfer.shipment.method.name is not empty %}
-                        {{ data.quoteTransfer.shipment.method.name }}
-                    {% endif %}
-
-                    {% if data.quoteTransfer.shipment.method.storeCurrencyPrice is not null %}
-                        {{ data.quoteTransfer.shipment.method.storeCurrencyPrice | money }}
-                    {% endif %}
+            {% if data.quoteTransfer.shipment and data.quoteTransfer.shipment.method %}
+                <li>
+                    {{ 'checkout.step.summary.shipping' | trans }}
+                    <strong>
+                        (
+                            {% if data.quoteTransfer.shipment.method.name is not empty %}
+                                {{ data.quoteTransfer.shipment.method.name }}
+                            {% endif %}
+                        )
+                    </strong>
+                    <span class="float-right">
+                        {% if data.quoteTransfer.shipment.method.storeCurrencyPrice is not null %}
+                            {{ data.quoteTransfer.shipment.method.storeCurrencyPrice | money }}
+                        {% endif %}
+                    </span>
                 </li>
             {% endif %}
 
-            <h1>TO FIX { % include '@checkout/checkout/partials/summary-discounts.twig' % }</h1>
+            {{block('separator')}}
 
-            <li class="list__item">
-                <h5>{{ 'checkout.step.summary.grand_total' | trans }}</h5>
-                <h5>
-                    <strong>{{ data.quoteTransfer.totals.grandtotal | money }}</strong>
-                </h5>
+            <li>
+                {{ 'checkout.step.summary.tax' | trans }}
+                <span class="float-right">{{ data.quoteTransfer.totals.taxtotal.amount | money }}</span>
             </li>
 
-            <li class="list__item">
-                {{ 'checkout.step.summary.tax' | trans }}
-                <span>{{ data.quoteTransfer.totals.taxtotal.amount | money }}</span>
+            {{block('separator')}}
+
+            <li>
+                <h6 class="float-right">{{ data.quoteTransfer.totals.grandtotal | money }}</h6>
+                <h6>{{ 'checkout.step.summary.grand_total' | trans }}</h6>
             </li>
         </ul>
     </div>

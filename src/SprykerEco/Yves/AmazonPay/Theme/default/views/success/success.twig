@@ -1,24 +1,15 @@
-{% extends "@checkout/layout.twig" %}
+{% extends template('page-layout-checkout', 'CheckoutPage') %}
 
-{% block content %}
-    <div class="row">
-        <div class="small-12 columns">
-            <div class="callout success">
-                <h3>{{ 'checkout.step.success.title' | trans }}</h3>
-                {{ 'checkout.step.success.text' | trans }}
+{% block pageInfo %}
+    {% include molecule('success', 'AmazonPay') with {
+        data: {
+            isAsynchronous: _view.isAsynchronous
+        }
+    } only %}
 
-                {% if isAsynchronous %}
-                    {{ 'amazonpay.success.asyncronous.text' | trans }}
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <script>
-        window.onAmazonLoginReady = function() {
-            amazon.Login.logout();
-        };
-    </script>
-    {% include "@amazon-pay/partials/scripts.twig" %}
+    {% include molecule('script-loader') with {
+        attributes: {
+            src: _view.amazonpayConfig.isSandbox ? _view.amazonpayConfig.widgetScriptPathSandbox : _view.amazonpayConfig.widgetPathScript
+        }
+    } only %}
 {% endblock %}
-
