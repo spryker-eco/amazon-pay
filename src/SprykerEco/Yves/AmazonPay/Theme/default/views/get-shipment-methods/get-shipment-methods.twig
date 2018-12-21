@@ -1,7 +1,7 @@
 {% extends template('widget') %}
 
 {% block body %}
-    {% include atom('get-shipment-methods', 'AmazonPay') with {
+    {% include molecule('get-shipment-methods', 'AmazonPay') with {
         data: {
             shipmentMethods: _view.shipmentMethods,
             selectedShipmentMethodId: _view.selectedShipmentMethodId,

@@ -9,15 +9,15 @@
     clientId: required,
     sellerId: required,
     logout: required,
-    redirectUrl: '',
+    redirectUrl: required,
     buttonType: required,
     buttonColor: required,
     buttonSize: required,
     locale: required,
-    loginScopeOptions: '',
-    loginPopupOptions: ''
+    loginScopeOptions: required,
+    loginPopupOptions: required
 } %}
 
 {% block body %}
-    <div id="{{ config.jsName }}__item" align="center"></div>
+    <div id="{{ config.jsName }}__item" class="text-center"></div>
 {% endblock %}

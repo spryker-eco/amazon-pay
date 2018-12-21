@@ -1,7 +1,7 @@
 {% extends template('page-layout-checkout', 'CheckoutPage') %}
 
 {% block pageInfo %}
-    {% include molecule('success', 'AmazonPay') with {
+    {% include molecule('success-step', 'AmazonPay') with {
         data: {
             isAsynchronous: _view.isAsynchronous
         }

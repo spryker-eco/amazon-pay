@@ -1,6 +1,8 @@
 import Component from 'ShopUi/models/component';
 import AjaxProvider from "ShopUi/components/molecules/ajax-provider/ajax-provider";
 
+declare const window: any;
+
 interface IAmazonConfig {
     sellerId: string,
     orderReferenceUrl: string,
@@ -12,8 +14,6 @@ interface IAmazonConfig {
 }
  
 export default class PaymentStep extends Component {
-    protected addressScopeConfig: string;
-    protected walletScopeConfig: string;
     protected shipmentMethodsHolder: HTMLElement;
     protected summaryInfoHolder: HTMLElement;
     protected shipmentMethods: Array<HTMLInputElement>;
@@ -23,8 +23,6 @@ export default class PaymentStep extends Component {
     protected payConfig: IAmazonConfig;
     
     protected readyCallback(): void {
-        this.addressScopeConfig = <string>this.addressScopeConfigAttribute;
-        this.walletScopeConfig = <string>this.walletScopeConfigAttribute;
         this.shipmentMethodsHolder = <HTMLElement>document.querySelector(this.shipmentMethodsHolderAttribute);
         this.summaryInfoHolder = <HTMLElement>document.querySelector(this.summaryInfoHolderAttribute);
         this.shipmentMethodsAjaxProvider = <AjaxProvider>this.querySelector(`.${this.jsName}__shipment-methods-ajax-provider`);
@@ -52,17 +50,17 @@ export default class PaymentStep extends Component {
     }
 
     protected amazonLoginReady(): void {
-        (<any>window).onAmazonLoginReady = () => {
-            (<any>window).amazon.Login.setClientId(this.payConfig.sellerId);
+        window.onAmazonLoginReady = () => {
+            window.amazon.Login.setClientId(this.payConfig.sellerId);
         };
     }
 
     protected amazonPaymentsReady(): void {
         const _this = this;
-        (<any>window).onAmazonPaymentsReady = () => {
-            new (<any>window).OffAmazonPayments.Widgets.AddressBook({
+        window.onAmazonPaymentsReady = () => {
+            new window.OffAmazonPayments.Widgets.AddressBook({
                 sellerId: this.payConfig.sellerId,
-                scope: this.addressScopeConfig,
+                scope: this.addressScopeConfigAttribute,
                 language: this.payConfig.locale,
                 amazonOrderReferenceId: this.payConfig.orderReferenceId,
                 displayMode: this.payConfig.displayMode,
@@ -80,9 +78,9 @@ export default class PaymentStep extends Component {
                 }
             }).bind(`${this.jsName}__address-item`);
 
-            new (<any>window).OffAmazonPayments.Widgets.Wallet({
+            new window.OffAmazonPayments.Widgets.Wallet({
                 sellerId: this.payConfig.sellerId,
-                scope: this.walletScopeConfig,
+                scope: this.walletScopeConfigAttribute,
                 amazonOrderReferenceId: this.payConfig.orderReferenceId,
                 design: {
                     designMode: 'responsive'
