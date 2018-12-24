@@ -15,16 +15,17 @@ interface IAmazonConfig {
 
 export default class CartPayButton extends Component {
     protected payConfig: IAmazonConfig;
+
     protected readyCallback(): void {
         this.payConfig = <IAmazonConfig> {
-            clientId: this.clientIdAttribute,
-            sellerId: this.sellerIdAttribute,
-            logout: this.logoutAttribute,
-            redirectUrl: this.redirectUrlAttribute,
-            buttonType: this.buttonTypeAttribute,
-            buttonColor: this.buttonColorAttribute,
-            buttonSize: this.buttonSizeAttribute,
-            locale: this.localeAttribute
+             clientId: this.clientId,
+             sellerId: this.sellerId,
+             logout: this.logout,
+             redirectUrl: this.redirectUrl,
+             buttonType: this.buttonType,
+             buttonColor: this.buttonColor,
+             buttonSize: this.buttonSize,
+             locale: this.locale
         };
         this.windowErrorHandler();
         this.amazonLoginReady();
@@ -78,35 +79,35 @@ export default class CartPayButton extends Component {
         }
     }
 
-    get clientIdAttribute(): string {
+    get clientId(): string {
         return this.getAttribute('clientId');
     }
 
-    get sellerIdAttribute(): string {
+    get sellerId(): string {
         return this.getAttribute('sellerId');
     }
 
-    get logoutAttribute(): string {
+    get logout(): string {
         return this.getAttribute('logout');
     }
 
-    get redirectUrlAttribute(): string {
+    get redirectUrl(): string {
         return this.getAttribute('redirectUrl');
     }
 
-    get buttonTypeAttribute(): string {
+    get buttonType(): string {
         return this.getAttribute('buttonType');
     }
 
-    get buttonColorAttribute(): string {
+    get buttonColor(): string {
         return this.getAttribute('buttonColor');
     }
 
-    get buttonSizeAttribute(): string {
+    get buttonSize(): string {
         return this.getAttribute('buttonSize');
     }
 
-    get localeAttribute(): string {
+    get locale(): string {
         return this.getAttribute('locale');
     }
 

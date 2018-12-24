@@ -9,8 +9,8 @@ interface IAmazonConfig {
     shipmentMethodsUrl: string,
     updateShipmentMethodUrl: string,
     locale: string,
-    orderReferenceId?: string,
-    displayMode?: string
+    orderReferenceId?: string | undefined,
+    displayMode?: string | undefined
 }
  
 export default class PaymentStep extends Component {
@@ -29,13 +29,13 @@ export default class PaymentStep extends Component {
         this.orderReferenceAjaxProvider = <AjaxProvider>this.querySelector(`.${this.jsName}__order-reference-ajax-provider`);
         this.shipmentUpdateAjaxProvider = <AjaxProvider>this.querySelector(`.${this.jsName}__shipment-update-ajax-provider`);
         this.payConfig = <IAmazonConfig> {
-            sellerId: this.sellerIdAttribute,
-            orderReferenceUrl: this.orderReferenceUrlAttribute,
-            shipmentMethodsUrl: this.shipmentMethodsUrlAttribute,
-            updateShipmentMethodUrl: this.updateShipmentMethodUrlAttribute,
-            locale: this.localeAttribute,
-            orderReferenceId: (this.orderReferenceIdAttribute === "") ? undefined : this.orderReferenceIdAttribute,
-            displayMode: (this.displayModeAttribute === "") ? undefined : this.displayModeAttribute
+             sellerId: this.sellerId,
+             orderReferenceUrl: this.orderReferenceUrl,
+             shipmentMethodsUrl: this.shipmentMethodsUrl,
+             updateShipmentMethodUrl: this.updateShipmentMethodUrl,
+             locale: this.locale,
+             orderReferenceId: (this.orderReferenceId === "") ? undefined : this.orderReferenceId,
+             displayMode: (this.displayMode === "") ? undefined : this.displayMode
         };
         this.amazonLoginReady();
         this.amazonPaymentsReady();
@@ -60,7 +60,7 @@ export default class PaymentStep extends Component {
         window.onAmazonPaymentsReady = () => {
             new window.OffAmazonPayments.Widgets.AddressBook({
                 sellerId: this.payConfig.sellerId,
-                scope: this.addressScopeConfigAttribute,
+                scope: this.addressScopeConfig,
                 language: this.payConfig.locale,
                 amazonOrderReferenceId: this.payConfig.orderReferenceId,
                 displayMode: this.payConfig.displayMode,
@@ -80,7 +80,7 @@ export default class PaymentStep extends Component {
 
             new window.OffAmazonPayments.Widgets.Wallet({
                 sellerId: this.payConfig.sellerId,
-                scope: this.walletScopeConfigAttribute,
+                scope: this.walletScopeConfig,
                 amazonOrderReferenceId: this.payConfig.orderReferenceId,
                 design: {
                     designMode: 'responsive'
@@ -91,7 +91,7 @@ export default class PaymentStep extends Component {
 
     protected async getShipmentMethods(selector: HTMLElement): Promise<void> {
         selector.innerHTML = await this.shipmentMethodsAjaxProvider.fetch();
-        this.shipmentMethods = <HTMLInputElement[]>Array.from(document.getElementsByName(`${this.nameShipmentMethodAttribute}`));
+        this.shipmentMethods = <HTMLInputElement[]>Array.from(document.getElementsByName(`${this.nameShipmentMethod}`));
         this.mapEvents();
     }
 
@@ -106,35 +106,35 @@ export default class PaymentStep extends Component {
         this.summaryInfoHolder.innerHTML = response;
     }
 
-    get sellerIdAttribute(): string {
+    get sellerId(): string {
         return this.getAttribute('sellerId');
     }
 
-    get orderReferenceUrlAttribute(): string {
+    get orderReferenceUrl(): string {
         return this.getAttribute('orderReferenceUrl');
     }
 
-    get shipmentMethodsUrlAttribute(): string {
+    get shipmentMethodsUrl(): string {
         return this.getAttribute('shipmentMethodsUrl');
     }
 
-    get updateShipmentMethodUrlAttribute(): string {
+    get updateShipmentMethodUrl(): string {
         return this.getAttribute('updateShipmentMethodUrl');
     }
 
-    get localeAttribute(): string {
+    get locale(): string {
         return this.getAttribute('locale');
     }
 
-    get orderReferenceIdAttribute(): string {
+    get orderReferenceId(): string {
         return this.getAttribute('orderReferenceId');
     }
 
-    get addressScopeConfigAttribute(): string {
+    get addressScopeConfig(): string {
         return this.getAttribute('addressScope');
     }
 
-    get walletScopeConfigAttribute(): string {
+    get walletScopeConfig(): string {
         return this.getAttribute('walletScope');
     }
 
@@ -146,11 +146,11 @@ export default class PaymentStep extends Component {
         return this.getAttribute('summaryInfoHolder');
     }
 
-    get displayModeAttribute(): string {
+    get displayMode(): string {
         return this.getAttribute('displayMode');
     }
 
-    get nameShipmentMethodAttribute(): string {
+    get nameShipmentMethod(): string {
         return this.getAttribute('nameShipmentMethod');
     }
 }

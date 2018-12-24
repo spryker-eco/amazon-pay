@@ -44,18 +44,18 @@
             {% if data.quoteTransfer.shipment and data.quoteTransfer.shipment.method %}
                 <li>
                     {{ 'checkout.step.summary.shipping' | trans }}
-                    <strong>
-                        (
-                            {% if data.quoteTransfer.shipment.method.name is not empty %}
+                    {% if data.quoteTransfer.shipment.method.name is not empty %}
+                        <strong>
+                            (
                                 {{ data.quoteTransfer.shipment.method.name }}
-                            {% endif %}
-                        )
-                    </strong>
-                    <span class="float-right">
-                        {% if data.quoteTransfer.shipment.method.storeCurrencyPrice is not null %}
+                            )
+                        </strong>
+                    {% endif %}
+                    {% if data.quoteTransfer.shipment.method.storeCurrencyPrice is not null %}
+                        <span class="float-right">
                             {{ data.quoteTransfer.shipment.method.storeCurrencyPrice | money }}
-                        {% endif %}
-                    </span>
+                        </span>
+                    {% endif %}
                 </li>
             {% endif %}
 

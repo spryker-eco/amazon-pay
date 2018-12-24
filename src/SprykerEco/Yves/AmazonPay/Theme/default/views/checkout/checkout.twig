@@ -47,7 +47,7 @@
                     </ul>
                 {% endif %}
 
-                {% if data.cartItems is defined %}
+                {% if data.cartItems is not empty %}
                     <ul class="list">
                         {% for item in data.cartItems %}
                             <li class="list__item">
