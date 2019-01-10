@@ -16,7 +16,7 @@ abstract class IpnAbstractPaymentRefundHandler extends IpnAbstractTransferReques
     /**
      * @param \Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer
      *
-     * @return \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay
+     * @return \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay|null
      */
     protected function retrievePaymentEntity(AmazonpayIpnPaymentRequestTransfer $paymentRequestTransfer)
     {

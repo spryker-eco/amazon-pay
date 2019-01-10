@@ -41,7 +41,6 @@ class AuthorizationDetailsConverter extends AbstractArrayConverter
         self::EXPIRATION_TIMESTAMP => AmazonpayAuthorizationDetailsTransfer::EXPIRATION_TIMESTAMP,
         self::AMAZON_AUTHORIZATION_ID => AmazonpayAuthorizationDetailsTransfer::AMAZON_AUTHORIZATION_ID,
         self::AUTHORIZATION_REFERENCE_ID => AmazonpayAuthorizationDetailsTransfer::AUTHORIZATION_REFERENCE_ID,
-        self::CAPTURE_NOW => AmazonpayAuthorizationDetailsTransfer::CAPTURE_NOW,
         self::AUTHORIZATION_STATUS => AmazonpayAuthorizationDetailsTransfer::AUTHORIZATION_STATUS,
         self::AUTHORIZATION_BILLING_ADDRESS => AmazonpayAuthorizationDetailsTransfer::AUTHORIZATION_BILLING_ADDRESS,
         self::SOFT_DESCRIPTOR => AmazonpayAuthorizationDetailsTransfer::SOFT_DESCRIPTOR,
