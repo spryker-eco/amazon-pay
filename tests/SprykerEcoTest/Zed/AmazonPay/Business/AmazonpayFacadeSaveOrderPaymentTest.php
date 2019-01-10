@@ -41,13 +41,10 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
     {
         $quote = $this->createQuote($orderReference, $idsList, $status, $omsState);
 
-        $checkoutResponseTransfer = new CheckoutResponseTransfer();
-        $checkoutResponseTransfer->setSaveOrder(
-            (new SaveOrderTransfer())
-            ->setOrderItems($quote->getItems())
-        );
+        $saveOrderTransfer = new SaveOrderTransfer();
+        $saveOrderTransfer->setOrderItems($quote->getItems());
 
-        $this->createFacade()->saveOrderPayment($quote, $checkoutResponseTransfer);
+        $this->createFacade()->saveOrderPayment($quote, $saveOrderTransfer);
 
         $itemIds = [];
 
@@ -73,13 +70,10 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
     {
         $quote = new QuoteTransfer();
 
-        $checkoutResponseTransfer = new CheckoutResponseTransfer();
-        $checkoutResponseTransfer->setSaveOrder(
-            (new SaveOrderTransfer())
-            ->setOrderItems($quote->getItems())
-        );
+        $saveOrderTransfer = new SaveOrderTransfer();
+        $saveOrderTransfer->setOrderItems($quote->getItems());
 
-        $this->createFacade()->saveOrderPayment($quote, $checkoutResponseTransfer);
+        $this->createFacade()->saveOrderPayment($quote, $saveOrderTransfer);
     }
 
     /**
