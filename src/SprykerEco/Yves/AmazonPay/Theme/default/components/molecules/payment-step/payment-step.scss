@@ -1,0 +1,17 @@
+@mixin amazon-pay-payment-step($name: '.payment-step') {
+    #{$name} {
+        &__address-item,
+        &__wallet-item {
+            width: 100%;
+            height: 300px;
+        }
+
+        iframe {
+            border: none !important;
+        }
+
+        @content;
+    }
+}
+
+@include amazon-pay-payment-step();

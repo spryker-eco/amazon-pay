@@ -1,0 +1,59 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'payment-step',
+    tag: 'payment-step'
+} %}
+
+{% define attributes = {
+    sellerId: required,
+    orderReferenceUrl: required,
+    shipmentMethodsUrl: required,
+    updateShipmentMethodUrl: required,
+    locale: required,
+    orderReferenceId: null,
+    addressScope: required,
+    walletScope: required,
+    shipmentMethodsHolder: required,
+    displayMode: null,
+    nameShipmentMethod: required,
+    summaryInfoHolder: required
+} %}
+
+{% block body %}
+    {% for message in app.session.flashbag.get('flash.messages.error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+    <div class="box">
+        <div id="{{ config.jsName }}__address-item" class="{{ config.name }}__address-item"></div>
+    </div>
+
+    <div class="box spacing-bottom--big">
+        <div id="{{ config.jsName }}__wallet-item" class="{{ config.name }}__wallet-item"></div>
+    </div>
+
+    {% include molecule('ajax-provider') with {
+        class: config.jsName ~ '__shipment-methods-ajax-provider',
+        attributes: {
+            method: 'post',
+            url: attributes.shipmentMethodsUrl
+        }
+    } only %}
+
+    {% include molecule('ajax-provider') with {
+        class: config.jsName ~ '__order-reference-ajax-provider',
+        attributes: {
+            method: 'post',
+            url: attributes.orderReferenceUrl
+        }
+    } only %}
+
+    {% include molecule('ajax-provider') with {
+        class: config.jsName ~ '__shipment-update-ajax-provider',
+        attributes: {
+            method: 'post',
+            url: attributes.updateShipmentMethodUrl
+        }
+    } only %}
+{% endblock %}

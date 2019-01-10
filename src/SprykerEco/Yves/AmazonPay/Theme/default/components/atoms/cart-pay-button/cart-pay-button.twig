@@ -1,0 +1,23 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'cart-pay-button',
+    tag: 'cart-pay-button'
+} %}
+
+{% define attributes = {
+    clientId: required,
+    sellerId: required,
+    logout: required,
+    redirectUrl: required,
+    buttonType: required,
+    buttonColor: required,
+    buttonSize: required,
+    locale: required,
+    loginScopeOptions: required,
+    loginPopupOptions: required
+} %}
+
+{% block body %}
+    <div id="{{ config.jsName }}__item" class="text-center"></div>
+{% endblock %}

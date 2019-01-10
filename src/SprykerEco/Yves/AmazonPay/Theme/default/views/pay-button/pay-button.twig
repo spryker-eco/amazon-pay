@@ -1,17 +1,23 @@
-<script>
-    var amazonpayConfig = {
-        clientId: '{{ amazonpayConfig.clientId }}',
-        sellerId: '{{ amazonpayConfig.sellerId }}',
-        logout: {{ logout }},
-        redirectUrl: '{{ path('amazonpay_checkout', {'amazonpay': 'amazonpay'}) }}',
-        buttonType: '{{ amazonpayConfig.buttonType}}',
-        buttonColor: '{{ amazonpayConfig.buttonColor}}',
-        buttonSize: '{{ amazonpayConfig.buttonSize}}',
-        locale: '{{ app.locale }}'
-    };
-</script>
+{% extends template('widget') %}
 
-<div id="AmazonPayButton" align="center"></div>
+{% block body %}
+    {% include molecule('script-loader') with {
+        attributes: {
+            src: _view.amazonpayConfig.isSandbox ? _view.amazonpayConfig.widgetScriptPathSandbox : _view.amazonpayConfig.widgetPathScript
+        }
+    } only %}
 
-<script src="/assets/default/js/spryker-yves-amazon-pay-pay-button.js"></script>
-{% include "@amazon-pay/partials/scripts.twig" %}
+    {% include atom('cart-pay-button', 'AmazonPay') with {
+        attributes: {
+            clientId: _view.amazonpayConfig.clientId,
+            sellerId: _view.amazonpayConfig.sellerId,
+            logout: _view.logout,
+            redirectUrl: path('amazonpay_checkout', {'amazonpay': 'amazonpay'}),
+            buttonType: _view.amazonpayConfig.buttonType,
+            buttonColor: _view.amazonpayConfig.buttonColor,
+            buttonSize: _view.amazonpayConfig.buttonSize,
+            locale: app.locale,
+            loginScopeOptions: 'profile postal_code payments:widget payments:shipping_address payments:billing_address',
+            loginPopupOptions: 'true'
+        }
+    } only %}

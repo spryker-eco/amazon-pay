@@ -1,68 +1,106 @@
-{% extends "@amazon-pay/layout.twig" %}
+{% extends template('page-layout-checkout', 'CheckoutPage') %}
 
-{% block title %}
-    <h3>{{ 'checkout.step.summary.title' | trans }}</h3>
-{% endblock %}
+{% define data = {
+    amazonpayConfig: _view.amazonpayConfig,
+    clientId: _view.amazonpayConfig.clientId,
+    sellerId: _view.amazonpayConfig.sellerId,
+    orderReferenceUrl: path('amazonpay_set_order_reference'),
+    shipmentMethodsUrl: path('amazonpay_get_shipment_methods'),
+    updateShipmentMethodUrl: path('amazonpay_update_shipment_method'),
+    displayMode: _view.addressBookMode | default(''),
+    orderReferenceId: _view.orderReferenceId | default(''),
+    addressScope: 'profile payments:widget payments:shipping_address payments:billing_address',
+    walletScope: 'profile postal_code payments:widget payments:shipping_address',
+    quoteTransfer: _view.quoteTransfer,
+    cartItems: _view.cartItems,
+    title: 'checkout.amazonpay' | trans,
+} %}
 
-{% block breadcrumbItems %}
-    <li><a href="/">{{ 'global.home' | trans }}</a></li>
-    <li><a href="{{ url('cart') }}">{{ 'cart.cart'|trans }}</a></li>
-    <li>{{ 'checkout.amazonpay'|trans }}</li>
+{% set steps = [{
+    title: 'checkout.amazonpay' | trans,
+    route: null,
+    isActive: true,
+    isEnabled: true
+}] %}
+
+{% block breadcrumbs %}
+    {% include view('cart-checkout-breadcrumb', 'CheckoutWidget') with {
+        data: {
+            addCartBreadcrumb: true,
+            isCartPage: false,
+            checkoutBreadcrumbs: steps
+        }
+    } only %}
 {% endblock %}
 
 {% block content %}
-    <div class="row xlarge-unstack">
-        <div class="small-12 xlarge-3 columns">
-            <div class="row">
-                <div class="small-12 medium-6 xlarge-12 columns">
-                    {% if _view.quoteTransfer.payment and _view.quoteTransfer.payment.paymentMethod %}
-                    <div class="callout">
-                        <h5>{{ 'checkout.step.summary.payment' | trans }}</h5>
-                        <ul class="no-bullet">
-                            <li>
-                                <span class="__secondary">{{ 'checkout.step.summary.with_method' | trans }}</span> {{ _view.quoteTransfer.payment.paymentMethod }}
-                            </li>
-                        </ul>
-                    </div>
-                    {% endif %}
-                </div>
+    <div class="box">
+        <div class="grid">
+            <div class="col col--sm-12 spacing-bottom--big">
+                {% if data.quoteTransfer.payment and data.quoteTransfer.payment.paymentMethod %}
+                    <h5>{{ 'checkout.step.summary.payment' | trans }}</h5>
+                    <ul class="list">
+                        <li class="list__item">
+                            <span>{{ 'checkout.step.summary.with_method' | trans }}</span>
+                            {{ data.quoteTransfer.payment.paymentMethod }}
+                        </li>
+                    </ul>
+                {% endif %}
 
-                {% if _view.cartItems is defined %}
-                <div class="small-12 medium-6 xlarge-12 columns">
-                    <div class="callout">
-                        <ul class="no-bullet">
-                            {% for item in cartItems %}
-                                {% include '@amazon-pay/payment/partials/checkout-item.twig' %}
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
+                {% if data.cartItems is not empty %}
+                    <ul class="list">
+                        {% for item in data.cartItems %}
+                            <li class="list__item">
+                                {{ item.name }}
+                            </li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
             </div>
-        </div>
-        <div class="small-12 medium-6 columns">
-            {% block amazonpay_widgets %}
-                {% include '@amazon-pay/widget/checkout-widget.twig' %}
-            {% endblock %}
-            <div class="callout">
-                <div id="shipmentMethods"></div>
-            </div>
-        </div>
 
-        <div class="small-12 medium-6 columns">
-            <div class="callout" id="amazonpaySummeryInformation">
-                {% include '@amazon-pay/payment/update-shipment-method.twig' with {'quoteTransfer': _view.quoteTransfer} %}
-            </div>
-        </div>
-    </div>
+            <div class="col col--sm-12">
+                {% include molecule('payment-step', 'AmazonPay') with {
+                    attributes: {
+                        sellerId: data.sellerId,
+                        orderReferenceUrl: data.orderReferenceUrl,
+                        shipmentMethodsUrl: data.shipmentMethodsUrl,
+                        updateShipmentMethodUrl: data.updateShipmentMethodUrl,
+                        locale: app.locale,
+                        addressScope: data.addressScope,
+                        walletScope: data.walletScope,
+                        displayMode: data.displayMode,
+                        orderReferenceId: data.orderReferenceId,
+                        shipmentMethodsHolder: '.shipment-methods__holder',
+                        nameShipmentMethod: 'amazonpayShipmentMethod',
+                        summaryInfoHolder: '.summary-info'
+                    }
+                } only %}
 
-    <div class="small-12 columns">
-        <div class="callout">
-            <div class="row align-right">
-                <div class="small-12 medium-6 large-4 xlarge-3 columns">
-                    <a href="{{ path('amazonpay_confirm_purchase') }}" id="amazonpayPlaceOrderLink" class="button expanded __no-margin-bottom invisible" data-component="disable-on-click">{{ 'checkout.step.place.order' | trans }}</a>
+                {% include atom('shipment-methods', 'AmazonPay') only %}
+            </div>
+
+            <div class="col col--sm-12">
+                <div class="summary-info">
+                    {% include molecule('shipment-method', 'AmazonPay') with {
+                        data: {
+                            quoteTransfer: data.quoteTransfer
+                        }
+                    } only %}
                 </div>
             </div>
+
+            <div class="col col--sm-12 text-right">
+                <a href="{{ path('amazonpay_confirm_purchase') }}"
+                   class="button button--success">
+                    {{ 'checkout.step.place.order' | trans }}
+                </a>
+            </div>
         </div>
     </div>
+
+    {% include molecule('script-loader') with {
+        attributes: {
+            src: data.amazonpayConfig.isSandbox ? data.amazonpayConfig.widgetScriptPathSandbox : data.amazonpayConfig.widgetPathScript
+        }
+    } only %}
 {% endblock %}

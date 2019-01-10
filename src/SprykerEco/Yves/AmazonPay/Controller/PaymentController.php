@@ -189,7 +189,7 @@ class PaymentController extends AbstractController
 
             return $this->buildRedirectInternalResponse();
         }
-
+        
         $quoteTransfer->getShipment()->setShipmentSelection(
             $request->request->get(static::URL_PARAM_SHIPMENT_METHOD_ID)
         );
