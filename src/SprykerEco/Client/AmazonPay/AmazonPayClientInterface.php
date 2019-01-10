@@ -46,16 +46,4 @@ interface AmazonPayClientInterface
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function addSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer);
-
-    /**
-     * Specification:
-     * - Places an order
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
-     */
-    public function confirmPurchase(QuoteTransfer $quoteTransfer);
 }

@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class SetOrderReferenceDetailsAdapter extends AbstractAdapter
 {
-    const SELLER_ORDER_ID = 'seller_order_id';
+    public const SELLER_ORDER_ID = 'seller_order_id';
 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer

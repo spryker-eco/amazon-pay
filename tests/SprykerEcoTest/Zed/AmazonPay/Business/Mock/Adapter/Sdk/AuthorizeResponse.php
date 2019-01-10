@@ -17,7 +17,7 @@ class AuthorizeResponse extends AbstractResponse
     protected $statusCode;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $captureNow;
 

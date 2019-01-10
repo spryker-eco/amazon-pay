@@ -16,6 +16,8 @@ use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 class UpdateRefundStatusCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
     /**
+     * @api
+     *
      * @param array $salesOrderItems
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
      * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data

@@ -23,8 +23,8 @@ use SprykerEcoTest\Zed\AmazonPay\Business\Mock\Adapter\Sdk\AbstractResponse;
 
 class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
 {
-    const ITEMS_COUNT = 5;
-    const SELLER_REFERENCE_ID = 'seller-reference-id';
+    public const ITEMS_COUNT = 5;
+    public const SELLER_REFERENCE_ID = 'seller-reference-id';
 
     /**
      * @dataProvider providerQuotes

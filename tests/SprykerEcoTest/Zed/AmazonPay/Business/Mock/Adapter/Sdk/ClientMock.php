@@ -11,9 +11,9 @@ use PayWithAmazon\Client;
 
 class ClientMock extends Client
 {
-    const FIRST_NAME = 'John';
-    const LAST_NAME = 'Doe';
-    const EMAIL = 'john@doe.xxx';
+    public const FIRST_NAME = 'John';
+    public const LAST_NAME = 'Doe';
+    public const EMAIL = 'john@doe.xxx';
 
     /**
      * @param array $requestParameters

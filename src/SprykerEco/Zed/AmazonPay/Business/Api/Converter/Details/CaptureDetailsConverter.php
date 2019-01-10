@@ -12,10 +12,10 @@ use SprykerEco\Zed\AmazonPay\Business\Api\Converter\AbstractArrayConverter;
 
 class CaptureDetailsConverter extends AbstractArrayConverter
 {
-    const CAPTURE_STATUS = 'CaptureStatus';
-    const CAPTURE_FEE = 'CaptureFee';
-    const CAPTURE_AMOUNT = 'CaptureAmount';
-    const ID_LIST = 'IdList';
+    public const CAPTURE_STATUS = 'CaptureStatus';
+    public const CAPTURE_FEE = 'CaptureFee';
+    public const CAPTURE_AMOUNT = 'CaptureAmount';
+    public const ID_LIST = 'IdList';
 
     /**
      * @param array $captureDetailsData

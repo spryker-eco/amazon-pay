@@ -14,12 +14,12 @@ use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToMoneyInterface;
 
 abstract class AbstractAdapter implements CallAdapterInterface
 {
-    const AMAZON_AUTHORIZATION_ID = 'amazon_authorization_id';
-    const AMAZON_ORDER_REFERENCE_ID = 'amazon_order_reference_id';
-    const AMAZON_ADDRESS_CONSENT_TOKEN = 'address_consent_token';
-    const AMAZON_AMOUNT = 'amount';
-    const AMAZON_CAPTURE_ID = 'amazon_capture_id';
-    const AMAZON_REFUND_ID = 'amazon_refund_id';
+    public const AMAZON_AUTHORIZATION_ID = 'amazon_authorization_id';
+    public const AMAZON_ORDER_REFERENCE_ID = 'amazon_order_reference_id';
+    public const AMAZON_ADDRESS_CONSENT_TOKEN = 'address_consent_token';
+    public const AMAZON_AMOUNT = 'amount';
+    public const AMAZON_CAPTURE_ID = 'amazon_capture_id';
+    public const AMAZON_REFUND_ID = 'amazon_refund_id';
 
     /**
      * @var \PayWithAmazon\ClientInterface

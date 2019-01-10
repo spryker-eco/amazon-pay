@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\AmazonpayResponseTransfer;
 
 abstract class AbstractCaptureOrderConverter extends AbstractResponseParserConverter
 {
-    const CAPTURE_DETAILS = 'CaptureDetails';
+    public const CAPTURE_DETAILS = 'CaptureDetails';
 
     /**
      * @var \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface $captureDetailsConverter

@@ -12,7 +12,7 @@ use Spryker\Client\Kernel\Container;
 
 class AmazonPayDependencyProvider extends AbstractDependencyProvider
 {
-    const CLIENT_ZED_REQUEST = 'zed request';
+    public const CLIENT_ZED_REQUEST = 'zed request';
 
     /**
      * @param \Spryker\Client\Kernel\Container $container

@@ -23,10 +23,6 @@ class GuestCustomerDataQuoteUpdater extends QuoteUpdaterAbstract
             return $quoteTransfer;
         }
 
-        if ($quoteTransfer->getAmazonpayPayment() !== null) {
-            return $quoteTransfer;
-        }
-
         $amazonCallTransfer = $this->convertQuoteTransferToAmazonPayTransfer($quoteTransfer);
 
         $responseTransfer = $this->executionAdapter->call($amazonCallTransfer);

@@ -7,8 +7,6 @@
 
 namespace SprykerEco\Yves\AmazonPay;
 
-use Spryker\Client\Cart\CartClientInterface;
-use Spryker\Client\Customer\CustomerClientInterface;
 use Spryker\Yves\Kernel\AbstractFactory;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
@@ -23,7 +21,7 @@ class AmazonPayFactory extends AbstractFactory
     }
 
     /**
-     * @return CartClientInterface
+     * @return \SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToCartInterface
      */
     public function getCartClient()
     {
@@ -68,5 +66,13 @@ class AmazonPayFactory extends AbstractFactory
     public function getCustomerClient()
     {
         return $this->getProvidedDependency(AmazonPayDependencyProvider::CLIENT_CUSTOMER);
+    }
+
+    /**
+     * @return \SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToGlossaryStorageInterface
+     */
+    public function getGlossaryStorageClient()
+    {
+        return $this->getProvidedDependency(AmazonPayDependencyProvider::CLIENT_GLOSSARY_STORAGE);
     }
 }

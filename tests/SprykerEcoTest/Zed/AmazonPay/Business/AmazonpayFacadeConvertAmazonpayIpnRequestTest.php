@@ -11,8 +11,8 @@ use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 
 class AmazonpayFacadeConvertAmazonpayIpnRequestTest extends AmazonpayFacadeAbstractTest
 {
-    const MESSAGE_ID = "2e809365-0774-5ed9-a2d6-c146730607b9";
-    const TOPIC_ARN = "arn:aws:sns:eu-west-1:291180941288:A1G8446IYHA4MRA36VZZYZOVN3S6";
+    public const MESSAGE_ID = "2e809365-0774-5ed9-a2d6-c146730607b9";
+    public const TOPIC_ARN = "arn:aws:sns:eu-west-1:291180941288:A1G8446IYHA4MRA36VZZYZOVN3S6";
 
     /**
      * @dataProvider updateRefundStatusDataProvider

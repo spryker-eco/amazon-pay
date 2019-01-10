@@ -23,6 +23,8 @@ class RefundOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
     protected $salesOrderItemsMap = [];
 
     /**
+     * @api
+     *
      * @param array $salesOrderItems
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
      * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data

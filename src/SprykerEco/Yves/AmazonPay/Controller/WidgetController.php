@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class WidgetController extends AbstractController
 {
-    const AMAZON_PAY_CONFIG = 'amazonpayConfig';
-    const LOGOUT = 'logout';
+    public const AMAZON_PAY_CONFIG = 'amazonpayConfig';
+    public const LOGOUT = 'logout';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request

@@ -16,8 +16,8 @@ use SprykerEcoTest\Zed\AmazonPay\Business\Mock\Adapter\Sdk\ClientMock;
 
 class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstractTest
 {
-    const ID_CUSTOMER = 12;
-    const GRAND_TOTAL = 1000;
+    public const ID_CUSTOMER = 12;
+    public const GRAND_TOTAL = 1000;
 
     /**
      * @param bool $loggedIn

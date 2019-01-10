@@ -16,6 +16,7 @@ use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayConverter;
 use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayTransferToEntityConverter;
 use SprykerEco\Zed\AmazonPay\Business\Order\AmazonpayOrderInfoHydrator;
 use SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorModel;
+use SprykerEco\Zed\AmazonPay\Business\Order\Placement;
 use SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderModel;
 use SprykerEco\Zed\AmazonPay\Business\Order\RelatedItemsUpdateModel;
 use SprykerEco\Zed\AmazonPay\Business\Order\Saver;
@@ -217,6 +218,17 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
         return new PaymentProcessorModel(
             $this->getQueryContainer(),
             $this->createAmazonpayTransferToEntityConverter()
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AmazonPay\Business\Order\PlacementInterface
+     */
+    public function createPlacement()
+    {
+        return new Placement(
+            $this->createTransactionFactory()
+                ->createConfirmPurchaseTransaction()
         );
     }
 }

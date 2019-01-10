@@ -44,7 +44,6 @@ export default class CartPayButton extends Component {
 
     protected amazonPaymentsReady(loginScopeOptions: string, loginPopupOptions: string, redirectUrl: string): void {
         let accessToken;
-        
         window.onAmazonPaymentsReady = () => {
             window.OffAmazonPayments.Button(`${this.jsName}__item`, this.payConfig.sellerId, {
                 type: this.payConfig.buttonType,

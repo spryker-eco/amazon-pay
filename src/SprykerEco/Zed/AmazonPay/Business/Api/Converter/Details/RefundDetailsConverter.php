@@ -12,8 +12,8 @@ use SprykerEco\Zed\AmazonPay\Business\Api\Converter\AbstractArrayConverter;
 
 class RefundDetailsConverter extends AbstractArrayConverter
 {
-    const REFUND_AMOUNT = 'RefundAmount';
-    const REFUND_STATUS = 'RefundStatus';
+    public const REFUND_AMOUNT = 'RefundAmount';
+    public const REFUND_STATUS = 'RefundStatus';
 
     /**
      * @param array $refundDetailsData

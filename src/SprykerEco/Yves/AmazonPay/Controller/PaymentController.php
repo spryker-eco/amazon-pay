@@ -8,6 +8,8 @@
 namespace SprykerEco\Yves\AmazonPay\Controller;
 
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
+use Generated\Shared\Transfer\CheckoutErrorTransfer;
+use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Shared\Config\Config;
 use Spryker\Yves\Kernel\Controller\AbstractController;
@@ -23,20 +25,20 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class PaymentController extends AbstractController
 {
-    const URL_PARAM_REFERENCE_ID = 'reference_id';
-    const URL_PARAM_ACCESS_TOKEN = 'access_token';
-    const URL_PARAM_SHIPMENT_METHOD_ID = 'shipment_method_id';
-    const QUOTE_TRANSFER = 'quoteTransfer';
-    const SHIPMENT_METHODS = 'shipmentMethods';
-    const SELECTED_SHIPMENT_METHOD_ID = 'selectedShipmentMethodId';
-    const AMAZONPAY_CONFIG = 'amazonpayConfig';
-    const IS_ASYNCHRONOUS = 'isAsynchronous';
-    const CART_ITEMS = 'cartItems';
-    const SUCCESS = 'success';
-    const ERROR_AMAZONPAY_PAYMENT_FAILED = 'amazonpay.payment.failed';
-    const IS_AMAZON_PAYMENT_INVALID = 'isAmazonPaymentInvalid';
-    const ADDRESS_BOOK_MODE = 'addressBookMode';
-    const ORDER_REFERENCE = 'orderReferenceId';
+    public const URL_PARAM_REFERENCE_ID = 'reference_id';
+    public const URL_PARAM_ACCESS_TOKEN = 'access_token';
+    public const URL_PARAM_SHIPMENT_METHOD_ID = 'shipment_method_id';
+    public const QUOTE_TRANSFER = 'quoteTransfer';
+    public const SHIPMENT_METHODS = 'shipmentMethods';
+    public const SELECTED_SHIPMENT_METHOD_ID = 'selectedShipmentMethodId';
+    public const AMAZONPAY_CONFIG = 'amazonpayConfig';
+    public const IS_ASYNCHRONOUS = 'isAsynchronous';
+    public const CART_ITEMS = 'cartItems';
+    public const SUCCESS = 'success';
+    public const ERROR_AMAZONPAY_PAYMENT_FAILED = 'amazonpay.payment.failed';
+    public const IS_AMAZON_PAYMENT_INVALID = 'isAmazonPaymentInvalid';
+    public const ADDRESS_BOOK_MODE = 'addressBookMode';
+    public const ORDER_REFERENCE = 'orderReferenceId';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -66,7 +68,7 @@ class PaymentController extends AbstractController
             ->getQuote();
 
         if (!$this->isAllowedCheckout($quoteTransfer) || !$this->isRequestComplete($request)) {
-            $this->addErrorFromQuote($quoteTransfer);
+            $this->addAmazonPayErrorFromQuote($quoteTransfer);
 
             return $this->buildRedirectInternalResponse();
         }
@@ -110,7 +112,6 @@ class PaymentController extends AbstractController
         return new JsonResponse([static::SUCCESS => true]);
     }
 
-
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -139,7 +140,7 @@ class PaymentController extends AbstractController
             ->getQuote();
 
         if (!$this->isAmazonPayment($quoteTransfer)) {
-            $this->addErrorFromQuote($quoteTransfer);
+            $this->addAmazonPayErrorFromQuote($quoteTransfer);
 
             return $this->buildRedirectInternalResponse();
         }
@@ -157,7 +158,6 @@ class PaymentController extends AbstractController
             static::IS_AMAZON_PAYMENT_INVALID => $this->isAmazonPaymentInvalid($quoteTransfer),
         ];
     }
-
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -185,11 +185,11 @@ class PaymentController extends AbstractController
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
         if (!$this->isAmazonPayment($quoteTransfer)) {
-            $this->addErrorFromQuote($quoteTransfer);
+            $this->addAmazonPayErrorFromQuote($quoteTransfer);
 
             return $this->buildRedirectInternalResponse();
         }
-        
+
         $quoteTransfer->getShipment()->setShipmentSelection(
             $request->request->get(static::URL_PARAM_SHIPMENT_METHOD_ID)
         );
@@ -214,38 +214,23 @@ class PaymentController extends AbstractController
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
         if (!$this->isAmazonPayment($quoteTransfer)) {
-            $this->addErrorFromQuote($quoteTransfer);
+            $this->addAmazonPayErrorFromQuote($quoteTransfer);
 
             return $this->buildRedirectInternalResponse();
         }
 
-        $quoteTransfer = $this->getClient()->confirmPurchase($quoteTransfer);
-
-        if (!$quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-            $this->addErrorFromQuote($quoteTransfer);
-            $this->saveQuoteIntoSession($quoteTransfer);
-
-            if ($this->isLogoutRedirect($quoteTransfer)) {
-                return $this->buildRedirectInternalResponse();
-            }
-
-            return $this->buildRedirectExternalResponse($request);
-        }
-
-        $quoteTransfer = $this->getFactory()->getCalculationClient()->recalculate($quoteTransfer);
-        $this->saveQuoteIntoSession($quoteTransfer);
-
         $checkoutResponseTransfer = $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
+        $this->saveQuoteIntoSession($quoteTransfer);
 
         if ($checkoutResponseTransfer->getIsSuccess()) {
             return $this->redirectResponseInternal(AmazonPayControllerProvider::SUCCESS);
         }
 
-        $this->addErrorFromQuote($quoteTransfer);
+        $this->addAmazonPayErrorFromQuote($quoteTransfer);
+        $this->setCheckoutErrorMessages($checkoutResponseTransfer);
 
         return $this->buildRedirectInternalResponse();
     }
-
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -405,14 +390,50 @@ class PaymentController extends AbstractController
     }
 
     /**
+     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
+     *
+     * @return void
+     */
+    protected function setCheckoutErrorMessages(CheckoutResponseTransfer $checkoutResponseTransfer)
+    {
+        foreach ($checkoutResponseTransfer->getErrors() as $checkoutErrorTransfer) {
+            $this->addErrorMessage(
+                $this->translateCheckoutErrorMessage($checkoutErrorTransfer)
+            );
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\CheckoutErrorTransfer $checkoutErrorTransfer
+     *
+     * @return string
+     */
+    protected function translateCheckoutErrorMessage(CheckoutErrorTransfer $checkoutErrorTransfer): string
+    {
+        $checkoutErrorMessage = $checkoutErrorTransfer->getMessage();
+
+        return $this->getFactory()->getGlossaryStorageClient()->translate(
+            $checkoutErrorMessage,
+            $this->getLocale(),
+            $checkoutErrorTransfer->getParameters()
+        ) ?: $checkoutErrorMessage;
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return void
      */
-    protected function addErrorFromQuote(QuoteTransfer $quoteTransfer)
+    protected function addAmazonPayErrorFromQuote(QuoteTransfer $quoteTransfer)
     {
+        if ($quoteTransfer->getAmazonpayPayment() === null
+            || $quoteTransfer->getAmazonpayPayment()->getResponseHeader() === null
+            || $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getErrorMessage() === null) {
+            return;
+        }
+
         $this->addErrorMessage(
-            $this->getErrorMessageFromQuote($quoteTransfer)
+            $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getErrorMessage()
         );
     }
 
@@ -424,22 +445,6 @@ class PaymentController extends AbstractController
     protected function isAmazonPayment(QuoteTransfer $quoteTransfer)
     {
         return $quoteTransfer->getAmazonpayPayment() !== null;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return string
-     */
-    protected function getErrorMessageFromQuote(QuoteTransfer $quoteTransfer)
-    {
-        if ($quoteTransfer->getAmazonpayPayment() === null
-            || $quoteTransfer->getAmazonpayPayment()->getResponseHeader() === null
-            || $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getErrorMessage() === null) {
-            return static::ERROR_AMAZONPAY_PAYMENT_FAILED;
-        }
-
-        return $quoteTransfer->getAmazonpayPayment()->getResponseHeader()->getErrorMessage();
     }
 
     /**
@@ -493,7 +498,7 @@ class PaymentController extends AbstractController
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return null|string
+     * @return string|null
      */
     protected function getAmazonPaymentOrderReferenceId(QuoteTransfer $quoteTransfer)
     {

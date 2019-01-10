@@ -13,20 +13,20 @@ use Spryker\Yves\Application\Plugin\Provider\YvesControllerProvider;
 
 class AmazonPayControllerProvider extends YvesControllerProvider
 {
-    const CHECKOUT = 'amazonpay_checkout';
-    const ENDPOINT = 'amazonpay_endpoint';
-    const CONFIRM_PURCHASE = 'amazonpay_confirm_purchase';
-    const SUCCESS = 'amazonpay_success';
-    const PAYMENT_FAILED = 'amazonpay_payment_failed';
+    public const CHECKOUT = 'amazonpay_checkout';
+    public const ENDPOINT = 'amazonpay_endpoint';
+    public const CONFIRM_PURCHASE = 'amazonpay_confirm_purchase';
+    public const SUCCESS = 'amazonpay_success';
+    public const PAYMENT_FAILED = 'amazonpay_payment_failed';
 
-    const SET_ORDER_REFERENCE = 'amazonpay_set_order_reference';
-    const UPDATE_SHIPMENT_METHOD = 'amazonpay_update_shipment_method';
-    const GET_SHIPMENT_METHODS = 'amazonpay_get_shipment_methods';
+    public const SET_ORDER_REFERENCE = 'amazonpay_set_order_reference';
+    public const UPDATE_SHIPMENT_METHOD = 'amazonpay_update_shipment_method';
+    public const GET_SHIPMENT_METHODS = 'amazonpay_get_shipment_methods';
 
-    const PAY_BUTTON = 'amazonpay_paybutton';
-    const CHECKOUT_WIDGET = 'amazonpay_checkout_widget';
+    public const PAY_BUTTON = 'amazonpay_paybutton';
+    public const CHECKOUT_WIDGET = 'amazonpay_checkout_widget';
 
-    const BUNDLE_NAME = 'AmazonPay';
+    public const BUNDLE_NAME = 'AmazonPay';
 
     /**
      * @param \Silex\Application $app

@@ -12,66 +12,66 @@ use Spryker\Shared\Kernel\Store;
 
 class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInterface
 {
-    const WIDGET_BUTTON_TYPE_FULL = 'PwA';
-    const WIDGET_BUTTON_TYPE_SHORT = 'Pay';
-    const WIDGET_BUTTON_TYPE_SQUARE = 'A';
-    const WIDGET_BUTTON_COLOR_GOLD = 'Gold';
-    const WIDGET_BUTTON_COLOR_LIGHT_GRAY = 'LightGray';
-    const WIDGET_BUTTON_COLOR_DARK_GRAY = 'DarkGray';
-    const WIDGET_BUTTON_SIZE_SMALL = 'small';
-    const WIDGET_BUTTON_SIZE_MEDIUM = 'medium';
-    const WIDGET_BUTTON_SIZE_LARGE = 'large';
-    const WIDGET_BUTTON_SIZE_XLARGE = 'x-large';
-    const PROVIDER_NAME = 'Amazon Pay';
+    public const WIDGET_BUTTON_TYPE_FULL = 'PwA';
+    public const WIDGET_BUTTON_TYPE_SHORT = 'Pay';
+    public const WIDGET_BUTTON_TYPE_SQUARE = 'A';
+    public const WIDGET_BUTTON_COLOR_GOLD = 'Gold';
+    public const WIDGET_BUTTON_COLOR_LIGHT_GRAY = 'LightGray';
+    public const WIDGET_BUTTON_COLOR_DARK_GRAY = 'DarkGray';
+    public const WIDGET_BUTTON_SIZE_SMALL = 'small';
+    public const WIDGET_BUTTON_SIZE_MEDIUM = 'medium';
+    public const WIDGET_BUTTON_SIZE_LARGE = 'large';
+    public const WIDGET_BUTTON_SIZE_XLARGE = 'x-large';
+    public const PROVIDER_NAME = 'Amazon Pay';
 
-    const OMS_STATUS_AUTH_OPEN = 'auth open';
-    const OMS_STATUS_AUTH_OPEN_WITHOUT_CANCEL = 'auth open without cancel';
-    const OMS_STATUS_CAPTURE_COMPLETED = 'capture completed';
-    const OMS_STATUS_CAPTURE_PENDING = 'capture pending';
-    const OMS_STATUS_CANCELLED = 'cancelled';
+    public const OMS_STATUS_AUTH_OPEN = 'auth open';
+    public const OMS_STATUS_AUTH_OPEN_WITHOUT_CANCEL = 'auth open without cancel';
+    public const OMS_STATUS_CAPTURE_COMPLETED = 'capture completed';
+    public const OMS_STATUS_CAPTURE_PENDING = 'capture pending';
+    public const OMS_STATUS_CANCELLED = 'cancelled';
 
-    const OMS_STATUS_REFUND_PENDING = 'refund pending';
-    const OMS_STATUS_REFUND_COMPLETED = 'refund completed';
-    const OMS_STATUS_REFUND_DECLINED = 'refund declined';
-    const OMS_STATUS_REFUND_WAITING_FOR_STATUS = 'waiting for refund status';
+    public const OMS_STATUS_REFUND_PENDING = 'refund pending';
+    public const OMS_STATUS_REFUND_COMPLETED = 'refund completed';
+    public const OMS_STATUS_REFUND_DECLINED = 'refund declined';
+    public const OMS_STATUS_REFUND_WAITING_FOR_STATUS = 'waiting for refund status';
 
-    const OMS_EVENT_UPDATE_AUTH_STATUS = 'update authorization status';
-    const OMS_EVENT_CANCEL = 'cancel';
-    const OMS_EVENT_UPDATE_CAPTURE_STATUS = 'update capture status';
-    const OMS_EVENT_UPDATE_REFUND_STATUS = 'update refund status';
-    const OMS_EVENT_CAPTURE = 'capture';
-    const OMS_EVENT_UPDATE_SUSPENDED_ORDER = 'update suspended order';
+    public const OMS_EVENT_UPDATE_AUTH_STATUS = 'update authorization status';
+    public const OMS_EVENT_CANCEL = 'cancel';
+    public const OMS_EVENT_UPDATE_CAPTURE_STATUS = 'update capture status';
+    public const OMS_EVENT_UPDATE_REFUND_STATUS = 'update refund status';
+    public const OMS_EVENT_CAPTURE = 'capture';
+    public const OMS_EVENT_UPDATE_SUSPENDED_ORDER = 'update suspended order';
 
-    const OMS_FLAG_NOT_AUTH = 'not auth';
-    const OMS_FLAG_NOT_CAPTURED = 'not captured';
+    public const OMS_FLAG_NOT_AUTH = 'not auth';
+    public const OMS_FLAG_NOT_CAPTURED = 'not captured';
 
-    const STATUS_DECLINED = 'STATUS_DECLINED';//setIsDeclined
-    const STATUS_CANCELLED = 'STATUS_CANCELLED';//setIsCancelled
-    const STATUS_CLOSED = 'STATUS_CLOSED';//setIsClosed
-    const STATUS_SUSPENDED = 'STATUS_SUSPENDED';
-    const STATUS_PENDING = 'STATUS_PENDING';//setIsPending
-    const STATUS_OPEN = 'STATUS_OPEN';//setIsOpen
-    const STATUS_COMPLETED = 'STATUS_COMPLETED';//setIsCompleted
-    const STATUS_EXPIRED = 'STATUS_EXPIRED';//setIsReauthorizable
-    const STATUS_PAYMENT_METHOD_INVALID = 'STATUS_CODE_PAYMENT_METHOD_INVALID';//setIsPaymentMethodInvalid
-    const STATUS_AMAZON_CLOSED = 'STATUS_CODE_AMAZON_CLOSED';//setIsClosedByAmazon
-    const STATUS_TRANSACTION_TIMED_OUT = 'STATUS_CODE_TRANSACTION_TIMED_OUT';//setIsTransactionTimedOut
-    const STATUS_PAYMENT_METHOD_CHANGED = 'STATUS_PAYMENT_METHOD_CHANGED';//setIsTransactionTimedOut
+    public const STATUS_DECLINED = 'STATUS_DECLINED';//setIsDeclined
+    public const STATUS_CANCELLED = 'STATUS_CANCELLED';//setIsCancelled
+    public const STATUS_CLOSED = 'STATUS_CLOSED';//setIsClosed
+    public const STATUS_SUSPENDED = 'STATUS_SUSPENDED';
+    public const STATUS_PENDING = 'STATUS_PENDING';//setIsPending
+    public const STATUS_OPEN = 'STATUS_OPEN';//setIsOpen
+    public const STATUS_COMPLETED = 'STATUS_COMPLETED';//setIsCompleted
+    public const STATUS_EXPIRED = 'STATUS_EXPIRED';//setIsReauthorizable
+    public const STATUS_PAYMENT_METHOD_INVALID = 'STATUS_CODE_PAYMENT_METHOD_INVALID';//setIsPaymentMethodInvalid
+    public const STATUS_AMAZON_CLOSED = 'STATUS_CODE_AMAZON_CLOSED';//setIsClosedByAmazon
+    public const STATUS_TRANSACTION_TIMED_OUT = 'STATUS_CODE_TRANSACTION_TIMED_OUT';//setIsTransactionTimedOut
+    public const STATUS_PAYMENT_METHOD_CHANGED = 'STATUS_PAYMENT_METHOD_CHANGED';//setIsTransactionTimedOut
 
-    const IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE = 'PaymentAuthorize';
-    const IPN_REQUEST_TYPE_PAYMENT_CAPTURE = 'PaymentCapture';
-    const IPN_REQUEST_TYPE_PAYMENT_REFUND = 'PaymentRefund';
-    const IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION = 'OrderReferenceNotification';
+    public const IPN_REQUEST_TYPE_PAYMENT_AUTHORIZE = 'PaymentAuthorize';
+    public const IPN_REQUEST_TYPE_PAYMENT_CAPTURE = 'PaymentCapture';
+    public const IPN_REQUEST_TYPE_PAYMENT_REFUND = 'PaymentRefund';
+    public const IPN_REQUEST_TYPE_ORDER_REFERENCE_NOTIFICATION = 'OrderReferenceNotification';
 
-    const PREFIX_AMAZONPAY_PAYMENT_ERROR = 'amazonpay.payment.error.';
+    public const PREFIX_AMAZONPAY_PAYMENT_ERROR = 'amazonpay.payment.error.';
 
-    const DISPLAY_MODE_READONLY = 'Read';
+    public const DISPLAY_MODE_READONLY = 'Read';
 
-    const REASON_CODE_EXPIRED_UNUSED = 'ExpiredUnused';
-    const REASON_CODE_SELLER_CLOSED = 'SellerClosed';
-    const REASON_CODE_PAYMENT_METHOD_INVALID = 'InvalidPaymentMethod';
-    const REASON_CODE_AMAZON_CLOSED = 'AmazonClosed';
-    const REASON_CODE_TRANSACTION_TIMED_OUT = 'TransactionTimedOut';
+    public const REASON_CODE_EXPIRED_UNUSED = 'ExpiredUnused';
+    public const REASON_CODE_SELLER_CLOSED = 'SellerClosed';
+    public const REASON_CODE_PAYMENT_METHOD_INVALID = 'InvalidPaymentMethod';
+    public const REASON_CODE_AMAZON_CLOSED = 'AmazonClosed';
+    public const REASON_CODE_TRANSACTION_TIMED_OUT = 'TransactionTimedOut';
 
     /**
      * @return string

@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\AmazonpayResponseTransfer;
 
 abstract class AbstractAuthorizeOrderConverter extends AbstractResponseParserConverter
 {
-    const AUTHORIZATION_DETAILS = 'AuthorizationDetails';
+    public const AUTHORIZATION_DETAILS = 'AuthorizationDetails';
     /**
      * @var \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface $authDetailsConverter
      */

@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\SaveOrderTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -176,6 +177,12 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
     public function authorizeOrderItems(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
@@ -257,17 +264,17 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
+     * @param \Generated\Shared\Transfer\SaveOrderTransfer $saveOrderTransfer
      *
      * @return void
      */
     public function saveOrderPayment(
         QuoteTransfer $quoteTransfer,
-        CheckoutResponseTransfer $checkoutResponseTransfer
+        SaveOrderTransfer $saveOrderTransfer
     ) {
         $this->getFactory()
             ->createOrderSaver()
-            ->saveOrderPayment($quoteTransfer, $checkoutResponseTransfer);
+            ->saveOrderPayment($quoteTransfer, $saveOrderTransfer);
     }
 
     /**
@@ -323,6 +330,10 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      * @param int[] $alreadyAffectedItems
      * @param string $eventName
@@ -334,5 +345,22 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
         $this->getFactory()
             ->createRelatedItemsUpdateModel()
             ->triggerEvent($amazonpayCallTransfer, $alreadyAffectedItems, $eventName);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
+     *
+     * @return bool
+     */
+    public function placeOrder(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer)
+    {
+        return $this->getFactory()
+            ->createPlacement()
+            ->placeOrder($quoteTransfer, $checkoutResponseTransfer);
     }
 }

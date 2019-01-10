@@ -11,8 +11,8 @@ use Generated\Shared\Transfer\AmazonpayCallTransfer;
 
 class CaptureOrderAdapter extends AbstractAdapter
 {
-    const CAPTURE_REFERENCE_ID = 'capture_reference_id';
-    const CAPTURE_AMOUNT = 'capture_amount';
+    public const CAPTURE_REFERENCE_ID = 'capture_reference_id';
+    public const CAPTURE_AMOUNT = 'capture_amount';
 
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer

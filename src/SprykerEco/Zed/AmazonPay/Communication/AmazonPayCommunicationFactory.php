@@ -15,6 +15,7 @@ use SprykerEco\Zed\AmazonPay\Business\Payment\RequestAmountCalculator;
 /**
  * @method \SprykerEco\Shared\AmazonPay\AmazonPayConfig getConfig()
  * @method \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface getQueryContainer()
+ * @method \SprykerEco\Zed\AmazonPay\Business\AmazonPayFacadeInterface getFacade()
  */
 class AmazonPayCommunicationFactory extends AbstractCommunicationFactory
 {

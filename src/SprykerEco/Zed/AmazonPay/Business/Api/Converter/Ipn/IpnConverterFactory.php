@@ -14,7 +14,7 @@ use SprykerEco\Zed\AmazonPay\Business\Api\Converter\Details\RefundDetailsConvert
 
 class IpnConverterFactory implements IpnConverterFactoryInterface
 {
-    const NOTIFICATION_TYPE = 'NotificationType';
+    public const NOTIFICATION_TYPE = 'NotificationType';
 
     /**
      * @return \SprykerEco\Zed\AmazonPay\Business\Api\Converter\Ipn\IpnConverterInterface[]

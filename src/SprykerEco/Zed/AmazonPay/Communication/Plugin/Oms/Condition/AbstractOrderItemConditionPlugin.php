@@ -18,6 +18,8 @@ abstract class AbstractOrderItemConditionPlugin implements ConditionInterface
     abstract protected function getConditionalStatus();
 
     /**
+     * @api
+     *
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
      *
      * @return bool

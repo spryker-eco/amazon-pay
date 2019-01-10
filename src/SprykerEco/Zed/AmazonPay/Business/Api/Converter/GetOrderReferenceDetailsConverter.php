@@ -12,13 +12,13 @@ use Generated\Shared\Transfer\AmazonpayResponseTransfer;
 
 class GetOrderReferenceDetailsConverter extends AbstractResponseParserConverter
 {
-    const ORDER_REFERENCE_DETAILS = 'OrderReferenceDetails';
-    const ORDER_REFERENCE_STATUS = 'OrderReferenceStatus';
-    const FIELD_STATE = 'State';
-    const RELEASE_ENVIRONMENT = 'ReleaseEnvironment';
-    const SANDBOX = 'Sandbox';
-    const BILLING_ADDRESS = 'BillingAddress';
-    const PHYSICAL_ADDRESS = 'PhysicalAddress';
+    public const ORDER_REFERENCE_DETAILS = 'OrderReferenceDetails';
+    public const ORDER_REFERENCE_STATUS = 'OrderReferenceStatus';
+    public const FIELD_STATE = 'State';
+    public const RELEASE_ENVIRONMENT = 'ReleaseEnvironment';
+    public const SANDBOX = 'Sandbox';
+    public const BILLING_ADDRESS = 'BillingAddress';
+    public const PHYSICAL_ADDRESS = 'PhysicalAddress';
 
     /**
      * @return string

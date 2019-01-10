@@ -10,20 +10,23 @@ namespace SprykerEco\Yves\AmazonPay;
 use Spryker\Yves\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Yves\Kernel\Container;
 use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToCalculationBridge;
+use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToCartBridge;
 use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToCheckoutBridge;
 use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToCustomerBridge;
+use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToGlossaryStorageBridge;
 use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToQuoteBridge;
 use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToShipmentBridge;
 
 class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
 {
-    const CLIENT_QUOTE = 'quote client';
-    const CLIENT_CART = 'cart client';
-    const CLIENT_SHIPMENT = 'shipment client';
-    const CLIENT_CHECKOUT = 'checkout client';
-    const CLIENT_CUSTOMER = 'customer client';
-    const CLIENT_CALCULATION = 'calculation client';
-    const PLUGIN_CHECKOUT_BREADCRUMB = 'plugin checkout breadcrumb';
+    public const CLIENT_QUOTE = 'quote client';
+    public const CLIENT_CART = 'cart client';
+    public const CLIENT_SHIPMENT = 'shipment client';
+    public const CLIENT_CHECKOUT = 'checkout client';
+    public const CLIENT_CUSTOMER = 'customer client';
+    public const CLIENT_CALCULATION = 'calculation client';
+    public const CLIENT_GLOSSARY_STORAGE = 'glossary storage client';
+    public const PLUGIN_CHECKOUT_BREADCRUMB = 'plugin checkout breadcrumb';
 
     /**
      * @param \Spryker\Yves\Kernel\Container $container
@@ -38,6 +41,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
         $this->addCheckoutClient($container);
         $this->addCalculationClient($container);
         $this->addCustomerClient($container);
+        $this->addGlossaryStorageClient($container);
 
         return $container;
     }
@@ -62,7 +66,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
     protected function addCartClient(Container $container)
     {
         $container[static::CLIENT_CART] = function () use ($container) {
-            return $container->getLocator()->cart()->client();
+            return new AmazonPayToCartBridge($container->getLocator()->cart()->client());
         };
     }
 
@@ -111,6 +115,18 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container[static::CLIENT_CUSTOMER] = function () use ($container) {
             return new AmazonPayToCustomerBridge($container->getLocator()->customer()->client());
+        };
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return void
+     */
+    protected function addGlossaryStorageClient(Container $container)
+    {
+        $container[static::CLIENT_GLOSSARY_STORAGE] = function () use ($container) {
+            return new AmazonPayToGlossaryStorageBridge($container->getLocator()->glossaryStorage()->client());
         };
     }
 }
