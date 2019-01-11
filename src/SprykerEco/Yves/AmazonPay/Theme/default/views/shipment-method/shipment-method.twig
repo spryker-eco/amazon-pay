@@ -1,0 +1,9 @@
+{% extends template('widget') %}
+
+{% block body %}
+    {% include molecule('shipment-method', 'AmazonPay') with {
+        data: {
+            quoteTransfer: _view.quoteTransfer
+        }
+    } only %}
+{% endblock %}

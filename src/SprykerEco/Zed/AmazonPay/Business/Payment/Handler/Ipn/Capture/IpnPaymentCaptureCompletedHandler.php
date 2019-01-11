@@ -41,17 +41,19 @@ class IpnPaymentCaptureCompletedHandler extends IpnAbstractPaymentCaptureHandler
     {
         $paymentEntity = $this->retrievePaymentEntity($paymentRequestTransfer);
 
-        if (!$paymentEntity) {
-            $paymentEntity = $this->queryContainer->queryPaymentByAuthorizationReferenceId(
-                $paymentRequestTransfer->getCaptureDetails()->getCaptureReferenceId()
-            )
-                ->findOne();
+        if ($paymentEntity !== null) {
+            return;
+        }
 
-            if ($paymentEntity) {
-                $paymentEntity->setAmazonCaptureId($paymentRequestTransfer->getCaptureDetails()->getAmazonCaptureId())
-                    ->setCaptureReferenceId($paymentRequestTransfer->getCaptureDetails()->getCaptureReferenceId())
-                    ->save();
-            }
+        $paymentEntity = $this->queryContainer->queryPaymentByAuthorizationReferenceId(
+            $paymentRequestTransfer->getCaptureDetails()->getCaptureReferenceId()
+        )
+            ->findOne();
+
+        if ($paymentEntity) {
+            $paymentEntity->setAmazonCaptureId($paymentRequestTransfer->getCaptureDetails()->getAmazonCaptureId())
+                ->setCaptureReferenceId($paymentRequestTransfer->getCaptureDetails()->getCaptureReferenceId())
+                ->save();
         }
     }
 }

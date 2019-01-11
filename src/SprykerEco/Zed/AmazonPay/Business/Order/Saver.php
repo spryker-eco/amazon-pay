@@ -9,8 +9,8 @@ namespace SprykerEco\Zed\AmazonPay\Business\Order;
 
 use ArrayObject;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
-use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\SaveOrderTransfer;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay;
 use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpaySalesOrderItem;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
@@ -19,11 +19,11 @@ class Saver implements SaverInterface
 {
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
+     * @param \Generated\Shared\Transfer\SaveOrderTransfer $saveOrderTransfer
      *
      * @return void
      */
-    public function saveOrderPayment(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer)
+    public function saveOrderPayment(QuoteTransfer $quoteTransfer, SaveOrderTransfer $saveOrderTransfer)
     {
         if ($quoteTransfer->getAmazonpayPayment() === null) {
             return;
@@ -33,7 +33,7 @@ class Saver implements SaverInterface
 
         $this->assignPaymentEntityToItems(
             $paymentAmazonpayEntity,
-            $checkoutResponseTransfer->getSaveOrder()->getOrderItems()
+            $saveOrderTransfer->getOrderItems()
         );
     }
 

@@ -1,0 +1,106 @@
+{% extends template('page-layout-checkout', 'CheckoutPage') %}
+
+{% define data = {
+    amazonpayConfig: _view.amazonpayConfig,
+    clientId: _view.amazonpayConfig.clientId,
+    sellerId: _view.amazonpayConfig.sellerId,
+    orderReferenceUrl: path('amazonpay_set_order_reference'),
+    shipmentMethodsUrl: path('amazonpay_get_shipment_methods'),
+    updateShipmentMethodUrl: path('amazonpay_update_shipment_method'),
+    displayMode: _view.addressBookMode | default(''),
+    orderReferenceId: _view.orderReferenceId | default(''),
+    addressScope: 'profile payments:widget payments:shipping_address payments:billing_address',
+    walletScope: 'profile postal_code payments:widget payments:shipping_address',
+    quoteTransfer: _view.quoteTransfer,
+    cartItems: _view.cartItems,
+    title: 'checkout.amazonpay' | trans,
+} %}
+
+{% set steps = [{
+    title: 'checkout.amazonpay' | trans,
+    route: null,
+    isActive: true,
+    isEnabled: true
+}] %}
+
+{% block breadcrumbs %}
+    {% include view('cart-checkout-breadcrumb', 'CheckoutWidget') with {
+        data: {
+            addCartBreadcrumb: true,
+            isCartPage: false,
+            checkoutBreadcrumbs: steps
+        }
+    } only %}
+{% endblock %}
+
+{% block content %}
+    <div class="box">
+        <div class="grid">
+            <div class="col col--sm-12 spacing-bottom--big">
+                {% if data.quoteTransfer.payment and data.quoteTransfer.payment.paymentMethod %}
+                    <h5>{{ 'checkout.step.summary.payment' | trans }}</h5>
+                    <ul class="list">
+                        <li class="list__item">
+                            <span>{{ 'checkout.step.summary.with_method' | trans }}</span>
+                            {{ data.quoteTransfer.payment.paymentMethod }}
+                        </li>
+                    </ul>
+                {% endif %}
+
+                {% if data.cartItems is not empty %}
+                    <ul class="list">
+                        {% for item in data.cartItems %}
+                            <li class="list__item">
+                                {{ item.name }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="col col--sm-12">
+                {% include molecule('payment-step', 'AmazonPay') with {
+                    attributes: {
+                        sellerId: data.sellerId,
+                        orderReferenceUrl: data.orderReferenceUrl,
+                        shipmentMethodsUrl: data.shipmentMethodsUrl,
+                        updateShipmentMethodUrl: data.updateShipmentMethodUrl,
+                        locale: app.locale,
+                        addressScope: data.addressScope,
+                        walletScope: data.walletScope,
+                        displayMode: data.displayMode,
+                        orderReferenceId: data.orderReferenceId,
+                        shipmentMethodsHolder: '.shipment-methods__holder',
+                        nameShipmentMethod: 'amazonpayShipmentMethod',
+                        summaryInfoHolder: '.summary-info'
+                    }
+                } only %}
+
+                {% include atom('shipment-methods', 'AmazonPay') only %}
+            </div>
+
+            <div class="col col--sm-12">
+                <div class="summary-info">
+                    {% include molecule('shipment-method', 'AmazonPay') with {
+                        data: {
+                            quoteTransfer: data.quoteTransfer
+                        }
+                    } only %}
+                </div>
+            </div>
+
+            <div class="col col--sm-12 text-right">
+                <a href="{{ path('amazonpay_confirm_purchase') }}"
+                   class="button button--success">
+                    {{ 'checkout.step.place.order' | trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {% include molecule('script-loader') with {
+        attributes: {
+            src: data.amazonpayConfig.isSandbox ? data.amazonpayConfig.widgetScriptPathSandbox : data.amazonpayConfig.widgetPathScript
+        }
+    } only %}
+{% endblock %}

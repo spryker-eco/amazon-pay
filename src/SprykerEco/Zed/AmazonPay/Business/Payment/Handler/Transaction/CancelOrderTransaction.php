@@ -33,7 +33,7 @@ class CancelOrderTransaction extends AbstractAmazonpayTransaction
      */
     protected function updatePaymentEntity(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
-        if (!$this->paymentEntity) {
+        if ($this->paymentEntity === null) {
             return;
         }
 

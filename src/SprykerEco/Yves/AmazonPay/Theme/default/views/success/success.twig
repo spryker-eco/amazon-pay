@@ -1,0 +1,15 @@
+{% extends template('page-layout-checkout', 'CheckoutPage') %}
+
+{% block pageInfo %}
+    {% include molecule('success-step', 'AmazonPay') with {
+        data: {
+            isAsynchronous: _view.isAsynchronous
+        }
+    } only %}
+
+    {% include molecule('script-loader') with {
+        attributes: {
+            src: _view.amazonpayConfig.isSandbox ? _view.amazonpayConfig.widgetScriptPathSandbox : _view.amazonpayConfig.widgetPathScript
+        }
+    } only %}
+{% endblock %}

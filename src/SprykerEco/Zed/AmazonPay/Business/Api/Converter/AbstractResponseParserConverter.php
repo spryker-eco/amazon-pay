@@ -17,29 +17,29 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 abstract class AbstractResponseParserConverter extends AbstractConverter implements ResponseParserConverterInterface
 {
-    const STATUS_CODE_SUCCESS = 200;
-    const ORDER_REFERENCE_DETAILS = 'OrderReferenceDetails';
-    const CONSTRAINTS = 'Constraints';
-    const DESCRIPTION = 'Description';
-    const CONSTRAINT_ID = 'ConstraintID';
-    const REQUEST_ID = 'RequestId';
-    const ERROR = 'Error';
-    const RESPONSE_METADATA = 'ResponseMetadata';
-    const RESPONSE_STATUS = 'ResponseStatus';
-    const MESSAGE = 'Message';
-    const CODE = 'Code';
-    const DESTINATION = 'Destination';
-    const PHYSICAL_DESTINATION = 'PhysicalDestination';
-    const NAME = 'Name';
-    const CITY = 'City';
-    const COUNTRY_CODE = 'CountryCode';
-    const POSTAL_CODE = 'PostalCode';
-    const ADDRESS_LINE_1 = 'AddressLine1';
-    const ADDRESS_LINE_2 = 'AddressLine2';
-    const ADDRESS_LINE_3 = 'AddressLine3';
-    const DISTRICT = 'District';
-    const STATE_OR_REGION = 'StateOrRegion';
-    const PHONE = 'Phone';
+    public const STATUS_CODE_SUCCESS = 200;
+    public const ORDER_REFERENCE_DETAILS = 'OrderReferenceDetails';
+    public const CONSTRAINTS = 'Constraints';
+    public const DESCRIPTION = 'Description';
+    public const CONSTRAINT_ID = 'ConstraintID';
+    public const REQUEST_ID = 'RequestId';
+    public const ERROR = 'Error';
+    public const RESPONSE_METADATA = 'ResponseMetadata';
+    public const RESPONSE_STATUS = 'ResponseStatus';
+    public const MESSAGE = 'Message';
+    public const CODE = 'Code';
+    public const DESTINATION = 'Destination';
+    public const PHYSICAL_DESTINATION = 'PhysicalDestination';
+    public const NAME = 'Name';
+    public const CITY = 'City';
+    public const COUNTRY_CODE = 'CountryCode';
+    public const POSTAL_CODE = 'PostalCode';
+    public const ADDRESS_LINE_1 = 'AddressLine1';
+    public const ADDRESS_LINE_2 = 'AddressLine2';
+    public const ADDRESS_LINE_3 = 'AddressLine3';
+    public const DISTRICT = 'District';
+    public const STATE_OR_REGION = 'StateOrRegion';
+    public const PHONE = 'Phone';
 
     /**
      * @var string
@@ -192,8 +192,7 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
      */
     protected function isSuccess(array $response)
     {
-        return
-            $this->extractStatusCode($response) === static::STATUS_CODE_SUCCESS
+        return $this->extractStatusCode($response) === static::STATUS_CODE_SUCCESS
             && $this->extractConstraints($response)->count() === 0;
     }
 

@@ -18,12 +18,12 @@ use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToUtilEncodingBridge;
 
 class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
 {
-    const FACADE_MONEY = 'money facade';
-    const FACADE_SHIPMENT = 'shipment facade';
-    const FACADE_SALES = 'sales facade';
-    const FACADE_REFUND = 'refund facade';
-    const FACADE_OMS = 'oms facade';
-    const SERVICE_UTIL_ENCODING = 'encoding service';
+    public const FACADE_MONEY = 'money facade';
+    public const FACADE_SHIPMENT = 'shipment facade';
+    public const FACADE_SALES = 'sales facade';
+    public const FACADE_REFUND = 'refund facade';
+    public const FACADE_OMS = 'oms facade';
+    public const SERVICE_UTIL_ENCODING = 'encoding service';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container

@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\AmazonpayResponseTransfer;
 
 abstract class AbstractRefundOrderConverter extends AbstractResponseParserConverter
 {
-    const REFUND_DETAILS = 'RefundDetails';
+    public const REFUND_DETAILS = 'RefundDetails';
 
     /**
      * @var \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ArrayConverterInterface $refundDetailsConverter

@@ -11,9 +11,9 @@ use Generated\Shared\Transfer\AmazonpayIpnPaymentRequestTransfer;
 
 class IpnOrderReferenceNotificationConverter extends IpnPaymentAbstractRequestConverter
 {
-    const ORDER_REFERENCE = 'OrderReference';
-    const AMAZON_ORDER_REFERENCE_ID = 'AmazonOrderReferenceId';
-    const ORDER_REFERENCE_STATUS = 'OrderReferenceStatus';
+    public const ORDER_REFERENCE = 'OrderReference';
+    public const AMAZON_ORDER_REFERENCE_ID = 'AmazonOrderReferenceId';
+    public const ORDER_REFERENCE_STATUS = 'OrderReferenceStatus';
 
     /**
      * @param array $request

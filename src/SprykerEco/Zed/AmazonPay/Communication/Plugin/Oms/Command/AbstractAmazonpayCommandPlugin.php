@@ -196,14 +196,14 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $salesOrderItem
      *
-     * @return null|\Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay
+     * @return \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay|null
      */
     protected function getPaymentDetails(SpySalesOrderItem $salesOrderItem)
     {
-        /** @var \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpaySalesOrderItem $payment */
+        /** @var \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpaySalesOrderItem|null $payment */
         $payment = $salesOrderItem->getSpyPaymentAmazonpaySalesOrderItems()->getLast();
 
-        if (!$payment) {
+        if ($payment === null) {
             return null;
         }
 

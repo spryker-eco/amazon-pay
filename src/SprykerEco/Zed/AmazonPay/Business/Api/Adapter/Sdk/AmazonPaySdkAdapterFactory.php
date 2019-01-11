@@ -13,14 +13,14 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface;
 
 class AmazonPaySdkAdapterFactory implements AmazonPaySdkAdapterFactoryInterface
 {
-    const MERCHANT_ID = 'merchant_id';
-    const PLATFORM_ID = 'platform_id';
-    const ACCESS_KEY = 'access_key';
-    const SECRET_KEY = 'secret_key';
-    const CLIENT_ID = 'client_id';
-    const REGION = 'region';
-    const CURRENCY_CODE = 'currency_code';
-    const SANDBOX = 'sandbox';
+    public const MERCHANT_ID = 'merchant_id';
+    public const PLATFORM_ID = 'platform_id';
+    public const ACCESS_KEY = 'access_key';
+    public const SECRET_KEY = 'secret_key';
+    public const CLIENT_ID = 'client_id';
+    public const REGION = 'region';
+    public const CURRENCY_CODE = 'currency_code';
+    public const SANDBOX = 'sandbox';
 
     /**
      * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface $config

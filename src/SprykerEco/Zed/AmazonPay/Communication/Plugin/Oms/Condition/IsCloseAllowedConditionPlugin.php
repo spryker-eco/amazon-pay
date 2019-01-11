@@ -14,6 +14,8 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 class IsCloseAllowedConditionPlugin implements ConditionInterface
 {
     /**
+     * @api
+     *
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
      *
      * @return bool

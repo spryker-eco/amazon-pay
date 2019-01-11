@@ -12,20 +12,20 @@ use SprykerEco\Zed\AmazonPay\Business\Api\Converter\AbstractArrayConverter;
 
 class AuthorizationDetailsConverter extends AbstractArrayConverter
 {
-    const CAPTURE_NOW = 'CaptureNow';
-    const CAPTURED_AMOUNT = 'CapturedAmount';
-    const SELLER_AUTHORIZATION_NOTE = 'SellerAuthorizationNote';
-    const AUTHORIZATION_FEE = 'AuthorizationFee';
-    const AUTHORIZATION_STATUS = 'AuthorizationStatus';
-    const AUTHORIZATION_AMOUNT = 'AuthorizationAmount';
-    const SOFT_DECLINE = 'SoftDecline';
-    const CREATION_TIMESTAMP = 'CreationTimestamp';
-    const ID_LIST = 'IdList';
-    const EXPIRATION_TIMESTAMP = 'ExpirationTimestamp';
-    const AMAZON_AUTHORIZATION_ID = 'AmazonAuthorizationId';
-    const AUTHORIZATION_REFERENCE_ID = 'AuthorizationReferenceId';
-    const AUTHORIZATION_BILLING_ADDRESS = 'AuthorizationBillingAddress';
-    const SOFT_DESCRIPTOR = 'SoftDescriptor';
+    public const CAPTURE_NOW = 'CaptureNow';
+    public const CAPTURED_AMOUNT = 'CapturedAmount';
+    public const SELLER_AUTHORIZATION_NOTE = 'SellerAuthorizationNote';
+    public const AUTHORIZATION_FEE = 'AuthorizationFee';
+    public const AUTHORIZATION_STATUS = 'AuthorizationStatus';
+    public const AUTHORIZATION_AMOUNT = 'AuthorizationAmount';
+    public const SOFT_DECLINE = 'SoftDecline';
+    public const CREATION_TIMESTAMP = 'CreationTimestamp';
+    public const ID_LIST = 'IdList';
+    public const EXPIRATION_TIMESTAMP = 'ExpirationTimestamp';
+    public const AMAZON_AUTHORIZATION_ID = 'AmazonAuthorizationId';
+    public const AUTHORIZATION_REFERENCE_ID = 'AuthorizationReferenceId';
+    public const AUTHORIZATION_BILLING_ADDRESS = 'AuthorizationBillingAddress';
+    public const SOFT_DESCRIPTOR = 'SoftDescriptor';
 
     /**
      * @var array
@@ -41,7 +41,6 @@ class AuthorizationDetailsConverter extends AbstractArrayConverter
         self::EXPIRATION_TIMESTAMP => AmazonpayAuthorizationDetailsTransfer::EXPIRATION_TIMESTAMP,
         self::AMAZON_AUTHORIZATION_ID => AmazonpayAuthorizationDetailsTransfer::AMAZON_AUTHORIZATION_ID,
         self::AUTHORIZATION_REFERENCE_ID => AmazonpayAuthorizationDetailsTransfer::AUTHORIZATION_REFERENCE_ID,
-        self::CAPTURE_NOW => AmazonpayAuthorizationDetailsTransfer::CAPTURE_NOW,
         self::AUTHORIZATION_STATUS => AmazonpayAuthorizationDetailsTransfer::AUTHORIZATION_STATUS,
         self::AUTHORIZATION_BILLING_ADDRESS => AmazonpayAuthorizationDetailsTransfer::AUTHORIZATION_BILLING_ADDRESS,
         self::SOFT_DESCRIPTOR => AmazonpayAuthorizationDetailsTransfer::SOFT_DESCRIPTOR,

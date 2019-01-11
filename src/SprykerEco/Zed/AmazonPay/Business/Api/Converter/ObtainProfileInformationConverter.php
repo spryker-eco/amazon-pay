@@ -12,8 +12,8 @@ use Generated\Shared\Transfer\CustomerTransfer;
 
 class ObtainProfileInformationConverter extends AbstractArrayConverter
 {
-    const NAME = 'name';
-    const EMAIL = 'email';
+    public const NAME = 'name';
+    public const EMAIL = 'email';
 
     /**
      * @param array $response

@@ -18,8 +18,8 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 class AmazonpayFacadeHandleAmazonpayIpnRequestTest extends AmazonpayFacadeAbstractTest
 {
-    const REFERENCE_1 = 'asdasd-asdasd-asdasd';
-    const STATUS_NEW = 'STATUS_NEW';
+    public const REFERENCE_1 = 'asdasd-asdasd-asdasd';
+    public const STATUS_NEW = 'STATUS_NEW';
 
     /**
      * @dataProvider updateRefundStatusAuthDataProvider

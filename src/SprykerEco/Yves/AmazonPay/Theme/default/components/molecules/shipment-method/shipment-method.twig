@@ -1,0 +1,77 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'shipment-method',
+    tag: 'shipment-method'
+} %}
+
+{% define data = {
+    quoteTransfer: required
+} %}
+
+{% block body %}
+    <div class="box">
+        <ul class="summary-overview">
+            <li>
+                <span class="float-right">{{ app['cart.quantity'] }} {{ 'checkout.step.summary.items' | trans }}</span>
+                <h6>{{ 'checkout.step.summary.overview' | trans }}</h6>
+            </li>
+
+            {% block separator %}
+                <li><hr /></li>
+            {% endblock %}
+
+            <li>
+                {{ 'checkout.step.summary.sub_total' | trans }}
+                <strong class="float-right">{{ data.quoteTransfer.totals.subtotal | money }}</strong>
+            </li>
+
+            {{block('separator')}}
+
+            {% if data.quoteTransfer.cartRuleDiscounts|length %}
+                <li>
+                    <strong>{{ 'cart.discounts' | trans }}</strong>
+                    {% for ruleDiscount in data.quoteTransfer.cartRuleDiscounts %}
+                        <div class="grid grid--justify">
+                            <span class="col col--sm-10">{{ ruleDiscount.displayName }}</span>
+                            <span class="col col--expand text-right">- {{ ruleDiscount.amount | money }}</span>
+                        </div>
+                    {% endfor %}
+                </li>
+                {{block('separator')}}
+            {% endif %}
+
+            {% if data.quoteTransfer.shipment and data.quoteTransfer.shipment.method %}
+                <li>
+                    {{ 'checkout.step.summary.shipping' | trans }}
+                    {% if data.quoteTransfer.shipment.method.name is not empty %}
+                        <strong>
+                            (
+                                {{ data.quoteTransfer.shipment.method.name }}
+                            )
+                        </strong>
+                    {% endif %}
+                    {% if data.quoteTransfer.shipment.method.storeCurrencyPrice is not null %}
+                        <span class="float-right">
+                            {{ data.quoteTransfer.shipment.method.storeCurrencyPrice | money }}
+                        </span>
+                    {% endif %}
+                </li>
+            {% endif %}
+
+            {{block('separator')}}
+
+            <li>
+                {{ 'checkout.step.summary.tax' | trans }}
+                <span class="float-right">{{ data.quoteTransfer.totals.taxtotal.amount | money }}</span>
+            </li>
+
+            {{block('separator')}}
+
+            <li>
+                <h6 class="float-right">{{ data.quoteTransfer.totals.grandtotal | money }}</h6>
+                <h6>{{ 'checkout.step.summary.grand_total' | trans }}</h6>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

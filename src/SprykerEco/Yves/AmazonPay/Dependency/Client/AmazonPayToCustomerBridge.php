@@ -29,4 +29,12 @@ class AmazonPayToCustomerBridge implements AmazonPayToCustomerInterface
     {
         return $this->customerClient->getCustomer();
     }
+
+    /**
+     * @return void
+     */
+    public function markCustomerAsDirty()
+    {
+        $this->customerClient->markCustomerAsDirty();
+    }
 }

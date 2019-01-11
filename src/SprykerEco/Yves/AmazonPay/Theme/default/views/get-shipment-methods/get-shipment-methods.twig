@@ -1,0 +1,11 @@
+{% extends template('widget') %}
+
+{% block body %}
+    {% include molecule('get-shipment-methods', 'AmazonPay') with {
+        data: {
+            shipmentMethods: _view.shipmentMethods,
+            selectedShipmentMethodId: _view.selectedShipmentMethodId,
+            isAmazonPaymentInvalid: _view.isAmazonPaymentInvalid
+        }
+    } only %}
+{% endblock %}

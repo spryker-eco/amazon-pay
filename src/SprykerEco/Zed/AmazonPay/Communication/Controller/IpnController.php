@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method \SprykerEco\Zed\AmazonPay\Business\AmazonPayFacadeInterface getFacade()
+ * @method \SprykerEco\Zed\AmazonPay\Persistence\AmazonPayQueryContainerInterface getQueryContainer()
+ * @method \SprykerEco\Zed\AmazonPay\Communication\AmazonPayCommunicationFactory getFactory()
  */
 class IpnController extends AbstractController
 {

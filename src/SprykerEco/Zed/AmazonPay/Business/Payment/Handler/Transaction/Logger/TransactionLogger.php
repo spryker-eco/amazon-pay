@@ -14,9 +14,9 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface;
 
 class TransactionLogger implements TransactionLoggerInterface
 {
-    const REPORT_LEVEL_ALL = 'ALL';
-    const REPORT_LEVEL_ERRORS_ONLY = 'ERRORS_ONLY';
-    const REPORT_LEVEL_DISABLED = 'DISABLED';
+    public const REPORT_LEVEL_ALL = 'ALL';
+    public const REPORT_LEVEL_ERRORS_ONLY = 'ERRORS_ONLY';
+    public const REPORT_LEVEL_DISABLED = 'DISABLED';
 
     /**
      * @var string

@@ -13,19 +13,19 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 abstract class AbstractConverter
 {
-    const STATUS_DECLINED = 'Declined';
-    const STATUS_PENDING = 'Pending';
-    const STATUS_OPEN = 'Open';
-    const STATUS_CLOSED = 'Closed';
-    const STATUS_COMPLETED = 'Completed';
-    const STATUS_SUSPENDED = 'Suspended';
-    const STATUS_CANCELLED = 'Canceled';
+    public const STATUS_DECLINED = 'Declined';
+    public const STATUS_PENDING = 'Pending';
+    public const STATUS_OPEN = 'Open';
+    public const STATUS_CLOSED = 'Closed';
+    public const STATUS_COMPLETED = 'Completed';
+    public const STATUS_SUSPENDED = 'Suspended';
+    public const STATUS_CANCELLED = 'Canceled';
 
-    const FIELD_LAST_UPDATE_TIMESTAMP = 'LastUpdateTimestamp';
-    const FIELD_REASON_CODE = 'ReasonCode';
-    const FIELD_STATE = 'State';
-    const FIELD_AMOUNT = 'Amount';
-    const FIELD_CURRENCY_CODE = 'CurrencyCode';
+    public const FIELD_LAST_UPDATE_TIMESTAMP = 'LastUpdateTimestamp';
+    public const FIELD_REASON_CODE = 'ReasonCode';
+    public const FIELD_STATE = 'State';
+    public const FIELD_AMOUNT = 'Amount';
+    public const FIELD_CURRENCY_CODE = 'CurrencyCode';
 
     /**
      * @var array

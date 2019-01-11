@@ -21,6 +21,14 @@ class AmazonPayFactory extends AbstractFactory
     }
 
     /**
+     * @return \SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToCartInterface
+     */
+    public function getCartClient()
+    {
+        return $this->getProvidedDependency(AmazonPayDependencyProvider::CLIENT_CART);
+    }
+
+    /**
      * @return \SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToCheckoutInterface
      */
     public function getCheckoutClient()
@@ -58,5 +66,13 @@ class AmazonPayFactory extends AbstractFactory
     public function getCustomerClient()
     {
         return $this->getProvidedDependency(AmazonPayDependencyProvider::CLIENT_CUSTOMER);
+    }
+
+    /**
+     * @return \SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToGlossaryStorageInterface
+     */
+    public function getGlossaryStorageClient()
+    {
+        return $this->getProvidedDependency(AmazonPayDependencyProvider::CLIENT_GLOSSARY_STORAGE);
     }
 }
