@@ -1,4 +1,4 @@
-# Amazon Module
+# Amazon Pay Module
 
 [![Build Status](https://travis-ci.org/spryker-eco/amazon-pay.svg?branch=master)](https://travis-ci.org/spryker-eco/amazon-pay)
 [![License](https://img.shields.io/github/license/spryker-eco/amazon-pay.svg?b=master)](https://github.com/spryker-eco/amazon-pay)
