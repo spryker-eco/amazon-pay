@@ -44,5 +44,5 @@ before_install:
   - phpenv config-rm xdebug.ini
 
 script:
-  - git clone -b '0.1.1' --single-branch https://github.com/spryker-eco/eco-ci.git ecoci
+  - git clone -b '0.2.1' --single-branch https://github.com/spryker-eco/eco-ci.git ecoci
   - ./ecoci/build/travis.sh
