@@ -24,7 +24,7 @@
     "spryker/util-encoding": "^2.0.1",
     "spryker/zed-request": "^3.0.0"
   },
-  "description": "Amazon Pay Module",
+  "description": "AmazonPay module",
   "license": "Apache-2.0",
   "minimum-stability": "dev",
   "prefer-stable": true,
