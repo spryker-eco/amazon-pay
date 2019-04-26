@@ -8,7 +8,7 @@
         <column name="fk_sales_order_item" required="true" type="INTEGER" />
         <column name="fk_payment_amazonpay" required="true" type="INTEGER" />
 
-        <unique name="spy_payment_amazonpay_sales_order_item-unique-so_item-p-amazonpay">
+        <unique name="spy_payment_amazonpay_sales_order_item-unique-amazonpay">
             <unique-column name="fk_sales_order_item" />
             <unique-column name="fk_payment_amazonpay" />
         </unique>
