@@ -1,0 +1,20 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'confirmation-button',
+    tag: 'confirmation-button'
+} %}
+
+{% define attributes = {
+    url: required,
+    'order-reference-id': required,
+    'seller-id': required,
+} %}
+
+{% block body %}
+    <button
+       class="{{ config.jsName }}__button button button--success">
+        {{ 'checkout.step.place.order' | trans }}
+    </button>
+{% endblock %}
+
