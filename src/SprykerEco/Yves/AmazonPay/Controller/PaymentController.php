@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 class PaymentController extends AbstractController
 {
     public const URL_PARAM_REFERENCE_ID = 'reference_id';
+    public const URL_PARAM_SELLER_ID = 'seller_id';
     public const URL_PARAM_ACCESS_TOKEN = 'access_token';
     public const URL_PARAM_SHIPMENT_METHOD_ID = 'shipment_method_id';
     public const QUOTE_TRANSFER = 'quoteTransfer';
@@ -39,6 +40,11 @@ class PaymentController extends AbstractController
     public const IS_AMAZON_PAYMENT_INVALID = 'isAmazonPaymentInvalid';
     public const ADDRESS_BOOK_MODE = 'addressBookMode';
     public const ORDER_REFERENCE = 'orderReferenceId';
+
+    public const PSD2_DATA = 'psd2Data';
+    public const PSD2_DATA_KEY_AJAX_ENDPOINT = 'psd2AjaxEndpoint';
+    public const PSD2_DATA_KEY_SELLER_ID = 'amazonSellerId';
+    public const PSD2_DATA_KEY_AMAZON_ORDER_REFERENCE_ID = 'amazonOrderReferenceId';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -79,6 +85,7 @@ class PaymentController extends AbstractController
             static::QUOTE_TRANSFER => $quoteTransfer,
             static::CART_ITEMS => $this->getCartItems($quoteTransfer),
             static::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
+            static::PSD2_DATA => $this->preparePSD2Data($quoteTransfer),
         ];
 
         if ($this->isAmazonPaymentInvalid($quoteTransfer)) {
@@ -507,5 +514,19 @@ class PaymentController extends AbstractController
         }
 
         return null;
+    }
+
+    /**
+     * @param QuoteTransfer $quoteTransfer
+     *
+     * @return array
+     */
+    protected function preparePSD2Data(QuoteTransfer $quoteTransfer): array
+    {
+        return [
+            static::PSD2_DATA_KEY_AJAX_ENDPOINT => $this->getApplication()->url(AmazonPayControllerProvider::PSD2_AJAX_ENDPOINT),
+            static::PSD2_DATA_KEY_SELLER_ID => $this->getAmazonPayConfig()->getSellerId(),
+            static::PSD2_DATA_KEY_AMAZON_ORDER_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
+        ];
     }
 }
