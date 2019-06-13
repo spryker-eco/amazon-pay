@@ -90,10 +90,17 @@
             </div>
 
             <div class="col col--sm-12 text-right">
-                <a href="{{ path('amazonpay_confirm_purchase') }}"
-                   class="button button--success">
-                    {{ 'checkout.step.place.order' | trans }}
-                </a>
+                {#<a href="{{ path('amazonpay_confirm_purchase') }}"#}
+                   {#class="button button--success">#}
+                    {#{{ 'checkout.step.place.order' | trans }}#}
+                {#</a>#}
+                {% include atom('confirmation-button', 'AmazonPay') with {
+                    attributes: {
+                        url: '/test',
+                        'order-reference-id': data.orderReferenceId,
+                        'seller-id': data.sellerId
+                    }
+                } only %}
             </div>
         </div>
     </div>
