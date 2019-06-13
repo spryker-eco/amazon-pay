@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Client\AmazonPay;
 
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Client\Kernel\AbstractClient;
 
@@ -55,5 +56,20 @@ class AmazonPayClient extends AbstractClient implements AmazonPayClientInterface
     public function addSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer)
     {
         return $this->getFactory()->createZedStub()->addSelectedShipmentMethodToQuote($quoteTransfer);
+    }
+
+    /**
+     * Specification
+     * -
+     *
+     * @param AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @return AmazonpayCallTransfer
+     * @api
+     *
+     */
+    public function setOrderDetailsAndConfirmation(AmazonpayCallTransfer $amazonpayCallTransfer): AmazonpayCallTransfer
+    {
+        return $this->getFactory()->createZedStub()->setOrderDetailsAndConfirmation($amazonpayCallTransfer);
     }
 }

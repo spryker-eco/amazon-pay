@@ -253,4 +253,16 @@ interface AmazonPayFacadeInterface
      * @return bool
      */
     public function placeOrder(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer);
+
+    /**
+     * Specification
+     * -
+     *
+     * @api
+     *
+     * @param AmazonpayCallTransfer $amazonpayCallTransfer
+     *
+     * @return AmazonpayCallTransfer
+     */
+    public function setOrderDetailsAndConfirmation(AmazonpayCallTransfer $amazonpayCallTransfer): AmazonpayCallTransfer;
 }

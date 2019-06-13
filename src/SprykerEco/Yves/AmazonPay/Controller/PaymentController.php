@@ -7,6 +7,8 @@
 
 namespace SprykerEco\Yves\AmazonPay\Controller;
 
+use Elastica\Response;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\CheckoutErrorTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
@@ -134,6 +136,21 @@ class PaymentController extends AbstractController
 
         return $this->view($response, [], '@AmazonPay/views/get-shipment-methods/get-shipment-methods.twig');
     }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function psd2Action(Request $request): Response
+    {
+//        $this->getClient()->setOrderDetailsAndConfirmation(new AmazonpayCallTransfer());
+
+        return new JsonResponse([
+            'success' => true,
+        ]);
+    }
+
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
