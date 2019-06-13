@@ -363,19 +363,4 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
             ->createPlacement()
             ->placeOrder($quoteTransfer, $checkoutResponseTransfer);
     }
-
-    /**
-     * Specification
-     * -
-     *
-     * @api
-     *
-     * @param AmazonpayCallTransfer $amazonpayCallTransfer
-     *
-     * @return AmazonpayCallTransfer
-     */
-    public function setOrderDetailsAndConfirmation(AmazonpayCallTransfer $amazonpayCallTransfer): AmazonpayCallTransfer
-    {
-        return new AmazonpayCallTransfer();
-    }
 }

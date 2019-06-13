@@ -7,8 +7,6 @@
 
 namespace SprykerEco\Yves\AmazonPay\Controller;
 
-use Elastica\Response;
-use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\CheckoutErrorTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
@@ -20,6 +18,7 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConstants;
 use SprykerEco\Yves\AmazonPay\Plugin\Provider\AmazonPayControllerProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method \SprykerEco\Client\AmazonPay\AmazonPayClientInterface getClient()
@@ -138,13 +137,26 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function psd2Action(Request $request)
+    public function placeOrderAction(Request $request): Response
     {
-//        $this->getClient()->setOrderDetailsAndConfirmation(new AmazonpayCallTransfer());
+        $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
+        $checkoutResponseTransfer = $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
+
+        $this->saveQuoteIntoSession($quoteTransfer);
+
+        if ($checkoutResponseTransfer->getIsSuccess()) {
+
+            $this->addAmazonPayErrorFromQuote($quoteTransfer);
+            $this->setCheckoutErrorMessages($checkoutResponseTransfer);
+
+            return new JsonResponse([
+                'success' => false,
+            ], 400);
+        }
 
         return new JsonResponse([
             'success' => true,
@@ -541,7 +553,7 @@ class PaymentController extends AbstractController
     protected function preparePSD2Data(QuoteTransfer $quoteTransfer): array
     {
         return [
-            static::PSD2_DATA_KEY_AJAX_ENDPOINT => $this->getApplication()->url(AmazonPayControllerProvider::PSD2),
+            static::PSD2_DATA_KEY_AJAX_ENDPOINT => $this->getApplication()->url(AmazonPayControllerProvider::PLACE_ORDER),
             static::PSD2_DATA_KEY_SELLER_ID => $this->getAmazonPayConfig()->getSellerId(),
             static::PSD2_DATA_KEY_AMAZON_ORDER_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
         ];
