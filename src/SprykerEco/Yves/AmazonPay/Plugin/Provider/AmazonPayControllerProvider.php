@@ -60,7 +60,7 @@ class AmazonPayControllerProvider extends YvesControllerProvider
         $this->createController('/{amazonpay}/get-shipment-methods', static::GET_SHIPMENT_METHODS, static::BUNDLE_NAME, 'Payment', 'getShipmentMethods')
             ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
             ->value('amazonpay', 'amazonpay');
-        $this->createController('/amazonpay/psd2', static::PSD2, static::BUNDLE_NAME, 'Payment', ' psd2');
+        $this->createController('/amazonpay/psd2', static::PSD2, static::BUNDLE_NAME, 'Payment', 'psd2');
 
         // widgets
         $this->createController('/{amazonpay}/paybutton', static::PAY_BUTTON, static::BUNDLE_NAME, 'Widget', 'payButton')
@@ -73,8 +73,6 @@ class AmazonPayControllerProvider extends YvesControllerProvider
 
         // endpoint
         $this->createController('/amazonpay/endpoint', static::ENDPOINT, static::BUNDLE_NAME, 'Payment', 'endpoint');
-
-
     }
 
     /**

@@ -14,6 +14,9 @@
     quoteTransfer: _view.quoteTransfer,
     cartItems: _view.cartItems,
     title: 'checkout.amazonpay' | trans,
+    amazonEndPoint: _view.psd2Data.psd2AjaxEndpoint,
+    amazonSellerId: _view.psd2Data.amazonSellerId,
+    amazonOrderReferenceId: _view.psd2Data.amazonOrderReferenceId
 } %}
 
 {% set steps = [{
@@ -96,9 +99,9 @@
                 {#</a>#}
                 {% include atom('confirmation-button', 'AmazonPay') with {
                     attributes: {
-                        url: '/test',
-                        'order-reference-id': data.orderReferenceId,
-                        'seller-id': data.sellerId
+                        url: data.amazonEndPoint,
+                        'order-reference-id': data.amazonOrderReferenceId,
+                        'seller-id': data.amazonSellerId
                     }
                 } only %}
             </div>

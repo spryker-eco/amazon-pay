@@ -142,7 +142,7 @@ class PaymentController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function psd2Action(Request $request): Response
+    public function psd2Action(Request $request)
     {
 //        $this->getClient()->setOrderDetailsAndConfirmation(new AmazonpayCallTransfer());
 
@@ -541,7 +541,7 @@ class PaymentController extends AbstractController
     protected function preparePSD2Data(QuoteTransfer $quoteTransfer): array
     {
         return [
-            static::PSD2_DATA_KEY_AJAX_ENDPOINT => $this->getApplication()->url(AmazonPayControllerProvider::PSD2_AJAX_ENDPOINT),
+            static::PSD2_DATA_KEY_AJAX_ENDPOINT => $this->getApplication()->url(AmazonPayControllerProvider::PSD2),
             static::PSD2_DATA_KEY_SELLER_ID => $this->getAmazonPayConfig()->getSellerId(),
             static::PSD2_DATA_KEY_AMAZON_ORDER_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
         ];
