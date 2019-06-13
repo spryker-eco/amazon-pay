@@ -7,7 +7,7 @@
 
 namespace SprykerEcoTest\Zed\AmazonPay\Business\Mock\Adapter\Sdk;
 
-use PayWithAmazon\IpnHandler;
+use AmazonPay\IpnHandler;
 
 class IpnHandlerMock extends IpnHandler
 {
