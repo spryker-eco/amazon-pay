@@ -15,7 +15,7 @@ class AmazonPaySdkAdapterFactoryMock extends AmazonPaySdkAdapterFactory
     /**
      * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface $config
      *
-     * @return \PayWithAmazon\ClientInterface
+     * @return \AmazonPay\ClientInterface
      */
     public function createAmazonPayClient(AmazonPayConfigInterface $config)
     {
@@ -37,7 +37,7 @@ class AmazonPaySdkAdapterFactoryMock extends AmazonPaySdkAdapterFactory
      * @param array $headers
      * @param string $body
      *
-     * @return \PayWithAmazon\IpnHandlerInterface
+     * @return \AmazonPay\IpnHandlerInterface
      */
     public function createAmazonPayIpnHandler(array $headers, $body)
     {

@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Client\AmazonPay\Zed;
 
-use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AmazonPayStubInterface
@@ -32,16 +31,4 @@ interface AmazonPayStubInterface
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function addSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer);
-
-    /**
-     * Specification
-     * -
-     *
-     * @api
-     *
-     * @param AmazonpayCallTransfer $amazonpayCallTransfer
-     *
-     * @return AmazonpayCallTransfer
-     */
-    public function setOrderDetailsAndConfirmation(AmazonpayCallTransfer $amazonpayCallTransfer): AmazonpayCallTransfer;
 }

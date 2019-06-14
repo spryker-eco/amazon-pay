@@ -7,7 +7,7 @@
 
 namespace SprykerEcoTest\Zed\AmazonPay\Business\Mock\Adapter\Sdk;
 
-use PayWithAmazon\Client;
+use AmazonPay\Client;
 
 class ClientMock extends Client
 {
@@ -18,7 +18,7 @@ class ClientMock extends Client
     /**
      * @param array $requestParameters
      *
-     * @return \PayWithAmazon\ResponseInterface
+     * @return \AmazonPay\ResponseInterface
      */
     public function authorize($requestParameters = [])
     {
@@ -30,7 +30,7 @@ class ClientMock extends Client
     /**
      * @param array $requestParameters
      *
-     * @return \PayWithAmazon\ResponseInterface
+     * @return \AmazonPay\ResponseInterface
      */
     public function cancelOrderReference($requestParameters = [])
     {
@@ -42,7 +42,7 @@ class ClientMock extends Client
     /**
      * @param array $requestParameters
      *
-     * @return \PayWithAmazon\ResponseInterface
+     * @return \AmazonPay\ResponseInterface
      */
     public function capture($requestParameters = [])
     {
@@ -54,7 +54,7 @@ class ClientMock extends Client
     /**
      * @param array $requestParameters
      *
-     * @return \PayWithAmazon\ResponseInterface
+     * @return \AmazonPay\ResponseInterface
      */
     public function closeOrderReference($requestParameters = [])
     {
@@ -66,7 +66,7 @@ class ClientMock extends Client
     /**
      * @param array $requestParameters
      *
-     * @return \PayWithAmazon\ResponseInterface
+     * @return \AmazonPay\ResponseInterface
      */
     public function confirmOrderReference($requestParameters = [])
     {
@@ -78,7 +78,7 @@ class ClientMock extends Client
     /**
      * @param array $requestParameters
      *
-     * @return \PayWithAmazon\ResponseParser
+     * @return \AmazonPay\ResponseParser
      */
     public function getAuthorizationDetails($requestParameters = [])
     {
@@ -90,7 +90,7 @@ class ClientMock extends Client
     /**
      * @param array $requestParameters
      *
-     * @return \PayWithAmazon\ResponseParser
+     * @return \AmazonPay\ResponseParser
      */
     public function getCaptureDetails($requestParameters = [])
     {
@@ -102,7 +102,7 @@ class ClientMock extends Client
     /**
      * @param array $requestParameters
      *
-     * @return \PayWithAmazon\ResponseInterface
+     * @return \AmazonPay\ResponseInterface
      */
     public function getOrderReferenceDetails($requestParameters = [])
     {
@@ -114,7 +114,7 @@ class ClientMock extends Client
     /**
      * @param array $requestParameters
      *
-     * @return \PayWithAmazon\ResponseParser
+     * @return \AmazonPay\ResponseParser
      */
     public function getRefundDetails($requestParameters = [])
     {
@@ -138,7 +138,7 @@ class ClientMock extends Client
     /**
      * @param array $requestParameters
      *
-     * @return \PayWithAmazon\ResponseInterface
+     * @return \AmazonPay\ResponseInterface
      */
     public function refund($requestParameters = [])
     {
@@ -150,7 +150,7 @@ class ClientMock extends Client
     /**
      * @param array $requestParameters
      *
-     * @return \PayWithAmazon\ResponseInterface
+     * @return \AmazonPay\ResponseInterface
      */
     public function setOrderReferenceDetails($requestParameters = [])
     {
