@@ -117,6 +117,8 @@ class PaymentController extends AbstractController
                 $request->request->get(static::URL_PARAM_REFERENCE_ID)
             );
 
+        $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
+
         return new JsonResponse([static::SUCCESS => true]);
     }
 
@@ -148,7 +150,7 @@ class PaymentController extends AbstractController
 
         $this->saveQuoteIntoSession($quoteTransfer);
 
-        if ($checkoutResponseTransfer->getIsSuccess()) {
+        if (!$checkoutResponseTransfer->getIsSuccess()) {
 
             $this->addAmazonPayErrorFromQuote($quoteTransfer);
             $this->setCheckoutErrorMessages($checkoutResponseTransfer);
@@ -157,6 +159,8 @@ class PaymentController extends AbstractController
                 'success' => false,
             ], 400);
         }
+
+        $this->getFactory()->getQuoteClient()->clearQuote();
 
         return new JsonResponse([
             'success' => true,

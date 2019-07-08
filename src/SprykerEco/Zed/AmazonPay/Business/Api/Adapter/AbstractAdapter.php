@@ -20,6 +20,8 @@ abstract class AbstractAdapter implements CallAdapterInterface
     public const AMAZON_AMOUNT = 'amount';
     public const AMAZON_CAPTURE_ID = 'amazon_capture_id';
     public const AMAZON_REFUND_ID = 'amazon_refund_id';
+    public const AMAZON_SUCCESS_URL = 'success_url';
+    public const AMAZON_FAILURE_URL = 'failure_url';
 
     /**
      * @var \AmazonPay\ClientInterface

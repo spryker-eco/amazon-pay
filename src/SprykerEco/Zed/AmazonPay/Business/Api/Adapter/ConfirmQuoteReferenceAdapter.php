@@ -18,9 +18,12 @@ class ConfirmQuoteReferenceAdapter extends AbstractAdapter
      */
     public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
+        //TODO: Use config values
         $result = $this->client->confirmOrderReference([
             AbstractAdapter::AMAZON_ORDER_REFERENCE_ID => $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId(),
             AbstractAdapter::AMAZON_AMOUNT => $this->getAmount($amazonpayCallTransfer),
+            AbstractAdapter::AMAZON_SUCCESS_URL => 'https://www.de.amazon.local',
+            AbstractAdapter::AMAZON_FAILURE_URL => 'https://www.de.amazon.local',
         ]);
 
         return $this->converter->convert($result);

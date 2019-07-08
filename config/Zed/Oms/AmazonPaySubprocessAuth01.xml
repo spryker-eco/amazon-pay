@@ -27,7 +27,7 @@
         </states>
 
         <events>
-            <event name="update authorization status" manual="true" command="AmazonPay/UpdateAuthorizationStatus" />
+            <event name="update authorization status" onEnter="true" command="AmazonPay/UpdateAuthorizationStatus" />
             <event name="update suspended order" command="AmazonPay/UpdateSuspendedOrder" />
             <event name="reauthorize expired order" manual="true" command="AmazonPay/ReauthorizeExpiredOrder" />
             <event name="cancel" manual="true" command="AmazonPay/CancelOrder" />
