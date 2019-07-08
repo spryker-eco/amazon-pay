@@ -1,6 +1,10 @@
 import Component from 'ShopUi/models/component';
 
-declare const window: any;
+declare const window: {
+    OffAmazonPayments: {
+        initConfirmationFlow(sellerId: string, orderId: string, callback: (confirmationFlow: any) => void): void
+    }
+};
 
 
 export default class ConfirmationButton extends Component {
@@ -12,7 +16,9 @@ export default class ConfirmationButton extends Component {
         this.xhr = new XMLHttpRequest();
     }
 
-    protected readyCallback(): void {
+    protected readyCallback(): void {}
+
+    mountCallback(): void {
         this.button = this.querySelector(`.${this.jsName}__button`);
         this.mapEvents();
     }
