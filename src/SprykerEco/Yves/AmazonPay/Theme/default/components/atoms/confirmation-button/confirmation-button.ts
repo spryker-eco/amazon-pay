@@ -41,6 +41,9 @@ export default class ConfirmationButton extends Component {
         if(this.xhr.status === 200){
             confirmationFlow.success();
             resolve(this.xhr.response);
+        } else {
+            confirmationFlow.error();
+            location.href = location.origin + '/amazonpay/payment-failed'
         }
     }
 
