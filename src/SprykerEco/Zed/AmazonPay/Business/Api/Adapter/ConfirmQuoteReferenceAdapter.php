@@ -7,10 +7,30 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Api\Adapter;
 
+use AmazonPay\ClientInterface;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
+use SprykerEco\Zed\AmazonPay\Business\Api\Converter\ResponseParserConverterInterface;
+use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToMoneyInterface;
 
 class ConfirmQuoteReferenceAdapter extends AbstractAdapter
 {
+    /**
+     * @var AmazonPayConfig
+     */
+    protected $config;
+
+    public function __construct(
+        ClientInterface $client,
+        ResponseParserConverterInterface $converter,
+        AmazonPayToMoneyInterface $moneyFacade,
+        AmazonPayConfig $config
+    ) {
+        $this->config = $config;
+
+        parent::__construct($client, $converter, $moneyFacade);
+    }
+
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -18,12 +38,11 @@ class ConfirmQuoteReferenceAdapter extends AbstractAdapter
      */
     public function call(AmazonpayCallTransfer $amazonpayCallTransfer)
     {
-        //TODO: Use config values
         $result = $this->client->confirmOrderReference([
             AbstractAdapter::AMAZON_ORDER_REFERENCE_ID => $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId(),
             AbstractAdapter::AMAZON_AMOUNT => $this->getAmount($amazonpayCallTransfer),
-            AbstractAdapter::AMAZON_SUCCESS_URL => 'https://www.de.amazon.local',
-            AbstractAdapter::AMAZON_FAILURE_URL => 'https://www.de.amazon.local',
+            AbstractAdapter::AMAZON_SUCCESS_URL => $this->config->getSuccessPaymentUrl(),
+            AbstractAdapter::AMAZON_FAILURE_URL => $this->config->getFailurePaymentUrl(),
         ]);
 
         return $this->converter->convert($result);
