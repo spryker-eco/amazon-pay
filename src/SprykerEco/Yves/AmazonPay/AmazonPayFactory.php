@@ -9,6 +9,7 @@ namespace SprykerEco\Yves\AmazonPay;
 
 use Spryker\Yves\Kernel\AbstractFactory;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
+use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToMessengerClientInterface;
 
 class AmazonPayFactory extends AbstractFactory
 {
@@ -74,5 +75,13 @@ class AmazonPayFactory extends AbstractFactory
     public function getGlossaryStorageClient()
     {
         return $this->getProvidedDependency(AmazonPayDependencyProvider::CLIENT_GLOSSARY_STORAGE);
+    }
+
+    /**
+     * @return AmazonPayToMessengerClientInterface
+     */
+    public function getMessengerClient(): AmazonPayToMessengerClientInterface
+    {
+        return $this->getProvidedDependency(AmazonPayDependencyProvider::CLIENT_MESSENGER);
     }
 }

@@ -160,8 +160,6 @@ class PaymentController extends AbstractController
             ], 400);
         }
 
-        $this->getFactory()->getQuoteClient()->clearQuote();
-
         return new JsonResponse([
             'success' => true,
         ]);
@@ -302,6 +300,18 @@ class PaymentController extends AbstractController
             static::IS_ASYNCHRONOUS => $this->isAsynchronous(),
             static::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
         ];
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function paymentFailedAction(Request $request)
+    {
+        $this->getFactory()->getMessengerClient()->addErrorMessage(static::ERROR_AMAZONPAY_PAYMENT_FAILED);
+
+        return $this->buildRedirectInternalResponse();
     }
 
     /**
