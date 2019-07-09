@@ -41,15 +41,16 @@ export default class ConfirmationButton extends Component {
         if(this.xhr.status === 200){
             confirmationFlow.success();
             resolve(this.xhr.response);
-        } else {
-            confirmationFlow.error();
-            location.href = location.origin + '/amazonpay/payment-failed'
+
+            return;
         }
+        this.onRequestError(reject, confirmationFlow);
     }
 
     protected onRequestError(reject, confirmationFlow): void {
         confirmationFlow.error();
-        reject(new Error(`${this.url} request aborted`));
+        reject(new Error(`${this.url} request aborted with ${this.xhr.status}`));
+        location.href = location.origin + this.paymentFailedUrl;
     }
 
     protected initConfirmation (event: Event) {
@@ -60,16 +61,20 @@ export default class ConfirmationButton extends Component {
 
     }
 
-    get url ():string {
+    protected get url ():string {
         return this.getAttribute('url');
     }
 
-    get sellerId (): string {
+    protected get sellerId (): string {
         return this.getAttribute('seller-id');
     }
 
-    get orderReferenceId (): string {
+    protected get orderReferenceId (): string {
         return this.getAttribute('order-reference-id');
+    }
+
+    protected get paymentFailedUrl (): string {
+        return this.getAttribute('payment-failed-url');
     }
 
 }

@@ -93,16 +93,13 @@
             </div>
 
             <div class="col col--sm-12 text-right">
-                {#<a href="{{ path('amazonpay_confirm_purchase') }}"#}
-                   {#class="button button--success">#}
-                    {#{{ 'checkout.step.place.order' | trans }}#}
-                {#</a>#}
                 {% include atom('confirmation-button', 'AmazonPay') with {
                     attributes: {
                         url: data.amazonEndPoint,
                         'order-reference-id': data.amazonOrderReferenceId,
-                        'seller-id': data.amazonSellerId
-                    }
+                        'seller-id': data.amazonSellerId,
+                        'payment-failed-url': '/amazonpay/payment-failed',
+                    },
                 } only %}
             </div>
         </div>

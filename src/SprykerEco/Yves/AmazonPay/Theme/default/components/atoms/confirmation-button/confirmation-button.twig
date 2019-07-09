@@ -2,13 +2,14 @@
 
 {% define config = {
     name: 'confirmation-button',
-    tag: 'confirmation-button'
+    tag: 'confirmation-button',
 } %}
 
 {% define attributes = {
     url: required,
     'order-reference-id': required,
     'seller-id': required,
+    'payment-failed-url': required,
 } %}
 
 {% block body %}
