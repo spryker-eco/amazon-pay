@@ -150,18 +150,8 @@ class PaymentController extends AbstractController
 
         $this->saveQuoteIntoSession($quoteTransfer);
 
-        if (!$checkoutResponseTransfer->getIsSuccess()) {
-
-            $this->addAmazonPayErrorFromQuote($quoteTransfer);
-            $this->setCheckoutErrorMessages($checkoutResponseTransfer);
-
-            return new JsonResponse([
-                'success' => false,
-            ], 400);
-        }
-
         return new JsonResponse([
-            'success' => true,
+            'success' => $checkoutResponseTransfer->getIsSuccess(),
         ]);
     }
 
