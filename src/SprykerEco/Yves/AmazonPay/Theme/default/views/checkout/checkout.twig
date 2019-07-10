@@ -16,7 +16,8 @@
     title: 'checkout.amazonpay' | trans,
     amazonEndPoint: _view.psd2Data.psd2AjaxEndpoint,
     amazonSellerId: _view.psd2Data.amazonSellerId,
-    amazonOrderReferenceId: _view.psd2Data.amazonOrderReferenceId
+    amazonOrderReferenceId: _view.psd2Data.amazonOrderReferenceId,
+    amazonFailureUrl: _view.psd2Data.amazonFailureUrl
 } %}
 
 {% set steps = [{
@@ -98,7 +99,7 @@
                         url: data.amazonEndPoint,
                         'order-reference-id': data.amazonOrderReferenceId,
                         'seller-id': data.amazonSellerId,
-                        'payment-failed-url': '/amazonpay/payment-failed',
+                        'payment-failed-url': data.amazonFailureUrl,
                     },
                 } only %}
             </div>

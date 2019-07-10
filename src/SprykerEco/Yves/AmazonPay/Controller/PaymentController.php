@@ -46,6 +46,7 @@ class PaymentController extends AbstractController
     public const PSD2_DATA_KEY_AJAX_ENDPOINT = 'psd2AjaxEndpoint';
     public const PSD2_DATA_KEY_SELLER_ID = 'amazonSellerId';
     public const PSD2_DATA_KEY_AMAZON_ORDER_REFERENCE_ID = 'amazonOrderReferenceId';
+    public const PSD2_DATA_KEY_AMAZON_FAILURE_URL = 'amazonFailureUrl';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -570,6 +571,7 @@ class PaymentController extends AbstractController
             static::PSD2_DATA_KEY_AJAX_ENDPOINT => $this->getApplication()->url(AmazonPayControllerProvider::PLACE_ORDER),
             static::PSD2_DATA_KEY_SELLER_ID => $this->getAmazonPayConfig()->getSellerId(),
             static::PSD2_DATA_KEY_AMAZON_ORDER_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
+            static::PSD2_DATA_KEY_AMAZON_FAILURE_URL => $this->getAmazonPayConfig()->getFailurePaymentUrl(),
         ];
     }
 }

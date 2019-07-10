@@ -38,19 +38,20 @@ export default class ConfirmationButton extends Component {
     }
 
     protected onRequestLoad(resolve, reject, confirmationFlow): void {
-        if(this.xhr.status === 200){
+        if (this.xhr.status === 200) {
             confirmationFlow.success();
             resolve(this.xhr.response);
 
             return;
         }
+
         this.onRequestError(reject, confirmationFlow);
     }
 
     protected onRequestError(reject, confirmationFlow): void {
         confirmationFlow.error();
         reject(new Error(`${this.url} request aborted with ${this.xhr.status}`));
-        location.href = location.origin + this.paymentFailedUrl;
+        location.href = this.paymentFailedUrl;
     }
 
     protected initConfirmation (event: Event) {
