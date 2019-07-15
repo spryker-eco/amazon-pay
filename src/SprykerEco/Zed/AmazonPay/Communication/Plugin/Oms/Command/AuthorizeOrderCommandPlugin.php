@@ -26,7 +26,7 @@ class AuthorizeOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
      *
      * @return array
      */
-    public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
+    public function run(array $salesOrderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): array
     {
         $amazonpayCallTransfers = $this->groupSalesOrderItemsByAuthId($salesOrderItems);
         $customerEmail = $orderEntity->getEmail() ?? $orderEntity->getCustomer()->getEmail();
@@ -46,7 +46,7 @@ class AuthorizeOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
      *
      * @return void
      */
-    protected function updateCallTransfer(AmazonpayCallTransfer $amazonpayCallTransfer, SpySalesOrder $orderEntity, $customerEmail)
+    protected function updateCallTransfer(AmazonpayCallTransfer $amazonpayCallTransfer, SpySalesOrder $orderEntity, $customerEmail): void
     {
         $amazonpayCallTransfer->setShippingAddress($this->buildAddressTransfer($orderEntity->getShippingAddress()))
             ->setBillingAddress($this->buildAddressTransfer($orderEntity->getBillingAddress()));
@@ -59,7 +59,7 @@ class AuthorizeOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
     /**
      * @return string
      */
-    protected function getAffectingRequestedAmountItemsStateFlag()
+    protected function getAffectingRequestedAmountItemsStateFlag(): string
     {
         return AmazonPayConfig::OMS_FLAG_NOT_AUTH;
     }
