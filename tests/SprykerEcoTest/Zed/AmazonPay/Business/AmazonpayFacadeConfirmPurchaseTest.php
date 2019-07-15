@@ -69,17 +69,19 @@ class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
         $facade = new AmazonPayFacadeMock($additionalConfig);
         $resultQuote = $facade->confirmPurchase($quoteTransfer);
 
+        $amazonPayCallTransfer = $facade->authorizeOrderItems($facade->getFactory()->createAmazonpayConverter()->mapToAmazonpayCallTransfer($resultQuote));
+
         $this->assertEquals(
             $expectedStatus,
-            $resultQuote->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getState()
+            $amazonPayCallTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getState()
         );
         $this->assertEquals(
             $reasonCode,
-            $resultQuote->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getReasonCode()
+            $amazonPayCallTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getReasonCode()
         );
         $this->assertEquals(
             $captureId,
-            $resultQuote->getAmazonpayPayment()->getAuthorizationDetails()->getIdList()
+            $amazonPayCallTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getIdList()
         );
     }
 

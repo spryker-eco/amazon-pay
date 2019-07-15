@@ -72,11 +72,9 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
             $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
 
-        $statusDetails = $amazonPayCallTransfer->getAmazonpayPayment()
-            ->getAuthorizationDetails()
-            ->getAuthorizationStatus();
+        $authorizationDetails = $amazonPayCallTransfer->getAmazonpayPayment()->getAuthorizationDetails();
 
-        if ($this->isStateDeclined($statusDetails->getState())) {
+        if ($this->isStateDeclined($authorizationDetails->getAuthorizationStatus()->getState())) {
             $amazonPayCallTransfer->getAmazonpayPayment()->getResponseHeader()
                 ->setIsSuccess(false)
                 ->setIsInvalidPaymentMethod($this->isInvalidPaymentMethod($amazonPayCallTransfer))
@@ -84,7 +82,9 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
         }
 
         if ($this->paymentEntity !== null) {
-            $this->paymentEntity->setStatus($statusDetails->getState());
+            $this->paymentEntity->setStatus($authorizationDetails->getAuthorizationStatus()->getState());
+            $this->paymentEntity->setAuthorizationReferenceId($authorizationDetails->getAuthorizationReferenceId());
+            $this->paymentEntity->setAmazonAuthorizationId($authorizationDetails->getAmazonAuthorizationId());
             $this->paymentEntity->save();
         }
 

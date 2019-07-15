@@ -12,16 +12,23 @@
 
         <states>
             <state name="new" reserved="true"/>
+            <state name="authorized" reserved="true"/>
             <state name="capture completed" reserved="true"/>
         </states>
 
         <events>
+            <event name="authorize" manual="true" command="AmazonPay/AuthorizeOrder" />
             <event name="update order status" onEnter="true" />
         </events>
 
         <transitions>
-            <transition condition="AmazonPay/IsCaptureCompleted" happy="true">
+            <transition happy="true">
                 <source>new</source>
+                <target>authorized</target>
+                <event>authorize</event>
+            </transition>
+            <transition condition="AmazonPay/IsCaptureCompleted" happy="true">
+                <source>authorized</source>
                 <target>capture completed</target>
                 <event>update order status</event>
             </transition>

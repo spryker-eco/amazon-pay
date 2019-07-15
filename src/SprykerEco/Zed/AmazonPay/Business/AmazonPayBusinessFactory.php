@@ -168,7 +168,7 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayConverterInterface
      */
-    protected function createAmazonpayConverter()
+    public function createAmazonpayConverter()
     {
         return new AmazonPayConverter();
     }

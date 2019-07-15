@@ -336,8 +336,6 @@ class TransactionFactory implements TransactionFactoryInterface
                 $this->createSetOrderReferenceTransaction(),
                 $this->createConfirmOrderReferenceTransaction(),
                 $this->createGetOrderReferenceDetailsTransaction(),
-                $this->createAuthorizeTransaction(),
-                $this->createHandleDeclinedOrderTransaction(),
             ],
             $this->converter
         );

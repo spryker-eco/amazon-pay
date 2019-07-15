@@ -168,6 +168,10 @@ class AmazonpayFacadeSaveOrderPaymentTest extends AmazonpayFacadeAbstractTest
                 ->setSellerOrderId(self::SELLER_REFERENCE_ID)
                 ->setOrderReferenceId($orderReference)
                 ->setResponseHeader(new AmazonpayResponseHeaderTransfer())
+                ->setOrderReferenceStatus(
+                    (new AmazonpayStatusTransfer())
+                        ->setState($status->getState())
+                )
                 ->setAuthorizationDetails(
                     (new AmazonpayAuthorizationDetailsTransfer())
                         ->setAuthorizationStatus($status)

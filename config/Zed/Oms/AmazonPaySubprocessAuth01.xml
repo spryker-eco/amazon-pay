@@ -6,6 +6,7 @@
 
     <process name="AmazonPaySubprocessAuth01">
         <states>
+            <state name="need auth" reserved="true"/>
             <state name="auth pending" reserved="true"/>
             <state name="auth open" reserved="true">
                 <flag>not captured</flag>
@@ -27,6 +28,7 @@
         </states>
 
         <events>
+            <event name="authorize" manual="true" command="AmazonPay/AuthorizeOrder" />
             <event name="update authorization status" onEnter="true" command="AmazonPay/UpdateAuthorizationStatus" />
             <event name="update suspended order" command="AmazonPay/UpdateSuspendedOrder" />
             <event name="reauthorize expired order" manual="true" command="AmazonPay/ReauthorizeExpiredOrder" />
@@ -37,6 +39,13 @@
         </events>
 
         <transitions>
+            <!-- from need auth -->
+            <transition happy="true">
+                <source>need auth</source>
+                <target>auth pending</target>
+                <event>authorize</event>
+            </transition>
+
             <!-- from auth pending -->
             <transition happy="true">
                 <source>auth pending</source>
