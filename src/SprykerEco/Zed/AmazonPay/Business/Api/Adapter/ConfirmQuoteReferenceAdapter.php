@@ -16,10 +16,16 @@ use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToMoneyInterface;
 class ConfirmQuoteReferenceAdapter extends AbstractAdapter
 {
     /**
-     * @var AmazonPayConfig
+     * @var \SprykerEco\Shared\AmazonPay\AmazonPayConfig
      */
     protected $config;
 
+    /**
+     * @param \AmazonPay\ClientInterface $client
+     * @param \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ResponseParserConverterInterface $converter
+     * @param \SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToMoneyInterface $moneyFacade
+     * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfig $config
+     */
     public function __construct(
         ClientInterface $client,
         ResponseParserConverterInterface $converter,

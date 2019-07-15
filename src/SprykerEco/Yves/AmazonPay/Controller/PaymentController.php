@@ -140,9 +140,9 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function placeOrderAction(Request $request): Response
     {
@@ -152,7 +152,6 @@ class PaymentController extends AbstractController
         $this->saveQuoteIntoSession($quoteTransfer);
 
         if (!$checkoutResponseTransfer->getIsSuccess()) {
-
             $this->addAmazonPayErrorFromQuote($quoteTransfer);
             $this->setCheckoutErrorMessages($checkoutResponseTransfer);
 
@@ -165,7 +164,6 @@ class PaymentController extends AbstractController
             'success' => true,
         ]);
     }
-
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -304,9 +302,9 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function paymentFailedAction(Request $request)
     {
@@ -561,7 +559,7 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return array
      */

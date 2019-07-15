@@ -141,7 +141,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addMessengerClient(Container $container): Container
     {
-        $container->set(static::CLIENT_MESSENGER, function() use ($container) {
+        $container->set(static::CLIENT_MESSENGER, function () use ($container) {
             return new AmazonPayToMessengerClientBridge($container->getLocator()->messenger()->client());
         });
 

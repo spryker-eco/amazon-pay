@@ -80,6 +80,7 @@ interface AmazonPayFacadeInterface
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
     public function captureOrder(AmazonpayCallTransfer $amazonpayCallTransfer);
+
     /**
      * Specification
      * - send an API call to Amazon that order is closed

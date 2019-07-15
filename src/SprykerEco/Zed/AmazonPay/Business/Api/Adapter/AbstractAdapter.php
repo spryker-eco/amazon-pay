@@ -7,8 +7,8 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Api\Adapter;
 
-use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use AmazonPay\ClientInterface;
+use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use SprykerEco\Zed\AmazonPay\Business\Api\Converter\ResponseParserConverterInterface;
 use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToMoneyInterface;
 

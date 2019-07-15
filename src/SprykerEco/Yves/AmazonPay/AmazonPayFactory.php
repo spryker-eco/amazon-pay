@@ -78,7 +78,7 @@ class AmazonPayFactory extends AbstractFactory
     }
 
     /**
-     * @return AmazonPayToMessengerClientInterface
+     * @return \SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToMessengerClientInterface
      */
     public function getMessengerClient(): AmazonPayToMessengerClientInterface
     {
