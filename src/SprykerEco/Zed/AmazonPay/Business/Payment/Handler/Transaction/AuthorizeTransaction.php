@@ -63,6 +63,8 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
     protected function updatePaymentEntity(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
         if (!$this->isPaymentSuccess($amazonPayCallTransfer)) {
+            $this->paymentEntity->setStatus(AmazonPayConfig::STATUS_DECLINED);
+            $this->paymentEntity->save();
             return;
         }
 
