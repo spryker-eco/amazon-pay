@@ -16,6 +16,9 @@
                 <flag>not captured</flag>
             </state>
             <state name="auth closed"/>
+            <state name="payment method invalid">
+                <flag>not auth</flag>
+            </state>
             <state name="auth suspended" reserved="true">
                 <flag>not auth</flag>
             </state>
@@ -81,6 +84,11 @@
             <transition condition="AmazonPay/IsAuthClosed">
                 <source>waiting for auth status</source>
                 <target>auth closed</target>
+            </transition>
+
+            <transition condition="AmazonPay/IsPaymentMethodInvalid">
+                <source>waiting for auth status</source>
+                <target>payment method invalid</target>
             </transition>
 
             <transition condition="AmazonPay/IsAuthClosed">
