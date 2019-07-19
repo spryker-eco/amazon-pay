@@ -566,7 +566,7 @@ class PaymentController extends AbstractController
     protected function preparePSD2Data(QuoteTransfer $quoteTransfer): array
     {
         return [
-            static::PSD2_DATA_KEY_AJAX_ENDPOINT => $this->getApplication()->url(AmazonPayControllerProvider::PLACE_ORDER),
+            static::PSD2_DATA_KEY_AJAX_ENDPOINT => $this->getApplication()->path(AmazonPayControllerProvider::PLACE_ORDER),
             static::PSD2_DATA_KEY_SELLER_ID => $this->getAmazonPayConfig()->getSellerId(),
             static::PSD2_DATA_KEY_AMAZON_ORDER_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
             static::PSD2_DATA_KEY_AMAZON_FAILURE_URL => $this->getAmazonPayConfig()->getFailurePaymentUrl(),
