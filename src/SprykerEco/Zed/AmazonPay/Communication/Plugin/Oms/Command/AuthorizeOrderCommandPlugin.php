@@ -18,6 +18,9 @@ use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 class AuthorizeOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
 {
     /**
+     * {@inheritdoc}
+     * - Uses API adapter for sending a request to Amazon for order authorization operation.
+     *
      * @api
      *
      * @param array $salesOrderItems
@@ -46,7 +49,7 @@ class AuthorizeOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
      *
      * @return void
      */
-    protected function updateCallTransfer(AmazonpayCallTransfer $amazonpayCallTransfer, SpySalesOrder $orderEntity, $customerEmail): void
+    protected function updateCallTransfer(AmazonpayCallTransfer $amazonpayCallTransfer, SpySalesOrder $orderEntity, string $customerEmail): void
     {
         $amazonpayCallTransfer->setShippingAddress($this->buildAddressTransfer($orderEntity->getShippingAddress()))
             ->setBillingAddress($this->buildAddressTransfer($orderEntity->getBillingAddress()));

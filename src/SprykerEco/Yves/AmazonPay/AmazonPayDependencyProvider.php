@@ -27,7 +27,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
     public const CLIENT_CUSTOMER = 'customer client';
     public const CLIENT_CALCULATION = 'calculation client';
     public const CLIENT_GLOSSARY_STORAGE = 'glossary storage client';
-    public const CLIENT_MESSENGER = 'messenger client';
+    public const CLIENT_MESSENGER = 'CLIENT_MESSENGER';
     public const PLUGIN_CHECKOUT_BREADCRUMB = 'plugin checkout breadcrumb';
 
     /**
@@ -141,7 +141,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addMessengerClient(Container $container): Container
     {
-        $container->set(static::CLIENT_MESSENGER, function () use ($container) {
+        $container->set(static::CLIENT_MESSENGER, function (Container $container) {
             return new AmazonPayToMessengerClientBridge($container->getLocator()->messenger()->client());
         });
 

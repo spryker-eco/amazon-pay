@@ -306,7 +306,7 @@ class PaymentController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function paymentFailedAction(Request $request)
+    public function paymentFailedAction(Request $request): Response
     {
         $this->getFactory()->getMessengerClient()->addErrorMessage(static::ERROR_AMAZONPAY_PAYMENT_FAILED);
 
