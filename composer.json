@@ -7,7 +7,7 @@
     }
   },
   "require": {
-    "amzn/amazon-pay-sdk-php": "^3.0.0 || ^7.0.0",
+    "amzn/amazon-pay-sdk-php": "^3.0.0",
     "spryker/calculation": "^4.0.0",
     "spryker/cart": "^5.0.0",
     "spryker/checkout": "^3.0.0 || ^4.0.0 || ^6.0.0",
