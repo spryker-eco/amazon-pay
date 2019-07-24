@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <statemachine
-    xmlns="spryker:oms-01"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
 
     <process name="AmazonPaySync01" main="true">
         <subprocesses>
@@ -12,25 +12,44 @@
 
         <states>
             <state name="new" reserved="true"/>
-            <state name="authorized" reserved="true"/>
+            <state name="auth pending" reserved="true"/>
+            <state name="auth suspended" reserved="true"/>
+            <state name="auth closed" reserved="true"/>
             <state name="capture completed" reserved="true"/>
         </states>
 
         <events>
             <event name="authorize" manual="true" command="AmazonPay/AuthorizeOrder" />
             <event name="update order status" onEnter="true" />
+            <event name="suspend auth" onEnter="true" />
+            <event name="close auth" onEnter="true" />
         </events>
 
         <transitions>
+            <!-- from new -->
             <transition happy="true">
                 <source>new</source>
-                <target>authorized</target>
+                <target>auth pending</target>
                 <event>authorize</event>
             </transition>
+
+            <!-- from auth pending -->
             <transition condition="AmazonPay/IsCaptureCompleted" happy="true">
-                <source>authorized</source>
+                <source>auth pending</source>
                 <target>capture completed</target>
                 <event>update order status</event>
+            </transition>
+
+            <transition condition="AmazonPay/IsAuthSuspended">
+                <source>auth pending</source>
+                <target>auth suspended</target>
+                <event>suspend auth</event>
+            </transition>
+
+            <transition condition="AmazonPay/IsAuthClosed">
+                <source>auth pending</source>
+                <target>auth closed</target>
+                <event>close auth</event>
             </transition>
 
         </transitions>
