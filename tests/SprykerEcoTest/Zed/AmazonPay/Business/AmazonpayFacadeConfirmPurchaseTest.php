@@ -64,6 +64,8 @@ class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
         $additionalConfig = [
             AmazonPayConstants::AUTH_TRANSACTION_TIMEOUT => $transactionTimeout,
             AmazonPayConstants::CAPTURE_NOW => $captureNow,
+            AmazonPayConstants::SUCCESS_PAYMENT_URL => 'successurl',
+            AmazonPayConstants::FAILURE_PAYMENT_URL => 'failureurl',
         ];
 
         $facade = new AmazonPayFacadeMock($additionalConfig);
