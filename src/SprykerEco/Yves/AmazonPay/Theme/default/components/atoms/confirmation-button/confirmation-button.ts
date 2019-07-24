@@ -29,7 +29,7 @@ export default class ConfirmationButton extends Component {
 
     protected placeOrder<T = string>(confirmationFlow): Promise<T> {
          return new Promise((resolve, reject) => {
-            this.xhr.open('GET', this.url);
+            this.xhr.open('POST', this.url);
             this.xhr.addEventListener('load', (event: Event) => this.onRequestLoad(resolve, reject, confirmationFlow));
             this.xhr.addEventListener('error', (event: Event) => this.onRequestError(reject, confirmationFlow));
             this.xhr.send();
