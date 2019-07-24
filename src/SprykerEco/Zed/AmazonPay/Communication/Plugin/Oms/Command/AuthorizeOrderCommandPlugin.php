@@ -47,16 +47,21 @@ class AuthorizeOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
      * @param string $customerEmail
      *
-     * @return void
+     * @return AmazonpayCallTransfer
      */
-    protected function updateCallTransfer(AmazonpayCallTransfer $amazonpayCallTransfer, SpySalesOrder $orderEntity, string $customerEmail): void
-    {
+    protected function updateCallTransfer(
+        AmazonpayCallTransfer $amazonpayCallTransfer,
+        SpySalesOrder $orderEntity,
+        string $customerEmail
+    ): AmazonpayCallTransfer {
         $amazonpayCallTransfer->setShippingAddress($this->buildAddressTransfer($orderEntity->getShippingAddress()))
             ->setBillingAddress($this->buildAddressTransfer($orderEntity->getBillingAddress()));
         $amazonpayCallTransfer->setEmail($customerEmail);
         $amazonpayCallTransfer->setRequestedAmount(
             $this->getRequestedAmountByOrderAndItems($orderEntity, $amazonpayCallTransfer->getItems())
         );
+
+        return $amazonpayCallTransfer;
     }
 
     /**
