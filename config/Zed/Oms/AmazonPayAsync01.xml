@@ -26,8 +26,8 @@
             <!-- from new -->
             <transition happy="true">
                 <source>new</source>
-                <target>need auth</target>
-                <event>update order status</event>
+                <target>auth pending</target>
+                <event>authorize</event>
             </transition>
         </transitions>
     </process>

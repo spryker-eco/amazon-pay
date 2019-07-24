@@ -6,7 +6,6 @@
 
     <process name="AmazonPaySubprocessAuth01">
         <states>
-            <state name="need auth" reserved="true"/>
             <state name="auth pending" reserved="true"/>
             <state name="auth open" reserved="true">
                 <flag>not captured</flag>
@@ -42,13 +41,6 @@
         </events>
 
         <transitions>
-            <!-- from need auth -->
-            <transition happy="true">
-                <source>need auth</source>
-                <target>auth pending</target>
-                <event>authorize</event>
-            </transition>
-
             <!-- from auth pending -->
             <transition happy="true">
                 <source>auth pending</source>
