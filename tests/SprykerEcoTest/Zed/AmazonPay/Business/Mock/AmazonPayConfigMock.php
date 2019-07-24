@@ -58,7 +58,7 @@ class AmazonPayConfigMock extends AmazonPayConfig
             return $this->additionalConfig[AmazonPayConstants::SUCCESS_PAYMENT_URL];
         }
 
-        return parent::getCaptureNow();
+        return parent::getSuccessPaymentUrl();
     }
 
     /**
@@ -70,6 +70,6 @@ class AmazonPayConfigMock extends AmazonPayConfig
             return $this->additionalConfig[AmazonPayConstants::FAILURE_PAYMENT_URL];
         }
 
-        return parent::getCaptureNow();
+        return parent::getFailurePaymentUrl();
     }
 }
