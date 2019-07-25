@@ -14,15 +14,13 @@
             <state name="new" reserved="true"/>
             <state name="auth pending" reserved="true"/>
             <state name="auth suspended" reserved="true"/>
-            <state name="auth closed" reserved="true"/>
+            <state name="auth declined" reserved="true" />
             <state name="capture completed" reserved="true"/>
         </states>
 
         <events>
             <event name="authorize" manual="true" command="AmazonPay/AuthorizeOrder" />
             <event name="update order status" onEnter="true" />
-            <event name="suspend auth" onEnter="true" />
-            <event name="close auth" onEnter="true" />
         </events>
 
         <transitions>
@@ -43,13 +41,11 @@
             <transition condition="AmazonPay/IsAuthSuspended">
                 <source>auth pending</source>
                 <target>auth suspended</target>
-                <event>suspend auth</event>
             </transition>
 
-            <transition condition="AmazonPay/IsAuthClosed">
+            <transition condition="AmazonPay/IsAuthDeclined">
                 <source>auth pending</source>
-                <target>auth closed</target>
-                <event>close auth</event>
+                <target>auth declined</target>
             </transition>
 
         </transitions>
