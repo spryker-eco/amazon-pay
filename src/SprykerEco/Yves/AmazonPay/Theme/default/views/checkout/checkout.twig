@@ -94,7 +94,7 @@
             </div>
 
             <div class="col col--sm-12 text-right">
-                {% include atom('confirmation-button', 'AmazonPay') with {
+                {% include atom('amazon-submit-confirmation-button', 'AmazonPay') with {
                     attributes: {
                         url: data.amazonEndPoint,
                         'order-reference-id': data.amazonOrderReferenceId,
