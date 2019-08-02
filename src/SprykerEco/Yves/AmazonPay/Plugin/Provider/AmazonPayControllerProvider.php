@@ -23,8 +23,6 @@ class AmazonPayControllerProvider extends YvesControllerProvider
     public const UPDATE_SHIPMENT_METHOD = 'amazonpay_update_shipment_method';
     public const GET_SHIPMENT_METHODS = 'amazonpay_get_shipment_methods';
 
-    public const PLACE_ORDER = 'amazonpay_place_order';
-
     public const PAY_BUTTON = 'amazonpay_paybutton';
     public const CHECKOUT_WIDGET = 'amazonpay_checkout_widget';
 
@@ -60,7 +58,6 @@ class AmazonPayControllerProvider extends YvesControllerProvider
         $this->createController('/{amazonpay}/get-shipment-methods', static::GET_SHIPMENT_METHODS, static::BUNDLE_NAME, 'Payment', 'getShipmentMethods')
             ->assert('amazonpay', $allowedLocalesPattern . 'amazonpay|amazonpay')
             ->value('amazonpay', 'amazonpay');
-        $this->createPostController('/amazonpay/place-order', static::PLACE_ORDER, static::BUNDLE_NAME, 'Payment', 'placeOrder');
 
         // widgets
         $this->createController('/{amazonpay}/paybutton', static::PAY_BUTTON, static::BUNDLE_NAME, 'Widget', 'payButton')

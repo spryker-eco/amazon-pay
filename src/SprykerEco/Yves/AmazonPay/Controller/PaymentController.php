@@ -140,24 +140,22 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function placeOrderAction(Request $request): Response
+    public function confirmPurchaseAction(Request $request): Response
     {
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
-        $checkoutResponseTransfer = $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
+
+        $quoteTransfer = $this->getClient()->confirmPurchase($quoteTransfer);
 
         $this->saveQuoteIntoSession($quoteTransfer);
 
-        if (!$checkoutResponseTransfer->getIsSuccess()) {
-            $this->addAmazonPayErrorFromQuote($quoteTransfer);
-            $this->setCheckoutErrorMessages($checkoutResponseTransfer);
-
+        if  (!$quoteTransfer->getAmazonpayPayment()->getOrderReferenceStatus()->getState() === AmazonPayConfig::STATUS_OPEN) {
             return new JsonResponse([
                 'success' => false,
-            ], 404);
+            ], 400);
         }
 
         return new JsonResponse([
@@ -244,43 +242,16 @@ class PaymentController extends AbstractController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function confirmPurchaseAction(Request $request)
-    {
-        $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
-
-        if (!$this->isAmazonPayment($quoteTransfer)) {
-            $this->addAmazonPayErrorFromQuote($quoteTransfer);
-
-            return $this->buildRedirectInternalResponse();
-        }
-
-        $checkoutResponseTransfer = $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
-        $this->saveQuoteIntoSession($quoteTransfer);
-
-        if ($checkoutResponseTransfer->getIsSuccess()) {
-            return $this->redirectResponseInternal(AmazonPayControllerProvider::SUCCESS);
-        }
-
-        $this->addAmazonPayErrorFromQuote($quoteTransfer);
-        $this->setCheckoutErrorMessages($checkoutResponseTransfer);
-
-        return $this->buildRedirectInternalResponse();
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
      * @return \Spryker\Yves\Kernel\View\View|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function successAction(Request $request)
     {
         $response = $this->executeSuccessAction($request);
 
-        if (!is_array($response)) {
-            return $response;
-        }
+        $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
+
+        $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
+        $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
 
         return $this->view($response, [], '@AmazonPay/views/success/success.twig');
     }
@@ -292,9 +263,6 @@ class PaymentController extends AbstractController
      */
     protected function executeSuccessAction(Request $request)
     {
-        $this->getFactory()->getCustomerClient()->markCustomerAsDirty();
-        $this->getFactory()->getCartClient()->clearQuote();
-
         return [
             static::IS_ASYNCHRONOUS => $this->isAsynchronous(),
             static::AMAZONPAY_CONFIG => $this->getAmazonPayConfig(),
@@ -566,10 +534,10 @@ class PaymentController extends AbstractController
     protected function preparePSD2Data(QuoteTransfer $quoteTransfer): array
     {
         return [
-            static::PSD2_DATA_KEY_AJAX_ENDPOINT => $this->getApplication()->path(AmazonPayControllerProvider::PLACE_ORDER),
+            static::PSD2_DATA_KEY_AJAX_ENDPOINT => $this->getApplication()->path(AmazonPayControllerProvider::CONFIRM_PURCHASE),
             static::PSD2_DATA_KEY_SELLER_ID => $this->getAmazonPayConfig()->getSellerId(),
             static::PSD2_DATA_KEY_AMAZON_ORDER_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
-            static::PSD2_DATA_KEY_AMAZON_FAILURE_URL => $this->getAmazonPayConfig()->getFailurePaymentUrl(),
+            static::PSD2_DATA_KEY_AMAZON_FAILURE_URL => $this->getApplication()->path(AmazonPayControllerProvider::PAYMENT_FAILED),
         ];
     }
 }

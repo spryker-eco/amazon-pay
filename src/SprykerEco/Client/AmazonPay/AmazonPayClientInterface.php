@@ -46,4 +46,16 @@ interface AmazonPayClientInterface
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function addSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer);
+
+    /**
+     * Specification:
+     * - Handles sending SetOrderReference and ConfirmOrderReference requests one by one.
+     *
+     * @api
+     *
+     * @param QuoteTransfer $quoteTransfer
+     *
+     * @return QuoteTransfer
+     */
+    public function confirmPurchase(QuoteTransfer $quoteTransfer): QuoteTransfer;
 }

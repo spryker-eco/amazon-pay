@@ -23,6 +23,8 @@ use SprykerEco\Zed\AmazonPay\Business\Order\Saver;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnFactory;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\TransactionLogger;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\TransactionFactory;
+use SprykerEco\Zed\AmazonPay\Business\Payment\Writer\AmazonpayPaymentWriter;
+use SprykerEco\Zed\AmazonPay\Business\Payment\Writer\AmazonpayPaymentWriterInterface;
 use SprykerEco\Zed\AmazonPay\Business\Quote\QuoteUpdateFactory;
 
 /**
@@ -42,7 +44,8 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
             $this->createAmazonpayConverter(),
             $this->createAmazonpayTransferToEntityConverter(),
             $this->createRefundOrderModel(),
-            $this->createPaymentProcessorModel()
+            $this->createPaymentProcessorModel(),
+            $this->createAmazonPayPaymentWriter()
         );
     }
 
@@ -230,5 +233,13 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
             $this->createTransactionFactory()
                 ->createConfirmPurchaseTransaction()
         );
+    }
+
+    /**
+     * @return AmazonpayPaymentWriterInterface
+     */
+    public function createAmazonPayPaymentWriter(): AmazonpayPaymentWriterInterface
+    {
+        return new AmazonpayPaymentWriter();
     }
 }

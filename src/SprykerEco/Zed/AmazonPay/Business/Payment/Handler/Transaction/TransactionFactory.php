@@ -14,6 +14,7 @@ use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayTransferToEntityConvert
 use SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorInterface;
 use SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderInterface;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface;
+use SprykerEco\Zed\AmazonPay\Business\Payment\Writer\AmazonpayPaymentWriterInterface;
 
 class TransactionFactory implements TransactionFactoryInterface
 {
@@ -53,6 +54,11 @@ class TransactionFactory implements TransactionFactoryInterface
     protected $paymentProcessor;
 
     /**
+     * @var AmazonpayPaymentWriterInterface
+     */
+    protected $amazonpayPaymentWriter;
+
+    /**
      * @param \SprykerEco\Zed\AmazonPay\Business\Api\Adapter\AdapterFactoryInterface $adapterFactory
      * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface $config
      * @param \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\TransactionLoggerInterface $transactionLogger
@@ -60,6 +66,7 @@ class TransactionFactory implements TransactionFactoryInterface
      * @param \SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayTransferToEntityConverterInterface $toEntityConverter
      * @param \SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderInterface $refundOrderModel
      * @param \SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorInterface $paymentProcessor
+     * @param AmazonpayPaymentWriterInterface $amazonpayPaymentWriter
      */
     public function __construct(
         AdapterFactoryInterface $adapterFactory,
@@ -68,7 +75,8 @@ class TransactionFactory implements TransactionFactoryInterface
         AmazonPayConverterInterface $converter,
         AmazonPayTransferToEntityConverterInterface $toEntityConverter,
         RefundOrderInterface $refundOrderModel,
-        PaymentProcessorInterface $paymentProcessor
+        PaymentProcessorInterface $paymentProcessor,
+        AmazonpayPaymentWriterInterface $amazonpayPaymentWriter
     ) {
         $this->adapterFactory = $adapterFactory;
         $this->config = $config;
@@ -77,6 +85,7 @@ class TransactionFactory implements TransactionFactoryInterface
         $this->toEntityConverter = $toEntityConverter;
         $this->refundOrderModel = $refundOrderModel;
         $this->paymentProcessor = $paymentProcessor;
+        $this->amazonpayPaymentWriter = $amazonpayPaymentWriter;
     }
 
     /**
@@ -331,13 +340,14 @@ class TransactionFactory implements TransactionFactoryInterface
      */
     public function createConfirmPurchaseTransaction()
     {
-        return new TransactionCollection(
+        return new ConfirmPurchaseTransactionCollection(
             [
                 $this->createSetOrderReferenceTransaction(),
                 $this->createConfirmOrderReferenceTransaction(),
                 $this->createGetOrderReferenceDetailsTransaction(),
             ],
-            $this->converter
+            $this->converter,
+            $this->amazonpayPaymentWriter
         );
     }
 }

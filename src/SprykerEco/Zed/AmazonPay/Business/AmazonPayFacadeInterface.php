@@ -59,7 +59,7 @@ interface AmazonPayFacadeInterface
 
     /**
      * Specification
-     * - places an order and do necessary API calls to Amazon Pay
+     * - Sends SetOrderReference and ConfirmOrderReference requests.
      *
      * @api
      *

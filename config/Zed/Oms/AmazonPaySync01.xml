@@ -12,40 +12,18 @@
 
         <states>
             <state name="new" reserved="true"/>
-            <state name="auth pending" reserved="true"/>
-            <state name="auth suspended" reserved="true"/>
-            <state name="auth declined" reserved="true" />
             <state name="capture completed" reserved="true"/>
         </states>
 
         <events>
-            <event name="authorize" manual="true" command="AmazonPay/AuthorizeOrder" />
             <event name="update order status" onEnter="true" />
         </events>
 
         <transitions>
-            <!-- from new -->
-            <transition happy="true">
-                <source>new</source>
-                <target>auth pending</target>
-                <event>authorize</event>
-            </transition>
-
-            <!-- from auth pending -->
             <transition condition="AmazonPay/IsCaptureCompleted" happy="true">
-                <source>auth pending</source>
+                <source>new</source>
                 <target>capture completed</target>
                 <event>update order status</event>
-            </transition>
-
-            <transition condition="AmazonPay/IsAuthSuspended">
-                <source>auth pending</source>
-                <target>auth suspended</target>
-            </transition>
-
-            <transition condition="AmazonPay/IsAuthDeclined">
-                <source>auth pending</source>
-                <target>auth declined</target>
             </transition>
 
         </transitions>

@@ -31,4 +31,11 @@ interface AmazonPayStubInterface
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function addSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer);
+
+    /**
+     * @param QuoteTransfer $quoteTransfer
+     *
+     * @return QuoteTransfer
+     */
+    public function confirmPurchase(QuoteTransfer $quoteTransfer): QuoteTransfer;
 }

@@ -44,4 +44,14 @@ class GatewayController extends AbstractGatewayController
     {
         return $this->getFacade()->addSelectedShipmentMethodToQuote($quoteTransfer);
     }
+
+    /**
+     * @param QuoteTransfer $quoteTransfer
+     *
+     * @return QuoteTransfer
+     */
+    public function confirmPurchaseAction(QuoteTransfer $quoteTransfer): QuoteTransfer
+    {
+        return $this->getFacade()->confirmPurchase($quoteTransfer);
+    }
 }
