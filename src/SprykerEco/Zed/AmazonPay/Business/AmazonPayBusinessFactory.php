@@ -15,6 +15,8 @@ use SprykerEco\Zed\AmazonPay\Business\Api\Converter\ConverterFactory;
 use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayConverter;
 use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayTransferToEntityConverter;
 use SprykerEco\Zed\AmazonPay\Business\Order\AmazonpayOrderInfoHydrator;
+use SprykerEco\Zed\AmazonPay\Business\Order\OrderAuthorizer;
+use SprykerEco\Zed\AmazonPay\Business\Order\OrderAuthorizerInterface;
 use SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorModel;
 use SprykerEco\Zed\AmazonPay\Business\Order\Placement;
 use SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderModel;
@@ -23,8 +25,6 @@ use SprykerEco\Zed\AmazonPay\Business\Order\Saver;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Ipn\IpnFactory;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\Logger\TransactionLogger;
 use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\TransactionFactory;
-use SprykerEco\Zed\AmazonPay\Business\Payment\Writer\AmazonpayPaymentWriter;
-use SprykerEco\Zed\AmazonPay\Business\Payment\Writer\AmazonpayPaymentWriterInterface;
 use SprykerEco\Zed\AmazonPay\Business\Quote\QuoteUpdateFactory;
 
 /**
@@ -44,8 +44,7 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
             $this->createAmazonpayConverter(),
             $this->createAmazonpayTransferToEntityConverter(),
             $this->createRefundOrderModel(),
-            $this->createPaymentProcessorModel(),
-            $this->createAmazonPayPaymentWriter()
+            $this->createPaymentProcessorModel()
         );
     }
 
@@ -236,10 +235,13 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return AmazonpayPaymentWriterInterface
+     * @return \SprykerEco\Zed\AmazonPay\Business\Order\OrderAuthorizerInterface
      */
-    public function createAmazonPayPaymentWriter(): AmazonpayPaymentWriterInterface
+    public function createOrderAuthorizer(): OrderAuthorizerInterface
     {
-        return new AmazonpayPaymentWriter();
+        return new OrderAuthorizer(
+            $this->createAmazonpayConverter(),
+            $this->createTransactionFactory()->createAuthorizeTransaction()
+        );
     }
 }

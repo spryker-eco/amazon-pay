@@ -23,7 +23,6 @@
                            name="amazonpayShipmentMethod"
                            value="{{ shipmentMethod.idShipmentMethod }}"
                            {% if data.selectedShipmentMethodId == shipmentMethod.idShipmentMethod %} checked{% endif %}
-                           {% if data.isAmazonPaymentInvalid %} disabled{% endif %}
                     />
                     <label class="label"
                            for="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}">

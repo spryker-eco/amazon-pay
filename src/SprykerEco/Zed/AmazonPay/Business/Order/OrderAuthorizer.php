@@ -5,12 +5,13 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction;
+namespace SprykerEco\Zed\AmazonPay\Business\Order;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayConverterInterface;
+use SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface;
 
-class ConfirmPurchaseTransactionCollection extends AbstractTransactionCollection implements TransactionCollectionInterface
+class OrderAuthorizer implements OrderAuthorizerInterface
 {
     /**
      * @var \SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayConverterInterface
@@ -18,15 +19,18 @@ class ConfirmPurchaseTransactionCollection extends AbstractTransactionCollection
     protected $converter;
 
     /**
-     * @param \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface[] $transactionHandlers
-     * @param \SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayConverterInterface $converter
+     * @var \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface
      */
-    public function __construct(
-        array $transactionHandlers,
-        AmazonPayConverterInterface $converter
-    ) {
-        parent::__construct($transactionHandlers);
+    protected $transaction;
+
+    /**
+     * @param \SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayConverterInterface $converter
+     * @param \SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction\AmazonpayTransactionInterface $transaction
+     */
+    public function __construct(AmazonPayConverterInterface $converter, AmazonpayTransactionInterface $transaction)
+    {
         $this->converter = $converter;
+        $this->transaction = $transaction;
     }
 
     /**
@@ -34,10 +38,11 @@ class ConfirmPurchaseTransactionCollection extends AbstractTransactionCollection
      *
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
-    public function execute(QuoteTransfer $quoteTransfer): QuoteTransfer
+    public function authorizeOrder(QuoteTransfer $quoteTransfer): QuoteTransfer
     {
         $amazonpayCallTransfer = $this->converter->mapToAmazonpayCallTransfer($quoteTransfer);
-        $amazonpayCallTransfer = $this->executeHandlers($amazonpayCallTransfer);
+        $amazonpayCallTransfer = $this->transaction->execute($amazonpayCallTransfer);
+
         $quoteTransfer->fromArray($amazonpayCallTransfer->modifiedToArray(), true);
 
         return $quoteTransfer;

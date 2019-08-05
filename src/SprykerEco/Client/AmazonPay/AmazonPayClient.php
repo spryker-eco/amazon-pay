@@ -62,12 +62,26 @@ class AmazonPayClient extends AbstractClient implements AmazonPayClientInterface
      *
      * @api
      *
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return QuoteTransfer
+     * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function confirmPurchase(QuoteTransfer $quoteTransfer): QuoteTransfer
     {
         return $this->getFactory()->createZedStub()->confirmPurchase($quoteTransfer);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\QuoteTransfer
+     */
+    public function authorizeOrder(QuoteTransfer $quoteTransfer): QuoteTransfer
+    {
+        return $this->getFactory()->createZedStub()->authorizeOrder($quoteTransfer);
     }
 }

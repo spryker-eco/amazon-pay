@@ -22,17 +22,23 @@ class AmazonpayDataQuoteInitializer implements QuoteUpdaterInterface
      */
     public function update(QuoteTransfer $quoteTransfer)
     {
-        $quoteTransfer->getAmazonpayPayment()->setAuthorizationDetails(
-            $this->createAmazonpayAuthorizationDetailsTransfer()
-        );
+        if (!$quoteTransfer->getAmazonpayPayment()->getAuthorizationDetails()) {
+            $quoteTransfer->getAmazonpayPayment()->setAuthorizationDetails(
+                $this->createAmazonpayAuthorizationDetailsTransfer()
+            );
+        }
 
-        $quoteTransfer->getAmazonpayPayment()->setCaptureDetails(
-            $this->createAmazonpayCaptureDetailsTransfer()
-        );
+        if (!$quoteTransfer->getAmazonpayPayment()->getCaptureDetails()) {
+            $quoteTransfer->getAmazonpayPayment()->setCaptureDetails(
+                $this->createAmazonpayCaptureDetailsTransfer()
+            );
+        }
 
-        $quoteTransfer->getAmazonpayPayment()->setRefundDetails(
-            $this->createAmazonpayRefundDetailsTransfer()
-        );
+        if (!$quoteTransfer->getAmazonpayPayment()->setRefundDetails()) {
+            $quoteTransfer->getAmazonpayPayment()->setRefundDetails(
+                $this->createAmazonpayRefundDetailsTransfer()
+            );
+        }
 
         return $quoteTransfer;
     }

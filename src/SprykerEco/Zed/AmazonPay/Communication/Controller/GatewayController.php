@@ -46,12 +46,22 @@ class GatewayController extends AbstractGatewayController
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return QuoteTransfer
+     * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function confirmPurchaseAction(QuoteTransfer $quoteTransfer): QuoteTransfer
     {
         return $this->getFacade()->confirmPurchase($quoteTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\QuoteTransfer
+     */
+    public function authorizeOrderAction(QuoteTransfer $quoteTransfer): QuoteTransfer
+    {
+        return $this->getFacade()->authorizeOrder($quoteTransfer);
     }
 }

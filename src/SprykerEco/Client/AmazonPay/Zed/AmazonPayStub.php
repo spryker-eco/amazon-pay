@@ -62,14 +62,27 @@ class AmazonPayStub implements AmazonPayStubInterface
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return QuoteTransfer
+     * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function confirmPurchase(QuoteTransfer $quoteTransfer): QuoteTransfer
     {
         return $this->zedStub->call(
             '/amazon-pay/gateway/confirm-purchase',
+            $quoteTransfer
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\QuoteTransfer
+     */
+    public function authorizeOrder(QuoteTransfer $quoteTransfer): QuoteTransfer
+    {
+        return $this->zedStub->call(
+            '/amazon-pay/gateway/authorize-order',
             $quoteTransfer
         );
     }

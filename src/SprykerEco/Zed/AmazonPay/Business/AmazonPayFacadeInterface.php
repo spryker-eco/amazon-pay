@@ -136,6 +136,18 @@ interface AmazonPayFacadeInterface
     public function authorizeOrderItems(AmazonpayCallTransfer $amazonpayCallTransfer);
 
     /**
+     * Specification:
+     * - Sends Authorize api call for confirmed order.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\QuoteTransfer
+     */
+    public function authorizeOrder(QuoteTransfer $quoteTransfer): QuoteTransfer;
+
+    /**
      * @api
      *
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer

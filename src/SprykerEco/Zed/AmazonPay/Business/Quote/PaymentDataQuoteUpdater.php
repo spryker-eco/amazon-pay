@@ -20,11 +20,13 @@ class PaymentDataQuoteUpdater implements QuoteUpdaterInterface
      */
     public function update(QuoteTransfer $quoteTransfer)
     {
-        $paymentTransfer = new PaymentTransfer();
-        $paymentTransfer->setPaymentMethod(AmazonPayConfig::PROVIDER_NAME);
-        $paymentTransfer->setPaymentProvider(AmazonPayConfig::PROVIDER_NAME);
-        $paymentTransfer->setPaymentSelection(AmazonPayConfig::PROVIDER_NAME);
-        $quoteTransfer->setPayment($paymentTransfer);
+        if (!$quoteTransfer->getPayment()) {
+            $paymentTransfer = new PaymentTransfer();
+            $paymentTransfer->setPaymentMethod(AmazonPayConfig::PROVIDER_NAME);
+            $paymentTransfer->setPaymentProvider(AmazonPayConfig::PROVIDER_NAME);
+            $paymentTransfer->setPaymentSelection(AmazonPayConfig::PROVIDER_NAME);
+            $quoteTransfer->setPayment($paymentTransfer);
+        }
 
         return $quoteTransfer;
     }

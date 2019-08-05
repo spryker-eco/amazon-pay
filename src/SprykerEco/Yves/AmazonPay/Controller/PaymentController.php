@@ -140,9 +140,9 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function confirmPurchaseAction(Request $request): Response
     {
@@ -152,7 +152,7 @@ class PaymentController extends AbstractController
 
         $this->saveQuoteIntoSession($quoteTransfer);
 
-        if  (!$quoteTransfer->getAmazonpayPayment()->getOrderReferenceStatus()->getState() === AmazonPayConfig::STATUS_OPEN) {
+        if (!$quoteTransfer->getAmazonpayPayment()->getOrderReferenceStatus()->getState() === AmazonPayConfig::STATUS_OPEN) {
             return new JsonResponse([
                 'success' => false,
             ], 400);
@@ -250,8 +250,22 @@ class PaymentController extends AbstractController
 
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
-        $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
-        $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
+        $checkoutResponseTransfer = $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
+
+        $quoteTransfer = $this->getClient()->authorizeOrder($quoteTransfer);
+
+        $this->saveQuoteIntoSession($quoteTransfer);
+
+        if ($quoteTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getState()
+            !== AmazonPayConfig::STATUS_CLOSED || $checkoutResponseTransfer->getIsSuccess() === false) {
+            return $this->redirectResponseInternal(AmazonPayControllerProvider::CHECKOUT, [
+                static::URL_PARAM_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
+                static::URL_PARAM_ACCESS_TOKEN => $quoteTransfer->getAmazonpayPayment()->getAddressConsentToken(),
+            ]);
+        }
+
+        $this->getFactory()->getCustomerClient()->markCustomerAsDirty();
+        $this->getFactory()->getCartClient()->clearQuote();
 
         return $this->view($response, [], '@AmazonPay/views/success/success.twig');
     }
@@ -278,6 +292,8 @@ class PaymentController extends AbstractController
     {
         $this->getFactory()->getMessengerClient()->addErrorMessage(static::ERROR_AMAZONPAY_PAYMENT_FAILED);
 
+        $this->clearAmazonpayQuoteData();
+
         return $this->buildRedirectInternalResponse();
     }
 
@@ -289,7 +305,7 @@ class PaymentController extends AbstractController
      */
     protected function storeAmazonPaymentIntoQuote(Request $request, QuoteTransfer $quoteTransfer)
     {
-        $amazonPaymentTransfer = $this->buildAmazonPaymentTransfer($request);
+        $amazonPaymentTransfer = $this->buildAmazonPaymentTransfer($request, $quoteTransfer);
 
         $quoteTransfer->setAmazonpayPayment($amazonPaymentTransfer);
         $quoteTransfer = $this->getClient()
@@ -348,12 +364,14 @@ class PaymentController extends AbstractController
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return \Generated\Shared\Transfer\AmazonpayPaymentTransfer
      */
-    protected function buildAmazonPaymentTransfer(Request $request)
+    protected function buildAmazonPaymentTransfer(Request $request, QuoteTransfer $quoteTransfer)
     {
-        $amazonPaymentTransfer = new AmazonpayPaymentTransfer();
+        $amazonPaymentTransfer = $quoteTransfer->getAmazonpayPayment() ?: new AmazonpayPaymentTransfer();
+
         $amazonPaymentTransfer->setOrderReferenceId($request->query->get(static::URL_PARAM_REFERENCE_ID));
         $amazonPaymentTransfer->setAddressConsentToken($request->query->get(static::URL_PARAM_ACCESS_TOKEN));
 
@@ -539,5 +557,21 @@ class PaymentController extends AbstractController
             static::PSD2_DATA_KEY_AMAZON_ORDER_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
             static::PSD2_DATA_KEY_AMAZON_FAILURE_URL => $this->getApplication()->path(AmazonPayControllerProvider::PAYMENT_FAILED),
         ];
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
+     */
+    protected function clearAmazonpayQuoteData(): void
+    {
+        $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
+
+        $amazonpayPaymentTransfer = new AmazonpayPaymentTransfer();
+
+        $quoteTransfer->setAmazonpayPayment($amazonpayPaymentTransfer);
+
+        $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
     }
 }

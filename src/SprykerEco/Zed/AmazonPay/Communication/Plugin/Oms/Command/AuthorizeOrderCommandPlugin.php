@@ -47,7 +47,7 @@ class AuthorizeOrderCommandPlugin extends AbstractAmazonpayCommandPlugin
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
      * @param string $customerEmail
      *
-     * @return AmazonpayCallTransfer
+     * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
     protected function updateCallTransfer(
         AmazonpayCallTransfer $amazonpayCallTransfer,
