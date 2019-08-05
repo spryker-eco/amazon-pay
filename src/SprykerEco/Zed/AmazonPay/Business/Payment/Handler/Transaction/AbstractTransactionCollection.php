@@ -39,7 +39,7 @@ abstract class AbstractTransactionCollection
 
             if ($amazonPayCallTransfer->getAmazonpayPayment()->getResponseHeader() &&
                 !$amazonPayCallTransfer->getAmazonpayPayment()->getResponseHeader()->getIsSuccess()) {
-                break;
+                return $amazonPayCallTransfer;
             }
         }
 

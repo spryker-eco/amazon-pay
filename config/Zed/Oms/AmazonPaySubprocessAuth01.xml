@@ -15,9 +15,6 @@
                 <flag>not captured</flag>
             </state>
             <state name="auth closed"/>
-            <state name="payment method invalid">
-                <flag>not auth</flag>
-            </state>
             <state name="auth suspended" reserved="true">
                 <flag>not auth</flag>
             </state>
@@ -30,7 +27,6 @@
         </states>
 
         <events>
-            <event name="authorize" manual="true" command="AmazonPay/AuthorizeOrder" />
             <event name="update authorization status" onEnter="true" command="AmazonPay/UpdateAuthorizationStatus" />
             <event name="update suspended order" command="AmazonPay/UpdateSuspendedOrder" />
             <event name="reauthorize expired order" manual="true" command="AmazonPay/ReauthorizeExpiredOrder" />
@@ -41,16 +37,21 @@
         </events>
 
         <transitions>
+            <transition condition="AmazonPay/IsAuthPending">
+                <source>waiting for order status</source>
+                <target>auth pending</target>
+            </transition>
+
+            <transition condition="AmazonPay/IsAuthOpen" happy="true">
+                <source>waiting for order status</source>
+                <target>auth open</target>
+            </transition>
+
             <!-- from auth pending -->
-            <transition happy="true">
+            <transition>
                 <source>auth pending</source>
                 <target>waiting for auth status</target>
                 <event>update authorization status</event>
-            </transition>
-
-            <transition condition="AmazonPay/IsAuthPending">
-                <source>waiting for auth status</source>
-                <target>auth pending</target>
             </transition>
 
             <transition condition="AmazonPay/IsAuthOpen">
@@ -76,11 +77,6 @@
             <transition condition="AmazonPay/IsAuthClosed">
                 <source>waiting for auth status</source>
                 <target>auth closed</target>
-            </transition>
-
-            <transition condition="AmazonPay/IsPaymentMethodInvalid">
-                <source>waiting for auth status</source>
-                <target>payment method invalid</target>
             </transition>
 
             <transition condition="AmazonPay/IsAuthClosed">
@@ -113,7 +109,7 @@
             <!-- from auth expired -->
             <transition>
                 <source>auth expired</source>
-                <target>waiting for auth status</target>
+                <target>waiting for capture status</target>
                 <event>reauthorize expired order</event>
             </transition>
 

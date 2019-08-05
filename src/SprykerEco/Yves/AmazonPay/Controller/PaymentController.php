@@ -147,8 +147,24 @@ class PaymentController extends AbstractController
     public function confirmPurchaseAction(Request $request): Response
     {
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
-
         $quoteTransfer = $this->getClient()->confirmPurchase($quoteTransfer);
+
+        $amazonpayPaymentTransfer = $quoteTransfer->getAmazonpayPayment();
+
+
+        if (!$amazonpayPaymentTransfer->getResponseHeader()->getIsSuccess() &&
+            $amazonpayPaymentTransfer->getResponseHeader()->getConstraints()->count()) {
+
+            $this->addErrorMessage($amazonpayPaymentTransfer->getResponseHeader()->getErrorMessage());
+
+            return new JsonResponse([
+                'success' => false,
+                'url' => $this->getApplication()->url(AmazonPayControllerProvider::CHECKOUT, [
+                    static::URL_PARAM_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
+                    static::URL_PARAM_ACCESS_TOKEN => $quoteTransfer->getAmazonpayPayment()->getAddressConsentToken(),
+                ])
+            ], 302);
+        }
 
         $this->saveQuoteIntoSession($quoteTransfer);
 
@@ -256,8 +272,9 @@ class PaymentController extends AbstractController
 
         $this->saveQuoteIntoSession($quoteTransfer);
 
-        if ($quoteTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getState()
-            !== AmazonPayConfig::STATUS_CLOSED || $checkoutResponseTransfer->getIsSuccess() === false) {
+        $state = $quoteTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getState();
+
+        if (!$this->isAuthSucceeded($state) || $checkoutResponseTransfer->getIsSuccess() === false) {
             return $this->redirectResponseInternal(AmazonPayControllerProvider::CHECKOUT, [
                 static::URL_PARAM_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
                 static::URL_PARAM_ACCESS_TOKEN => $quoteTransfer->getAmazonpayPayment()->getAddressConsentToken(),
@@ -573,5 +590,18 @@ class PaymentController extends AbstractController
         $quoteTransfer->setAmazonpayPayment($amazonpayPaymentTransfer);
 
         $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
+    }
+
+    /**
+     * @param string $state
+     *
+     * @return bool
+     */
+    protected function isAuthSucceeded(string $state): bool
+    {
+        return in_array($state, [
+            AmazonPayConfig::STATUS_PENDING,
+            AmazonPayConfig::STATUS_CLOSED
+        ]);
     }
 }

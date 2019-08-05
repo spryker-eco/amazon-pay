@@ -12,6 +12,7 @@ interface ConfirmationFlow {
 }
 
 const XHR_SUCCESS_CODE = 200;
+const XHR_REDIRECT_CODE = 302;
 
 export default class AmazonSubmitConfirmationButton extends Component {
     protected button: HTMLButtonElement;
@@ -46,6 +47,13 @@ export default class AmazonSubmitConfirmationButton extends Component {
         if (this.xhr.status === XHR_SUCCESS_CODE) {
             confirmationFlow.success();
             resolve(this.xhr.response);
+
+            return;
+        }
+
+        if (this.xhr.status === XHR_REDIRECT_CODE) {
+            resolve(this.xhr.response);
+            location.href = JSON.parse(this.xhr.response).url;
 
             return;
         }
