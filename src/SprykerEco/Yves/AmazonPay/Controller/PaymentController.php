@@ -391,6 +391,11 @@ class PaymentController extends AbstractController
 
         $amazonPaymentTransfer->setOrderReferenceId($request->query->get(static::URL_PARAM_REFERENCE_ID));
         $amazonPaymentTransfer->setAddressConsentToken($request->query->get(static::URL_PARAM_ACCESS_TOKEN));
+        $amazonPaymentTransfer->setFailureMFARedirectUrl($this->getApplication()->url(AmazonPayControllerProvider::CHECKOUT, [
+            static::URL_PARAM_REFERENCE_ID => $request->query->get(static::URL_PARAM_REFERENCE_ID),
+            static::URL_PARAM_ACCESS_TOKEN => $request->query->get(static::URL_PARAM_ACCESS_TOKEN),
+        ]));
+        $amazonPaymentTransfer->setSuccessMFARedirectUrl($this->getApplication()->url(AmazonPayControllerProvider::SUCCESS));
 
         return $amazonPaymentTransfer;
     }

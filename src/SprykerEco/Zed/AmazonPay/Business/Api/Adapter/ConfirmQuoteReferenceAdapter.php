@@ -7,36 +7,10 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Api\Adapter;
 
-use AmazonPay\ClientInterface;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
-use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
-use SprykerEco\Zed\AmazonPay\Business\Api\Converter\ResponseParserConverterInterface;
-use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToMoneyInterface;
 
 class ConfirmQuoteReferenceAdapter extends AbstractAdapter
 {
-    /**
-     * @var \SprykerEco\Shared\AmazonPay\AmazonPayConfig
-     */
-    protected $sharedConfig;
-
-    /**
-     * @param \AmazonPay\ClientInterface $client
-     * @param \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ResponseParserConverterInterface $converter
-     * @param \SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToMoneyInterface $moneyFacade
-     * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfig $sharedConfig
-     */
-    public function __construct(
-        ClientInterface $client,
-        ResponseParserConverterInterface $converter,
-        AmazonPayToMoneyInterface $moneyFacade,
-        AmazonPayConfig $sharedConfig
-    ) {
-        $this->sharedConfig = $sharedConfig;
-
-        parent::__construct($client, $converter, $moneyFacade);
-    }
-
     /**
      * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonpayCallTransfer
      *
@@ -47,8 +21,8 @@ class ConfirmQuoteReferenceAdapter extends AbstractAdapter
         $result = $this->client->confirmOrderReference([
             AbstractAdapter::AMAZON_ORDER_REFERENCE_ID => $amazonpayCallTransfer->getAmazonpayPayment()->getOrderReferenceId(),
             AbstractAdapter::AMAZON_AMOUNT => $this->getAmount($amazonpayCallTransfer),
-            AbstractAdapter::AMAZON_SUCCESS_URL => $this->sharedConfig->getSuccessPaymentUrl(),
-            AbstractAdapter::AMAZON_FAILURE_URL => $this->sharedConfig->getFailurePaymentUrl(),
+            AbstractAdapter::AMAZON_SUCCESS_URL => $amazonpayCallTransfer->getAmazonpayPayment()->getSuccessMFARedirectUrl(),
+            AbstractAdapter::AMAZON_FAILURE_URL => $amazonpayCallTransfer->getAmazonpayPayment()->getFailureMFARedirectUrl(),
         ]);
 
         return $this->converter->convert($result);

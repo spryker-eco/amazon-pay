@@ -26,6 +26,11 @@ class SetOrderReferenceDetailsTransaction extends AbstractAmazonpayTransaction
                 ->getAuthorizationDetails()
                 ->getAuthorizationStatus()
                 ->getState() === AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID
+            || $amazonPayCallTransfer->getAmazonpayPayment()
+                ->getOrderReferenceStatus()
+            && $amazonPayCallTransfer->getAmazonpayPayment()
+                ->getOrderReferenceStatus()
+                ->getState() === AmazonPayConfig::STATUS_OPEN
         ) {
             return $amazonPayCallTransfer;
         }

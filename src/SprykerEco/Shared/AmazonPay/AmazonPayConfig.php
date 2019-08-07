@@ -224,20 +224,4 @@ class AmazonPayConfig extends AbstractBundleConfig implements AmazonPayConfigInt
     {
         return (bool)$this->get(AmazonPayConstants::ENABLE_ISOLATE_LEVEL_READ, false);
     }
-
-    /**
-     * @return string
-     */
-    public function getSuccessPaymentUrl(): string
-    {
-        return $this->get(AmazonPayConstants::SUCCESS_PAYMENT_URL);
-    }
-
-    /**
-     * @return string
-     */
-    public function getFailurePaymentUrl(): string
-    {
-        return $this->get(AmazonPayConstants::FAILURE_PAYMENT_URL);
-    }
 }

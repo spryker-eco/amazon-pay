@@ -75,8 +75,7 @@ class AdapterFactory implements AdapterFactoryInterface
         return new ConfirmQuoteReferenceAdapter(
             $this->createSdkAdapterFactory()->createAmazonPayClient($this->config),
             $this->converterFactory->createConfirmOrderReferenceConverter(),
-            $this->moneyFacade,
-            $this->config
+            $this->moneyFacade
         );
     }
 

@@ -78,14 +78,4 @@ interface AmazonPayConfigInterface
      * @return bool
      */
     public function getEnableIsolateLevelRead();
-
-    /**
-     * @return string
-     */
-    public function getSuccessPaymentUrl(): string;
-
-    /**
-     * @return string
-     */
-    public function getFailurePaymentUrl(): string;
 }

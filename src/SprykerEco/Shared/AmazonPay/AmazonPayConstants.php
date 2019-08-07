@@ -34,20 +34,4 @@ interface AmazonPayConstants
     public const WIDGET_BUTTON_SIZE = 'AMAZONPAY:WIDGET_BUTTON_SIZE';
 
     public const ENABLE_ISOLATE_LEVEL_READ = 'AMAZONPAY:ENABLE_ISOLATE_LEVEL_READ';
-
-    /**
-     * Specification:
-     * - Defines URL for redirecting from Amazon pages in case MFA challenge is passed.
-     *
-     * @api
-     */
-    public const SUCCESS_PAYMENT_URL = 'AMAZONPAY:SUCCESS_PAYMENT_URL';
-
-    /**
-     * Specification:
-     * - Defines URL for redirecting from Amazon pages in case MFA challenge is not passed.
-     *
-     * @api
-     */
-    public const FAILURE_PAYMENT_URL = 'AMAZONPAY:FAILURE_PAYMENT_URL';
 }

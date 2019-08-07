@@ -48,28 +48,4 @@ class AmazonPayConfigMock extends AmazonPayConfig
 
         return parent::getAuthTransactionTimeout();
     }
-
-    /**
-     * @return bool
-     */
-    public function getSuccessPaymentUrl(): string
-    {
-        if (isset($this->additionalConfig[AmazonPayConstants::SUCCESS_PAYMENT_URL])) {
-            return $this->additionalConfig[AmazonPayConstants::SUCCESS_PAYMENT_URL];
-        }
-
-        return parent::getSuccessPaymentUrl();
-    }
-
-    /**
-     * @return bool
-     */
-    public function getFailurePaymentUrl(): string
-    {
-        if (isset($this->additionalConfig[AmazonPayConstants::FAILURE_PAYMENT_URL])) {
-            return $this->additionalConfig[AmazonPayConstants::FAILURE_PAYMENT_URL];
-        }
-
-        return parent::getFailurePaymentUrl();
-    }
 }

@@ -30,6 +30,8 @@
         <property name="authorizationDetails" type="AmazonpayAuthorizationDetails"/>
         <property name="captureDetails" type="AmazonpayCaptureDetails"/>
         <property name="refundDetails" type="AmazonpayRefundDetails"/>
+        <property name="successMFARedirectUrl" type="string"/>
+        <property name="failureMFARedirectUrl" type="string"/>
     </transfer>
 
     <transfer name="AmazonpayResponse">
