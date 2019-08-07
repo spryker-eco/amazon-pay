@@ -274,6 +274,10 @@ class PaymentController extends AbstractController
 
         $state = $quoteTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getState();
 
+        if ($state === AmazonPayConfig::STATUS_TRANSACTION_TIMED_OUT || $state === AmazonPayConfig::STATUS_DECLINED) {
+            return $this->redirectResponseInternal(AmazonPayControllerProvider::PAYMENT_FAILED);
+        }
+
         if (!$this->isAuthSucceeded($state) || $checkoutResponseTransfer->getIsSuccess() === false) {
             return $this->redirectResponseInternal(AmazonPayControllerProvider::CHECKOUT, [
                 static::URL_PARAM_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
