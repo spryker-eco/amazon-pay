@@ -273,6 +273,15 @@ class PaymentController extends AbstractController
         $this->saveQuoteIntoSession($quoteTransfer);
 
         $state = $quoteTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getState();
+        $reasonCode = $quoteTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getReasonCode();
+
+        if ($state === AmazonPayConfig::STATUS_TRANSACTION_TIMED_OUT
+            && $reasonCode === AmazonPayConfig::REASON_CODE_TRANSACTION_TIMED_OUT
+            && !$this->getAmazonPayConfig()->getCaptureNow()) {
+            $quoteTransfer->getAmazonpayPayment()->setReauthorizingAsync(true);
+            $quoteTransfer = $this->getClient()->authorizeOrder($quoteTransfer);
+            $state = $quoteTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getState();
+        }
 
         if ($state === AmazonPayConfig::STATUS_TRANSACTION_TIMED_OUT || $state === AmazonPayConfig::STATUS_DECLINED) {
             return $this->redirectResponseInternal(AmazonPayControllerProvider::PAYMENT_FAILED);
@@ -609,6 +618,7 @@ class PaymentController extends AbstractController
     protected function isAuthSucceeded(string $state): bool
     {
         return in_array($state, [
+            AmazonPayConfig::STATUS_OPEN,
             AmazonPayConfig::STATUS_PENDING,
             AmazonPayConfig::STATUS_CLOSED
         ]);

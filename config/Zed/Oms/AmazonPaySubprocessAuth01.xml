@@ -79,6 +79,11 @@
                 <target>auth closed</target>
             </transition>
 
+            <transition condition="AmazonPay/IsAuthPending">
+                <source>waiting for auth status</source>
+                <target>auth pending</target>
+            </transition>
+
             <transition condition="AmazonPay/IsAuthClosed">
                 <source>waiting for capture status</source>
                 <target>auth closed</target>
