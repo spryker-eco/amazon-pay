@@ -272,6 +272,13 @@ class PaymentController extends AbstractController
 
         $checkoutResponseTransfer = $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
 
+        if (!$checkoutResponseTransfer->getIsSuccess()) {
+            return $this->redirectResponseInternal(AmazonPayControllerProvider::CHECKOUT, [
+                static::URL_PARAM_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
+                static::URL_PARAM_ACCESS_TOKEN => $quoteTransfer->getAmazonpayPayment()->getAddressConsentToken(),
+            ]);
+        }
+
         $quoteTransfer = $this->getClient()->authorizeOrder($quoteTransfer);
 
         $this->saveQuoteIntoSession($quoteTransfer);

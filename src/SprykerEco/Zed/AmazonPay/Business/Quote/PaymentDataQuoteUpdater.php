@@ -25,6 +25,7 @@ class PaymentDataQuoteUpdater implements QuoteUpdaterInterface
             $paymentTransfer->setPaymentMethod(AmazonPayConfig::PROVIDER_NAME);
             $paymentTransfer->setPaymentProvider(AmazonPayConfig::PROVIDER_NAME);
             $paymentTransfer->setPaymentSelection(AmazonPayConfig::PROVIDER_NAME);
+            $paymentTransfer->setAmount($quoteTransfer->getTotals()->getPriceToPay());
             $quoteTransfer->setPayment($paymentTransfer);
         }
 
