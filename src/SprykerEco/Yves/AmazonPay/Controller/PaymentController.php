@@ -95,6 +95,10 @@ class PaymentController extends AbstractController
             $data[static::ADDRESS_BOOK_MODE] = AmazonPayConfig::DISPLAY_MODE_READONLY;
         }
 
+        if ($quoteTransfer->getAmazonpayPayment()->getOrderReferenceStatus()) {
+            $data[static::ADDRESS_BOOK_MODE] = AmazonPayConfig::DISPLAY_MODE_READONLY;
+        }
+
         return $data;
     }
 
