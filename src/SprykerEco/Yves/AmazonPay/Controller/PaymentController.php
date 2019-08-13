@@ -270,6 +270,10 @@ class PaymentController extends AbstractController
 
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
+        if ($quoteTransfer->getTotals() === null) {
+            return $this->view($response, [], '@AmazonPay/views/success/success.twig');
+        }
+
         $checkoutResponseTransfer = $this->getFactory()->getCheckoutClient()->placeOrder($quoteTransfer);
 
         if (!$checkoutResponseTransfer->getIsSuccess()) {
