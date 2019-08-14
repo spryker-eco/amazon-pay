@@ -34,7 +34,7 @@ class AmazonpayDataQuoteInitializer implements QuoteUpdaterInterface
             );
         }
 
-        if (!$quoteTransfer->getAmazonpayPayment()->setRefundDetails()) {
+        if (!$quoteTransfer->getAmazonpayPayment()->getRefundDetails()) {
             $quoteTransfer->getAmazonpayPayment()->setRefundDetails(
                 $this->createAmazonpayRefundDetailsTransfer()
             );

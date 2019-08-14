@@ -69,6 +69,9 @@ class AmazonpayFacadeHandleCartWithAmazonpayTest extends AmazonpayFacadeAbstract
         $this->assertNotEmpty(
             $resultTransfer->getAmazonpayPayment()->getCaptureDetails()->getCaptureStatus()
         );
+        $this->assertNotEmpty(
+            $resultTransfer->getAmazonpayPayment()->getRefundDetails()->getRefundStatus()
+        );
         $this->assertEquals(
             $resultTransfer->getPayment()->getPaymentMethod(),
             AmazonPayConfig::PROVIDER_NAME
