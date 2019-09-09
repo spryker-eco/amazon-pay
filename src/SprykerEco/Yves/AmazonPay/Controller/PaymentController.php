@@ -155,10 +155,8 @@ class PaymentController extends AbstractController
 
         $amazonpayPaymentTransfer = $quoteTransfer->getAmazonpayPayment();
 
-
         if (!$amazonpayPaymentTransfer->getResponseHeader()->getIsSuccess() &&
             $amazonpayPaymentTransfer->getResponseHeader()->getConstraints()->count()) {
-
             $this->addErrorMessage($amazonpayPaymentTransfer->getResponseHeader()->getErrorMessage());
 
             return new JsonResponse([
@@ -166,7 +164,7 @@ class PaymentController extends AbstractController
                 'url' => $this->getApplication()->url(AmazonPayControllerProvider::CHECKOUT, [
                     static::URL_PARAM_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
                     static::URL_PARAM_ACCESS_TOKEN => $quoteTransfer->getAmazonpayPayment()->getAddressConsentToken(),
-                ])
+                ]),
             ], 302);
         }
 
@@ -635,7 +633,7 @@ class PaymentController extends AbstractController
         return in_array($state, [
             AmazonPayConfig::STATUS_OPEN,
             AmazonPayConfig::STATUS_PENDING,
-            AmazonPayConfig::STATUS_CLOSED
+            AmazonPayConfig::STATUS_CLOSED,
         ]);
     }
 }
