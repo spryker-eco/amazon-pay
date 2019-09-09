@@ -21,6 +21,8 @@ class AuthorizeAdapter extends AbstractAdapter
     public const TRANSACTION_TIMEOUT = 'transaction_timeout';
     public const CAPTURE_NOW = 'capture_now';
 
+    protected const REAUTHORIZING_ASYNC_TRANSACTION_TIMEOUT = 1440;
+
     /**
      * @var bool
      */
@@ -82,18 +84,22 @@ class AuthorizeAdapter extends AbstractAdapter
      *
      * @return array
      */
-    protected function getRequestArray(AmazonpayPaymentTransfer $amazonpayPaymentTransfer, $amount)
+    protected function getRequestArray(AmazonpayPaymentTransfer $amazonpayPaymentTransfer, $amount): array
     {
+        $authorizationReferenceId = $amazonpayPaymentTransfer
+            ->getAuthorizationDetails()
+            ->getAuthorizationReferenceId();
+        $transactionTimeout = $amazonpayPaymentTransfer->getIsReauthorizingAsync()
+            ? static::REAUTHORIZING_ASYNC_TRANSACTION_TIMEOUT
+            : $this->transactionTimeout;
+
+
         return [
             static::AMAZON_ORDER_REFERENCE_ID => $amazonpayPaymentTransfer->getOrderReferenceId(),
             static::AUTHORIZATION_AMOUNT => $amount,
-            static::AUTHORIZATION_REFERENCE_ID => $amazonpayPaymentTransfer
-                    ->getAuthorizationDetails()
-                    ->getAuthorizationReferenceId(),
-            static::TRANSACTION_TIMEOUT => $amazonpayPaymentTransfer->getReauthorizingAsync() ? 1440 : $this->transactionTimeout,
+            static::AUTHORIZATION_REFERENCE_ID => $authorizationReferenceId,
+            static::TRANSACTION_TIMEOUT => $transactionTimeout,
             static::CAPTURE_NOW => $this->captureNow,
         ];
-
-        return $requestArray;
     }
 }

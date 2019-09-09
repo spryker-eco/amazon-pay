@@ -122,9 +122,9 @@ class PaymentController extends AbstractController
                 $request->request->get(static::URL_PARAM_REFERENCE_ID)
             );
 
-        $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
+        $this->saveQuote($quoteTransfer);
 
-        return new JsonResponse([static::SUCCESS => true]);
+        return $this->createJsonResponse([static::SUCCESS => true]);
     }
 
     /**
@@ -155,30 +155,28 @@ class PaymentController extends AbstractController
 
         $amazonpayPaymentTransfer = $quoteTransfer->getAmazonpayPayment();
 
-        if (!$amazonpayPaymentTransfer->getResponseHeader()->getIsSuccess() &&
-            $amazonpayPaymentTransfer->getResponseHeader()->getConstraints()->count()) {
+        if (!$amazonpayPaymentTransfer->getResponseHeader()->getIsSuccess()
+            && $amazonpayPaymentTransfer->getResponseHeader()->getConstraints()->count()
+        ) {
             $this->addErrorMessage($amazonpayPaymentTransfer->getResponseHeader()->getErrorMessage());
-
-            return new JsonResponse([
-                'success' => false,
+            $payload = [
+                static::SUCCESS => false,
                 'url' => $this->getApplication()->url(AmazonPayControllerProvider::CHECKOUT, [
                     static::URL_PARAM_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
                     static::URL_PARAM_ACCESS_TOKEN => $quoteTransfer->getAmazonpayPayment()->getAddressConsentToken(),
                 ]),
-            ], 302);
+            ];
+
+            return $this->createJsonResponse($payload, 302);
         }
 
-        $this->saveQuoteIntoSession($quoteTransfer);
+        $this->saveQuote($quoteTransfer);
 
-        if (!$quoteTransfer->getAmazonpayPayment()->getOrderReferenceStatus()->getState() === AmazonPayConfig::STATUS_OPEN) {
-            return new JsonResponse([
-                'success' => false,
-            ], 400);
+        if (!$this->isOrderStatusOpen($quoteTransfer)) {
+            return $this->createJsonResponse([static::SUCCESS => false], 400);
         }
 
-        return new JsonResponse([
-            'success' => true,
-        ]);
+        return $this->createJsonResponse([static::SUCCESS => true]);
     }
 
     /**
@@ -200,7 +198,7 @@ class PaymentController extends AbstractController
 
         $quoteTransfer = $this->getClient()
             ->addSelectedAddressToQuote($quoteTransfer);
-        $this->saveQuoteIntoSession($quoteTransfer);
+        $this->saveQuote($quoteTransfer);
         $shipmentMethods = $this->getFactory()
             ->getShipmentClient()
             ->getAvailableMethods($quoteTransfer);
@@ -250,7 +248,7 @@ class PaymentController extends AbstractController
             ->addSelectedShipmentMethodToQuote($quoteTransfer);
         $quoteTransfer = $this->getFactory()
             ->getCalculationClient()->recalculate($quoteTransfer);
-        $this->saveQuoteIntoSession($quoteTransfer);
+        $this->saveQuote($quoteTransfer);
 
         return [
             static::QUOTE_TRANSFER => $quoteTransfer,
@@ -283,15 +281,16 @@ class PaymentController extends AbstractController
 
         $quoteTransfer = $this->getClient()->authorizeOrder($quoteTransfer);
 
-        $this->saveQuoteIntoSession($quoteTransfer);
+        $this->saveQuote($quoteTransfer);
 
         $state = $quoteTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getState();
         $reasonCode = $quoteTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getReasonCode();
 
         if ($state === AmazonPayConfig::STATUS_TRANSACTION_TIMED_OUT
             && $reasonCode === AmazonPayConfig::REASON_CODE_TRANSACTION_TIMED_OUT
-            && !$this->getAmazonPayConfig()->getCaptureNow()) {
-            $quoteTransfer->getAmazonpayPayment()->setReauthorizingAsync(true);
+            && !$this->getAmazonPayConfig()->getCaptureNow()
+        ) {
+            $quoteTransfer->getAmazonpayPayment()->setIsReauthorizingAsync(true);
             $quoteTransfer = $this->getClient()->authorizeOrder($quoteTransfer);
             $state = $quoteTransfer->getAmazonpayPayment()->getAuthorizationDetails()->getAuthorizationStatus()->getState();
         }
@@ -353,7 +352,7 @@ class PaymentController extends AbstractController
         $quoteTransfer->setAmazonpayPayment($amazonPaymentTransfer);
         $quoteTransfer = $this->getClient()
             ->handleCartWithAmazonPay($quoteTransfer);
-        $this->saveQuoteIntoSession($quoteTransfer);
+        $this->saveQuote($quoteTransfer);
     }
 
     /**
@@ -361,7 +360,7 @@ class PaymentController extends AbstractController
      *
      * @return void
      */
-    protected function saveQuoteIntoSession(QuoteTransfer $quoteTransfer)
+    protected function saveQuote(QuoteTransfer $quoteTransfer)
     {
         $this->getFactory()
             ->getQuoteClient()
@@ -635,5 +634,26 @@ class PaymentController extends AbstractController
             AmazonPayConfig::STATUS_PENDING,
             AmazonPayConfig::STATUS_CLOSED,
         ]);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return bool
+     */
+    protected function isOrderStatusOpen(QuoteTransfer $quoteTransfer): bool
+    {
+        return $quoteTransfer->getAmazonpayPayment()->getOrderReferenceStatus()->getState() === AmazonPayConfig::STATUS_OPEN;
+    }
+
+    /**
+     * @param array $payload
+     * @param int $statusCode
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    protected function createJsonResponse(array $payload, int $statusCode = 200): JsonResponse
+    {
+        return new JsonResponse($payload, $statusCode);
     }
 }

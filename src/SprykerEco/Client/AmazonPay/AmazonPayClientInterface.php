@@ -13,7 +13,7 @@ interface AmazonPayClientInterface
 {
     /**
      * Specification:
-     *  - Set initial order data to quote
+     *  - Sets initial order data to quote
      *
      * @api
      *
@@ -61,7 +61,7 @@ interface AmazonPayClientInterface
 
     /**
      * Specification:
-     * - Handle sending Authorize request.
+     * - Handles sending Authorize request.
      *
      * @api
      *
