@@ -35,7 +35,7 @@ export default class AmazonOrderSubmitter extends Component {
     }
 
     protected placeOrder<T = string>(confirmationFlow: ConfirmationFlow): void {
-        new Promise<T>((resolve, reject) => {
+        new Promise<T>((resolve: Function, reject: Function) => {
             this.xhr.open('POST', this.url);
             this.xhr.addEventListener('load', (event: Event) => this.onRequestLoad(resolve, reject, confirmationFlow));
             this.xhr.addEventListener('error', (event: Event) => this.onRequestError(reject, confirmationFlow));
@@ -43,7 +43,7 @@ export default class AmazonOrderSubmitter extends Component {
         });
     }
 
-    protected onRequestLoad(resolve, reject, confirmationFlow: ConfirmationFlow): void {
+    protected onRequestLoad(resolve: Function, reject: Function, confirmationFlow: ConfirmationFlow): void {
         if (this.xhr.status === XHR_SUCCESS_CODE) {
             confirmationFlow.success();
             resolve(this.xhr.response);
@@ -61,7 +61,7 @@ export default class AmazonOrderSubmitter extends Component {
         this.onRequestError(reject, confirmationFlow);
     }
 
-    protected onRequestError(reject, confirmationFlow: ConfirmationFlow): void {
+    protected onRequestError(reject: Function, confirmationFlow: ConfirmationFlow): void {
         confirmationFlow.error();
         reject(new Error(`${this.url} request aborted with ${this.xhr.status}`));
         location.href = this.paymentFailedUrl;
