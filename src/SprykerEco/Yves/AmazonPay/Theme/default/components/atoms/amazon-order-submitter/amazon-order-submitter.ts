@@ -14,7 +14,7 @@ interface ConfirmationFlow {
 const XHR_SUCCESS_CODE = 200;
 const XHR_REDIRECT_CODE = 302;
 
-export default class AmazonSubmitConfirmationButton extends Component {
+export default class AmazonOrderSubmitter extends Component {
     protected button: HTMLButtonElement;
     protected xhr: XMLHttpRequest;
 
@@ -25,8 +25,8 @@ export default class AmazonSubmitConfirmationButton extends Component {
 
     protected readyCallback(): void {}
 
-    mountCallback(): void {
-        this.button = this.querySelector(`.${this.jsName}__button`);
+    protected init(): void {
+        this.button = <HTMLButtonElement>this.getElementsByClassName(`${this.jsName}__button`)[0];
         this.mapEvents();
     }
 
@@ -72,7 +72,6 @@ export default class AmazonSubmitConfirmationButton extends Component {
         window.OffAmazonPayments.initConfirmationFlow(this.sellerId, this.orderReferenceId, confirmationFlow => {
             this.placeOrder(confirmationFlow);
         });
-
     }
 
     protected get url(): string {
@@ -90,5 +89,4 @@ export default class AmazonSubmitConfirmationButton extends Component {
     protected get paymentFailedUrl(): string {
         return this.getAttribute('payment-failed-url');
     }
-
 }
