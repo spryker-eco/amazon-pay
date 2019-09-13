@@ -93,7 +93,6 @@ class AuthorizeAdapter extends AbstractAdapter
             ? static::REAUTHORIZING_ASYNC_TRANSACTION_TIMEOUT
             : $this->transactionTimeout;
 
-
         return [
             static::AMAZON_ORDER_REFERENCE_ID => $amazonpayPaymentTransfer->getOrderReferenceId(),
             static::AUTHORIZATION_AMOUNT => $amount,

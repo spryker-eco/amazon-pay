@@ -597,8 +597,6 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
      * @return void
      */
     protected function clearAmazonpayQuoteData(): void
@@ -656,7 +654,7 @@ class PaymentController extends AbstractController
     {
         return in_array($amazonpayStatusTransfer->getState(), [
             AmazonPayConfig::STATUS_TRANSACTION_TIMED_OUT,
-            AmazonPayConfig::STATUS_DECLINED
+            AmazonPayConfig::STATUS_DECLINED,
         ]);
     }
 
