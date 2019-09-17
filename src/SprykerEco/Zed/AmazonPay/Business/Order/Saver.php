@@ -109,6 +109,6 @@ class Saver implements SaverInterface
             return AmazonPayConfig::STATUS_COMPLETED;
         }
 
-        return $paymentTransfer->getAuthorizationDetails()->getAuthorizationStatus()->getState();
+        return $paymentTransfer->getOrderReferenceStatus()->getState();
     }
 }

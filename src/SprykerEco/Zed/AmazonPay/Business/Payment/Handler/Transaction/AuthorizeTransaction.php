@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\AmazonPay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
+use Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 class AuthorizeTransaction extends AbstractAmazonpayTransaction
@@ -63,6 +64,9 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
     protected function updatePaymentEntity(AmazonpayCallTransfer $amazonPayCallTransfer)
     {
         if (!$this->isPaymentSuccess($amazonPayCallTransfer)) {
+            $this->paymentEntity->setStatus(AmazonPayConfig::STATUS_DECLINED);
+            $this->paymentEntity->save();
+
             return;
         }
 
@@ -72,11 +76,9 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
             $this->paymentEntity = $this->paymentProcessor->duplicatePaymentEntity($this->paymentEntity);
         }
 
-        $statusDetails = $amazonPayCallTransfer->getAmazonpayPayment()
-            ->getAuthorizationDetails()
-            ->getAuthorizationStatus();
+        $authorizationDetails = $amazonPayCallTransfer->getAmazonpayPayment()->getAuthorizationDetails();
 
-        if ($this->isStateDeclined($statusDetails->getState())) {
+        if ($this->isStateDeclined($authorizationDetails->getAuthorizationStatus()->getState())) {
             $amazonPayCallTransfer->getAmazonpayPayment()->getResponseHeader()
                 ->setIsSuccess(false)
                 ->setIsInvalidPaymentMethod($this->isInvalidPaymentMethod($amazonPayCallTransfer))
@@ -84,7 +86,9 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
         }
 
         if ($this->paymentEntity !== null) {
-            $this->paymentEntity->setStatus($statusDetails->getState());
+            $this->paymentEntity->setStatus($authorizationDetails->getAuthorizationStatus()->getState());
+            $this->paymentEntity->setAuthorizationReferenceId($authorizationDetails->getAuthorizationReferenceId());
+            $this->paymentEntity->setAmazonAuthorizationId($authorizationDetails->getAmazonAuthorizationId());
             $this->paymentEntity->save();
         }
 
@@ -111,6 +115,17 @@ class AuthorizeTransaction extends AbstractAmazonpayTransaction
             AmazonPayConfig::STATUS_EXPIRED,
             AmazonPayConfig::STATUS_PAYMENT_METHOD_INVALID,
         ], true);
+    }
+
+    /**
+     * @param \Orm\Zed\AmazonPay\Persistence\SpyPaymentAmazonpay $paymentAmazonPayEntity
+     * @param \Generated\Shared\Transfer\AmazonpayCallTransfer $amazonPayCallTransfer
+     *
+     * @return bool
+     */
+    protected function isPartialProcessing(SpyPaymentAmazonpay $paymentAmazonPayEntity, AmazonpayCallTransfer $amazonPayCallTransfer): bool
+    {
+        return false;
     }
 
     /**

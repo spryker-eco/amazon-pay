@@ -107,6 +107,7 @@ class PaymentProcessorModel implements PaymentProcessorInterface
             $paymentEntity = $this->queryContainer->queryPaymentBySalesOrderItemId(
                 $amazonPayCallTransfer->getItems()[0]->getIdSalesOrderItem()
             )
+                ->lastCreatedFirst()
                 ->findOne();
         }
 
@@ -114,6 +115,7 @@ class PaymentProcessorModel implements PaymentProcessorInterface
             $paymentEntity = $this->queryContainer->queryPaymentByOrderReferenceId(
                 $amazonPayCallTransfer->getAmazonpayPayment()->getOrderReferenceId()
             )
+                ->lastCreatedFirst()
                 ->findOne();
         }
 

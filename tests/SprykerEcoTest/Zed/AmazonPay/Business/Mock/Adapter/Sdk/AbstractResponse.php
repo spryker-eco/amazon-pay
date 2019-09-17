@@ -7,7 +7,7 @@
 
 namespace SprykerEcoTest\Zed\AmazonPay\Business\Mock\Adapter\Sdk;
 
-use PayWithAmazon\ResponseParser;
+use AmazonPay\ResponseParser;
 use SprykerEco\Zed\AmazonPay\Business\Api\Adapter\AuthorizeAdapter;
 
 class AbstractResponse
@@ -18,7 +18,7 @@ class AbstractResponse
     protected $responseData;
 
     /**
-     * @var \PayWithAmazon\ResponseParser $responseParser
+     * @var \AmazonPay\ResponseParser $responseParser
      */
     protected $responseParser;
 
@@ -57,7 +57,7 @@ class AbstractResponse
     }
 
     /**
-     * @return \PayWithAmazon\ResponseParser
+     * @return \AmazonPay\ResponseParser
      */
     public function convertToResponseParser()
     {

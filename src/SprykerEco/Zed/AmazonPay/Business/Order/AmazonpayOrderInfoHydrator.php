@@ -34,6 +34,7 @@ class AmazonpayOrderInfoHydrator implements AmazonpayOrderInfoHydratorInterface
     public function hydrateOrderInfo(OrderTransfer $orderTransfer)
     {
         $orderTransfer->setAmazonpayOrderInfo($this->getAmazonpayOrderInfo($orderTransfer));
+
         return $orderTransfer;
     }
 
@@ -48,6 +49,7 @@ class AmazonpayOrderInfoHydrator implements AmazonpayOrderInfoHydratorInterface
             ->findOne();
         $amazonpayOrderInfo = new AmazonpayOrderInfoTransfer();
         $amazonpayOrderInfo->fromArray($payment->toArray(), true);
+
         return $amazonpayOrderInfo;
     }
 }

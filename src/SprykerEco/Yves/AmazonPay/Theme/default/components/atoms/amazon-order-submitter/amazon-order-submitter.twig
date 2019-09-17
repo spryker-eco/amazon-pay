@@ -1,0 +1,19 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'amazon-order-submitter',
+    tag: 'amazon-order-submitter',
+} %}
+
+{% define attributes = {
+    url: required,
+    'order-reference-id': required,
+    'seller-id': required,
+    'payment-failed-url': required,
+} %}
+
+{% block body %}
+    <button class="{{ config.jsName }}__button button button--success">
+        {{ 'checkout.step.place.order' | trans }}
+    </button>
+{% endblock %}

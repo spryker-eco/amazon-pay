@@ -30,6 +30,9 @@
         <property name="authorizationDetails" type="AmazonpayAuthorizationDetails"/>
         <property name="captureDetails" type="AmazonpayCaptureDetails"/>
         <property name="refundDetails" type="AmazonpayRefundDetails"/>
+        <property name="successMFARedirectUrl" type="string"/>
+        <property name="failureMFARedirectUrl" type="string"/>
+        <property name="isReauthorizingAsync" type="bool"/>
     </transfer>
 
     <transfer name="AmazonpayResponse">

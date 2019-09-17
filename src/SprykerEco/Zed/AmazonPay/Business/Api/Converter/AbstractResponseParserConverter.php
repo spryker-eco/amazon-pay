@@ -7,12 +7,12 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Api\Converter;
 
+use AmazonPay\ResponseInterface;
 use ArrayObject;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseConstraintTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseTransfer;
-use PayWithAmazon\ResponseInterface;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
 
 abstract class AbstractResponseParserConverter extends AbstractConverter implements ResponseParserConverterInterface
@@ -88,7 +88,7 @@ abstract class AbstractResponseParserConverter extends AbstractConverter impleme
     }
 
     /**
-     * @param \PayWithAmazon\ResponseInterface $responseParser
+     * @param \AmazonPay\ResponseInterface $responseParser
      *
      * @return \Generated\Shared\Transfer\AmazonpayResponseTransfer
      */

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <statemachine
-    xmlns="spryker:oms-01"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
 
     <process name="AmazonPaySync01" main="true">
         <subprocesses>
@@ -12,18 +12,23 @@
 
         <states>
             <state name="new" reserved="true"/>
+            <state name="payment method changed" reserved="true"/>
             <state name="capture completed" reserved="true"/>
         </states>
 
         <events>
-            <event name="update order status" onEnter="true" />
+            <event name="cancel" onEnter="true" command="AmazonPay/CancelOrder" />
         </events>
 
         <transitions>
             <transition condition="AmazonPay/IsCaptureCompleted" happy="true">
                 <source>new</source>
                 <target>capture completed</target>
-                <event>update order status</event>
+            </transition>
+
+            <transition condition="AmazonPay/IsPaymentMethodChanged">
+                <source>new</source>
+                <target>payment method changed</target>
             </transition>
 
         </transitions>

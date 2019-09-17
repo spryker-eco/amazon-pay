@@ -63,6 +63,7 @@ interface AmazonPayConfigInterface
      * @return int
      */
     public function getAuthTransactionTimeout();
+
     /**
      * @return string
      */

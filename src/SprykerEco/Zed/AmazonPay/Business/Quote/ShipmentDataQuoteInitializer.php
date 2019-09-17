@@ -19,8 +19,10 @@ class ShipmentDataQuoteInitializer implements QuoteUpdaterInterface
      */
     public function update(QuoteTransfer $quoteTransfer)
     {
-        $shipmentTransfer = new ShipmentTransfer();
-        $quoteTransfer->setShipment($shipmentTransfer);
+        if (!$quoteTransfer->getShipment()) {
+            $shipmentTransfer = new ShipmentTransfer();
+            $quoteTransfer->setShipment($shipmentTransfer);
+        }
 
         return $quoteTransfer;
     }

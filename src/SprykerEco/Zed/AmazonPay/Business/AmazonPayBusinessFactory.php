@@ -15,6 +15,8 @@ use SprykerEco\Zed\AmazonPay\Business\Api\Converter\ConverterFactory;
 use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayConverter;
 use SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayTransferToEntityConverter;
 use SprykerEco\Zed\AmazonPay\Business\Order\AmazonpayOrderInfoHydrator;
+use SprykerEco\Zed\AmazonPay\Business\Order\OrderAuthorizer;
+use SprykerEco\Zed\AmazonPay\Business\Order\OrderAuthorizerInterface;
 use SprykerEco\Zed\AmazonPay\Business\Order\PaymentProcessorModel;
 use SprykerEco\Zed\AmazonPay\Business\Order\Placement;
 use SprykerEco\Zed\AmazonPay\Business\Order\RefundOrderModel;
@@ -168,7 +170,7 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\AmazonPay\Business\Converter\AmazonPayConverterInterface
      */
-    protected function createAmazonpayConverter()
+    public function createAmazonpayConverter()
     {
         return new AmazonPayConverter();
     }
@@ -229,6 +231,17 @@ class AmazonPayBusinessFactory extends AbstractBusinessFactory
         return new Placement(
             $this->createTransactionFactory()
                 ->createConfirmPurchaseTransaction()
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AmazonPay\Business\Order\OrderAuthorizerInterface
+     */
+    public function createOrderAuthorizer(): OrderAuthorizerInterface
+    {
+        return new OrderAuthorizer(
+            $this->createAmazonpayConverter(),
+            $this->createTransactionFactory()->createAuthorizeTransaction()
         );
     }
 }

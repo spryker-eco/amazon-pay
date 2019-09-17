@@ -14,6 +14,7 @@ use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToCartBridge;
 use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToCheckoutBridge;
 use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToCustomerBridge;
 use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToGlossaryStorageBridge;
+use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToMessengerClientBridge;
 use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToQuoteBridge;
 use SprykerEco\Yves\AmazonPay\Dependency\Client\AmazonPayToShipmentBridge;
 
@@ -26,6 +27,7 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
     public const CLIENT_CUSTOMER = 'customer client';
     public const CLIENT_CALCULATION = 'calculation client';
     public const CLIENT_GLOSSARY_STORAGE = 'glossary storage client';
+    public const CLIENT_MESSENGER = 'CLIENT_MESSENGER';
     public const PLUGIN_CHECKOUT_BREADCRUMB = 'plugin checkout breadcrumb';
 
     /**
@@ -42,6 +44,8 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
         $this->addCalculationClient($container);
         $this->addCustomerClient($container);
         $this->addGlossaryStorageClient($container);
+
+        $container = $this->addMessengerClient($container);
 
         return $container;
     }
@@ -128,5 +132,19 @@ class AmazonPayDependencyProvider extends AbstractBundleDependencyProvider
         $container[static::CLIENT_GLOSSARY_STORAGE] = function () use ($container) {
             return new AmazonPayToGlossaryStorageBridge($container->getLocator()->glossaryStorage()->client());
         };
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addMessengerClient(Container $container): Container
+    {
+        $container->set(static::CLIENT_MESSENGER, function (Container $container) {
+            return new AmazonPayToMessengerClientBridge($container->getLocator()->messenger()->client());
+        });
+
+        return $container;
     }
 }

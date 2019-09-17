@@ -14,7 +14,7 @@ interface AmazonPaySdkAdapterFactoryInterface
     /**
      * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface $config
      *
-     * @return \PayWithAmazon\Client
+     * @return \AmazonPay\Client
      */
     public function createAmazonPayClient(AmazonPayConfigInterface $config);
 
@@ -22,7 +22,7 @@ interface AmazonPaySdkAdapterFactoryInterface
      * @param array $headers
      * @param string $body
      *
-     * @return \PayWithAmazon\IpnHandler
+     * @return \AmazonPay\IpnHandler
      */
     public function createAmazonPayIpnHandler(array $headers, $body);
 }

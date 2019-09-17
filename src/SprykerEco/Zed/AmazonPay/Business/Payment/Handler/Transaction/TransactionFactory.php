@@ -331,13 +331,11 @@ class TransactionFactory implements TransactionFactoryInterface
      */
     public function createConfirmPurchaseTransaction()
     {
-        return new TransactionCollection(
+        return new ConfirmPurchaseTransactionCollection(
             [
                 $this->createSetOrderReferenceTransaction(),
                 $this->createConfirmOrderReferenceTransaction(),
                 $this->createGetOrderReferenceDetailsTransaction(),
-                $this->createAuthorizeTransaction(),
-                $this->createHandleDeclinedOrderTransaction(),
             ],
             $this->converter
         );

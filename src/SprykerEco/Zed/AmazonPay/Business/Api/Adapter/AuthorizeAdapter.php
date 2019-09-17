@@ -7,9 +7,9 @@
 
 namespace SprykerEco\Zed\AmazonPay\Business\Api\Adapter;
 
+use AmazonPay\ClientInterface;
 use Generated\Shared\Transfer\AmazonpayCallTransfer;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
-use PayWithAmazon\ClientInterface;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface;
 use SprykerEco\Zed\AmazonPay\Business\Api\Converter\ResponseParserConverterInterface;
 use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToMoneyInterface;
@@ -20,6 +20,8 @@ class AuthorizeAdapter extends AbstractAdapter
     public const AUTHORIZATION_REFERENCE_ID = 'authorization_reference_id';
     public const TRANSACTION_TIMEOUT = 'transaction_timeout';
     public const CAPTURE_NOW = 'capture_now';
+
+    protected const REAUTHORIZING_ASYNC_TRANSACTION_TIMEOUT = 1440;
 
     /**
      * @var bool
@@ -32,7 +34,7 @@ class AuthorizeAdapter extends AbstractAdapter
     protected $transactionTimeout;
 
     /**
-     * @param \PayWithAmazon\ClientInterface $client
+     * @param \AmazonPay\ClientInterface $client
      * @param \SprykerEco\Zed\AmazonPay\Business\Api\Converter\ResponseParserConverterInterface $converter
      * @param \SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToMoneyInterface $moneyFacade
      * @param \SprykerEco\Shared\AmazonPay\AmazonPayConfigInterface $config
@@ -82,15 +84,20 @@ class AuthorizeAdapter extends AbstractAdapter
      *
      * @return array
      */
-    protected function getRequestArray(AmazonpayPaymentTransfer $amazonpayPaymentTransfer, $amount)
+    protected function getRequestArray(AmazonpayPaymentTransfer $amazonpayPaymentTransfer, $amount): array
     {
+        $authorizationReferenceId = $amazonpayPaymentTransfer
+            ->getAuthorizationDetails()
+            ->getAuthorizationReferenceId();
+        $transactionTimeout = $amazonpayPaymentTransfer->getIsReauthorizingAsync()
+            ? static::REAUTHORIZING_ASYNC_TRANSACTION_TIMEOUT
+            : $this->transactionTimeout;
+
         return [
             static::AMAZON_ORDER_REFERENCE_ID => $amazonpayPaymentTransfer->getOrderReferenceId(),
             static::AUTHORIZATION_AMOUNT => $amount,
-            static::AUTHORIZATION_REFERENCE_ID => $amazonpayPaymentTransfer
-                    ->getAuthorizationDetails()
-                    ->getAuthorizationReferenceId(),
-            static::TRANSACTION_TIMEOUT => $this->transactionTimeout,
+            static::AUTHORIZATION_REFERENCE_ID => $authorizationReferenceId,
+            static::TRANSACTION_TIMEOUT => $transactionTimeout,
             static::CAPTURE_NOW => $this->captureNow,
         ];
     }

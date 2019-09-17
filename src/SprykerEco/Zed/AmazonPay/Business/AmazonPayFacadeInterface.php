@@ -59,7 +59,7 @@ interface AmazonPayFacadeInterface
 
     /**
      * Specification
-     * - places an order and do necessary API calls to Amazon Pay
+     * - Sends SetOrderReference and ConfirmOrderReference requests.
      *
      * @api
      *
@@ -80,6 +80,7 @@ interface AmazonPayFacadeInterface
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
     public function captureOrder(AmazonpayCallTransfer $amazonpayCallTransfer);
+
     /**
      * Specification
      * - send an API call to Amazon that order is closed
@@ -133,6 +134,18 @@ interface AmazonPayFacadeInterface
      * @return \Generated\Shared\Transfer\AmazonpayCallTransfer
      */
     public function authorizeOrderItems(AmazonpayCallTransfer $amazonpayCallTransfer);
+
+    /**
+     * Specification:
+     * - Sends Authorize api call for confirmed order.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\QuoteTransfer
+     */
+    public function authorizeOrder(QuoteTransfer $quoteTransfer): QuoteTransfer;
 
     /**
      * @api

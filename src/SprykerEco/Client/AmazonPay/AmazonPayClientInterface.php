@@ -13,7 +13,7 @@ interface AmazonPayClientInterface
 {
     /**
      * Specification:
-     *  - Set initial order data to quote
+     *  - Sets initial order data to quote
      *
      * @api
      *
@@ -46,4 +46,28 @@ interface AmazonPayClientInterface
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function addSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer);
+
+    /**
+     * Specification:
+     * - Handles sending SetOrderReference and ConfirmOrderReference requests one by one.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\QuoteTransfer
+     */
+    public function confirmPurchase(QuoteTransfer $quoteTransfer): QuoteTransfer;
+
+    /**
+     * Specification:
+     * - Handles sending Authorize request.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\QuoteTransfer
+     */
+    public function authorizeOrder(QuoteTransfer $quoteTransfer): QuoteTransfer;
 }
