@@ -7,6 +7,7 @@
     }
   },
   "require": {
+    "php": ">=7.2",
     "amzn/amazon-pay-sdk-php": "^3.0.0",
     "spryker/calculation": "^4.0.0",
     "spryker/cart": "^5.0.0 || ^7.0.0",
@@ -19,7 +20,7 @@
     "spryker/log": "^3.0.0",
     "spryker/messenger": "^3.0.0",
     "spryker/money": "^2.0.1",
-    "spryker/oms": "^7.0.0 || ^8.0.0 || ^10.0.0",
+    "spryker/oms": "^7.0.0 || ^8.0.0 || ^10.0.0 || ^11.0.0",
     "spryker/propel-orm": "^1.0.0",
     "spryker/quote": "^1.0.0 || ^2.0.0",
     "spryker/refund": "^5.0.0",
