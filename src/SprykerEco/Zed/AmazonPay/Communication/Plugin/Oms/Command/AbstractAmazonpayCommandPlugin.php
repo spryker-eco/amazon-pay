@@ -17,7 +17,7 @@ use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
-use Spryker\Shared\Shipment\ShipmentConstants;
+use Spryker\Shared\Shipment\ShipmentConfig;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 
@@ -84,7 +84,7 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
      */
     protected function getShipmentPrice(SpySalesOrder $orderEntity)
     {
-        return $this->getExpenseByType($orderEntity, ShipmentConstants::SHIPMENT_EXPENSE_TYPE)
+        return $this->getExpenseByType($orderEntity, ShipmentConfig::SHIPMENT_EXPENSE_TYPE)
             ->getPriceToPayAggregation();
     }
 
