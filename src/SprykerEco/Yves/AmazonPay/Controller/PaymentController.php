@@ -204,28 +204,18 @@ class PaymentController extends AbstractController
             ->addSelectedAddressToQuote($quoteTransfer);
         $this->saveQuote($quoteTransfer);
 
-        $shipmentMethodsCollection = $this->getFactory()
+        $shipmentMethodsCollectionTransfer = $this->getFactory()
             ->getShipmentClient()
             ->getAvailableMethodsByShipment($quoteTransfer);
 
-        $shipmentMethodsTransfer = $this->getShipmentMethods($shipmentMethodsCollection);
+        /** @var ShipmentMethodsTransfer $shipmentMethodsTransfer */
+        $shipmentMethodsTransfer = $shipmentMethodsCollectionTransfer->getShipmentMethods()->getIterator()->current();
 
         return [
             static::SELECTED_SHIPMENT_METHOD_ID => $this->getCurrentShipmentMethodId($quoteTransfer),
             static::SHIPMENT_METHODS => $shipmentMethodsTransfer->getMethods(),
             static::IS_AMAZON_PAYMENT_INVALID => $this->isAmazonPaymentInvalid($quoteTransfer),
         ];
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\ShipmentMethodsCollectionTransfer $shipmentMethodsCollection
-     *
-     * @return \Generated\Shared\Transfer\ShipmentMethodsTransfer
-     */
-    protected function getShipmentMethods(
-        ShipmentMethodsCollectionTransfer $shipmentMethodsCollection
-    ): ShipmentMethodsTransfer {
-        return $shipmentMethodsCollection->getShipmentMethods()->getIterator()->current();
     }
 
     /**
