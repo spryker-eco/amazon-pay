@@ -12,6 +12,8 @@ use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Generated\Shared\Transfer\CheckoutErrorTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\ShipmentMethodsCollectionTransfer;
+use Generated\Shared\Transfer\ShipmentMethodsTransfer;
 use Spryker\Shared\Config\Config;
 use Spryker\Yves\Kernel\Controller\AbstractController;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
@@ -201,15 +203,29 @@ class PaymentController extends AbstractController
         $quoteTransfer = $this->getClient()
             ->addSelectedAddressToQuote($quoteTransfer);
         $this->saveQuote($quoteTransfer);
-        $shipmentMethods = $this->getFactory()
+
+        $shipmentMethodsCollection = $this->getFactory()
             ->getShipmentClient()
-            ->getAvailableMethods($quoteTransfer);
+            ->getAvailableMethodsByShipment($quoteTransfer);
+
+        $shipmentMethodsTransfer = $this->getShipmentMethods($shipmentMethodsCollection);
 
         return [
             static::SELECTED_SHIPMENT_METHOD_ID => $this->getCurrentShipmentMethodId($quoteTransfer),
-            static::SHIPMENT_METHODS => $shipmentMethods->getMethods(),
+            static::SHIPMENT_METHODS => $shipmentMethodsTransfer->getMethods(),
             static::IS_AMAZON_PAYMENT_INVALID => $this->isAmazonPaymentInvalid($quoteTransfer),
         ];
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ShipmentMethodsCollectionTransfer $shipmentMethodsCollection
+     *
+     * @return \Generated\Shared\Transfer\ShipmentMethodsTransfer
+     */
+    protected function getShipmentMethods(
+        ShipmentMethodsCollectionTransfer $shipmentMethodsCollection
+    ): ShipmentMethodsTransfer {
+        return $shipmentMethodsCollection->getShipmentMethods()->getIterator()->current();
     }
 
     /**

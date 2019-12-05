@@ -27,10 +27,10 @@ class AmazonPayToShipmentBridge implements AmazonPayToShipmentInterface
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\ShipmentMethodsTransfer
+     * @return \Generated\Shared\Transfer\ShipmentMethodsCollectionTransfer
      */
-    public function getAvailableMethods(QuoteTransfer $quoteTransfer)
+    public function getAvailableMethodsByShipment(QuoteTransfer $quoteTransfer)
     {
-        return $this->shipmentClient->getAvailableMethods($quoteTransfer);
+        return $this->shipmentClient->getAvailableMethodsByShipment($quoteTransfer);
     }
 }
