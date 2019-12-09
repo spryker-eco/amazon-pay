@@ -73,7 +73,11 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
      */
     protected function getAvailableShipmentMethods(QuoteTransfer $quoteTransfer)
     {
-        return $this->shipmentFacade->getAvailableShipmentMethods($quoteTransfer);
+        $shipmentMethodsCollectionTransfer = $this->shipmentFacade->getAvailableMethodsByShipment($quoteTransfer);
+
+        $shipmentMethodsTransfer = $shipmentMethodsCollectionTransfer->getShipmentMethods()->getIterator()->current();
+
+        return  $shipmentMethodsTransfer;
     }
 
     /**

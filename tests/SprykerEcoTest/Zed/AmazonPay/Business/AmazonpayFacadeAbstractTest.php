@@ -38,7 +38,7 @@ class AmazonpayFacadeAbstractTest extends Test
     /**
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -115,7 +115,7 @@ class AmazonpayFacadeAbstractTest extends Test
         $shipmentCarrier->save();
 
         $shipmentMethod = SpyShipmentMethodQuery::create()
-            ->filterByShipmentMethodKey($name)
+            ->filterByName($name)
             ->findOneOrCreate();
 
         $shipmentMethod
@@ -133,7 +133,7 @@ class AmazonpayFacadeAbstractTest extends Test
         $shipmentMethodPriceEntity->setDefaultGrossPrice($price);
         $shipmentMethodPriceEntity->save();
 
-        return $shipmentMethod->getIdShipmentMethod();
+        return $shipmentMethod;
     }
 
     /**

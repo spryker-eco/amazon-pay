@@ -7,12 +7,14 @@
 
 namespace SprykerEcoTest\Zed\AmazonPay\Business;
 
+use Generated\Shared\DataBuilder\ItemBuilder;
+use Generated\Shared\DataBuilder\ShipmentBuilder;
 use Generated\Shared\Transfer\CurrencyTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
+use Generated\Shared\Transfer\StoreTransfer;
 use Spryker\Shared\Shipment\ShipmentConstants;
-use Spryker\Zed\Shipment\Business\ShipmentFacade;
 use Spryker\Zed\Shipment\ShipmentDependencyProvider;
 use SprykerTest\Shared\Testify\Helper\DependencyHelperTrait;
 
@@ -24,10 +26,22 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
     use DependencyHelperTrait;
 
     /**
+     * @var  \SprykerEcoTest\Zed\AmazonPay\AmazonPayBusinessTester
+     */
+    protected $tester;
+
+    /**
+     * @var \Generated\Shared\Transfer\StoreTransfer
+     */
+    protected $store;
+
+    /**
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->setDependency(
             ShipmentDependencyProvider::SHIPMENT_METHOD_FILTER_PLUGINS,
             function () {
@@ -47,8 +61,25 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
      */
     public function testAddSelectedShipmentMethodToQuote(QuoteTransfer $quoteTransfer, $shipmentMethodName, $shipmentPrice)
     {
-        $shipmentMethodId = $this->createShipmentMethod($shipmentMethodName, $shipmentPrice);
-        $quoteTransfer->getShipment()->setShipmentSelection($shipmentMethodId);
+        $store = $this->tester->haveStore([StoreTransfer::NAME => 'DE']);
+
+        $quoteTransfer->setStore($store);
+
+        $shipmentMethod = $this->createShipmentMethod($shipmentMethodName, $shipmentPrice);
+
+        $quoteTransfer->getShipment()->setShipmentSelection($shipmentMethod->getIdShipmentMethod());
+
+        $shipmentMethodTransfer = (new ShipmentMethodTransfer())->fromArray($shipmentMethod->toArray(), true);
+
+        $shipmentBuilder = (new ShipmentBuilder())->build();
+
+        $shipmentBuilder->setMethod($shipmentMethodTransfer);
+
+        $itemTransfer = (new ItemBuilder())->build();
+
+        $itemTransfer->setShipment($shipmentBuilder);
+
+        $quoteTransfer->addItem($itemTransfer);
 
         $resultQuote = $this->createFacade()->addSelectedShipmentMethodToQuote($quoteTransfer);
 
@@ -103,13 +134,5 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
             },
             $shipmentMethods->getMethods()->getArrayCopy()
         );
-    }
-
-    /**
-     * @return \Spryker\Zed\Shipment\Business\ShipmentFacadeInterface
-     */
-    protected function createShipmentFacade()
-    {
-        return new ShipmentFacade();
     }
 }
