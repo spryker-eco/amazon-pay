@@ -35,6 +35,10 @@ class AmazonPayToShipmentBridge implements AmazonPayToShipmentInterface
 
             $shipmentMethodsCollectionTransfer = $this->shipmentClient->getAvailableMethodsByShipment($quoteTransfer);
 
+            if ($shipmentMethodsCollectionTransfer->getShipmentMethods()->count() > 0) {
+                throw new \Exception('Split shipping is not supported');
+            }
+
             $shipmentMethodsTransfer = $shipmentMethodsCollectionTransfer->getShipmentMethods()->getIterator()
                 ->current();
 
