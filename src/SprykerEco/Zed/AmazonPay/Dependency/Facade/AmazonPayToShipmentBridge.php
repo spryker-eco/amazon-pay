@@ -31,6 +31,17 @@ class AmazonPayToShipmentBridge implements AmazonPayToShipmentInterface
      */
     public function getAvailableShipmentMethods(QuoteTransfer $quoteTransfer)
     {
+
+        if (method_exists($this->shipmentFacade, 'getAvailableMethodsByShipment') === true) {
+
+            $shipmentMethodsCollectionTransfer = $this->shipmentFacade->getAvailableMethodsByShipment($quoteTransfer);
+
+            $shipmentMethodsTransfer = $shipmentMethodsCollectionTransfer->getShipmentMethods()->getIterator()
+                ->current();
+
+            return  $shipmentMethodsTransfer;
+        }
+
         return $this->shipmentFacade->getAvailableMethods($quoteTransfer);
     }
 }

@@ -28,6 +28,15 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements CommandByOrderInterface
 {
     /**
+     * @see \Spryker\Shared\Shipment\ShipmentConstants::SHIPMENT_EXPENSE_TYPE | \Spryker\Shared\Shipment\ShipmentConfig::SHIPMENT_EXPENSE_TYPE
+     *
+     * @deprecated Necessary in order to save compatibility with  spryker/shipping version less than "^8.0.0".
+     * use \Spryker\Shared\Shipment\ShipmentConfig::SHIPMENT_EXPENSE_TYPE instead if shipping version is higher
+     *
+     */
+    protected const SHIPMENT_EXPENSE_TYPE = 'SHIPMENT_EXPENSE_TYPE';
+
+    /**
      * @var bool
      */
     protected $wasShippingCharged;
@@ -84,7 +93,7 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
      */
     protected function getShipmentPrice(SpySalesOrder $orderEntity)
     {
-        return $this->getExpenseByType($orderEntity, ShipmentConstants::SHIPMENT_EXPENSE_TYPE)
+        return $this->getExpenseByType($orderEntity, self::SHIPMENT_EXPENSE_TYPE)
             ->getPriceToPayAggregation();
     }
 

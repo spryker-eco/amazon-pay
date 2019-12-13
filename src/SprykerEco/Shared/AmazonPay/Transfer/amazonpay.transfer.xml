@@ -37,7 +37,6 @@
 
     <transfer name="AmazonpayResponse">
         <property name="shippingAddress" type="Address"/>
-        <property name="shippingAddress" type="Address"/>
         <property name="billingAddress" type="Address"/>
         <property name="customer" type="Customer"/>
 
