@@ -10,6 +10,7 @@ namespace SprykerEcoTest\Zed\AmazonPay\Business;
 use Generated\Shared\DataBuilder\ItemBuilder;
 use Generated\Shared\DataBuilder\ShipmentBuilder;
 use Generated\Shared\Transfer\CurrencyTransfer;
+use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
@@ -78,7 +79,9 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
 
         $itemTransfer = (new ItemBuilder())->build();
 
-        $itemTransfer->setShipment($shipmentBuilder);
+        if (method_exists($itemTransfer, 'setShipment')) {
+            $itemTransfer->setShipment($shipmentBuilder);
+        }
 
         $quoteTransfer->addItem($itemTransfer);
 
