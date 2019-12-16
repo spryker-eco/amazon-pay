@@ -165,4 +165,12 @@
         <property name="Items" type="Item[]" singular="Item"/>
     </transfer>
 
+    <transfer name="Item">
+        <property name="shipment" type="Shipment"/>
+    </transfer>
+
+    <transfer name="Shipment">
+        <property name="method" type="ShipmentMethod"/>
+    </transfer>
+
 </transfers>

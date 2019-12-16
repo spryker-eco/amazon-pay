@@ -79,9 +79,7 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
 
         $itemTransfer = (new ItemBuilder())->build();
 
-        if (method_exists($itemTransfer, 'setShipment')) {
-            $itemTransfer->setShipment($shipmentBuilder);
-        }
+        $itemTransfer->setShipment($shipmentBuilder);
 
         $quoteTransfer->addItem($itemTransfer);
 
