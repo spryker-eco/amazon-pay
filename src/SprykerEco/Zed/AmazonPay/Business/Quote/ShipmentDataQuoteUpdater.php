@@ -17,7 +17,8 @@ use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToShipmentInterface;
 class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
 {
     /**
-     * @see \Spryker\Shared\Shipment\ShipmentConstants::SHIPMENT_EXPENSE_TYPE | \Spryker\Shared\Shipment\ShipmentConfig::SHIPMENT_EXPENSE_TYPE
+     * @see \Spryker\Shared\Shipment\ShipmentConstants::SHIPMENT_EXPENSE_TYPE
+     * @see \Spryker\Shared\Shipment\ShipmentConfig::SHIPMENT_EXPENSE_TYPE
      *
      * @deprecated Necessary in order to save compatibility with  spryker/shipping version less than "^8.0.0".
      * use \Spryker\Shared\Shipment\ShipmentConfig::SHIPMENT_EXPENSE_TYPE instead if shipping version is higher
@@ -95,7 +96,7 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
 
         $otherExpenseCollection = new ArrayObject();
         foreach ($quoteTransfer->getExpenses() as $expense) {
-            if ($expense->getType() !== self::SHIPMENT_EXPENSE_TYPE) {
+            if ($expense->getType() !== static::SHIPMENT_EXPENSE_TYPE) {
                 $otherExpenseCollection->append($expense);
             }
         }
@@ -115,7 +116,7 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
     {
         $shipmentExpenseTransfer = new ExpenseTransfer();
         $shipmentExpenseTransfer->fromArray($shipmentMethodTransfer->toArray(), true);
-        $shipmentExpenseTransfer->setType(self::SHIPMENT_EXPENSE_TYPE);
+        $shipmentExpenseTransfer->setType(static::SHIPMENT_EXPENSE_TYPE);
         $shipmentExpenseTransfer->setUnitGrossPrice($shipmentMethodTransfer->getStoreCurrencyPrice());
         $shipmentExpenseTransfer->setQuantity(1);
 

@@ -7,6 +7,7 @@
     }
   },
   "require": {
+    "php": ">=7.2",
     "amzn/amazon-pay-sdk-php": "^3.0.0",
     "spryker/calculation": "^4.0.0",
     "spryker/cart": "^5.0.0 || ^7.0.0",
@@ -40,6 +41,10 @@
   },
   "config": {
     "sort-packages": true
+  },
+  "scripts": {
+    "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml -p src/",
+    "cs-fix": "phpcbf --standard=vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml -p src/"
   },
   "require-dev": {
     "spryker-shop/checkout-page": "*",
