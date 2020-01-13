@@ -73,6 +73,9 @@ export default class PaymentStep extends Component {
                 onAddressSelect(orderReference) {
                     _this.getShipmentMethods(_this.shipmentMethodsHolder);
                 },
+                onError: function (error) {
+                    console.log('OffAmazonPayments.Widgets.AddressBook', error.getErrorCode(), error.getErrorMessage());
+                },
                 design: {
                     designMode: 'responsive'
                 }
