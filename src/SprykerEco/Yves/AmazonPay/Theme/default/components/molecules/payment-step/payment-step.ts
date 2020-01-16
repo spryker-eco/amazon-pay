@@ -59,11 +59,11 @@ export default class PaymentStep extends Component {
         const _this = this;
         window.onAmazonPaymentsReady = () => {
             new window.OffAmazonPayments.Widgets.AddressBook({
-                sellerId: this.payConfig.sellerId,
-                scope: this.addressScopeConfig,
-                language: this.payConfig.locale,
-                amazonOrderReferenceId: this.payConfig.orderReferenceId,
-                displayMode: this.payConfig.displayMode,
+                sellerId: _this.payConfig.sellerId,
+                scope: _this.addressScopeConfig,
+                language: _this.payConfig.locale,
+                amazonOrderReferenceId: _this.payConfig.orderReferenceId,
+                displayMode: _this.payConfig.displayMode,
                 onOrderReferenceCreate(orderReference) {
                     const referenceId = orderReference.getAmazonOrderReferenceId();
                     const formData = new FormData();
@@ -79,16 +79,16 @@ export default class PaymentStep extends Component {
                 design: {
                     designMode: 'responsive'
                 }
-            }).bind(`${this.jsName}__address-item`);
+            }).bind(`${_this.jsName}__address-item`);
 
             new window.OffAmazonPayments.Widgets.Wallet({
-                sellerId: this.payConfig.sellerId,
-                scope: this.walletScopeConfig,
-                amazonOrderReferenceId: this.payConfig.orderReferenceId,
+                sellerId: _this.payConfig.sellerId,
+                scope: _this.walletScopeConfig,
+                amazonOrderReferenceId: _this.payConfig.orderReferenceId,
                 design: {
                     designMode: 'responsive'
                 },
-            }).bind(`${this.jsName}__wallet-item`);
+            }).bind(`${_this.jsName}__wallet-item`);
         }
     }
 
