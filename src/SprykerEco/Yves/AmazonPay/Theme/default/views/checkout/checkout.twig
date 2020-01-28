@@ -66,6 +66,7 @@
                 {% include molecule('payment-step', 'AmazonPay') with {
                     attributes: {
                         sellerId: data.sellerId,
+                        clientId: data.clientId,
                         orderReferenceUrl: data.orderReferenceUrl,
                         shipmentMethodsUrl: data.shipmentMethodsUrl,
                         updateShipmentMethodUrl: data.updateShipmentMethodUrl,

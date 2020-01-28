@@ -5,6 +5,7 @@ declare const window: any;
 
 interface IAmazonConfig {
     sellerId: string,
+    clientId: string,
     orderReferenceUrl: string,
     shipmentMethodsUrl: string,
     updateShipmentMethodUrl: string,
@@ -30,6 +31,7 @@ export default class PaymentStep extends Component {
         this.shipmentUpdateAjaxProvider = <AjaxProvider>this.querySelector(`.${this.jsName}__shipment-update-ajax-provider`);
         this.payConfig = <IAmazonConfig> {
              sellerId: this.sellerId,
+             clientId: this.clientId,
              orderReferenceUrl: this.orderReferenceUrl,
              shipmentMethodsUrl: this.shipmentMethodsUrl,
              updateShipmentMethodUrl: this.updateShipmentMethodUrl,
@@ -51,7 +53,7 @@ export default class PaymentStep extends Component {
 
     protected amazonLoginReady(): void {
         window.onAmazonLoginReady = () => {
-            window.amazon.Login.setClientId(this.payConfig.sellerId);
+            window.amazon.Login.setClientId(this.payConfig.clientId);
         };
     }
 
@@ -107,6 +109,10 @@ export default class PaymentStep extends Component {
         formData.append('shipment_method_id', selectedMethodValue);
         const response = await this.shipmentUpdateAjaxProvider.fetch(formData);
         this.summaryInfoHolder.innerHTML = response;
+    }
+
+    get clientId(): string {
+        return this.getAttribute('clientId');
     }
 
     get sellerId(): string {
