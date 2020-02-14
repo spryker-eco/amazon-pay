@@ -2,22 +2,23 @@
 
 {% define config = {
     name: 'payment-step',
-    tag: 'payment-step'
+    tag: 'payment-step',
 } %}
 
 {% define attributes = {
-    sellerId: required,
-    orderReferenceUrl: required,
-    shipmentMethodsUrl: required,
-    updateShipmentMethodUrl: required,
-    locale: required,
-    orderReferenceId: null,
-    addressScope: required,
-    walletScope: required,
-    shipmentMethodsHolder: required,
-    displayMode: null,
-    nameShipmentMethod: required,
-    summaryInfoHolder: required
+    'client-id': required,
+    'seller-id': required,
+    'order-reference-url': required,
+    'shipment-methods-url': required,
+    'update-shipment-method-url': required,
+    'locale': required,
+    'order-reference-id': null,
+    'address-scope': required,
+    'wallet-scope': required,
+    'shipment-methods-holder': required,
+    'display-mode': null,
+    'name-shipment-method': required,
+    'summary-info-holder': required,
 } %}
 
 {% block body %}
@@ -37,23 +38,23 @@
         class: config.jsName ~ '__shipment-methods-ajax-provider',
         attributes: {
             method: 'post',
-            url: attributes.shipmentMethodsUrl
-        }
+            url: attributes['shipment-methods-url'],
+        },
     } only %}
 
     {% include molecule('ajax-provider') with {
         class: config.jsName ~ '__order-reference-ajax-provider',
         attributes: {
             method: 'post',
-            url: attributes.orderReferenceUrl
-        }
+            url: attributes['order-reference-url'],
+        },
     } only %}
 
     {% include molecule('ajax-provider') with {
         class: config.jsName ~ '__shipment-update-ajax-provider',
         attributes: {
             method: 'post',
-            url: attributes.updateShipmentMethodUrl
-        }
+            url: attributes['update-shipment-method-url'],
+        },
     } only %}
 {% endblock %}

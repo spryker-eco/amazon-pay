@@ -17,14 +17,14 @@
     amazonEndPoint: _view.psd2Data.psd2AjaxEndpoint,
     amazonSellerId: _view.psd2Data.amazonSellerId,
     amazonOrderReferenceId: _view.psd2Data.amazonOrderReferenceId,
-    amazonFailureUrl: _view.psd2Data.amazonFailureUrl
+    amazonFailureUrl: _view.psd2Data.amazonFailureUrl,
 } %}
 
 {% set steps = [{
     title: 'checkout.amazonpay' | trans,
-    route: null,
+    route: 'amazonpay_checkout',
     isActive: true,
-    isEnabled: true
+    isEnabled: true,
 }] %}
 
 {% block breadcrumbs %}
@@ -65,19 +65,20 @@
             <div class="col col--sm-12">
                 {% include molecule('payment-step', 'AmazonPay') with {
                     attributes: {
-                        sellerId: data.sellerId,
-                        orderReferenceUrl: data.orderReferenceUrl,
-                        shipmentMethodsUrl: data.shipmentMethodsUrl,
-                        updateShipmentMethodUrl: data.updateShipmentMethodUrl,
-                        locale: app.locale,
-                        addressScope: data.addressScope,
-                        walletScope: data.walletScope,
-                        displayMode: data.displayMode,
-                        orderReferenceId: data.amazonOrderReferenceId,
-                        shipmentMethodsHolder: '.shipment-methods__holder',
-                        nameShipmentMethod: 'amazonpayShipmentMethod',
-                        summaryInfoHolder: '.summary-info'
-                    }
+                        'client-id': data.clientId,
+                        'seller-id': data.sellerId,
+                        'order-reference-url': data.orderReferenceUrl,
+                        'shipment-methods-url': data.shipmentMethodsUrl,
+                        'update-shipment-method-url': data.updateShipmentMethodUrl,
+                        'locale': app.locale,
+                        'address-scope': data.addressScope,
+                        'wallet-scope': data.walletScope,
+                        'display-mode': data.displayMode,
+                        'order-reference-id': data.amazonOrderReferenceId,
+                        'shipment-methods-holder': '.shipment-methods__holder',
+                        'name-shipment-method': 'amazonpayShipmentMethod',
+                        'summary-info-holder': '.summary-info',
+                    },
                 } only %}
 
                 {% include atom('shipment-methods', 'AmazonPay') only %}
