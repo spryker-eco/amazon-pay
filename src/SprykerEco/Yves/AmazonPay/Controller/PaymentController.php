@@ -200,6 +200,12 @@ class PaymentController extends AbstractController
 
         $quoteTransfer = $this->getClient()
             ->addSelectedAddressToQuote($quoteTransfer);
+
+        foreach ($quoteTransfer->getItems() as $item)
+        {
+            $item->setShipment($quoteTransfer->getShipment());
+        }
+
         $this->saveQuote($quoteTransfer);
         $shipmentMethods = $this->getFactory()
             ->getShipmentClient()

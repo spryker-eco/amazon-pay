@@ -12,6 +12,7 @@ use Exception;
 use Generated\Shared\Transfer\ExpenseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
+use Generated\Shared\Transfer\ShipmentTransfer;
 use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToShipmentInterface;
 
 class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
@@ -118,6 +119,7 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
         $shipmentExpenseTransfer->fromArray($shipmentMethodTransfer->toArray(), true);
         $shipmentExpenseTransfer->setType(static::SHIPMENT_EXPENSE_TYPE);
         $shipmentExpenseTransfer->setUnitGrossPrice($shipmentMethodTransfer->getStoreCurrencyPrice());
+        $shipmentExpenseTransfer->setShipment((new ShipmentTransfer())->setMethod($shipmentMethodTransfer));
         $shipmentExpenseTransfer->setQuantity(1);
 
         return $shipmentExpenseTransfer;
