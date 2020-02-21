@@ -7,11 +7,14 @@
 
 namespace SprykerEco\Yves\AmazonPay\Controller;
 
+use ArrayObject;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
 use Generated\Shared\Transfer\CheckoutErrorTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\ShipmentCarrierTransfer;
+use Generated\Shared\Transfer\ShipmentMethodsTransfer;
 use Spryker\Shared\Config\Config;
 use Spryker\Yves\Kernel\Controller\AbstractController;
 use SprykerEco\Shared\AmazonPay\AmazonPayConfig;
@@ -34,6 +37,7 @@ class PaymentController extends AbstractController
     public const URL_PARAM_SHIPMENT_METHOD_ID = 'shipment_method_id';
     public const QUOTE_TRANSFER = 'quoteTransfer';
     public const SHIPMENT_METHODS = 'shipmentMethods';
+    public const SHIPMENT_CARRIERS = 'shipmentCarriers';
     public const SELECTED_SHIPMENT_METHOD_ID = 'selectedShipmentMethodId';
     public const AMAZONPAY_CONFIG = 'amazonpayConfig';
     public const IS_ASYNCHRONOUS = 'isAsynchronous';
@@ -211,11 +215,38 @@ class PaymentController extends AbstractController
             ->getShipmentClient()
             ->getAvailableMethods($quoteTransfer);
 
+        $this->getFactory()
+            ->getShipmentClient();
+
         return [
             static::SELECTED_SHIPMENT_METHOD_ID => $this->getCurrentShipmentMethodId($quoteTransfer),
             static::SHIPMENT_METHODS => $shipmentMethods->getMethods(),
+            static::SHIPMENT_CARRIERS => $this->getAvailableCarriers($shipmentMethods),
             static::IS_AMAZON_PAYMENT_INVALID => $this->isAmazonPaymentInvalid($quoteTransfer),
         ];
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ShipmentMethodsTransfer $shipmentMethods
+     *
+     * @return \ArrayObject
+     */
+    protected function getAvailableCarriers(ShipmentMethodsTransfer $shipmentMethods)
+    {
+        $carriersIds = [];
+        $carriers = new ArrayObject();
+
+        foreach ($shipmentMethods->getMethods() as $shipmentMethodTransfer) {
+            if (!in_array($shipmentMethodTransfer->getFkShipmentCarrier(), $carriersIds)) {
+                $carriersIds[]= $shipmentMethodTransfer->getFkShipmentCarrier();
+                $carrier = new ShipmentCarrierTransfer();
+                $carrier->setName($shipmentMethodTransfer->getCarrierName());
+                $carrier->setIdShipmentCarrier($shipmentMethodTransfer->getFkShipmentCarrier());
+                $carriers->append($carrier);
+            }
+        }
+
+        return $carriers;
     }
 
     /**

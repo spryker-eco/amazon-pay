@@ -7,6 +7,7 @@
 
 {% define data = {
     shipmentMethods: required,
+    shipmentCarriers: required,
     selectedShipmentMethodId: required,
     isAmazonPaymentInvalid: required
 } %}
@@ -15,21 +16,27 @@
     <div class="box">
         <h6>{{ 'checkout.step.shipment.title' | trans }}</h6>
         <ul class="list-switches">
-            {% for shipmentMethod in data.shipmentMethods %}
-                <li class="list-switches__item">
-                    <input type="radio"
-                           id="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}"
-                           class="radio"
-                           name="amazonpayShipmentMethod"
-                           value="{{ shipmentMethod.idShipmentMethod }}"
-                           {% if data.selectedShipmentMethodId == shipmentMethod.idShipmentMethod %} checked{% endif %}
-                           {% if data.isAmazonPaymentInvalid %} disabled {% endif %}
-                    />
-                    <label class="label"
-                           for="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}">
-                        {{ shipmentMethod.name }}
-                    </label>
-                </li>
+            {% for shipmentCarrier in data.shipmentCarriers %}
+                <div>{{ shipmentCarrier.name }}
+                {% for shipmentMethod in data.shipmentMethods %}
+                    {% if shipmentMethod.fkShipmentCarrier == shipmentCarrier.idShipmentCarrier %}
+                        <li class="list-switches__item">
+                            <input type="radio"
+                                   id="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}"
+                                   class="radio"
+                                   name="amazonpayShipmentMethod"
+                                   value="{{ shipmentMethod.idShipmentMethod }}"
+                                   {% if data.selectedShipmentMethodId == shipmentMethod.idShipmentMethod %} checked{% endif %}
+                                   {% if data.isAmazonPaymentInvalid %} disabled {% endif %}
+                            />
+                            <label class="label"
+                                   for="amazonpayShipmentMethod_{{ shipmentMethod.idShipmentMethod }}">
+                                {{ shipmentMethod.name }}
+                            </label>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                </div>
             {% endfor %}
         </ul>
     </div>
