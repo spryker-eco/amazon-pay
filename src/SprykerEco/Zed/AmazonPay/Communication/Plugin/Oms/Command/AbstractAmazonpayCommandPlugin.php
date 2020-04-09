@@ -93,7 +93,7 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
      */
     protected function getShipmentPrice(SpySalesOrder $orderEntity)
     {
-        return $this->getExpenseByType($orderEntity, self::SHIPMENT_EXPENSE_TYPE)
+        return $this->getExpenseByType($orderEntity, static::SHIPMENT_EXPENSE_TYPE)
             ->getPriceToPayAggregation();
     }
 

@@ -215,9 +215,6 @@ class PaymentController extends AbstractController
             ->getShipmentClient()
             ->getAvailableMethods($quoteTransfer);
 
-        $this->getFactory()
-            ->getShipmentClient();
-
         return [
             static::SELECTED_SHIPMENT_METHOD_ID => $this->getCurrentShipmentMethodId($quoteTransfer),
             static::SHIPMENT_METHODS => $shipmentMethods->getMethods(),
@@ -229,7 +226,7 @@ class PaymentController extends AbstractController
     /**
      * @param \Generated\Shared\Transfer\ShipmentMethodsTransfer $shipmentMethods
      *
-     * @return \ArrayObject
+     * @return \ArrayObject|\Generated\Shared\Transfer\ShipmentCarrierTransfer[]
      */
     protected function getAvailableCarriers(ShipmentMethodsTransfer $shipmentMethods)
     {
