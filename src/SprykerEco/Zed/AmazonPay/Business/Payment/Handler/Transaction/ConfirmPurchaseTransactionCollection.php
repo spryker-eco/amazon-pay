@@ -40,12 +40,6 @@ class ConfirmPurchaseTransactionCollection extends AbstractTransactionCollection
         $amazonpayCallTransfer = $this->executeHandlers($amazonpayCallTransfer);
         $quoteTransfer->fromArray($amazonpayCallTransfer->modifiedToArray(), true);
 
-        foreach ($quoteTransfer->getItems() as $item) {
-            $shipmentTransfer = $quoteTransfer->getShipment();
-            $shipmentTransfer->setShippingAddress($quoteTransfer->getShippingAddress());
-            $item->setShipment($shipmentTransfer);
-        }
-
         return $quoteTransfer;
     }
 }
