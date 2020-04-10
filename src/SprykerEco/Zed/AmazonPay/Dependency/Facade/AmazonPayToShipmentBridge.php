@@ -10,6 +10,7 @@ namespace SprykerEco\Zed\AmazonPay\Dependency\Facade;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
+use RuntimeException;
 
 class AmazonPayToShipmentBridge implements AmazonPayToShipmentInterface
 {
@@ -29,11 +30,12 @@ class AmazonPayToShipmentBridge implements AmazonPayToShipmentInterface
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
+     * @throws \RuntimeException
+     *
      * @return \Generated\Shared\Transfer\ShipmentMethodsTransfer
      */
     public function getAvailableShipmentMethods(QuoteTransfer $quoteTransfer)
     {
-
         if (method_exists($this->shipmentFacade, 'getAvailableMethodsByShipment') === true) {
             foreach ($quoteTransfer->getItems() as $itemTransfer) {
                 $itemTransfer->setShipment(new ShipmentTransfer());
@@ -43,7 +45,7 @@ class AmazonPayToShipmentBridge implements AmazonPayToShipmentInterface
             $shipmentMethodsCollectionTransfer = $this->shipmentFacade->getAvailableMethodsByShipment($quoteTransfer);
 
             if ($shipmentMethodsCollectionTransfer->getShipmentMethods()->count() > 1) {
-                throw new \RuntimeException('Split shipping is not supported');
+                throw new RuntimeException('Split shipping is not supported');
             }
 
             foreach ($quoteTransfer->getItems() as $itemTransfer) {

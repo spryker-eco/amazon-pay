@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AmazonpayAuthorizationDetailsTransfer;
 use Generated\Shared\Transfer\AmazonpayPaymentTransfer;
 use Generated\Shared\Transfer\AmazonpayResponseHeaderTransfer;
 use Generated\Shared\Transfer\AmazonpayStatusTransfer;
-use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SaveOrderTransfer;

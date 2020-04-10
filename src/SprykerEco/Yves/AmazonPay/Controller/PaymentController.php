@@ -230,7 +230,7 @@ class PaymentController extends AbstractController
 
         foreach ($shipmentMethods->getMethods() as $shipmentMethodTransfer) {
             if (!in_array($shipmentMethodTransfer->getFkShipmentCarrier(), $carriersIds)) {
-                $carriersIds[]= $shipmentMethodTransfer->getFkShipmentCarrier();
+                $carriersIds[] = $shipmentMethodTransfer->getFkShipmentCarrier();
                 $carrier = new ShipmentCarrierTransfer();
                 $carrier->setName($shipmentMethodTransfer->getCarrierName());
                 $carrier->setIdShipmentCarrier($shipmentMethodTransfer->getFkShipmentCarrier());

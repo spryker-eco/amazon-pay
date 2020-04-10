@@ -10,7 +10,6 @@ namespace SprykerEcoTest\Zed\AmazonPay\Business;
 use Generated\Shared\DataBuilder\ItemBuilder;
 use Generated\Shared\DataBuilder\ShipmentBuilder;
 use Generated\Shared\Transfer\CurrencyTransfer;
-use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
@@ -28,7 +27,7 @@ class AmazonpayFacadeAddSelectedShipmentMethodToQuoteTest extends AmazonpayFacad
     use DependencyHelperTrait;
 
     /**
-     * @var  \SprykerEcoTest\Zed\AmazonPay\AmazonPayBusinessTester
+     * @var \SprykerEcoTest\Zed\AmazonPay\AmazonPayBusinessTester
      */
     protected $tester;
 

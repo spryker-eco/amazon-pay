@@ -53,6 +53,7 @@ class AmazonpayFacadeConvertAmazonpayIpnRequestTest extends AmazonpayFacadeAbstr
             'Connection' => 'close',
             'Host' => 'amazonpay-endpoint.herokuapp.com',
         ];
+
         return [
             [
                 $header,

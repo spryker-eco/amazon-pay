@@ -17,7 +17,6 @@ use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
-use Spryker\Shared\Shipment\ShipmentConstants;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 
@@ -30,9 +29,8 @@ abstract class AbstractAmazonpayCommandPlugin extends AbstractPlugin implements 
     /**
      * @see \Spryker\Shared\Shipment\ShipmentConstants::SHIPMENT_EXPENSE_TYPE | \Spryker\Shared\Shipment\ShipmentConfig::SHIPMENT_EXPENSE_TYPE
      *
-     * @deprecated Necessary in order to save compatibility with  spryker/shipping version less than "^8.0.0".
+     * @deprecated Necessary in order to save compatibility with spryker/shipping version less than "^8.0.0".
      * use \Spryker\Shared\Shipment\ShipmentConfig::SHIPMENT_EXPENSE_TYPE instead if shipping version is higher
-     *
      */
     protected const SHIPMENT_EXPENSE_TYPE = 'SHIPMENT_EXPENSE_TYPE';
 

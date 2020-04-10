@@ -14,17 +14,17 @@ class IpnHandlerMock extends IpnHandler
     /**
      * @var array|null
      */
-    private $headers = null;
+    private $headers;
 
     /**
      * @var string|null
      */
-    private $body = null;
+    private $body;
 
     /**
      * @var array|null
      */
-    private $snsMessage = null;
+    private $snsMessage;
 
     /**
      * @param array $headers

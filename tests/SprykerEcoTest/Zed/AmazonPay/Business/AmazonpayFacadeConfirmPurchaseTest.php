@@ -69,7 +69,6 @@ class AmazonpayFacadeConfirmPurchaseTest extends AmazonpayFacadeAbstractTest
         $facade = new AmazonPayFacadeMock($additionalConfig);
         $resultQuote = $facade->confirmPurchase($quoteTransfer);
 
-
         $amazonPayCallTransfer = $facade->getFactory()->createAmazonpayConverter()->mapToAmazonpayCallTransfer($resultQuote);
         $amazonPayCallTransfer = $facade->authorizeOrderItems($amazonPayCallTransfer);
 

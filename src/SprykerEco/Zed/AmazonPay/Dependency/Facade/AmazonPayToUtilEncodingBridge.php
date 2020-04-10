@@ -23,7 +23,7 @@ class AmazonPayToUtilEncodingBridge implements AmazonPayToUtilEncodingInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -39,7 +39,7 @@ class AmazonPayToUtilEncodingBridge implements AmazonPayToUtilEncodingInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
