@@ -16,7 +16,7 @@ use Spryker\Client\Kernel\AbstractClient;
 class AmazonPayClient extends AbstractClient implements AmazonPayClientInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -30,7 +30,7 @@ class AmazonPayClient extends AbstractClient implements AmazonPayClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -44,7 +44,7 @@ class AmazonPayClient extends AbstractClient implements AmazonPayClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -58,7 +58,7 @@ class AmazonPayClient extends AbstractClient implements AmazonPayClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -72,7 +72,7 @@ class AmazonPayClient extends AbstractClient implements AmazonPayClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *

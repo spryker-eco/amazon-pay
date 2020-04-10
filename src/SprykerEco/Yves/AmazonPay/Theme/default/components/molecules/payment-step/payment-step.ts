@@ -4,6 +4,7 @@ import AjaxProvider from "ShopUi/components/molecules/ajax-provider/ajax-provide
 declare const window: any;
 
 interface IAmazonConfig {
+    clientId: string,
     sellerId: string,
     orderReferenceUrl: string,
     shipmentMethodsUrl: string,
@@ -29,13 +30,14 @@ export default class PaymentStep extends Component {
         this.orderReferenceAjaxProvider = <AjaxProvider>this.querySelector(`.${this.jsName}__order-reference-ajax-provider`);
         this.shipmentUpdateAjaxProvider = <AjaxProvider>this.querySelector(`.${this.jsName}__shipment-update-ajax-provider`);
         this.payConfig = <IAmazonConfig> {
-             sellerId: this.sellerId,
-             orderReferenceUrl: this.orderReferenceUrl,
-             shipmentMethodsUrl: this.shipmentMethodsUrl,
-             updateShipmentMethodUrl: this.updateShipmentMethodUrl,
-             locale: this.locale,
-             orderReferenceId: (this.orderReferenceId === "") ? undefined : this.orderReferenceId,
-             displayMode: (this.displayMode === "") ? undefined : this.displayMode
+            clientId: this.clientId,
+            sellerId: this.sellerId,
+            orderReferenceUrl: this.orderReferenceUrl,
+            shipmentMethodsUrl: this.shipmentMethodsUrl,
+            updateShipmentMethodUrl: this.updateShipmentMethodUrl,
+            locale: this.locale,
+            orderReferenceId: (this.orderReferenceId === "") ? undefined : this.orderReferenceId,
+            displayMode: (this.displayMode === "") ? undefined : this.displayMode
         };
         this.amazonLoginReady();
         this.amazonPaymentsReady();
@@ -51,12 +53,11 @@ export default class PaymentStep extends Component {
 
     protected amazonLoginReady(): void {
         window.onAmazonLoginReady = () => {
-            window.amazon.Login.setClientId(this.payConfig.sellerId);
+            window.amazon.Login.setClientId(this.payConfig.clientId);
         };
     }
 
     protected amazonPaymentsReady(): void {
-        const _this = this;
         window.onAmazonPaymentsReady = () => {
             new window.OffAmazonPayments.Widgets.AddressBook({
                 sellerId: this.payConfig.sellerId,
@@ -64,14 +65,17 @@ export default class PaymentStep extends Component {
                 language: this.payConfig.locale,
                 amazonOrderReferenceId: this.payConfig.orderReferenceId,
                 displayMode: this.payConfig.displayMode,
-                onOrderReferenceCreate(orderReference) {
+                onOrderReferenceCreate: orderReference => {
                     const referenceId = orderReference.getAmazonOrderReferenceId();
                     const formData = new FormData();
                     formData.append('reference_id', referenceId);
-                    _this.orderReference(formData);
+                    this.orderReference(formData);
                 },
-                onAddressSelect(orderReference) {
-                    _this.getShipmentMethods(_this.shipmentMethodsHolder);
+                onAddressSelect: orderReference => {
+                    this.getShipmentMethods(this.shipmentMethodsHolder);
+                },
+                onError: function (error) {
+                    console.error('OffAmazonPayments.Widgets.AddressBook', error.getErrorCode(), error.getErrorMessage());
                 },
                 design: {
                     designMode: 'responsive'
@@ -85,6 +89,13 @@ export default class PaymentStep extends Component {
                 design: {
                     designMode: 'responsive'
                 },
+                displayMode: this.payConfig.displayMode,
+                onPaymentSelect: orderReference => {
+                    console.log('orderReference: ', orderReference)
+                },
+                onError: error => {
+                    console.error('ErrorCode: ', `${error.getErrorCode()}: ${error.getErrorMessage()}`)
+                }
             }).bind(`${this.jsName}__wallet-item`);
         }
     }
@@ -106,51 +117,55 @@ export default class PaymentStep extends Component {
         this.summaryInfoHolder.innerHTML = response;
     }
 
-    get sellerId(): string {
-        return this.getAttribute('sellerId');
+    protected get sellerId(): string {
+        return this.getAttribute('seller-id');
     }
 
-    get orderReferenceUrl(): string {
-        return this.getAttribute('orderReferenceUrl');
+    protected get orderReferenceUrl(): string {
+        return this.getAttribute('order-reference-url');
     }
 
-    get shipmentMethodsUrl(): string {
-        return this.getAttribute('shipmentMethodsUrl');
+    protected get shipmentMethodsUrl(): string {
+        return this.getAttribute('shipment-methods-url');
     }
 
-    get updateShipmentMethodUrl(): string {
-        return this.getAttribute('updateShipmentMethodUrl');
+    protected get updateShipmentMethodUrl(): string {
+        return this.getAttribute('update-shipment-method-url');
     }
 
-    get locale(): string {
+    protected get locale(): string {
         return this.getAttribute('locale');
     }
 
-    get orderReferenceId(): string {
-        return this.getAttribute('orderReferenceId');
+    protected get orderReferenceId(): string {
+        return this.getAttribute('order-reference-id');
     }
 
-    get addressScopeConfig(): string {
-        return this.getAttribute('addressScope');
+    protected get addressScopeConfig(): string {
+        return this.getAttribute('address-scope');
     }
 
-    get walletScopeConfig(): string {
-        return this.getAttribute('walletScope');
+    protected get walletScopeConfig(): string {
+        return this.getAttribute('wallet-scope');
     }
 
-    get shipmentMethodsHolderAttribute(): string {
-        return this.getAttribute('shipmentMethodsHolder');
-    }
-    
-    get summaryInfoHolderAttribute(): string {
-        return this.getAttribute('summaryInfoHolder');
+    protected get shipmentMethodsHolderAttribute(): string {
+        return this.getAttribute('shipment-methods-holder');
     }
 
-    get displayMode(): string {
-        return this.getAttribute('displayMode');
+    protected get summaryInfoHolderAttribute(): string {
+        return this.getAttribute('summary-info-holder');
     }
 
-    get nameShipmentMethod(): string {
-        return this.getAttribute('nameShipmentMethod');
+    protected get displayMode(): string {
+        return this.getAttribute('display-mode');
+    }
+
+    protected get nameShipmentMethod(): string {
+        return this.getAttribute('name-shipment-method');
+    }
+
+    protected get clientId(): string {
+        return this.getAttribute('client-id');
     }
 }

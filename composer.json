@@ -7,6 +7,7 @@
     }
   },
   "require": {
+    "php": ">=7.2",
     "amzn/amazon-pay-sdk-php": "^3.0.0",
     "spryker/calculation": "^4.0.0",
     "spryker/cart": "^5.0.0 || ^7.0.0",
@@ -19,12 +20,12 @@
     "spryker/log": "^3.0.0",
     "spryker/messenger": "^3.0.0",
     "spryker/money": "^2.0.1",
-    "spryker/oms": "^7.0.0 || ^8.0.0 || ^10.0.0",
+    "spryker/oms": "^7.0.0 || ^8.0.0 || ^10.0.0 || ^11.0.0",
     "spryker/propel-orm": "^1.0.0",
     "spryker/quote": "^1.0.0 || ^2.0.0",
     "spryker/refund": "^5.0.0",
     "spryker/sales": "^8.0.0 || ^10.0.0 || ^11.0.0",
-    "spryker/shipment": "^6.0.0 || ^7.0.0",
+    "spryker/shipment": "^6.0.0 || ^7.0.0 || ^8.0.0",
     "spryker/symfony": "^3.0.0",
     "spryker/util-encoding": "^2.0.1",
     "spryker/zed-request": "^3.0.0"
@@ -35,11 +36,15 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "1.0.x-dev"
+      "dev-master": "3.0.x-dev"
     }
   },
   "config": {
     "sort-packages": true
+  },
+  "scripts": {
+    "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml -p src/ tests/",
+    "cs-fix": "phpcbf --standard=vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml -p src/ tests/"
   },
   "require-dev": {
     "spryker-shop/checkout-page": "*",

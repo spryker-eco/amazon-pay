@@ -23,7 +23,7 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
 class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -40,7 +40,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -57,7 +57,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -74,7 +74,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -91,7 +91,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -108,7 +108,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -125,7 +125,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -142,7 +142,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -159,7 +159,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -176,7 +176,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -193,7 +193,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -209,7 +209,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -241,7 +241,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -258,7 +258,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -275,7 +275,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -294,7 +294,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -312,7 +312,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -330,7 +330,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -346,7 +346,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -364,7 +364,7 @@ class AmazonPayFacade extends AbstractFacade implements AmazonPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *

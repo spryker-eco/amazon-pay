@@ -1,0 +1,6 @@
+parameters:
+    bootstrap: %rootDir%/../../../phpstan-bootstrap.php
+    ignoreErrors:
+    - '#Call to an undefined method Spryker\\Service\\Container\\ContainerInterface::url\(\).#'
+    - '#Call to an undefined method Spryker\\Service\\Container\\ContainerInterface::path\(\).#'
+

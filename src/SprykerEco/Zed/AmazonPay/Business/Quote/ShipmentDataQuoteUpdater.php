@@ -12,11 +12,20 @@ use Exception;
 use Generated\Shared\Transfer\ExpenseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
-use Spryker\Shared\Shipment\ShipmentConstants;
+use Generated\Shared\Transfer\ShipmentTransfer;
 use SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToShipmentInterface;
 
 class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
 {
+    /**
+     * @see \Spryker\Shared\Shipment\ShipmentConstants::SHIPMENT_EXPENSE_TYPE
+     * @see \Spryker\Shared\Shipment\ShipmentConfig::SHIPMENT_EXPENSE_TYPE
+     *
+     * @deprecated Necessary in order to save compatibility with spryker/shipping version less than "^8.0.0".
+     * use \Spryker\Shared\Shipment\ShipmentConfig::SHIPMENT_EXPENSE_TYPE instead if shipping version is higher
+     */
+    protected const SHIPMENT_EXPENSE_TYPE = 'SHIPMENT_EXPENSE_TYPE';
+
     /**
      * @var \SprykerEco\Zed\AmazonPay\Dependency\Facade\AmazonPayToShipmentInterface
      */
@@ -87,7 +96,7 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
 
         $otherExpenseCollection = new ArrayObject();
         foreach ($quoteTransfer->getExpenses() as $expense) {
-            if ($expense->getType() !== ShipmentConstants::SHIPMENT_EXPENSE_TYPE) {
+            if ($expense->getType() !== static::SHIPMENT_EXPENSE_TYPE) {
                 $otherExpenseCollection->append($expense);
             }
         }
@@ -107,8 +116,9 @@ class ShipmentDataQuoteUpdater implements QuoteUpdaterInterface
     {
         $shipmentExpenseTransfer = new ExpenseTransfer();
         $shipmentExpenseTransfer->fromArray($shipmentMethodTransfer->toArray(), true);
-        $shipmentExpenseTransfer->setType(ShipmentConstants::SHIPMENT_EXPENSE_TYPE);
+        $shipmentExpenseTransfer->setType(static::SHIPMENT_EXPENSE_TYPE);
         $shipmentExpenseTransfer->setUnitGrossPrice($shipmentMethodTransfer->getStoreCurrencyPrice());
+        $shipmentExpenseTransfer->setShipment((new ShipmentTransfer())->setMethod($shipmentMethodTransfer));
         $shipmentExpenseTransfer->setQuantity(1);
 
         return $shipmentExpenseTransfer;

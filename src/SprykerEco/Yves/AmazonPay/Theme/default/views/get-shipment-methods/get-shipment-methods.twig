@@ -4,6 +4,7 @@
     {% include molecule('get-shipment-methods', 'AmazonPay') with {
         data: {
             shipmentMethods: _view.shipmentMethods,
+            shipmentCarriers: _view.shipmentCarriers,
             selectedShipmentMethodId: _view.selectedShipmentMethodId,
             isAmazonPaymentInvalid: _view.isAmazonPaymentInvalid
         }

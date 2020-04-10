@@ -18,7 +18,6 @@ class IsPendingConditionPlugin extends AbstractByOrderItemConditionPlugin
     {
         return [
             AmazonPayConfig::STATUS_PENDING,
-            AmazonPayConfig::STATUS_OPEN,
         ];
     }
 }
