@@ -22,25 +22,8 @@ class AmazonPayConverter implements AmazonPayConverterInterface
         $amazonpayCallTransfer = new AmazonpayCallTransfer();
         $amazonpayCallTransfer->fromArray($quoteTransfer->toArray(), true);
         $amazonpayCallTransfer->setRequestedAmount($quoteTransfer->getTotals()->getGrandTotal());
-        $quoteTransfer = $this->addShippingAddressToItemsInQuote($quoteTransfer);
         $amazonpayCallTransfer->setItems($quoteTransfer->getItems());
 
         return $amazonpayCallTransfer;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
-     */
-    protected function addShippingAddressToItemsInQuote(QuoteTransfer $quoteTransfer): QuoteTransfer
-    {
-        foreach ($quoteTransfer->getItems() as $item) {
-            $shipmentTransfer = $quoteTransfer->getShipment();
-            $shipmentTransfer->setShippingAddress($quoteTransfer->getShippingAddress());
-            $item->setShipment($shipmentTransfer);
-        }
-
-        return $quoteTransfer;
     }
 }

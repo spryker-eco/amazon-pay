@@ -7,7 +7,9 @@
 
 namespace SprykerEco\Yves\AmazonPay\Dependency\Client;
 
+use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\ShipmentTransfer;
 
 class AmazonPayToShipmentBridge implements AmazonPayToShipmentInterface
 {
@@ -33,16 +35,27 @@ class AmazonPayToShipmentBridge implements AmazonPayToShipmentInterface
     {
         if (method_exists($this->shipmentClient, 'getAvailableMethodsByShipment') === true) {
 
+            foreach ($quoteTransfer->getItems() as $itemTransfer) {
+                $itemTransfer->setShipment(new ShipmentTransfer());
+                $itemTransfer->getShipment()->setShippingAddress(new AddressTransfer());
+            }
+
             $shipmentMethodsCollectionTransfer = $this->shipmentClient->getAvailableMethodsByShipment($quoteTransfer);
 
             if ($shipmentMethodsCollectionTransfer->getShipmentMethods()->count() > 1) {
                 throw new \RuntimeException('Split shipping is not supported');
             }
 
-            $shipmentMethodsTransfer = $shipmentMethodsCollectionTransfer->getShipmentMethods()->getIterator()
+            foreach ($quoteTransfer->getItems() as $itemTransfer) {
+                $itemTransfer->setShipment(null);
+            }
+
+            $shipmentMethodsTransfer = $shipmentMethodsCollectionTransfer
+                ->getShipmentMethods()
+                ->getIterator()
                 ->current();
 
-            return  $shipmentMethodsTransfer;
+            return $shipmentMethodsTransfer;
         }
 
         return $this->shipmentClient->getAvailableMethods($quoteTransfer);
