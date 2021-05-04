@@ -1,65 +1,65 @@
 {
-  "name": "spryker-eco/amazon-pay",
-  "autoload": {
-    "psr-0": {
-      "SprykerEco": "src/",
-      "SprykerEcoTest": "tests/"
+    "name": "spryker-eco/amazon-pay",
+    "autoload": {
+        "psr-0": {
+            "SprykerEco": "src/",
+            "SprykerEcoTest": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.2",
+        "amzn/amazon-pay-sdk-php": "^3.0.0",
+        "spryker/calculation": "^4.0.0",
+        "spryker/cart": "^5.0.0 || ^7.0.0",
+        "spryker/checkout": "^3.0.0 || ^4.0.0 || ^6.0.0",
+        "spryker/checkout-extension": "^1.0.0",
+        "spryker/config": "^3.0.0",
+        "spryker/customer": "^7.0.0",
+        "spryker/glossary-storage": "^1.0.0",
+        "spryker/kernel": "^3.30.0",
+        "spryker/log": "^3.0.0",
+        "spryker/messenger": "^3.0.0",
+        "spryker/money": "^2.0.1",
+        "spryker/oms": "^7.0.0 || ^8.0.0 || ^10.0.0 || ^11.0.0",
+        "spryker/propel-orm": "^1.0.0",
+        "spryker/quote": "^1.0.0 || ^2.0.0",
+        "spryker/refund": "^5.0.0",
+        "spryker/sales": "^8.0.0 || ^10.0.0 || ^11.0.0",
+        "spryker/shipment": "^6.0.0 || ^7.0.0 || ^8.0.0",
+        "spryker/symfony": "^3.0.0",
+        "spryker/util-encoding": "^2.0.1",
+        "spryker/zed-request": "^3.0.0"
+    },
+    "description": "AmazonPay module",
+    "license": "Apache-2.0",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml -p src/ tests/",
+        "cs-fix": "phpcbf --standard=vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml -p src/ tests/"
+    },
+    "require-dev": {
+        "spryker-shop/checkout-page": "*",
+        "spryker-shop/checkout-widget": "*",
+        "spryker/acl": "*",
+        "spryker/application": "*",
+        "spryker/country": "*",
+        "spryker/currency": "*",
+        "spryker/propel": "*",
+        "spryker/silex": "*",
+        "spryker/testify": "*"
+    },
+    "suggest": {
+        "spryker-shop/checkout-page": "If you want to use Checkout Page plugins.",
+        "spryker-shop/checkout-widget": "If you want to use Checkout Widget plugins.",
+        "spryker/silex": "If you want to use Silex functionality."
     }
-  },
-  "require": {
-    "php": ">=7.2",
-    "amzn/amazon-pay-sdk-php": "^3.0.0",
-    "spryker/calculation": "^4.0.0",
-    "spryker/cart": "^5.0.0 || ^7.0.0",
-    "spryker/checkout": "^3.0.0 || ^4.0.0 || ^6.0.0",
-    "spryker/checkout-extension": "^1.0.0",
-    "spryker/config": "^3.0.0",
-    "spryker/customer": "^7.0.0",
-    "spryker/glossary-storage": "^1.0.0",
-    "spryker/kernel": "^3.30.0",
-    "spryker/log": "^3.0.0",
-    "spryker/messenger": "^3.0.0",
-    "spryker/money": "^2.0.1",
-    "spryker/oms": "^7.0.0 || ^8.0.0 || ^10.0.0 || ^11.0.0",
-    "spryker/propel-orm": "^1.0.0",
-    "spryker/quote": "^1.0.0 || ^2.0.0",
-    "spryker/refund": "^5.0.0",
-    "spryker/sales": "^8.0.0 || ^10.0.0 || ^11.0.0",
-    "spryker/shipment": "^6.0.0 || ^7.0.0 || ^8.0.0",
-    "spryker/symfony": "^3.0.0",
-    "spryker/util-encoding": "^2.0.1",
-    "spryker/zed-request": "^3.0.0"
-  },
-  "description": "AmazonPay module",
-  "license": "Apache-2.0",
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "extra": {
-    "branch-alias": {
-      "dev-master": "3.0.x-dev"
-    }
-  },
-  "config": {
-    "sort-packages": true
-  },
-  "scripts": {
-    "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml -p src/ tests/",
-    "cs-fix": "phpcbf --standard=vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml -p src/ tests/"
-  },
-  "require-dev": {
-    "spryker-shop/checkout-page": "*",
-    "spryker-shop/checkout-widget": "*",
-    "spryker/acl": "*",
-    "spryker/application": "*",
-    "spryker/country": "*",
-    "spryker/currency": "*",
-    "spryker/propel": "*",
-    "spryker/silex": "*",
-    "spryker/testify": "*"
-  },
-  "suggest": {
-    "spryker-shop/checkout-page": "If you want to use Checkout Page plugins.",
-    "spryker-shop/checkout-widget": "If you want to use Checkout Widget plugins.",
-    "spryker/silex": "If you want to use Silex functionality."
-  }
 }
