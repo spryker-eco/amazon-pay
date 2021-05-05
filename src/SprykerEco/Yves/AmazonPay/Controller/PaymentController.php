@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @method \SprykerEco\Client\AmazonPay\AmazonPayClientInterface getClient()
@@ -433,13 +434,15 @@ class PaymentController extends AbstractController
     {
         $amazonPaymentTransfer = $quoteTransfer->getAmazonpayPayment() ?: new AmazonpayPaymentTransfer();
 
+        $router = $this->getRouter();
+
         $amazonPaymentTransfer->setOrderReferenceId($request->query->get(static::URL_PARAM_REFERENCE_ID));
         $amazonPaymentTransfer->setAddressConsentToken($request->query->get(static::URL_PARAM_ACCESS_TOKEN));
-        $amazonPaymentTransfer->setFailureMFARedirectUrl($this->getApplication()->url(AmazonPayControllerProvider::CHECKOUT, [
+        $amazonPaymentTransfer->setFailureMFARedirectUrl($router->generate(AmazonPayControllerProvider::CHECKOUT, [
             static::URL_PARAM_REFERENCE_ID => $request->query->get(static::URL_PARAM_REFERENCE_ID),
             static::URL_PARAM_ACCESS_TOKEN => $request->query->get(static::URL_PARAM_ACCESS_TOKEN),
-        ]));
-        $amazonPaymentTransfer->setSuccessMFARedirectUrl($this->getApplication()->url(AmazonPayControllerProvider::SUCCESS));
+        ], UrlGeneratorInterface::ABSOLUTE_URL));
+        $amazonPaymentTransfer->setSuccessMFARedirectUrl($router->generate(AmazonPayControllerProvider::SUCCESS, [], UrlGeneratorInterface::ABSOLUTE_URL));
 
         return $amazonPaymentTransfer;
     }
@@ -617,11 +620,13 @@ class PaymentController extends AbstractController
      */
     protected function preparePSD2Data(QuoteTransfer $quoteTransfer): array
     {
+        $router = $this->getRouter();
+
         return [
-            static::PSD2_DATA_KEY_AJAX_ENDPOINT => $this->getApplication()->path(AmazonPayControllerProvider::CONFIRM_PURCHASE),
+            static::PSD2_DATA_KEY_AJAX_ENDPOINT => $router->generate(AmazonPayControllerProvider::CONFIRM_PURCHASE, [], UrlGeneratorInterface::ABSOLUTE_URL),
             static::PSD2_DATA_KEY_SELLER_ID => $this->getAmazonPayConfig()->getSellerId(),
             static::PSD2_DATA_KEY_AMAZON_ORDER_REFERENCE_ID => $quoteTransfer->getAmazonpayPayment()->getOrderReferenceId(),
-            static::PSD2_DATA_KEY_AMAZON_FAILURE_URL => $this->getApplication()->path(AmazonPayControllerProvider::PAYMENT_FAILED),
+            static::PSD2_DATA_KEY_AMAZON_FAILURE_URL => $router->generate(AmazonPayControllerProvider::PAYMENT_FAILED, [], UrlGeneratorInterface::ABSOLUTE_URL),
         ];
     }
 
