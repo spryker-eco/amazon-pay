@@ -11,6 +11,13 @@ use Silex\Application;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Yves\Application\Plugin\Provider\YvesControllerProvider;
 
+/**
+ * Class AmazonPayControllerProvider
+ *
+ * @package SprykerEco\Yves\AmazonPay\Plugin\Provider
+ *
+ * @deprecated Use AmazonPayRouteProviderPlugin instead
+ */
 class AmazonPayControllerProvider extends YvesControllerProvider
 {
     public const CHECKOUT = 'amazonpay_checkout';
